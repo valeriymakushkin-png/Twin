@@ -31,7 +31,7 @@ export class TelegramBotService {
   constructor(private readonly config: AppConfig) {}
 
   private get baseUrl(): string {
-    return `${this.config.TELEGRAM_API_BASE}/bot${this.config.TELEGRAM_BOT_TOKEN}`;
+    return `${this.config.TELEGRAM_API_BASE}/bot${this.config.TELEGRAM_BOT_TOKEN}${this.config.TELEGRAM_TEST_ENV ? '/test' : ''}`;
   }
 
   async call<T>(method: string, params: Record<string, unknown> = {}, attempt = 1): Promise<T> {

@@ -43,6 +43,8 @@ export const EnvSchema = z
     TELEGRAM_MINI_APP_SHORT_NAME: z.string().default('app'),
     TELEGRAM_WEBHOOK_SECRET: z.string().default('dev-webhook-secret'),
     TELEGRAM_API_BASE: z.string().url().default('https://api.telegram.org'),
+    /** Use Telegram's test environment (test accounts, test Stars): /bot<token>/test/<method>. */
+    TELEGRAM_TEST_ENV: bool.default(false),
     TELEGRAM_INIT_DATA_TTL_SECONDS: z.coerce.number().int().default(60 * 60 * 24),
     TELEGRAM_ADMIN_IDS: csv,
     TELEGRAM_NOTIFICATIONS_ENABLED: bool.default(true),
