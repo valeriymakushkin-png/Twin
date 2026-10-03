@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpCode, Param, Patch, Post, Query } from '@nestjs/common';
-import type { ModerationSeverity, ModerationStatus, Plan, Prisma } from '@prisma/client';
+import { Prisma, type ModerationSeverity, type ModerationStatus, type Plan } from '@prisma/client';
 import { z } from 'zod';
 import type { AbuseEventDto, AdminUserRowDto } from '@mascot/shared';
 import type { AuthContext } from '../../common/auth-context';
@@ -264,7 +264,10 @@ export class AdminController {
     const { promptOverrides, ...rest } = body;
     await this.prisma.style.update({
       where: { id },
-      data: { ...rest, ...(promptOverrides !== undefined ? { promptOverrides: promptOverrides ?? undefined } : {}) },
+      data: {
+        ...rest,
+        ...(promptOverrides === null ? { promptOverrides: Prisma.DbNull } : promptOverrides !== undefined ? { promptOverrides } : {}),
+      },
     });
     this.styles.invalidate();
     await this.prisma.auditLog.create({ data: { actorId: auth.userId, action: 'style.update', targetType: 'style', targetId: id, metadata: body as Prisma.InputJsonObject } });

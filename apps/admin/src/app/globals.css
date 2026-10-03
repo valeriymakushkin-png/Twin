@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+/*
+ * Admin chrome. Chart roles follow the dataviz reference palette (dark steps),
+ * validated against the card surface #111117 (all six checks pass).
+ */
+@theme {
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-page: #09090c;
+  --color-card: #111117;
+  --color-card-2: #17171f;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-ink: #ffffff;
+  --color-ink-2: #c3c2b7;
+  --color-muted: #898781;
+  --color-grid: #24242b;
+  --color-axis: #383835;
+  --color-accent: #8b5cf6;
+
+  --color-series-1: #3987e5;
+  --color-series-2: #d95926;
+  --color-series-3: #199e70;
+  --color-series-4: #c98500;
+  --color-series-5: #d55181;
+  --color-series-6: #008300;
+
+  --color-good: #0ca30c;
+  --color-warning: #fab219;
+  --color-serious: #ec835a;
+  --color-critical: #d03b3b;
+}
+
+@layer base {
+  :root { color-scheme: dark; }
+  html, body { background: var(--color-page); color: var(--color-ink); -webkit-font-smoothing: antialiased; }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
