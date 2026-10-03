@@ -23,12 +23,12 @@ export function PaywallSheet() {
 
   return (
     <Sheet open={open} onClose={close} title={null}>
-      <div className="relative -mt-2 overflow-hidden rounded-3xl border border-amber-300/20 bg-gradient-to-b from-amber-300/10 to-transparent p-5 text-center">
+      <div className="relative -mt-2 overflow-hidden rounded-3xl border border-brand/40 bg-[linear-gradient(180deg,rgba(255,43,61,0.18),rgba(255,43,61,0.02))] p-5 text-center">
         <motion.div
           initial={{ scale: 0.6, rotate: -12, opacity: 0 }}
           animate={{ scale: 1, rotate: 0, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 16 }}
-          className="mx-auto mb-3 grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-amber-300 to-orange-500 text-black shadow-[0_12px_40px_-10px_rgba(251,191,36,0.8)]"
+          className="mx-auto mb-3 grid size-14 place-items-center rounded-2xl bg-brand-grad text-white shadow-red"
         >
           <Crown className="size-7" />
         </motion.div>
@@ -39,7 +39,7 @@ export function PaywallSheet() {
       <ul className="mt-5 space-y-2.5">
         {t.paywall.perks.map((perk) => (
           <li key={perk} className="flex items-center gap-3 text-[14px] text-ink-2">
-            <span className="grid size-5 place-items-center rounded-full bg-emerald-400/15 text-emerald-300">
+            <span className="grid size-5 place-items-center rounded-full bg-brand-grad text-white">
               <Check className="size-3" strokeWidth={3} />
             </span>
             {perk}
@@ -48,12 +48,12 @@ export function PaywallSheet() {
       </ul>
 
       <div className="mt-6 space-y-2.5">
-        <Button variant="star" size="lg" block loading={pending === 'premium_monthly'} onClick={() => purchase('premium_monthly')} icon={<Star className="size-4 fill-black" />}>
+        <Button variant="star" size="lg" block loading={pending === 'premium_monthly'} onClick={() => purchase('premium_monthly')} icon={<Star className="size-4 fill-white" />}>
           {f(t.paywall.perMonth, { stars: monthly.stars })}
         </Button>
         <Button variant="secondary" size="lg" block loading={pending === 'premium_yearly'} onClick={() => purchase('premium_yearly')}>
           <span>{f(t.paywall.yearly, { stars: yearly.stars })}</span>
-          <span className="ml-1 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[11px] text-emerald-300">−33%</span>
+          <span className="ml-1 rounded-full bg-brand/15 px-2 py-0.5 text-[11px] text-[#ff8a94]">−33%</span>
         </Button>
         {showCredits && (
           <Button variant="ghost" block loading={pending === 'credits_200'} onClick={() => purchase('credits_200')} icon={<Sparkles className="size-4" />}>

@@ -26,6 +26,7 @@ export interface PromptContext {
   style: StyleRecipe;
   outfit?: WardrobeItem;
   pose?: WardrobeItem;
+  accessory?: WardrobeItem;
   /** true when the provider cannot output alpha: ask for a plain keyable background instead. */
   opaqueOutput?: boolean;
 }
@@ -85,7 +86,7 @@ export function compileAvatarPrompt(ctx: PromptContext): CompiledPrompt {
 /** Re-render an existing mascot in another style / outfit / pose, anchored on the master render + photos. */
 export function compileStyleVariantPrompt(ctx: PromptContext): CompiledPrompt {
   const pose = ctx.pose?.prompt ?? 'head-and-shoulders portrait, facing the camera, friendly expression';
-  const outfit = ctx.outfit?.prompt ?? 'wearing a simple modern casual outfit';
+  const outfit = [ctx.outfit?.prompt ?? 'wearing a simple modern casual outfit', ctx.accessory?.prompt].filter(Boolean).join(', ');
   return {
     prompt: [
       'Redraw the character from the first reference image in a new art style. Additional reference photos show the real person for likeness.',

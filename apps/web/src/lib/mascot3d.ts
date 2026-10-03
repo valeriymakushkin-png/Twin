@@ -1,0 +1,81 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import type { MascotDna } from '@mascot/shared';
+import type { Framing, MascotStage } from '@mascot/mascot-3d';
+
+export interface ShotOptions {
+  style?: string;
+  emotion?: string;
+  outfit?: string;
+  outfitColor?: string;
+  accessory?: string | null;
+  framing?: Framing;
+  yaw?: number;
+  size?: number;
+}
+
+let stage: MascotStage | null = null;
+let queue: Promise<unknown> = Promise.resolve();
+const cache = new Map<string, Promise<string>>();
+let supported: boolean | null = null;
+
+export function webglSupported(): boolean {
+  if (supported !== null) return supported;
+  try {
+    const c = document.createElement('canvas');
+    supported = Boolean(c.getContext('webgl2') || c.getContext('webgl'));
+  } catch {
+    supported = false;
+  }
+  return supported;
+}
+
+const idle = () => new Promise<void>((r) => (typeof requestIdleCallback !== 'undefined' ? requestIdleCallback(() => r(), { timeout: 120 }) : setTimeout(r, 16)));
+
+/**
+ * Renders DNA-driven 3D snapshots one at a time on a single shared WebGL context
+ * (thumbnails for styles, outfits, emotions…), memoised per DNA + options.
+ */
+export function renderShot(dna: MascotDna, opts: ShotOptions = {}): Promise<string> {
+  const key = JSON.stringify([dna, opts]);
+  const hit = cache.get(key);
+  if (hit) return hit;
+  const job = queue.then(async () => {
+    const mod = await import('@mascot/mascot-3d');
+    const size = opts.size ?? 512;
+    if (!stage) stage = new mod.MascotStage({ width: size, height: size, pixelRatio: 1, preserveDrawingBuffer: true });
+    stage.setSize(size, size);
+    await idle();
+    return stage.snapshot(dna, {
+      style: opts.style,
+      emotion: opts.emotion as never,
+      outfit: opts.outfit,
+      outfitColor: opts.outfitColor,
+      accessory: opts.accessory ?? null,
+      framing: opts.framing,
+      yaw: opts.yaw,
+    });
+  });
+  queue = job.catch(() => undefined);
+  cache.set(key, job);
+  job.catch(() => cache.delete(key));
+  return job;
+}
+
+export function useShot(dna: MascotDna | null | undefined, opts: ShotOptions = {}, enabled = true): string | null {
+  const [url, setUrl] = useState<string | null>(null);
+  const key = dna ? JSON.stringify([dna, opts]) : '';
+  useEffect(() => {
+    if (!dna || !enabled || !webglSupported()) return;
+    let alive = true;
+    renderShot(dna, opts)
+      .then((u) => alive && setUrl(u))
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, enabled]);
+  return url;
+}

@@ -19,7 +19,7 @@ const config: NextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
-  transpilePackages: ['@mascot/shared'],
+  transpilePackages: ['@mascot/shared', '@mascot/mascot-3d'],
   // Monorepo root, so the standalone output includes workspace packages.
   outputFileTracingRoot: path.join(process.cwd(), '../../'),
   async headers() {

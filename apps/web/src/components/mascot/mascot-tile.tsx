@@ -15,20 +15,21 @@ export function MascotTile({ avatar, className }: { avatar: AvatarDto; className
   const href = avatar.status === 'PROCESSING' && avatar.latestGenerationId ? `/processing/${avatar.latestGenerationId}` : `/mascot/${avatar.id}`;
   return (
     <motion.div whileTap={{ scale: 0.97 }} className={className}>
-      <Link href={href} className="block overflow-hidden rounded-3xl border border-white/10 shadow-card">
-        <div className="relative aspect-square" style={{ background: style ? `linear-gradient(150deg, ${style.gradient[0]}, ${style.gradient[1]})` : '#16161e' }}>
+      <Link href={href} className="card block overflow-hidden rounded-[22px]">
+        <div className="relative aspect-square">
+          <div className="glow-red absolute inset-[8%] rounded-full opacity-70 blur-lg" />
           {avatar.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={avatar.thumbnailUrl ?? avatar.imageUrl} alt={avatar.name} className="size-full object-contain" />
+            <img src={avatar.thumbnailUrl ?? avatar.imageUrl} alt={avatar.name} className="relative size-full object-contain" />
           ) : (
             <div className="grid size-full place-items-center">
-              {avatar.status === 'FAILED' ? <AlertTriangle className="size-7 text-white/80" /> : <Loader2 className="size-7 animate-spin text-white/80" />}
+              {avatar.status === 'FAILED' ? <AlertTriangle className="size-7 text-brand" /> : <Loader2 className="size-7 animate-spin text-brand" />}
             </div>
           )}
         </div>
-        <div className="flex items-center justify-between bg-surface-2 px-3 py-2">
-          <span className="truncate text-[13px] font-semibold">{avatar.name}</span>
-          <span className={cn('text-[10px] font-medium', avatar.status === 'READY' ? 'text-muted' : 'text-amber-300')}>
+        <div className="flex items-center justify-between border-t border-white/5 px-3 py-2.5">
+          <span className="truncate text-[13px] font-bold">{avatar.name}</span>
+          <span className={cn('text-[10.5px] font-medium', avatar.status === 'READY' ? 'text-muted' : 'text-brand')}>
             {avatar.status === 'READY' ? styleName(tr, avatar.styleSlug, style?.name ?? avatar.styleSlug) : avatar.status === 'FAILED' ? t.tile.failed : t.tile.creating}
           </span>
         </div>

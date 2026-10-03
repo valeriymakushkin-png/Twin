@@ -23,10 +23,10 @@ export function AppShell({ children, tabs = true, className }: { children: React
 
 export function TopBar({ title, subtitle, right }: { title: ReactNode; subtitle?: ReactNode; right?: ReactNode }) {
   return (
-    <header className="flex items-center justify-between gap-3 py-4">
+    <header className="flex items-start justify-between gap-3 pb-4 pt-5">
       <div className="min-w-0">
-        <h1 className="truncate text-[22px] font-semibold tracking-[-0.025em]">{title}</h1>
-        {subtitle && <p className="mt-0.5 truncate text-[13px] text-muted">{subtitle}</p>}
+        <h1 className="truncate text-[24px] font-bold tracking-[-0.03em]">{title}</h1>
+        {subtitle && <p className="mt-1 text-[13.5px] leading-snug text-muted">{subtitle}</p>}
       </div>
       {right}
     </header>

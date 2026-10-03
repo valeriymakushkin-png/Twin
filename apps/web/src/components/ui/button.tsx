@@ -6,20 +6,21 @@ import { forwardRef, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 import { haptic } from '@/lib/telegram';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'star';
+type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'star';
 type Size = 'sm' | 'md' | 'lg';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-aurora text-white shadow-[0_10px_40px_-12px_rgba(192,38,211,0.65)] hover:brightness-110',
-  secondary: 'glass text-ink hover:bg-white/[0.07]',
+  primary: 'bg-brand-grad text-white shadow-red hover:brightness-110',
+  secondary: 'bg-white/[0.06] text-ink border border-white/10 hover:bg-white/[0.09]',
+  outline: 'border border-white/15 bg-white/[0.02] text-ink hover:border-brand/60 hover:bg-brand/10',
   ghost: 'text-ink-2 hover:bg-white/[0.05]',
-  danger: 'bg-danger/15 text-danger border border-danger/30 hover:bg-danger/20',
-  star: 'bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 text-black shadow-[0_10px_40px_-12px_rgba(251,191,36,0.7)]',
+  danger: 'bg-danger/10 text-danger border border-danger/25 hover:bg-danger/15',
+  star: 'bg-brand-grad text-white shadow-red hover:brightness-110',
 };
 
 const sizes: Record<Size, string> = {
-  sm: 'h-9 px-3.5 text-[13px] rounded-xl gap-1.5',
-  md: 'h-11 px-5 text-sm rounded-2xl gap-2',
+  sm: 'h-9 px-4 text-[13px] rounded-xl gap-1.5',
+  md: 'h-12 px-5 text-[14px] rounded-2xl gap-2',
   lg: 'h-14 px-6 text-[15px] rounded-2xl gap-2.5',
 };
 
@@ -42,7 +43,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       whileTap={disabled || loading ? undefined : { scale: 0.97 }}
       transition={{ type: 'spring', stiffness: 500, damping: 30 }}
       className={cn(
-        'relative inline-flex select-none items-center justify-center font-semibold tracking-[-0.01em] transition-[filter,background-color,opacity] disabled:opacity-45 disabled:pointer-events-none',
+        'relative inline-flex select-none items-center justify-center font-semibold tracking-[-0.01em] transition-[filter,background-color,border-color,opacity] disabled:pointer-events-none disabled:opacity-40',
         variants[variant],
         sizes[size],
         block && 'w-full',

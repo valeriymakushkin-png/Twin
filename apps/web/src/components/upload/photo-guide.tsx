@@ -1,23 +1,37 @@
 'use client';
 
-import { Check } from 'lucide-react';
 import { PHOTO_GUIDE, type PhotoPose } from '@mascot/shared';
+import { CheckDot } from '@/components/ui/misc';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n';
 
-const ROTATE: Record<string, number> = { FRONT: 0, LEFT: -28, RIGHT: 28, SMILE: 0, NEUTRAL: 0 };
-
-function FaceGlyph({ pose }: { pose: PhotoPose }) {
+/** Head-and-shoulders glyph turned towards the guide pose. */
+function PoseGlyph({ pose }: { pose: PhotoPose }) {
+  const turn = pose === 'LEFT' ? -1 : pose === 'RIGHT' ? 1 : 0;
   const smile = pose === 'SMILE';
   return (
-    <svg viewBox="0 0 40 40" className="size-9" style={{ transform: `perspective(80px) rotateY(${ROTATE[pose] ?? 0}deg)` }}>
-      <circle cx="20" cy="20" r="15" fill="none" stroke="currentColor" strokeWidth="2" />
-      <circle cx="14.5" cy="17" r="1.8" fill="currentColor" />
-      <circle cx="25.5" cy="17" r="1.8" fill="currentColor" />
-      {smile ? (
-        <path d="M13 23c2 3.5 4.5 5 7 5s5-1.5 7-5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
+    <svg viewBox="0 0 48 48" className="size-11" aria-hidden>
+      <defs>
+        <linearGradient id={`pg-${pose}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#f2f2f4" />
+          <stop offset="1" stopColor="#9a9aa2" />
+        </linearGradient>
+      </defs>
+      <path d="M9 46c1.5-8 7.5-12 15-12s13.5 4 15 12Z" fill="#2a2a30" />
+      <ellipse cx={24 + turn * 1.5} cy="21" rx={turn ? 9.6 : 10.5} ry="12" fill={`url(#pg-${pose})`} />
+      <path d={`M${13.5 + turn * 2} 16c2-8 19-9 21 0-3-3-7-4-10.5-4S16 13 ${13.5 + turn * 2} 16Z`} fill="#1a1a1e" />
+      {turn === 0 ? (
+        <>
+          <circle cx="20" cy="21" r="1.4" fill="#1a1a1e" />
+          <circle cx="28" cy="21" r="1.4" fill="#1a1a1e" />
+          {smile ? <path d="M19.5 26.5c2.6 3 6.4 3 9 0" stroke="#1a1a1e" strokeWidth="1.6" fill="none" strokeLinecap="round" /> : <path d="M20.5 27.5h7" stroke="#1a1a1e" strokeWidth="1.6" strokeLinecap="round" />}
+        </>
       ) : (
-        <path d="M14.5 25h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        <>
+          <circle cx={24 + turn * 5} cy="21" r="1.4" fill="#1a1a1e" />
+          <path d={`M${24 + turn * 9} 22l${turn * 2.2} 3.2-${turn * 2.2} .6`} stroke="#1a1a1e" strokeWidth="1.3" fill="none" />
+          <path d={`M${23 + turn * 5} 27.5h${turn * 4}`} stroke="#1a1a1e" strokeWidth="1.6" strokeLinecap="round" />
+        </>
       )}
     </svg>
   );
@@ -27,28 +41,21 @@ function FaceGlyph({ pose }: { pose: PhotoPose }) {
 export function PhotoGuide({ covered }: { covered: Set<PhotoPose> }) {
   const { t } = useT();
   return (
-    <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
-      {PHOTO_GUIDE.map(({ pose }) => {
-        const { title, hint } = t.guide[pose];
+    <div className="grid grid-cols-6 gap-2">
+      {PHOTO_GUIDE.map(({ pose }, i) => {
         const done = covered.has(pose) || (pose === 'FRONT' && (covered.has('SMILE') || covered.has('NEUTRAL')));
         return (
           <div
             key={pose}
             className={cn(
-              'relative w-[118px] shrink-0 rounded-2xl border p-3 transition-colors',
-              done ? 'border-emerald-400/40 bg-emerald-400/[0.07]' : 'border-line bg-white/[0.03]',
+              'relative flex flex-col items-center rounded-2xl border px-1 pb-2 pt-2.5 transition-colors',
+              i < 3 ? 'col-span-2' : i === 3 ? 'col-span-2 col-start-2' : 'col-span-2',
+              done ? 'selected bg-brand/[0.07]' : 'card',
             )}
           >
-            <div className={cn('mb-2', done ? 'text-emerald-300' : 'text-ink-2')}>
-              <FaceGlyph pose={pose} />
-            </div>
-            <div className="text-[12px] font-semibold">{title}</div>
-            <div className="mt-0.5 text-[10.5px] leading-snug text-muted">{hint}</div>
-            {done && (
-              <span className="absolute right-2.5 top-2.5 grid size-5 place-items-center rounded-full bg-emerald-400 text-black">
-                <Check className="size-3" strokeWidth={3.2} />
-              </span>
-            )}
+            <PoseGlyph pose={pose} />
+            <div className="mt-1 text-center text-[10.5px] font-semibold leading-tight text-ink-2">{t.guide[pose].title}</div>
+            {done && <CheckDot className="absolute right-1.5 top-1.5 size-4" />}
           </div>
         );
       })}

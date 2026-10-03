@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
-  getOutfit,
+  getAccessory, getOutfit,
   getPose,
   type AvatarDto,
   type GenerateAvatarInput,
@@ -22,12 +22,13 @@ export interface AvatarLaunchResult {
   generation: GenerationDto;
 }
 
-function validateWardrobe(outfitKey?: string, poseKey?: string) {
+function validateWardrobe(outfitKey?: string, poseKey?: string, accessoryKey?: string) {
   const outfit = getOutfit(outfitKey);
   const pose = getPose(poseKey);
+  const accessory = getAccessory(accessoryKey);
   if (outfitKey && !outfit) throw new AppException('UNKNOWN_OUTFIT', `Unknown outfit ${outfitKey}`);
   if (poseKey && !pose) throw new AppException('UNKNOWN_POSE', `Unknown pose ${poseKey}`);
-  return { outfit, pose, premium: Boolean(outfit?.isPremium || pose?.isPremium) };
+  return { outfit, pose, accessory, premium: Boolean(outfit?.isPremium || pose?.isPremium || accessory?.isPremium) };
 }
 
 @Injectable()
@@ -128,7 +129,7 @@ export class AvatarsService {
     const avatar = await this.loadOwned(userId, avatarId);
     if (avatar.status !== 'READY') throw new AppException('AVATAR_NOT_READY', 'Your mascot is still being created.');
     const style = await this.styles.bySlug(input.styleSlug);
-    const wardrobe = validateWardrobe(input.outfitKey, input.poseKey);
+    const wardrobe = validateWardrobe(input.outfitKey, input.poseKey, input.accessoryKey);
     return this.generations.launch<GenerationDto>({
       userId,
       type: 'STYLE_VARIANT',
@@ -144,7 +145,7 @@ export class AvatarsService {
             stage: 'QUEUED',
             priority,
             idempotencyKey,
-            input: { styleSlug: style.slug, outfitKey: input.outfitKey ?? null, poseKey: input.poseKey ?? null, charge: { ...charge } },
+            input: { styleSlug: style.slug, outfitKey: input.outfitKey ?? null, poseKey: input.poseKey ?? null, accessoryKey: input.accessoryKey ?? null, charge: { ...charge } },
           },
         });
         return { generation, result: await this.generations.toDto(generation) };

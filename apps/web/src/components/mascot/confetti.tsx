@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
 
-const COLORS = ['#8b5cf6', '#d946ef', '#f59e0b', '#34d399', '#38bdf8', '#f472b6'];
+const COLORS = ['#ff2b3d', '#ff6b5a', '#ffffff', '#ffc53d', '#e0122a', '#ff8a94'];
 
 export function Confetti({ count = 46 }: { count?: number }) {
   const pieces = useMemo(

@@ -91,9 +91,9 @@ export function ShareSheet({
                 setBusy(null);
               }
             }}
-            className="flex flex-col items-start gap-3 rounded-2xl border border-line bg-white/[0.03] p-4 text-left transition-colors hover:bg-white/[0.06] disabled:opacity-60"
+            className="card flex flex-col items-start gap-3 rounded-2xl p-4 text-left transition-colors hover:border-brand/40 disabled:opacity-60"
           >
-            <span className="grid size-9 place-items-center rounded-xl bg-violet-500/15 text-violet-200">
+            <span className="grid size-9 place-items-center rounded-xl bg-brand/12 text-brand ring-1 ring-brand/25">
               <Icon className="size-[18px]" />
             </span>
             <span className="text-[13px] font-semibold">{busy === key ? t.share.opening : label}</span>

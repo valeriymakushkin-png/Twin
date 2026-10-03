@@ -3,6 +3,7 @@ import { STICKER_EMOTIONS, type StickerEmotion } from './emotions';
 import type { MascotDna } from './dna';
 import { MEME_FORMATS, type MemeFormat } from './memes';
 import { STYLE_SLUGS } from './styles';
+import { ACCESSORY_KEYS } from './wardrobe';
 import {
   TTS_VOICES,
   VIDEO_ASPECT_RATIOS,
@@ -46,6 +47,7 @@ export const StyleVariantSchema = z.object({
   styleSlug: z.enum(STYLE_SLUGS),
   outfitKey: z.string().max(40).optional(),
   poseKey: z.string().max(40).optional(),
+  accessoryKey: z.enum(ACCESSORY_KEYS).optional(),
 });
 
 export const GenerateStickersSchema = z.object({
@@ -218,6 +220,7 @@ export interface AvatarRenderDto {
   hdAvailable: boolean;
   outfitKey: string | null;
   poseKey: string | null;
+  accessoryKey: string | null;
   isPrimary: boolean;
   createdAt: string;
 }

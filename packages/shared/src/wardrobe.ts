@@ -36,6 +36,22 @@ export const POSES: readonly WardrobeItem[] = [
   { key: 'selfie', label: 'Selfie', prompt: 'taking a selfie with a phone, playful face', isPremium: true },
 ];
 
+/** Add-ons layered on top of any outfit (keys match the 3D renderer). */
+export const ACCESSORIES: readonly WardrobeItem[] = [
+  { key: 'cap', label: 'Cap', prompt: 'wearing a baseball cap', isPremium: false },
+  { key: 'beanie', label: 'Beanie', prompt: 'wearing a knitted beanie with a pom-pom', isPremium: false },
+  { key: 'sunglasses', label: 'Sunglasses', prompt: 'wearing cool black sunglasses', isPremium: false },
+  { key: 'headphones', label: 'Headphones', prompt: 'wearing big over-ear headphones', isPremium: true },
+  { key: 'chain', label: 'Chain', prompt: 'wearing a gold chain necklace', isPremium: true },
+  { key: 'earrings', label: 'Earrings', prompt: 'wearing small gold hoop earrings', isPremium: true },
+];
+export const ACCESSORY_KEYS = ['cap', 'beanie', 'sunglasses', 'headphones', 'chain', 'earrings'] as const;
+export type AccessoryKey = (typeof ACCESSORY_KEYS)[number];
+
+export function getAccessory(key?: string | null): WardrobeItem | undefined {
+  return key ? ACCESSORIES.find((a) => a.key === key) : undefined;
+}
+
 export function getOutfit(key?: string | null): WardrobeItem | undefined {
   return key ? OUTFITS.find((o) => o.key === key) : undefined;
 }

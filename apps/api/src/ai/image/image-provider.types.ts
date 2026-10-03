@@ -15,7 +15,7 @@ export interface ImageGenerationRequest {
   seed?: number;
   quality?: 'low' | 'medium' | 'high';
   /** Rendering hints for the procedural mock provider (ignored by real providers). */
-  mock?: { dna: MascotDna; emotion?: StickerEmotion | 'neutral'; style?: StyleRecipe; background?: [string, string] };
+  mock?: { dna: MascotDna; emotion?: StickerEmotion | 'neutral'; style?: StyleRecipe; background?: [string, string]; outfit?: string; accessory?: string };
 }
 
 export interface ImageGenerationResult {

@@ -40,7 +40,7 @@ export default function LibraryPage() {
         {tab === 'mascots' && avatars && (avatars.length ? (
           <div className="grid grid-cols-2 gap-3">{avatars.map((a) => <MascotTile key={a.id} avatar={a} />)}</div>
         ) : (
-          <EmptyState icon={<FolderHeart className="size-6" />} title={t.library.noMascots} action={<Link href="/create" className="text-[13px] font-semibold text-violet-300">{t.library.createOne}</Link>} />
+          <EmptyState icon={<FolderHeart className="size-6" />} title={t.library.noMascots} action={<Link href="/create" className="text-[13px] font-semibold text-brand">{t.library.createOne}</Link>} />
         ))}
 
         {tab === 'stickers' && library && (library.stickerPacks.length ? (

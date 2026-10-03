@@ -58,6 +58,7 @@ export class DtoMapper {
       hdAvailable: true,
       outfitKey: render.outfitKey,
       poseKey: render.poseKey,
+      accessoryKey: render.accessoryKey,
       isPrimary: render.id === primaryId,
       createdAt: render.createdAt.toISOString(),
     };

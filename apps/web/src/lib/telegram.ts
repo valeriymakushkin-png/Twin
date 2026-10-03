@@ -149,7 +149,7 @@ export function openExternal(url: string): void {
 /** Bot API 8.0 native download sheet; falls back to opening the file. */
 export function downloadFile(url: string, fileName: string): void {
   const app = getWebApp();
-  if (app?.downloadFile && supports('8.0')) {
+  if (app?.downloadFile && supports('8.0') && !url.startsWith('data:')) {
     app.downloadFile({ url, file_name: fileName });
     return;
   }

@@ -9,6 +9,7 @@ import { env } from '@/lib/env';
 import { bootstrapWebApp, getWebApp } from '@/lib/telegram';
 import { qk } from '@/lib/queries';
 import { useT } from '@/lib/i18n';
+import { LogoMark } from '@/components/brand/logo';
 
 type AuthStatus = 'loading' | 'authenticated' | 'outside-telegram' | 'error';
 
@@ -111,7 +112,7 @@ function Splash() {
   return (
     <div className="grid min-h-dvh place-items-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="size-14 animate-pulse-soft rounded-2xl bg-aurora shadow-[0_12px_40px_-10px_rgba(217,70,239,0.8)]" />
+        <LogoMark className="size-16 animate-pulse-soft" />
         <div className="h-1 w-24 overflow-hidden rounded-full bg-white/10">
           <div className="skeleton h-full w-full" />
         </div>

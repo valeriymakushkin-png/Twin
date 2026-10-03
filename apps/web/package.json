@@ -12,6 +12,7 @@
     "i18n:check": "node --experimental-strip-types --no-warnings scripts/check-i18n.mts"
   },
   "dependencies": {
+    "@mascot/mascot-3d": "workspace:*",
     "@mascot/shared": "workspace:*",
     "@tanstack/react-query": "^5.90.0",
     "clsx": "^2.1.1",

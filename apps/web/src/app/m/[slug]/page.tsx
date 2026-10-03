@@ -53,13 +53,13 @@ export default async function PublicMascotPage({ params }: { params: Promise<{ s
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col px-5 py-6">
       <Logo />
-      <div className="mt-8 overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-b from-violet-600/40 to-fuchsia-600/20 shadow-glow">
+      <div className="mt-8 overflow-hidden rounded-[32px] border border-white/10 bg-[radial-gradient(circle_at_50%_45%,rgba(255,43,61,0.45),rgba(14,14,16,1)_70%)] shadow-glow">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         {mascot.imageUrl && <img src={mascot.imageUrl} alt={mascot.name} className="aspect-square w-full object-contain p-4" />}
       </div>
       <h1 className="mt-6 text-center text-[28px] font-semibold tracking-[-0.03em]">{fill(t.share_page.meet, { name: mascot.name })}</h1>
       <p className="mt-1 text-center text-[14px] text-muted">{fill(t.share_page.createdWith, { style: mascot.styleName })}</p>
-      <a href={cta} className="mt-8 flex h-14 items-center justify-center rounded-2xl bg-aurora text-[15px] font-semibold text-white shadow-[0_10px_40px_-12px_rgba(192,38,211,0.65)]">
+      <a href={cta} className="mt-8 flex h-14 items-center justify-center rounded-2xl bg-brand-grad text-[15px] font-semibold text-white shadow-red">
         {t.share_page.cta}
       </a>
       <p className="mt-3 text-center text-[12px] text-faint">{t.share_page.footnote}</p>

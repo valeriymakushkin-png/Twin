@@ -461,6 +461,13 @@ ${bg}${accents}${outline}
 </svg>`;
 }
 
+/** The brand hero character (landing, onboarding, empty states). */
+export const HERO_DNA: MascotDna = {
+  faceShape: 'oval', eyeShape: 'almond', eyeColor: 'dark-brown', hairStyle: 'curly-short', hairColor: 'black',
+  noseShape: 'wide', mouthShape: 'wide', skinTone: 'mst-7', eyebrows: 'thick-straight', ageGroup: 'young-adult',
+  facialHair: 'none', glasses: 'none', presentation: 'masculine', freckles: false, dimples: true, distinguishingFeatures: [],
+};
+
 /** Curated DNA presets for showcase art and onboarding examples. */
 export const SHOWCASE_DNA: Array<{ name: string; style: string; dna: MascotDna }> = [
   {

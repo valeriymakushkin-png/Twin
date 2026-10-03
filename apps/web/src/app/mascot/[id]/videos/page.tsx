@@ -1,35 +1,34 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Clapperboard, Crown, Download, Loader2, Share2, Sparkles } from 'lucide-react';
+import { Clapperboard, Crown, Download, Loader2, Play, Share2, Sparkles } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import {
-  TTS_VOICES,
-  VIDEO_TEMPLATE_CATALOG,
-  VIDEO_TEMPLATES,
-  type TtsVoice,
-  type VideoAspectRatio,
-  type VideoDto,
-  type VideoTemplate,
-} from '@mascot/shared';
-import { AppShell, TopBar } from '@/components/layout/app-shell';
+import { TTS_VOICES, VIDEO_TEMPLATE_CATALOG, VIDEO_TEMPLATES, type TtsVoice, type VideoAspectRatio, type VideoDto, type VideoTemplate } from '@mascot/shared';
+import { AppShell } from '@/components/layout/app-shell';
 import { ShareSheet } from '@/components/share/share-sheet';
+import { MascotShot } from '@/components/three/mascot-shot';
 import { Button } from '@/components/ui/button';
-import { Card, SectionTitle } from '@/components/ui/card';
+import { Card, ScreenTitle, SectionTitle } from '@/components/ui/card';
 import { Chip, EmptyState, Segmented } from '@/components/ui/misc';
 import { api } from '@/lib/api';
-import { cn } from '@/lib/cn';
-import { qk, useInvalidate, useMutation, useProfile, useVideos } from '@/lib/queries';
+import { useT } from '@/lib/i18n';
+import { qk, useAvatar, useInvalidate, useMutation, useProfile, useVideos } from '@/lib/queries';
 import { downloadFile, haptic } from '@/lib/telegram';
 import { usePaywall } from '@/store/paywall';
-import { useT } from '@/lib/i18n';
 
-const ICONS: Record<VideoTemplate, string> = { dancing: '🕺', talking: '🗣️', walking: '🚶', podcast: '🎙️', promo: '🚀' };
+const PREVIEW: Record<VideoTemplate, Array<{ emotion: string; yaw: number }>> = {
+  dancing: [{ emotion: 'happy', yaw: -0.5 }, { emotion: 'laughing', yaw: 0 }, { emotion: 'cool', yaw: 0.5 }],
+  talking: [{ emotion: 'happy', yaw: -0.2 }, { emotion: 'shocked', yaw: 0 }, { emotion: 'thinking', yaw: 0.25 }],
+  walking: [{ emotion: 'cool', yaw: -0.8 }, { emotion: 'happy', yaw: -0.4 }, { emotion: 'sigma', yaw: 0 }],
+  podcast: [{ emotion: 'thinking', yaw: 0.35 }, { emotion: 'laughing', yaw: 0 }, { emotion: 'happy', yaw: -0.35 }],
+  promo: [{ emotion: 'cool', yaw: 0.3 }, { emotion: 'happy', yaw: 0 }, { emotion: 'love', yaw: -0.3 }],
+};
 
 export default function VideosPage() {
   const { id: avatarId } = useParams<{ id: string }>();
   const { data: profile } = useProfile();
+  const { data: avatar } = useAvatar(avatarId);
   const { data: videos } = useVideos(avatarId);
   const invalidate = useInvalidate();
   const showPaywall = usePaywall((s) => s.show);
@@ -64,54 +63,58 @@ export default function VideosPage() {
 
   return (
     <AppShell>
-      <TopBar
+      <ScreenTitle
         title={t.videos.title}
-        subtitle={premium ? f(t.videos.creditsLeft, { count: profile?.usage.videoUnitsRemaining ?? 0 }) : t.videos.premiumFeature}
+        subtitle={t.videos.subtitle}
+        right={premium ? <span className="mt-1.5 shrink-0 rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-semibold text-muted">{profile?.usage.videoUnitsRemaining ?? 0} ⚡</span> : undefined}
       />
-      {!premium && (
-        <Card className="mb-4 flex items-center gap-3 border-amber-300/20 bg-amber-300/[0.06] p-4">
-          <Crown className="size-6 shrink-0 text-amber-300" />
-          <div className="flex-1 text-[13px] text-ink-2">{t.videos.upsell}</div>
-          <Button size="sm" variant="star" onClick={() => showPaywall('VIDEO_PREMIUM_ONLY', t.mascot.videosPremium)}>
-            {t.common.unlock}
-          </Button>
-        </Card>
-      )}
 
-      <div className="grid grid-cols-3 gap-2">
-        {VIDEO_TEMPLATES.map((key) => {
-          const r = VIDEO_TEMPLATE_CATALOG[key];
-          return (
-            <motion.button
-              key={key}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                haptic.select();
-                setTemplate(key);
-              }}
-              className={cn('rounded-2xl border p-3 text-left', template === key ? 'border-violet-400/60 bg-violet-500/15' : 'border-line bg-white/[0.02]')}
-            >
-              <div className="text-xl">{ICONS[key]}</div>
-              <div className="mt-1 text-[12.5px] font-semibold">{t.videos.templates[key].label}</div>
-              <div className="text-[10.5px] text-muted">{p(t.videos.meta, r.cost, { sec: r.durationSec })}</div>
-            </motion.button>
-          );
-        })}
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+        {VIDEO_TEMPLATES.map((key) => (
+          <Chip
+            key={key}
+            active={template === key}
+            onClick={() => {
+              haptic.select();
+              setTemplate(key);
+            }}
+          >
+            {t.videos.templates[key].label}
+          </Chip>
+        ))}
       </div>
 
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        {PREVIEW[template].map((frame, i) => (
+          <motion.div key={`${template}-${i}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} className="relative aspect-[9/14] overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(180deg,#24161a,#0d0d10)]">
+            <div className="glow-red absolute inset-x-0 bottom-0 h-2/3 opacity-60 blur-lg" />
+            {avatar?.dna ? <MascotShot dna={avatar.dna} style={avatar.styleSlug} emotion={frame.emotion} yaw={frame.yaw} framing="bust" className="absolute inset-x-[-20%] bottom-0 top-[8%]" /> : <div className="skeleton size-full" />}
+            {i === 1 && (
+              <span className="absolute left-1/2 top-1/2 grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-black/55 text-white backdrop-blur">
+                <Play className="size-4 fill-white" />
+              </span>
+            )}
+          </motion.div>
+        ))}
+      </div>
+      <p className="mt-2 px-0.5 text-[12.5px] text-muted">
+        {t.videos.templates[template].description} · {p(t.videos.meta, recipe.cost, { sec: recipe.durationSec })}
+      </p>
+
       <Card className="mt-3 space-y-4 p-4">
-        <p className="text-[13px] text-muted">{t.videos.templates[template].description}</p>
         {recipe.scriptMode !== 'none' && (
           <div>
-            <SectionTitle title={recipe.scriptMode === 'required' ? t.videos.scriptRequired : t.videos.scriptOptional} className="mb-2 px-0" />
+            <SectionTitle title={recipe.scriptMode === 'required' ? t.videos.scriptRequired : t.videos.scriptOptional} className="mb-2" />
             <textarea
               value={script}
               onChange={(e) => setScript(e.target.value.slice(0, recipe.maxScriptChars))}
               rows={3}
               placeholder={t.videos.scriptPlaceholder}
-              className="w-full resize-none rounded-2xl border border-line bg-white/[0.04] p-3.5 text-[14px] outline-none placeholder:text-faint focus:border-violet-400/60"
+              className="w-full resize-none rounded-2xl border border-white/10 bg-black/30 p-3.5 text-[14px] outline-none placeholder:text-faint focus:border-brand/60"
             />
-            <div className="mt-1 text-right text-[11px] text-faint">{script.length}/{recipe.maxScriptChars}</div>
+            <div className="mt-1 text-right text-[11px] text-faint">
+              {script.length}/{recipe.maxScriptChars}
+            </div>
             <div className="-mx-4 mt-1 flex gap-1.5 overflow-x-auto px-4">
               {TTS_VOICES.map((v) => (
                 <Chip key={v} active={voice === v} onClick={() => setVoice(v)} className="capitalize">
@@ -125,7 +128,7 @@ export default function VideosPage() {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value.slice(0, 300))}
           placeholder={t.videos.direction}
-          className="h-11 w-full rounded-xl border border-line bg-white/[0.04] px-3.5 text-[14px] outline-none placeholder:text-faint focus:border-violet-400/60"
+          className="h-11 w-full rounded-xl border border-white/10 bg-black/30 px-3.5 text-[14px] outline-none placeholder:text-faint focus:border-brand/60"
         />
         <Segmented
           value={aspect}
@@ -136,16 +139,6 @@ export default function VideosPage() {
             { value: '16:9', label: t.videos.aspect['16:9'] },
           ]}
         />
-        <Button
-          block
-          size="lg"
-          disabled={scriptMissing}
-          loading={generate.isPending}
-          icon={<Sparkles className="size-4" />}
-          onClick={() => (premium ? generate.mutate() : showPaywall('VIDEO_PREMIUM_ONLY', t.mascot.videosPremium))}
-        >
-          {scriptMissing ? t.videos.writeScript : t.videos.generate}
-        </Button>
       </Card>
 
       <section className="mt-6 space-y-3">
@@ -154,16 +147,16 @@ export default function VideosPage() {
             {v.status === 'READY' && v.videoUrl ? (
               <video src={v.videoUrl} poster={v.thumbnailUrl ?? undefined} controls playsInline loop className="w-full bg-black" />
             ) : v.status === 'FAILED' ? (
-              <div className="p-5 text-center text-[13px] text-rose-300">{t.videos.failed}</div>
+              <div className="p-5 text-center text-[13px] text-brand">{t.videos.failed}</div>
             ) : (
               <div className="flex aspect-video flex-col items-center justify-center gap-2 text-[13px] text-muted">
-                <Loader2 className="size-6 animate-spin text-violet-300" />
+                <Loader2 className="size-6 animate-spin text-brand" />
                 {f(t.videos.rendering, { template: t.videos.templates[v.template].label })}
               </div>
             )}
             <div className="flex items-center justify-between px-4 py-2.5">
-              <span className="text-[13px] font-semibold">
-                {ICONS[v.template]} {t.videos.templates[v.template].label}
+              <span className="text-[13px] font-bold">
+                {t.videos.templates[v.template].label}
                 <span className="ml-1.5 text-[11px] font-normal text-muted">{v.aspectRatio}</span>
               </span>
               {v.status === 'READY' && v.videoUrl && (
@@ -171,7 +164,7 @@ export default function VideosPage() {
                   <button aria-label={t.common.download} onClick={() => downloadFile(v.videoUrl!, `mascot-${v.template}.mp4`)} className="p-2 text-muted">
                     <Download className="size-4" />
                   </button>
-                  <button aria-label={t.common.share} onClick={() => setShare(v)} className="p-2 text-muted">
+                  <button aria-label={t.common.share} onClick={() => setShare(v)} className="p-2 text-brand">
                     <Share2 className="size-4" />
                   </button>
                 </div>
@@ -181,6 +174,19 @@ export default function VideosPage() {
         ))}
         {videos?.length === 0 && <EmptyState icon={<Clapperboard className="size-6" />} title={t.videos.emptyTitle} body={t.videos.emptyBody} />}
       </section>
+
+      <div className="sticky bottom-[88px] z-20 -mx-4 mt-6 bg-gradient-to-t from-canvas via-canvas/95 to-transparent px-4 pb-3 pt-8">
+        <Button
+          block
+          size="lg"
+          disabled={premium && scriptMissing}
+          loading={generate.isPending}
+          icon={premium ? <Sparkles className="size-4" /> : <Crown className="size-4" />}
+          onClick={() => (premium ? generate.mutate() : showPaywall('VIDEO_PREMIUM_ONLY', t.mascot.videosPremium))}
+        >
+          {premium && scriptMissing ? t.videos.writeScript : t.videos.generate}
+        </Button>
+      </div>
       {share && <ShareSheet open onClose={() => setShare(null)} target={{ kind: 'video', id: share.id }} mediaUrl={share.videoUrl} fileName="mascot.mp4" />}
     </AppShell>
   );

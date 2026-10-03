@@ -6,14 +6,14 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import type { GenerationDto } from '@mascot/shared';
 import { AppShell } from '@/components/layout/app-shell';
-import { Orbit } from '@/components/processing/orbit';
+import { ScanHead } from '@/components/processing/scan-head';
 import { StageTimeline } from '@/components/processing/stage-timeline';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, ScreenTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/misc';
-import { qk, useGeneration, useInvalidate } from '@/lib/queries';
 import { codedMessage } from '@/lib/api';
 import { useT } from '@/lib/i18n';
+import { qk, useGeneration, useInvalidate } from '@/lib/queries';
 
 function ProcessingInner() {
   const { id } = useParams<{ id: string }>();
@@ -23,6 +23,7 @@ function ProcessingInner() {
   const [tip, setTip] = useState(0);
   const { t, f } = useT();
   const tips = t.processing.tips;
+  const photos = Number(search.get('photos')) || undefined;
 
   const onDone = useCallback(
     (g: GenerationDto) => {
@@ -45,16 +46,11 @@ function ProcessingInner() {
 
   return (
     <AppShell tabs={false}>
-      <div className="pt-6 text-center">
-        <h1 className="text-[22px] font-semibold tracking-[-0.025em]">{failed ? t.processing.failed : generation?.status === 'SUCCEEDED' ? t.processing.ready : t.processing.creating}</h1>
-        <p className="mt-1 text-[13px] text-muted">
-          {generation?.status === 'QUEUED' && generation.queuePosition ? f(t.processing.queue, { position: generation.queuePosition }) : t.processing.keepOpen}
-        </p>
-      </div>
+      <ScreenTitle className="text-center [&>div]:mx-auto" title={failed ? t.processing.failed : t.processing.title} subtitle={failed ? undefined : t.processing.subtitle} />
 
       {failed ? (
-        <Card className="mt-8 p-5 text-center">
-          <AlertTriangle className="mx-auto size-8 text-amber-300" />
+        <Card className="mt-4 p-5 text-center">
+          <AlertTriangle className="mx-auto size-8 text-brand" />
           <p className="mt-3 text-[14px] text-ink-2">{codedMessage(generation?.error, t.processing.genericError)}</p>
           <p className="mt-1 text-[12px] text-muted">{t.processing.refunded}</p>
           <Button className="mt-5" block icon={<RotateCcw className="size-4" />} onClick={() => router.replace('/create')}>
@@ -63,18 +59,21 @@ function ProcessingInner() {
         </Card>
       ) : (
         <>
-          <div className="mt-6">
-            <Orbit progress={progress} />
+          <div className="mt-2">
+            <ScanHead />
           </div>
-          <Progress value={progress} className="mt-6" />
+          <Card className="mt-6 p-4">
+            <StageTimeline stage={generation?.stage ?? 'UPLOADING'} done={generation?.status === 'SUCCEEDED'} photos={photos} />
+          </Card>
+          <div className="mt-5 flex items-center gap-3">
+            <Progress value={progress} className="flex-1" />
+            <span className="w-10 text-right font-mono text-[13px] font-semibold text-ink-2">{Math.round(progress)}%</span>
+          </div>
           <AnimatePresence mode="wait">
-            <motion.p key={tip} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="mt-3 h-5 text-center text-[12px] text-muted">
-              {tips[tip]}
+            <motion.p key={tip} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="mt-3 h-9 text-center text-[12px] leading-snug text-muted">
+              {generation?.status === 'QUEUED' && generation.queuePosition ? f(t.processing.queue, { position: generation.queuePosition }) : tips[tip]}
             </motion.p>
           </AnimatePresence>
-          <Card className="mt-6 p-2">
-            <StageTimeline stage={generation?.stage ?? 'UPLOADING'} done={generation?.status === 'SUCCEEDED'} />
-          </Card>
         </>
       )}
     </AppShell>

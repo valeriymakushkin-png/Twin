@@ -1,0 +1,22 @@
+{
+  "name": "@mascot/mascot-3d",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DNA-driven real-time 3D mascot renderer (three.js): live viewer, snapshots, showcase art",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@mascot/shared": "workspace:*",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.186.0",
+    "esbuild": "^0.25.10",
+    "typescript": "~5.9.3"
+  }
+}

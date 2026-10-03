@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
-type Tone = 'neutral' | 'premium' | 'success' | 'danger' | 'violet';
+type Tone = 'neutral' | 'premium' | 'success' | 'danger' | 'brand';
 
 const tones: Record<Tone, string> = {
-  neutral: 'bg-white/[0.06] text-ink-2 border-line',
-  premium: 'bg-amber-400/12 text-amber-300 border-amber-400/25',
+  neutral: 'bg-white/[0.06] text-ink-2 border-white/10',
+  premium: 'bg-brand/15 text-[#ff8a94] border-brand/35',
   success: 'bg-emerald-400/12 text-emerald-300 border-emerald-400/25',
-  danger: 'bg-rose-500/12 text-rose-300 border-rose-500/25',
-  violet: 'bg-violet-500/15 text-violet-200 border-violet-400/25',
+  danger: 'bg-danger/12 text-danger border-danger/25',
+  brand: 'bg-brand-grad text-white border-transparent shadow-red',
 };
 
 export function Badge({ tone = 'neutral', children, className, icon }: { tone?: Tone; children: ReactNode; className?: string; icon?: ReactNode }) {

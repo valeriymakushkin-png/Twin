@@ -2,7 +2,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { Processor } from '@nestjs/bullmq';
 import type { Job } from 'bullmq';
 import type { Generation, Photo, Prisma } from '@prisma/client';
-import { describeDna, dnaHighlights, getOutfit, getPose } from '@mascot/shared';
+import { describeDna, dnaHighlights, getAccessory, getOutfit, getPose } from '@mascot/shared';
 import { loadEnv } from '../config/env';
 import { AppConfig } from '../config/app-config';
 import { PipelineError } from '../common/errors';
@@ -30,6 +30,7 @@ interface AvatarInput {
   styleSlug: string;
   outfitKey: string | null;
   poseKey: string | null;
+  accessoryKey?: string | null;
 }
 
 type AnalyzedPhoto = Omit<Photo, 'analysis'> & { analysis: FaceAnalysis; buffer: Buffer };
@@ -227,6 +228,7 @@ export class AvatarProcessor extends GenerationProcessor {
           generationId: generation.id,
           outfitKey: input.outfitKey,
           poseKey: input.poseKey,
+          accessoryKey: input.accessoryKey ?? null,
           masterKey: stored.masterKey,
           imageKey: stored.imageKey,
           thumbKey: stored.thumbKey,
@@ -259,7 +261,7 @@ export class AvatarProcessor extends GenerationProcessor {
     const started = Date.now();
     await this.generations.progress(generation.id, 'GENERATING', 10);
     const ctx = await this.engine.loadAvatarContext(generation.avatarId!, generation.styleId!);
-    const promptCtx = this.engine.promptContext(ctx, { outfit: getOutfit(input.outfitKey), pose: getPose(input.poseKey) });
+    const promptCtx = this.engine.promptContext(ctx, { outfit: getOutfit(input.outfitKey), pose: getPose(input.poseKey), accessory: getAccessory(input.accessoryKey) });
     const compiled = compileStyleVariantPrompt(promptCtx);
     const references = await this.engine.characterReferences(ctx, 2);
     await this.generations.progress(generation.id, 'GENERATING', 25);
@@ -275,7 +277,7 @@ export class AvatarProcessor extends GenerationProcessor {
         transparent: true,
         n: ent.priorityQueue ? Math.min(2, this.config.AVATAR_CANDIDATES) : 1,
         seed: ctx.seed,
-        mock: { dna: ctx.dna, style: ctx.style.recipe, emotion: 'happy' },
+        mock: { dna: ctx.dna, style: ctx.style.recipe, emotion: 'happy', outfit: input.outfitKey ?? undefined, accessory: input.accessoryKey ?? undefined },
       },
       ctx.embedding,
     );
@@ -302,6 +304,7 @@ export class AvatarProcessor extends GenerationProcessor {
           generationId: generation.id,
           outfitKey: input.outfitKey,
           poseKey: input.poseKey,
+          accessoryKey: input.accessoryKey ?? null,
           masterKey: stored.masterKey,
           imageKey: stored.imageKey,
           thumbKey: stored.thumbKey,

@@ -41,7 +41,7 @@ export function Sheet({
             role="dialog"
             aria-modal="true"
             className={cn(
-              'fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-[28px] border-t border-line bg-surface pb-safe',
+              'fixed inset-x-0 bottom-0 z-50 mx-auto max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-[28px] border-t border-white/10 bg-[#0d0d0f] pb-safe shadow-[0_-20px_60px_-20px_rgba(255,43,61,0.35)]',
               className,
             )}
             initial={{ y: '100%' }}
@@ -53,10 +53,10 @@ export function Sheet({
             dragElastic={{ top: 0, bottom: 0.6 }}
             onDragEnd={(_, info) => (info.offset.y > 120 || info.velocity.y > 600) && onClose()}
           >
-            <div className="sticky top-0 z-10 bg-surface/90 px-5 pb-2 pt-3 backdrop-blur">
+            <div className="sticky top-0 z-10 bg-[#0d0d0f]/90 px-5 pb-2 pt-3 backdrop-blur">
               <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-white/15" />
               <div className="flex items-center justify-between">
-                <div className="text-base font-semibold">{title}</div>
+                <div className="text-[17px] font-bold tracking-[-0.02em]">{title}</div>
                 <button onClick={onClose} aria-label="Close" className="grid size-8 place-items-center rounded-full bg-white/[0.06] text-muted">
                   <X className="size-4" />
                 </button>

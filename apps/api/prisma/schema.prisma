@@ -355,6 +355,7 @@ model AvatarRender {
   generationId String?  @map("generation_id")
   outfitKey    String?  @map("outfit_key")
   poseKey      String?  @map("pose_key")
+  accessoryKey String?  @map("accessory_key")
   /// Transparent master PNG (private bucket, HD).
   masterKey    String   @map("master_key")
   /// Web-optimised display image (public bucket, watermarked on FREE).

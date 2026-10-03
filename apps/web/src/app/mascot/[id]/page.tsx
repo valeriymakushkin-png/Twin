@@ -1,48 +1,93 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { Clapperboard, Crown, Download, IdCard, Image as ImageIcon, Laugh, Palette, Pencil, Share2, Smile } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, Camera, Clapperboard, Download, Image as ImageIcon, Laugh, Palette, Pencil, Plus, Rotate3d, Share2, Shirt, Smile } from 'lucide-react';
 import Link from 'next/link';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { toast } from 'sonner';
-import { getStyleRecipe } from '@mascot/shared';
+import { getStyleRecipe, type AvatarDto } from '@mascot/shared';
 import { AppShell } from '@/components/layout/app-shell';
 import { CharacterCard } from '@/components/mascot/character-card';
 import { Confetti } from '@/components/mascot/confetti';
 import { ShareSheet } from '@/components/share/share-sheet';
-import { Badge } from '@/components/ui/badge';
+import { Mascot3D } from '@/components/three/mascot-3d';
 import { Button } from '@/components/ui/button';
-import { SectionTitle } from '@/components/ui/card';
+import { Card, ScreenTitle, SectionTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/misc';
 import { api, ApiRequestError } from '@/lib/api';
 import { cn } from '@/lib/cn';
+import { useT } from '@/lib/i18n';
+import { styleName } from '@/lib/i18n/catalog';
+import { renderShot, webglSupported } from '@/lib/mascot3d';
 import { qk, useAvatar, useInvalidate, useProfile } from '@/lib/queries';
 import { downloadFile, haptic } from '@/lib/telegram';
 import { usePaywall } from '@/store/paywall';
-import { useT } from '@/lib/i18n';
-import { styleName } from '@/lib/i18n/catalog';
 
 const ACTIONS = [
-  { key: 'stickers', icon: Smile, tint: 'from-pink-500/25', premium: false },
-  { key: 'memes', icon: Laugh, tint: 'from-amber-500/25', premium: false },
-  { key: 'pfp', icon: ImageIcon, tint: 'from-sky-500/25', premium: false },
-  { key: 'videos', icon: Clapperboard, tint: 'from-violet-500/25', premium: true },
-  { key: 'styles', icon: Palette, tint: 'from-emerald-500/25', premium: false },
+  { key: 'stickers', icon: Smile, premium: false },
+  { key: 'memes', icon: Laugh, premium: false },
+  { key: 'videos', icon: Clapperboard, premium: true },
+  { key: 'pfp', icon: ImageIcon, premium: false },
+  { key: 'customize', icon: Shirt, premium: false },
+  { key: 'styles', icon: Palette, premium: false },
 ] as const;
+
+/** "Done!" moment right after the first generation (reference screen 4). */
+function ReadyView({ avatar, onNext }: { avatar: AvatarDto; onNext: () => void }) {
+  const tr = useT();
+  const { t, f } = tr;
+  const router = useRouter();
+  const style = getStyleRecipe(avatar.styleSlug);
+  return (
+    <>
+      <Confetti />
+      <ScreenTitle className="text-center [&>div]:mx-auto" title={t.mascot.ready} subtitle={t.mascot.readySub} />
+      <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 140, damping: 16 }} className="relative -mx-4">
+        <div className="glow-red absolute left-1/2 top-1/2 size-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl" />
+        {avatar.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={avatar.imageUrl} alt={avatar.name} className="relative mx-auto aspect-square w-[92%] object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]" />
+        )}
+      </motion.div>
+      <Card className="relative -mt-6 p-3.5">
+        <div className="flex items-center gap-3">
+          {avatar.thumbnailUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={avatar.thumbnailUrl} alt="" className="size-12 rounded-xl border border-brand/40 bg-brand/10 object-contain" />
+          )}
+          <div className="min-w-0 flex-1">
+            <div className="text-[14.5px] font-bold">{t.mascot.yourMascot}</div>
+            <div className="text-[12px] text-muted">{f(t.mascot.styleLabel, { style: styleName(tr, avatar.styleSlug, style?.name ?? avatar.styleSlug) })}</div>
+          </div>
+        </div>
+        <Button variant="outline" block className="mt-3" onClick={() => router.push(`/mascot/${avatar.id}/styles`)}>
+          {t.mascot.changeStyle}
+        </Button>
+      </Card>
+      <Button size="lg" block className="mt-3" onClick={onNext}>
+        {t.mascot.next}
+        <ArrowRight className="size-[18px]" />
+      </Button>
+    </>
+  );
+}
 
 function MascotInner() {
   const { id } = useParams<{ id: string }>();
   const search = useSearchParams();
+  const router = useRouter();
   const { data: avatar, isLoading } = useAvatar(id);
   const { data: profile } = useProfile();
   const invalidate = useInvalidate();
   const showPaywall = usePaywall((s) => s.show);
   const [shareOpen, setShareOpen] = useState(false);
   const [downloading, setDownloading] = useState(false);
-  const isNew = search.get('new') === '1';
+  const [view3d, setView3d] = useState(false);
+  const [spin, setSpin] = useState(0);
+  const [ready, setReady] = useState(search.get('new') === '1');
   const tr = useT();
-  const { t } = tr;
+  const { t, f } = tr;
 
   if (isLoading || !avatar) {
     return (
@@ -53,9 +98,25 @@ function MascotInner() {
     );
   }
 
+  if (ready) {
+    return (
+      <AppShell tabs={false}>
+        <ReadyView
+          avatar={avatar}
+          onNext={() => {
+            setReady(false);
+            router.replace(`/mascot/${avatar.id}`);
+          }}
+        />
+      </AppShell>
+    );
+  }
+
   const style = getStyleRecipe(avatar.styleSlug);
   const primary = avatar.renders.find((r) => r.isPrimary) ?? avatar.renders[0];
   const premium = profile?.plan === 'PREMIUM';
+  const label = styleName(tr, avatar.styleSlug, style?.name ?? avatar.styleSlug);
+  const can3d = Boolean(avatar.dna) && typeof window !== 'undefined' && webglSupported();
 
   async function download() {
     if (!primary) return;
@@ -75,6 +136,14 @@ function MascotInner() {
     }
   }
 
+  async function camera() {
+    if (!avatar?.dna) return;
+    haptic.tap('medium');
+    const url = await renderShot(avatar.dna, { style: avatar.styleSlug, outfit: primary?.outfitKey ?? undefined, accessory: primary?.accessoryKey ?? null, framing: 'portrait', size: 1024, yaw: 0.35 });
+    downloadFile(url, `${avatar.name}-3d.png`);
+    toast.success(t.mascot.shotSaved);
+  }
+
   async function rename() {
     const name = window.prompt(t.mascot.renamePrompt, avatar!.name)?.trim();
     if (!name || name === avatar!.name) return;
@@ -90,48 +159,79 @@ function MascotInner() {
 
   return (
     <AppShell>
-      {isNew && <Confetti />}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: 'spring', stiffness: 160, damping: 18 }}
-        className="relative mt-4 overflow-hidden rounded-[32px] border border-white/10 shadow-glow"
-        style={{ background: style ? `radial-gradient(120% 90% at 50% 10%, ${style.gradient[0]}, ${style.gradient[1]} 55%, #0b0b10 100%)` : '#16161e' }}
-      >
-        {avatar.imageUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={avatar.imageUrl} alt={avatar.name} className="aspect-square w-full animate-float object-contain p-4" />
-        )}
-        <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/70 to-transparent p-4 pt-16">
-          <div>
-            <button onClick={rename} className="flex items-center gap-1.5 text-[22px] font-semibold tracking-[-0.02em]">
-              {avatar.name} <Pencil className="size-3.5 opacity-60" />
-            </button>
-            <div className="mt-1 flex gap-1.5">
-              <Badge>{styleName(tr, avatar.styleSlug, style?.name ?? avatar.styleSlug)}</Badge>
-              {premium && <Badge tone="premium" icon={<Crown className="size-3" />}>HD</Badge>}
-            </div>
-          </div>
+      {/* Viewer: main render (or live 3D) + look rail on the right. */}
+      <div className="relative -mx-4 mt-2 flex gap-2 px-4">
+        <div className="relative flex-1">
+          <div className="glow-red absolute left-1/2 top-1/2 size-[340px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl" />
+          <AnimatePresence mode="wait">
+            {view3d && avatar.dna ? (
+              <motion.div key="3d" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative aspect-[4/5] w-full">
+                <Mascot3D dna={avatar.dna} style={avatar.styleSlug} outfit={primary?.outfitKey ?? undefined} accessory={primary?.accessoryKey ?? null} framing="bust" spin={spin} className="size-full" />
+              </motion.div>
+            ) : (
+              <motion.div key="img" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative aspect-[4/5] w-full">
+                {avatar.imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={avatar.imageUrl} alt={avatar.name} className="size-full animate-float object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]" />
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </motion.div>
-
-      <div className="mt-3 grid grid-cols-3 gap-2">
-        <Button variant="secondary" icon={<Download className="size-4" />} loading={downloading} onClick={download}>
-          {t.common.save}
-        </Button>
-        <Button variant="secondary" icon={<Share2 className="size-4" />} onClick={() => setShareOpen(true)}>
-          {t.common.share}
-        </Button>
-        <Button variant="secondary" icon={<IdCard className="size-4" />} onClick={() => avatar.cardUrl && downloadFile(avatar.cardUrl, `${avatar.name}-card.png`)}>
-          {t.common.card}
-        </Button>
+        <div className="flex w-[58px] shrink-0 flex-col gap-2 pt-3">
+          {avatar.renders.slice(0, 4).map((r) => (
+            <button
+              key={r.id}
+              onClick={() => makePrimary(r.id)}
+              className={cn('aspect-square overflow-hidden rounded-xl border bg-surface-2', r.isPrimary ? 'selected' : 'border-white/10')}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={r.thumbnailUrl} alt="" className="size-full object-contain" />
+            </button>
+          ))}
+          <Link href={`/mascot/${avatar.id}/styles`} className="grid aspect-square place-items-center rounded-xl border border-dashed border-white/15 text-muted">
+            <Plus className="size-5" />
+          </Link>
+        </div>
       </div>
+
+      <div className="mt-2 grid grid-cols-3 gap-2">
+        <ToolButton
+          icon={<Rotate3d className="size-[18px]" />}
+          label={t.mascot.rotate}
+          active={view3d}
+          disabled={!can3d}
+          onClick={() => {
+            if (!view3d) setView3d(true);
+            setSpin((n) => n + 1);
+          }}
+        />
+        <ToolButton icon={<Camera className="size-[18px]" />} label={t.mascot.camera} disabled={!can3d} onClick={camera} />
+        <ToolButton icon={<Download className="size-[18px]" />} label={t.mascot.download} loading={downloading} onClick={download} />
+      </div>
+
+      <Card className="mt-3 flex items-center gap-3 p-3.5">
+        {avatar.thumbnailUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={avatar.thumbnailUrl} alt="" className="size-11 rounded-xl border border-brand/40 bg-brand/10 object-contain" />
+        )}
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-[14.5px] font-bold">{avatar.name}</div>
+          <div className="text-[12px] text-muted">{f(t.mascot.styleLabel, { style: label })}</div>
+        </div>
+        <button onClick={rename} aria-label={t.mascot.renamePrompt} className="grid size-9 place-items-center rounded-xl border border-white/10 text-muted">
+          <Pencil className="size-4" />
+        </button>
+        <button onClick={() => setShareOpen(true)} aria-label={t.common.share} className="grid size-9 place-items-center rounded-xl bg-brand-grad text-white shadow-red">
+          <Share2 className="size-4" />
+        </button>
+      </Card>
 
       <section className="mt-7">
         <SectionTitle title={t.mascot.createWith} />
         <div className="grid grid-cols-2 gap-2.5">
-          {ACTIONS.map(({ key, icon: Icon, tint, premium: needsPremium }, i) => (
-            <motion.div key={key} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} className={cn(key === 'styles' && 'col-span-2')}>
+          {ACTIONS.map(({ key, icon: Icon, premium: needsPremium }, i) => (
+            <motion.div key={key} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * i }}>
               <Link
                 href={`/mascot/${avatar.id}/${key}`}
                 onClick={(e) => {
@@ -141,44 +241,20 @@ function MascotInner() {
                     showPaywall('VIDEO_PREMIUM_ONLY', t.mascot.videosPremium);
                   }
                 }}
-                className={cn('glass relative flex items-center gap-3 overflow-hidden rounded-3xl p-4 bg-gradient-to-br to-transparent', tint)}
+                className="card relative flex items-center gap-3 overflow-hidden rounded-[20px] p-3.5"
               >
-                <span className="grid size-10 place-items-center rounded-2xl bg-white/10">
+                <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand/12 text-brand ring-1 ring-brand/25">
                   <Icon className="size-5" />
                 </span>
                 <div className="min-w-0">
-                  <div className="text-[14px] font-semibold">{t.mascot.actions[key].label}</div>
-                  <div className="truncate text-[11.5px] text-muted">{t.mascot.actions[key].desc}</div>
+                  <div className="text-[13.5px] font-bold">{t.mascot.actions[key].label}</div>
+                  <div className="truncate text-[11px] text-muted">{t.mascot.actions[key].desc}</div>
                 </div>
-                {needsPremium && !premium && <span className="absolute right-3 top-3 text-[11px] text-amber-300">★</span>}
               </Link>
             </motion.div>
           ))}
         </div>
       </section>
-
-      {avatar.renders.length > 1 && (
-        <section className="mt-7">
-          <SectionTitle title={t.mascot.looks} action={<span className="text-[12px] text-muted">{t.mascot.tapToSetMain}</span>} />
-          <div className="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-1">
-            {avatar.renders.map((r) => {
-              const rs = getStyleRecipe(r.styleSlug);
-              return (
-                <button
-                  key={r.id}
-                  onClick={() => makePrimary(r.id)}
-                  className={cn('w-24 shrink-0 overflow-hidden rounded-2xl border', r.isPrimary ? 'border-white/80' : 'border-white/10')}
-                  style={{ background: rs ? `linear-gradient(150deg, ${rs.gradient[0]}, ${rs.gradient[1]})` : undefined }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={r.thumbnailUrl} alt="" className="aspect-square w-full object-contain" />
-                  <div className="bg-black/40 py-1 text-[10px] font-semibold">{styleName(tr, r.styleSlug, rs?.name ?? r.styleSlug)}</div>
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      )}
 
       {avatar.dna && (
         <section className="mt-7">
@@ -188,6 +264,20 @@ function MascotInner() {
 
       <ShareSheet open={shareOpen} onClose={() => setShareOpen(false)} target={{ kind: 'avatar', id: avatar.id }} mediaUrl={avatar.imageUrl} fileName={`${avatar.name}.webp`} />
     </AppShell>
+  );
+}
+
+function ToolButton({ icon, label, onClick, active, disabled, loading }: { icon: React.ReactNode; label: string; onClick: () => void; active?: boolean; disabled?: boolean; loading?: boolean }) {
+  return (
+    <motion.button
+      whileTap={{ scale: 0.95 }}
+      disabled={disabled || loading}
+      onClick={onClick}
+      className={cn('card flex h-12 items-center justify-center gap-2 rounded-2xl text-[12.5px] font-semibold transition-colors disabled:opacity-40', active && 'selected text-white')}
+    >
+      <span className={cn(active ? 'text-brand' : 'text-ink-2', loading && 'animate-pulse')}>{icon}</span>
+      {label}
+    </motion.button>
   );
 }
 

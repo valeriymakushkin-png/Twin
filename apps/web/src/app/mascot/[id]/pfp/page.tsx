@@ -78,7 +78,7 @@ export default function PfpPage() {
               style={{ background: `linear-gradient(135deg, ${b.colors.join(', ')})` }}
             >
               <span className="absolute inset-x-0 bottom-0 bg-black/40 py-0.5 text-[9.5px] font-semibold">{pick(t.pfp.backgrounds, b.key, b.label)}</span>
-              {b.isPremium && !premium && <span className="absolute right-1 top-1 text-[10px] text-amber-300">★</span>}
+              {b.isPremium && !premium && <span className="absolute right-1 top-1 text-[10px] text-[#ff8a94]">★</span>}
             </motion.button>
           ))}
         </div>

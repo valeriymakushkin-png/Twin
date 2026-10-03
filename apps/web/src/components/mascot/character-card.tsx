@@ -19,7 +19,7 @@ export function CharacterCard({ dna }: { dna: MascotDna }) {
     <Card className="p-4">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2 text-[13px] font-semibold">
-          <Dna className="size-4 text-fuchsia-300" /> {t.dna.title}
+          <Dna className="size-4 text-brand" /> {t.dna.title}
         </div>
         <div className="flex gap-1.5">
           {swatches.map((s) => (
