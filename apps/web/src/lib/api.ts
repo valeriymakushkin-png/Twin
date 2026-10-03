@@ -19,11 +19,13 @@ import type {
   StickerPackDto,
   StyleDto,
   StyleVariantInput,
+  UpdateProfileInput,
   UploadResponseDto,
   UserProfileDto,
   VideoDto,
 } from '@mascot/shared';
 import { env } from './env';
+import { getT } from './i18n';
 
 export class ApiRequestError extends Error {
   constructor(
@@ -37,6 +39,32 @@ export class ApiRequestError extends Error {
   get isPaywall(): boolean {
     return this.status === 402 && Boolean(this.body.paywall);
   }
+}
+
+/**
+ * User-facing text for any request error, localized by the stable `code` the API returns.
+ * English falls back to the server's own (often more specific) message.
+ */
+export function errorMessage(error: unknown, fallback?: string): string {
+  const { t, locale } = getT();
+  if (!(error instanceof ApiRequestError)) return fallback ?? t.errors.network;
+  const codes = t.errors.codes as Record<string, string>;
+  if (locale === 'en') return error.body.message || codes[error.body.code ?? ''] || fallback || t.errors.generic;
+  return codes[error.body.code ?? ''] ?? fallback ?? t.errors.generic;
+}
+
+/** Server paywall copy is English-only; other locales rely on the localized headline. */
+export function paywallMessage(error: ApiRequestError): string | null {
+  return getT().locale === 'en' ? error.body.message : null;
+}
+
+/** Localized text for a stored failure `{ code, message }` (generations, renders). */
+export function codedMessage(error: { code: string; message: string } | null | undefined, fallback?: string): string {
+  const { t, locale } = getT();
+  const generic = fallback ?? t.errors.generic;
+  if (!error) return generic;
+  const localized = (t.errors.codes as Record<string, string>)[error.code];
+  return locale === 'en' ? error.message || localized || generic : (localized ?? generic);
 }
 
 let accessToken: string | null = null;
@@ -84,7 +112,7 @@ export const api = {
   },
   profile: {
     get: () => request<UserProfileDto>('GET', '/profile'),
-    update: (input: { notificationsEnabled?: boolean }) => request<UserProfileDto>('PATCH', '/profile', input),
+    update: (input: UpdateProfileInput) => request<UserProfileDto>('PATCH', '/profile', input),
     referrals: () => request<{ invited: number; activated: number; creditsEarned: number }>('GET', '/profile/referrals'),
     delete: () => request<{ status: string }>('DELETE', '/profile'),
   },

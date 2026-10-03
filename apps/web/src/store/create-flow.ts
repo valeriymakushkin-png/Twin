@@ -9,6 +9,8 @@ export interface LocalPhoto {
   status: 'uploading' | 'accepted' | 'rejected' | 'error';
   remote?: PhotoDto;
   reason?: string;
+  /** Stable reject code for localized text (falls back to `reason`). */
+  code?: string;
 }
 
 interface CreateFlowState {

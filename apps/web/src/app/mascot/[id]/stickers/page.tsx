@@ -15,19 +15,21 @@ import { api } from '@/lib/api';
 import { cn } from '@/lib/cn';
 import { qk, useGeneration, useInvalidate, useMutation, useProfile, useStickerPacks } from '@/lib/queries';
 import { haptic, openTelegramLink } from '@/lib/telegram';
+import { useT } from '@/lib/i18n';
 
 function PackCard({ pack, onPublish, publishing }: { pack: StickerPackDto; onPublish: () => void; publishing: boolean }) {
   const ready = pack.stickers.filter((s) => s.status === 'READY').length;
+  const { t, f } = useT();
   return (
     <Card className="p-4">
       <div className="mb-3 flex items-center justify-between">
         <div>
           <div className="text-[14px] font-semibold">{pack.title}</div>
           <div className="text-[12px] text-muted">
-            {ready}/{pack.stickers.length} stickers · {pack.status === 'PUBLISHED' ? 'in Telegram' : pack.status.toLowerCase()}
+            {f(t.stickers.packMeta, { ready, total: pack.stickers.length, status: t.stickers.status[pack.status] })}
           </div>
         </div>
-        {pack.status === 'PUBLISHED' && <Badge tone="success">Added</Badge>}
+        {pack.status === 'PUBLISHED' && <Badge tone="success">{t.stickers.added}</Badge>}
       </div>
       <div className="grid grid-cols-5 gap-1.5">
         {pack.stickers.map((s) => (
@@ -36,7 +38,7 @@ function PackCard({ pack, onPublish, publishing }: { pack: StickerPackDto; onPub
               // eslint-disable-next-line @next/next/no-img-element
               <motion.img initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} src={s.imageUrl} alt={s.emotion} className="size-full object-contain" />
             ) : s.status === 'FAILED' ? (
-              <div className="grid size-full place-items-center text-[10px] text-rose-300">failed</div>
+              <div className="grid size-full place-items-center text-[10px] text-rose-300">{t.stickers.failed}</div>
             ) : (
               <div className="skeleton size-full" />
             )}
@@ -53,7 +55,7 @@ function PackCard({ pack, onPublish, publishing }: { pack: StickerPackDto; onPub
           icon={<Send className="size-4" />}
           onClick={() => (pack.status === 'PUBLISHED' && pack.addStickersUrl ? openTelegramLink(pack.addStickersUrl) : onPublish())}
         >
-          {pack.status === 'PUBLISHED' ? 'Open in Telegram' : 'Add to Telegram'}
+          {pack.status === 'PUBLISHED' ? t.stickers.openInTelegram : t.stickers.addToTelegram}
         </Button>
       )}
     </Card>
@@ -69,6 +71,7 @@ function StickersInner() {
   const [generationId, setGenerationId] = useState<string | null>(null);
   const remaining = profile?.usage.stickersRemaining ?? null;
   const [selected, setSelected] = useState<Set<StickerEmotion>>(new Set());
+  const { t, f, p } = useT();
 
   useEffect(() => {
     if (selected.size || !profile) return;
@@ -93,7 +96,7 @@ function StickersInner() {
   const publish = useMutation({
     mutationFn: (packId: string) => api.stickers.publish(packId),
     onSuccess: () => {
-      toast.success('Creating your Telegram sticker set…');
+      toast.success(t.stickers.creatingSet);
       void invalidate(qk.stickerPacks(avatarId));
     },
   });
@@ -106,10 +109,10 @@ function StickersInner() {
 
   return (
     <AppShell>
-      <TopBar title="Sticker pack" subtitle={remaining === null ? 'Unlimited with Premium' : `${remaining} free stickers left`} />
+      <TopBar title={t.stickers.title} subtitle={remaining === null ? t.stickers.unlimited : f(t.stickers.freeLeft, { count: remaining })} />
 
       <Card className="p-4">
-        <SectionTitle title="Emotions" action={<span className="text-[12px] text-muted">{selected.size} selected</span>} className="px-0" />
+        <SectionTitle title={t.stickers.emotions} action={<span className="text-[12px] text-muted">{f(t.common.selected, { count: selected.size })}</span>} className="px-0" />
         <div className="grid grid-cols-5 gap-2">
           {DEFAULT_STICKER_ORDER.map((emotion) => {
             const e = EMOTION_CATALOG[emotion];
@@ -133,7 +136,7 @@ function StickersInner() {
                 )}
               >
                 <span className="text-2xl">{e.emoji}</span>
-                <span className="text-[10px] font-medium text-ink-2">{e.label}</span>
+                <span className="text-[10px] font-medium text-ink-2">{t.emotions[emotion]}</span>
                 {on && (
                   <span className="absolute right-1 top-1 grid size-4 place-items-center rounded-full bg-violet-400 text-black">
                     <Check className="size-2.5" strokeWidth={4} />
@@ -145,7 +148,7 @@ function StickersInner() {
         </div>
         {overflow > 0 && (
           <p className="mt-3 text-[12px] text-amber-200/90">
-            {overflow} beyond your free stickers · {overflow * CREDIT_COSTS.sticker} credits (you have {profile?.credits ?? 0}) — or go Premium for unlimited.
+            {f(t.stickers.overflow, { overflow, cost: overflow * CREDIT_COSTS.sticker, credits: profile?.credits ?? 0 })}
           </p>
         )}
         <Button
@@ -157,7 +160,7 @@ function StickersInner() {
           icon={generationId ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
           onClick={() => generate.mutate()}
         >
-          {generationId ? 'Drawing your stickers…' : `Generate ${selected.size} sticker${selected.size === 1 ? '' : 's'}`}
+          {generationId ? t.stickers.drawing : p(t.stickers.generate, selected.size)}
         </Button>
       </Card>
 
@@ -167,7 +170,7 @@ function StickersInner() {
             <PackCard key={pack.id} pack={pack} publishing={publish.isPending && publish.variables === pack.id} onPublish={() => publish.mutate(pack.id)} />
           ))
         ) : (
-          <EmptyState icon={<Smile className="size-6" />} title="No packs yet" body="Pick emotions above and we’ll draw your mascot in each one." />
+          <EmptyState icon={<Smile className="size-6" />} title={t.stickers.emptyTitle} body={t.stickers.emptyBody} />
         )}
       </section>
     </AppShell>

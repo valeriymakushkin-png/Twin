@@ -6,6 +6,7 @@ import { PaymentsService } from '../payments/payments.service';
 import { UsersService } from '../users/users.service';
 import { TelegramBotService } from './telegram-bot.service';
 import type { TgInlineQuery, TgInlineQueryResultPhoto, TgMessage, TgUpdate } from './telegram.types';
+import { catalogFor, catalogForTelegram } from '../../i18n/bot-messages';
 
 /** Routes bot updates: commands, Stars payments, inline mode. */
 @Injectable()
@@ -39,63 +40,49 @@ export class TelegramUpdateHandler {
     const [rawCommand = '', ...args] = (message.text ?? '').trim().split(/\s+/);
     const command = rawCommand.split('@')[0]?.toLowerCase();
     const chatId = message.chat.id;
+    const known = message.from
+      ? await this.prisma.user.findUnique({ where: { telegramId: BigInt(message.from.id) }, select: { locale: true, languageCode: true } })
+      : null;
+    const c = known ? catalogFor({ locale: known.locale, languageCode: message.from?.language_code ?? known.languageCode }) : catalogForTelegram(message.from?.language_code);
 
     switch (command) {
       case '/start': {
         if (message.from) await this.users.upsertFromTelegram(message.from, args[0]);
-        await this.bot.sendMessage(
-          chatId,
-          [
-            '<b>Welcome to Mascot AI ✨</b>',
-            '',
-            'Upload a few selfies and get a personal 3D mascot that actually looks like you — then turn it into stickers, memes, profile pictures and videos.',
-            '',
-            '👇 Tap below to create yours in about a minute.',
-          ].join('\n'),
-          { parse_mode: 'HTML', reply_markup: this.bot.webAppButton('✨ Create my mascot', '/') },
-        );
+        await this.bot.sendMessage(chatId, c.commands.start, { parse_mode: 'HTML', reply_markup: this.bot.webAppButton(c.buttons.createMascot, '/') });
         return;
       }
       case '/premium':
-        await this.bot.sendMessage(chatId, '👑 Premium: unlimited mascots & styles, videos, HD export, premium outfits and poses.', {
-          reply_markup: this.bot.webAppButton('See Premium', '/premium'),
-        });
+        await this.bot.sendMessage(chatId, c.commands.premium, { reply_markup: this.bot.webAppButton(c.buttons.seePremium, '/premium') });
         return;
       case '/paysupport':
         // Required by Telegram for bots selling digital goods for Stars.
-        await this.bot.sendMessage(
-          chatId,
-          `Payment issue? Message @${this.config.TELEGRAM_SUPPORT_USERNAME} with your Telegram ID (${message.from?.id ?? 'unknown'}) and a short description. We answer within 24h and refund failed generations automatically.`,
-        );
+        await this.bot.sendMessage(chatId, c.commands.paysupport({ support: this.config.TELEGRAM_SUPPORT_USERNAME, id: String(message.from?.id ?? '—') }));
         return;
       case '/terms':
       case '/privacy':
-        await this.bot.sendMessage(
-          chatId,
-          `Terms & Privacy: ${this.config.WEB_APP_URL}/legal\n\nWe delete your source photos after ${this.config.PHOTO_RETENTION_DAYS} days. You can delete your account and all data anytime from Profile → Delete account.`,
-        );
+        await this.bot.sendMessage(chatId, c.commands.terms({ url: `${this.config.WEB_APP_URL}/legal`, days: this.config.PHOTO_RETENTION_DAYS }));
         return;
       case '/help':
       default:
-        await this.bot.sendMessage(
-          chatId,
-          'Commands:\n/start — open Mascot AI\n/premium — Premium plans\n/paysupport — payment support\n/terms — terms & privacy\n\nTip: type @' +
-            this.config.TELEGRAM_BOT_USERNAME +
-            ' in any chat to share your mascot.',
-          { reply_markup: this.bot.webAppButton('Open Mascot AI', '/') },
-        );
+        await this.bot.sendMessage(chatId, c.commands.help({ bot: this.config.TELEGRAM_BOT_USERNAME }), {
+          reply_markup: this.bot.webAppButton(c.buttons.openApp, '/'),
+        });
     }
   }
 
   /** Inline mode: share your mascot renders and memes in any chat (viral loop). */
   private async handleInline(query: TgInlineQuery): Promise<void> {
-    const user = await this.prisma.user.findUnique({ where: { telegramId: BigInt(query.from.id) }, select: { id: true, referralCode: true } });
-    const button = { text: '✨ Create your mascot', start_parameter: 'inline' };
+    const user = await this.prisma.user.findUnique({
+      where: { telegramId: BigInt(query.from.id) },
+      select: { id: true, referralCode: true, locale: true, languageCode: true },
+    });
+    const c = user ? catalogFor(user) : catalogForTelegram(query.from.language_code);
+    const button = { text: c.buttons.createMascot, start_parameter: 'inline' };
     if (!user) {
       await this.bot.answerInlineQuery(query.id, [], { button, cacheTime: 10 });
       return;
     }
-    const cta = { inline_keyboard: [[{ text: '✨ Make my own mascot', url: this.config.deepLink(`ref_${user.referralCode}__src_inline`) }]] };
+    const cta = { inline_keyboard: [[{ text: c.buttons.makeOwn, url: this.config.deepLink(`ref_${user.referralCode}__src_inline`) }]] };
     const [renders, memes] = await Promise.all([
       this.prisma.avatarRender.findMany({
         where: { avatar: { userId: user.id, deletedAt: null, status: 'READY' } },

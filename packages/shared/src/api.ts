@@ -12,6 +12,7 @@ import {
 } from './videos';
 import { STAR_PRODUCT_IDS, type Entitlements, type Plan, type StarProductId } from './plans';
 import type { AvatarStage, GenerationStatus, GenerationType, PhotoPose } from './generation';
+import { SUPPORTED_LOCALES, type Locale } from './locale';
 
 /* ------------------------------------------------------------------ */
 /* Request schemas (validated by the API, reused by the client)        */
@@ -95,7 +96,8 @@ export const PrepareShareSchema = z.object({
 
 export const UpdateProfileSchema = z.object({
   notificationsEnabled: z.boolean().optional(),
-  languageCode: z.string().min(2).max(8).optional(),
+  /** App language override; null resets to the Telegram client language. */
+  locale: z.enum(SUPPORTED_LOCALES).nullable().optional(),
 });
 
 export type TelegramAuthInput = z.infer<typeof TelegramAuthSchema>;
@@ -150,6 +152,8 @@ export interface UserProfileDto {
   lastName: string | null;
   photoUrl: string | null;
   languageCode: string | null;
+  /** Explicit language choice (null = follow Telegram). */
+  locale: Locale | null;
   plan: Plan;
   premiumUntil: string | null;
   credits: number;
@@ -170,6 +174,22 @@ export interface AuthResponseDto {
   isNewUser: boolean;
 }
 
+export const PHOTO_REJECT_CODES = [
+  'NO_FACE',
+  'MULTIPLE_FACES',
+  'FACE_TOO_SMALL',
+  'TOO_DARK',
+  'TOO_BLURRY',
+  'AGE_RESTRICTED',
+  'DUPLICATE',
+  'FILE_TOO_LARGE',
+  'UNSUPPORTED_IMAGE',
+  'IMAGE_TOO_SMALL',
+  'POLICY',
+  'UNPROCESSABLE',
+] as const;
+export type PhotoRejectCode = (typeof PHOTO_REJECT_CODES)[number];
+
 export interface PhotoDto {
   id: string;
   /** Echo of the uploaded file name (upload responses only), so clients can match results. */
@@ -180,12 +200,14 @@ export interface PhotoDto {
   pose: PhotoPose;
   status: 'UPLOADED' | 'ACCEPTED' | 'REJECTED';
   rejectReason: string | null;
+  /** Stable reason code (see PHOTO_REJECT_CODES) for localized client messages. */
+  rejectCode: PhotoRejectCode | null;
   qualityScore: number | null;
 }
 
 export interface UploadResponseDto {
   photos: PhotoDto[];
-  rejected: Array<{ fileName: string; reason: string }>;
+  rejected: Array<{ fileName: string; reason: string; code: PhotoRejectCode }>;
 }
 
 export interface AvatarRenderDto {

@@ -4,7 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import type { StarProductId } from '@mascot/shared';
-import { api } from '@/lib/api';
+import { api, errorMessage } from '@/lib/api';
+import { getT } from '@/lib/i18n';
 import { qk } from '@/lib/queries';
 import { haptic, openInvoice } from '@/lib/telegram';
 
@@ -24,7 +25,7 @@ export function usePurchase(onPaid?: () => void) {
       const status = await openInvoice(invoiceUrl);
       if (status === 'paid') {
         haptic.success();
-        toast.success('Payment received — unlocking…');
+        toast.success(getT().t.paywall.paymentReceived);
         for (let i = 0; i < 8; i++) {
           await new Promise((r) => setTimeout(r, 900));
           await queryClient.invalidateQueries({ queryKey: qk.profile });
@@ -35,10 +36,10 @@ export function usePurchase(onPaid?: () => void) {
         onPaid?.();
       } else if (status === 'failed') {
         haptic.error();
-        toast.error('Payment failed. You were not charged.');
+        toast.error(getT().t.paywall.paymentFailed);
       }
     } catch (error) {
-      toast.error((error as Error).message);
+      toast.error(errorMessage(error));
     } finally {
       setPending(null);
     }

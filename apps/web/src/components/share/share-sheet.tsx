@@ -5,9 +5,10 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import type { PrepareShareInput } from '@mascot/shared';
 import { Sheet } from '@/components/ui/sheet';
-import { api } from '@/lib/api';
+import { api, errorMessage } from '@/lib/api';
 import { env } from '@/lib/env';
 import { canShareToStory, downloadFile, haptic, shareMessage, shareToStory, shareUrl } from '@/lib/telegram';
+import { useT } from '@/lib/i18n';
 
 /**
  * Share surfaces in order of virality: Telegram chat share (prepared inline message with a
@@ -27,6 +28,7 @@ export function ShareSheet({
   fileName?: string;
 }) {
   const [busy, setBusy] = useState<string | null>(null);
+  const { t, f } = useT();
 
   async function prepare() {
     return api.share.prepare(target);
@@ -36,11 +38,11 @@ export function ShareSheet({
     {
       key: 'chat',
       icon: Send,
-      label: 'Send to a chat',
+      label: t.share.chat,
       run: async () => {
         const prepared = await prepare();
         const sent = prepared.preparedMessageId ? await shareMessage(prepared.preparedMessageId) : false;
-        if (!sent) shareUrl(prepared.shareUrl, 'Check out my AI mascot ✨ Make yours:');
+        if (!sent) shareUrl(prepared.shareUrl, t.share.chatText);
       },
     },
     ...(canShareToStory()
@@ -48,10 +50,10 @@ export function ShareSheet({
           {
             key: 'story',
             icon: Sparkles,
-            label: 'Post to Stories',
+            label: t.share.story,
             run: async () => {
               const prepared = await prepare();
-              shareToStory(prepared.mediaUrl, 'My AI mascot ✨', { url: prepared.shareUrl, name: 'Make yours' });
+              shareToStory(prepared.mediaUrl, t.share.storyText, { url: prepared.shareUrl, name: t.share.storyWidget });
             },
           },
         ]
@@ -59,20 +61,20 @@ export function ShareSheet({
     {
       key: 'link',
       icon: Link2,
-      label: 'Copy invite link',
+      label: t.share.link,
       run: async () => {
         const prepared = await prepare();
         await navigator.clipboard.writeText(prepared.shareUrl);
-        toast.success('Link copied — friends who join give you +20 credits');
+        toast.success(t.share.copied);
       },
     },
     ...(mediaUrl
-      ? [{ key: 'download', icon: Download, label: 'Save to device', run: async () => downloadFile(mediaUrl, fileName ?? 'mascot.png') }]
+      ? [{ key: 'download', icon: Download, label: t.share.save, run: async () => downloadFile(mediaUrl, fileName ?? 'mascot.png') }]
       : []),
   ];
 
   return (
-    <Sheet open={open} onClose={onClose} title="Share">
+    <Sheet open={open} onClose={onClose} title={t.share.title}>
       <div className="grid grid-cols-2 gap-2.5">
         {actions.map(({ key, icon: Icon, label, run }) => (
           <button
@@ -84,7 +86,7 @@ export function ShareSheet({
               try {
                 await run();
               } catch (error) {
-                toast.error((error as Error).message);
+                toast.error(errorMessage(error, (error as Error).message));
               } finally {
                 setBusy(null);
               }
@@ -94,12 +96,12 @@ export function ShareSheet({
             <span className="grid size-9 place-items-center rounded-xl bg-violet-500/15 text-violet-200">
               <Icon className="size-[18px]" />
             </span>
-            <span className="text-[13px] font-semibold">{busy === key ? 'Opening…' : label}</span>
+            <span className="text-[13px] font-semibold">{busy === key ? t.share.opening : label}</span>
           </button>
         ))}
       </div>
       <p className="mt-4 flex items-center gap-1.5 text-[11px] text-faint">
-        <MessageCircle className="size-3.5" /> Tip: type @{env.botUsername} in any chat to drop your mascot inline.
+        <MessageCircle className="size-3.5" /> {f(t.share.tip, { bot: env.botUsername })}
       </p>
     </Sheet>
   );

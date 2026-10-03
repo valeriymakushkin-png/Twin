@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Prisma, type User } from '@prisma/client';
-import { REFERRAL_REWARDS, type UpdateProfileInput, type UserProfileDto } from '@mascot/shared';
+import { isLocale, REFERRAL_REWARDS, type UpdateProfileInput, type UserProfileDto } from '@mascot/shared';
 import { AppConfig } from '../../config/app-config';
 import { NotFound } from '../../common/errors';
 import { randomBase62 } from '../../common/utils/crypto';
@@ -128,9 +128,9 @@ export class UsersService {
     await this.quota.grantCredits(user.referredById, REFERRAL_REWARDS.referrerCredits, 'REFERRAL_BONUS', { type: 'referral', id: userId });
     await this.queues.notify({
       userId: user.referredById,
-      text: `🎉 A friend just created their mascot with your invite! +${REFERRAL_REWARDS.referrerCredits} credits added.`,
+      message: { key: 'referralReward', params: { credits: REFERRAL_REWARDS.referrerCredits } },
       path: '/profile',
-      buttonText: 'Open Mascot AI',
+      button: 'openApp',
     });
   }
 
@@ -158,6 +158,7 @@ export class UsersService {
       lastName: user.lastName,
       photoUrl: user.photoUrl,
       languageCode: user.languageCode,
+      locale: isLocale(user.locale) ? user.locale : null,
       plan,
       premiumUntil: plan === 'PREMIUM' && user.premiumUntil ? user.premiumUntil.toISOString() : null,
       credits: user.credits,

@@ -6,6 +6,7 @@ import { PrismaService } from '../infra/prisma/prisma.service';
 import { QUEUES, type NotifyJobData } from '../infra/queue/queue.constants';
 import { TelegramBotService } from '../modules/telegram/telegram-bot.service';
 import { TelegramApiError } from '../modules/telegram/telegram.types';
+import { catalogFor, renderNotify } from '../i18n/bot-messages';
 
 /**
  * Bot notifications ("your mascot is ready"). Globally rate limited below Telegram's
@@ -27,16 +28,21 @@ export class NotifyProcessor extends WorkerHost {
     if (!this.config.TELEGRAM_NOTIFICATIONS_ENABLED) return;
     const user = await this.prisma.user.findUnique({
       where: { id: job.data.userId },
-      select: { telegramId: true, notificationsEnabled: true, deletedAt: true, isBanned: true },
+      select: { telegramId: true, notificationsEnabled: true, deletedAt: true, isBanned: true, locale: true, languageCode: true },
     });
     if (!user || !user.notificationsEnabled || user.deletedAt || user.isBanned) return;
     const chatId = Number(user.telegramId);
-    const markup = job.data.path ? this.bot.webAppButton(job.data.buttonText ?? 'Open', job.data.path) : undefined;
+    const catalog = catalogFor(user);
+    // Jobs enqueued by a previous release (rolling deploy) carry pre-rendered English text.
+    const legacy = job.data as NotifyJobData & { text?: string; buttonText?: string };
+    const text = job.data.message ? renderNotify(catalog, job.data.message) : (legacy.text ?? '');
+    if (!text) return;
+    const markup = job.data.path ? this.bot.webAppButton(legacy.buttonText ?? catalog.buttons[job.data.button ?? 'open'], job.data.path) : undefined;
     try {
       if (job.data.photoUrl && !job.data.photoUrl.startsWith('http://localhost')) {
-        await this.bot.sendPhoto(chatId, job.data.photoUrl, job.data.text, { reply_markup: markup });
+        await this.bot.sendPhoto(chatId, job.data.photoUrl, text, { reply_markup: markup });
       } else {
-        await this.bot.sendMessage(chatId, job.data.text, { reply_markup: markup });
+        await this.bot.sendMessage(chatId, text, { reply_markup: markup });
       }
     } catch (error) {
       if (error instanceof TelegramApiError && (error.errorCode === 403 || /chat not found/i.test(error.description))) {

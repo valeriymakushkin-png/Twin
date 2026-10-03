@@ -96,9 +96,9 @@ export class StickerProcessor extends GenerationProcessor {
     if (failures.length) await this.generations.refundPartial(generation.id, failures.length / total);
     await this.queues.notify({
       userId: generation.userId,
-      text: `🎉 Your ${ready.length}-sticker pack is ready! Add it to Telegram in one tap.`,
+      message: { key: 'stickersReady', params: { count: ready.length } },
       path: `/mascot/${pack.avatarId}/stickers?pack=${pack.id}`,
-      buttonText: 'Open sticker pack',
+      button: 'openPack',
     });
   }
 

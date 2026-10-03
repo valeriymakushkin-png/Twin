@@ -9,27 +9,7 @@ import { Sheet } from '@/components/ui/sheet';
 import { useProfile } from '@/lib/queries';
 import { usePaywall } from '@/store/paywall';
 import { usePurchase } from './purchase';
-
-const HEADLINES: Partial<Record<PaywallReason, string>> = {
-  AVATAR_LIMIT: 'Create unlimited mascots',
-  STICKER_LIMIT: 'Unlock the full sticker pack',
-  PREMIUM_STYLE: 'Unlock every style',
-  PREMIUM_WARDROBE: 'Premium outfits & poses',
-  VIDEO_PREMIUM_ONLY: 'Bring your mascot to life',
-  VIDEO_QUOTA: 'More videos this month',
-  HD_EXPORT: 'Export in HD',
-  AI_PFP_PREMIUM: 'AI profile pictures',
-  DAILY_LIMIT: 'Keep creating today',
-};
-
-export const PREMIUM_PERKS = [
-  'Unlimited mascots & all 11 styles',
-  'Unlimited sticker packs',
-  'Video generation (20/month)',
-  'HD transparent export, no watermark',
-  'Premium outfits & poses',
-  'Priority queue — 3× faster',
-];
+import { useT } from '@/lib/i18n';
 
 export function PaywallSheet() {
   const { open, reason, message, close } = usePaywall();
@@ -37,6 +17,8 @@ export function PaywallSheet() {
   const { purchase, pending } = usePurchase(close);
   const monthly = STAR_PRODUCTS.premium_monthly;
   const yearly = STAR_PRODUCTS.premium_yearly;
+  const { t, f } = useT();
+  const headlines = t.paywall.headlines as Partial<Record<PaywallReason, string>>;
   const showCredits = reason === 'VIDEO_QUOTA' || reason === 'INSUFFICIENT_CREDITS' || reason === 'STICKER_LIMIT';
 
   return (
@@ -50,12 +32,12 @@ export function PaywallSheet() {
         >
           <Crown className="size-7" />
         </motion.div>
-        <h3 className="text-xl font-semibold tracking-[-0.02em]">{(reason && HEADLINES[reason]) ?? 'Go Premium'}</h3>
+        <h3 className="text-xl font-semibold tracking-[-0.02em]">{(reason && headlines[reason]) ?? t.paywall.default}</h3>
         {message && <p className="mx-auto mt-1.5 max-w-[280px] text-[13px] text-muted">{message}</p>}
       </div>
 
       <ul className="mt-5 space-y-2.5">
-        {PREMIUM_PERKS.map((perk) => (
+        {t.paywall.perks.map((perk) => (
           <li key={perk} className="flex items-center gap-3 text-[14px] text-ink-2">
             <span className="grid size-5 place-items-center rounded-full bg-emerald-400/15 text-emerald-300">
               <Check className="size-3" strokeWidth={3} />
@@ -67,23 +49,23 @@ export function PaywallSheet() {
 
       <div className="mt-6 space-y-2.5">
         <Button variant="star" size="lg" block loading={pending === 'premium_monthly'} onClick={() => purchase('premium_monthly')} icon={<Star className="size-4 fill-black" />}>
-          {monthly.stars} Stars / month
+          {f(t.paywall.perMonth, { stars: monthly.stars })}
         </Button>
         <Button variant="secondary" size="lg" block loading={pending === 'premium_yearly'} onClick={() => purchase('premium_yearly')}>
-          <span>12 months · {yearly.stars} Stars</span>
+          <span>{f(t.paywall.yearly, { stars: yearly.stars })}</span>
           <span className="ml-1 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[11px] text-emerald-300">−33%</span>
         </Button>
         {showCredits && (
           <Button variant="ghost" block loading={pending === 'credits_200'} onClick={() => purchase('credits_200')} icon={<Sparkles className="size-4" />}>
-            Or top up 200 credits · {STAR_PRODUCTS.credits_200.stars} ⭐
+            {f(t.paywall.topUp, { stars: STAR_PRODUCTS.credits_200.stars })}
           </Button>
         )}
       </div>
       <p className="mt-4 text-center text-[11px] leading-relaxed text-faint">
-        Paid with Telegram Stars. Subscription renews every 30 days, cancel anytime in Profile.
-        {profile ? ` Balance: ${profile.credits} credits.` : ''}{' '}
+        {t.paywall.footnote}
+        {profile ? ` ${f(t.paywall.balance, { credits: profile.credits })}` : ''}{' '}
         <Link href="/premium" onClick={close} className="text-ink-2 underline underline-offset-2">
-          Compare plans
+          {t.paywall.comparePlans}
         </Link>
       </p>
     </Sheet>

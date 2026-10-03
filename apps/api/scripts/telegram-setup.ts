@@ -53,6 +53,12 @@ async function main(): Promise<void> {
     description: 'Turn your selfies into a personal 3D mascot — then make stickers, memes, profile pictures and videos with it.',
   });
   await call('setMyShortDescription', { short_description: 'Your face → your personal AI mascot ✨' });
+  await call('setMyDescription', {
+    language_code: 'ru',
+    description: 'Превратите свои селфи в персонального 3D-маскота — и делайте с ним стикеры, мемы, аватарки и видео.',
+  });
+  await call('setMyShortDescription', { language_code: 'ru', short_description: 'Твоё лицо → твой персональный ИИ-маскот ✨' });
+  await call('setChatMenuButton', { menu_button: { type: 'web_app', text: 'Open', web_app: { url: env.WEB_APP_URL } } });
   console.log('Done. Remember to enable inline mode (/setinline) and create the Mini App (/newapp) in @BotFather.');
 }
 

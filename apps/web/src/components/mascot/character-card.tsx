@@ -1,21 +1,25 @@
 'use client';
 
 import { Dna } from 'lucide-react';
-import { dnaHighlights, SKIN_TONE_HEX, HAIR_COLOR_HEX, EYE_COLOR_HEX, type MascotDna } from '@mascot/shared';
+import { SKIN_TONE_HEX, HAIR_COLOR_HEX, EYE_COLOR_HEX, type MascotDna } from '@mascot/shared';
 import { Card } from '@/components/ui/card';
+import { useT } from '@/lib/i18n';
+import { dnaHighlightsT } from '@/lib/i18n/catalog';
 
 /** Human-readable Mascot DNA — builds trust that the mascot is really "you". */
 export function CharacterCard({ dna }: { dna: MascotDna }) {
+  const tr = useT();
+  const { t, f } = tr;
   const swatches = [
-    { label: 'Skin', color: SKIN_TONE_HEX[dna.skinTone] },
-    { label: 'Hair', color: HAIR_COLOR_HEX[dna.hairColor] },
-    { label: 'Eyes', color: EYE_COLOR_HEX[dna.eyeColor] },
+    { label: t.dna.skin, color: SKIN_TONE_HEX[dna.skinTone] },
+    { label: t.dna.hair, color: HAIR_COLOR_HEX[dna.hairColor] },
+    { label: t.dna.eyes, color: EYE_COLOR_HEX[dna.eyeColor] },
   ];
   return (
     <Card className="p-4">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2 text-[13px] font-semibold">
-          <Dna className="size-4 text-fuchsia-300" /> Mascot DNA
+          <Dna className="size-4 text-fuchsia-300" /> {t.dna.title}
         </div>
         <div className="flex gap-1.5">
           {swatches.map((s) => (
@@ -24,14 +28,14 @@ export function CharacterCard({ dna }: { dna: MascotDna }) {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-1.5">
-        {dnaHighlights(dna).map((h) => (
+        {dnaHighlightsT(tr, dna).map((h) => (
           <div key={h.label} className="rounded-xl border border-line bg-white/[0.03] px-3 py-2">
             <div className="text-[10px] font-semibold uppercase tracking-wider text-faint">{h.label}</div>
             <div className="truncate text-[13px] font-medium capitalize">{h.value}</div>
           </div>
         ))}
       </div>
-      {dna.distinguishingFeatures.length > 0 && <p className="mt-2.5 text-[12px] text-muted">Signature details: {dna.distinguishingFeatures.join(' · ')}</p>}
+      {dna.distinguishingFeatures.length > 0 && <p className="mt-2.5 text-[12px] text-muted">{f(t.dna.signature, { list: dna.distinguishingFeatures.join(' · ') })}</p>}
     </Card>
   );
 }

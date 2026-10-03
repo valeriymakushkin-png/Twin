@@ -32,6 +32,9 @@ export interface QuotaUser {
   credits: number;
   stickersGenerated: number;
   avatarsCreated: number;
+  /** Present when loaded via loadUser(); used to pick the language of rendered text. */
+  locale?: string | null;
+  languageCode?: string | null;
 }
 
 const QUOTA_USER_SELECT = {
@@ -41,6 +44,8 @@ const QUOTA_USER_SELECT = {
   credits: true,
   stickersGenerated: true,
   avatarsCreated: true,
+  locale: true,
+  languageCode: true,
 } as const;
 
 /**

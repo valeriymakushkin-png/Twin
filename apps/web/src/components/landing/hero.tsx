@@ -8,17 +8,21 @@ import { Logo } from '@/components/brand/logo';
 import { MascotArt } from '@/components/brand/mascot-art';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useT } from '@/lib/i18n';
+import { styleName } from '@/lib/i18n/catalog';
 
 const STACK = [SHOWCASE_DNA[1]!, SHOWCASE_DNA[0]!, SHOWCASE_DNA[2]!];
 
-export function Hero({ onCreate, ctaLabel = 'Create My Mascot' }: { onCreate: () => void; ctaLabel?: string }) {
+export function Hero({ onCreate, ctaLabel }: { onCreate: () => void; ctaLabel?: string }) {
+  const tr = useT();
+  const { t } = tr;
   return (
     <section className="relative -mx-4 overflow-hidden px-4 pb-8">
       <Aurora />
       <div className="flex items-center justify-between py-4">
         <Logo />
         <Badge tone="violet" icon={<Sparkles className="size-3" />}>
-          Video mascots
+          {t.landing.badge}
         </Badge>
       </div>
 
@@ -28,9 +32,9 @@ export function Hero({ onCreate, ctaLabel = 'Create My Mascot' }: { onCreate: ()
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="mt-6 text-[44px] font-semibold leading-[0.98] tracking-[-0.045em]"
       >
-        Your face.
+        {t.landing.h1a}
         <br />
-        <span className="text-aurora">Your mascot.</span>
+        <span className="text-aurora">{t.landing.h1b}</span>
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 12 }}
@@ -38,7 +42,7 @@ export function Hero({ onCreate, ctaLabel = 'Create My Mascot' }: { onCreate: ()
         transition={{ duration: 0.5, delay: 0.08 }}
         className="mt-4 max-w-[330px] text-[15px] leading-relaxed text-ink-2"
       >
-        Upload a few selfies. Get a 3D character that’s unmistakably you — then turn it into stickers, memes, profile pics and videos.
+        {t.landing.subtitle}
       </motion.p>
 
       <div className="relative mx-auto mt-8 h-[300px] w-full">
@@ -59,7 +63,7 @@ export function Hero({ onCreate, ctaLabel = 'Create My Mascot' }: { onCreate: ()
                 <MascotArt dna={item.dna} className="aspect-square w-full animate-float" />
                 <div className="flex items-center justify-between bg-black/35 px-3 py-2 backdrop-blur">
                   <span className="text-[12px] font-semibold">{item.name}</span>
-                  <span className="text-[10px] font-medium text-white/70">{style.name}</span>
+                  <span className="text-[10px] font-medium text-white/70">{styleName(tr, style.slug, style.name)}</span>
                 </div>
               </div>
             </motion.div>
@@ -68,10 +72,10 @@ export function Hero({ onCreate, ctaLabel = 'Create My Mascot' }: { onCreate: ()
       </div>
 
       <Button size="lg" block onClick={onCreate} icon={<Sparkles className="size-[18px]" />} className="mt-2">
-        {ctaLabel}
+        {ctaLabel ?? t.landing.cta}
         <ArrowRight className="size-4 opacity-70" />
       </Button>
-      <p className="mt-3 text-center text-[12px] text-muted">Free · about 60 seconds · photos auto-deleted after 30 days</p>
+      <p className="mt-3 text-center text-[12px] text-muted">{t.landing.footnote}</p>
     </section>
   );
 }

@@ -7,6 +7,8 @@ import { MascotArt } from '@/components/brand/mascot-art';
 import { Skeleton } from '@/components/ui/misc';
 import { cn } from '@/lib/cn';
 import { haptic } from '@/lib/telegram';
+import { useT } from '@/lib/i18n';
+import { styleName, styleTagline } from '@/lib/i18n/catalog';
 
 /** Style engine picker. Locked (premium) styles stay tappable and open the paywall upstream. */
 export function StylePicker({
@@ -20,6 +22,7 @@ export function StylePicker({
   onChange: (style: StyleDto) => void;
   previewDna?: MascotDna | null;
 }) {
+  const tr = useT();
   if (!styles) {
     return (
       <div className="grid grid-cols-2 gap-2.5">
@@ -56,7 +59,7 @@ export function StylePicker({
               )}
               {s.locked && (
                 <span className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-black/55 px-2 py-0.5 text-[10px] font-semibold text-amber-300 backdrop-blur">
-                  <Lock className="size-3" /> Premium
+                  <Lock className="size-3" /> {tr.t.styles.premiumBadge}
                 </span>
               )}
               {active && (
@@ -66,8 +69,8 @@ export function StylePicker({
               )}
             </div>
             <div className="bg-surface-2 px-3 py-2.5">
-              <div className="text-[13px] font-semibold">{s.name}</div>
-              <div className="truncate text-[11px] text-muted">{s.tagline}</div>
+              <div className="text-[13px] font-semibold">{styleName(tr, s.slug, s.name)}</div>
+              <div className="truncate text-[11px] text-muted">{styleTagline(tr, s.slug, s.tagline)}</div>
             </div>
           </motion.button>
         );

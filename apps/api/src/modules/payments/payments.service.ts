@@ -19,6 +19,7 @@ import { AbuseService } from '../moderation/abuse.service';
 import { QuotaService } from '../quota/quota.service';
 import { TelegramBotService } from '../telegram/telegram-bot.service';
 import type { TgPreCheckoutQuery, TgRefundedPayment, TgSuccessfulPayment, TgUser } from '../telegram/telegram.types';
+import { catalogFor, catalogForTelegram } from '../../i18n/bot-messages';
 
 type OwnedPayment = Payment & { userId: string };
 const isOwned = (p: Payment): p is OwnedPayment => p.userId !== null;
@@ -74,11 +75,13 @@ export class PaymentsService {
     await this.prisma.payment.create({
       data: { id, userId, productId, amount: product.stars, currency: 'XTR', status: 'PENDING', invoicePayload: id },
     });
+    const buyer = await this.prisma.user.findUnique({ where: { id: userId }, select: { locale: true, languageCode: true } });
+    const copy = catalogFor(buyer ?? {}).invoice[productId];
     const invoiceUrl = await this.bot.createInvoiceLink({
-      title: product.title,
-      description: product.description,
+      title: copy.title,
+      description: copy.description,
       payload: id,
-      prices: [{ label: product.title, amount: product.stars }],
+      prices: [{ label: copy.title, amount: product.stars }],
       subscriptionPeriod: product.kind === 'subscription' ? STAR_SUBSCRIPTION_PERIOD_SECONDS : undefined,
     });
     this.metrics.paymentsTotal.inc({ product: productId, outcome: 'invoice' });
@@ -88,16 +91,17 @@ export class PaymentsService {
   /** Must answer within 10 seconds or Telegram cancels the payment. */
   async handlePreCheckout(query: TgPreCheckoutQuery): Promise<void> {
     let error: string | null = null;
+    const msg = catalogForTelegram(query.from.language_code).precheckout;
     try {
       const payment = await this.prisma.payment.findUnique({ where: { id: query.invoice_payload }, include: { user: true } });
-      if (!payment?.user) error = 'Invoice not found. Please try again from the app.';
-      else if (payment.status !== 'PENDING') error = 'This invoice was already used. Please create a new one.';
-      else if (payment.user.telegramId !== BigInt(query.from.id)) error = 'This invoice belongs to another account.';
-      else if (payment.amount !== query.total_amount || query.currency !== 'XTR') error = 'Price changed. Please reopen the offer.';
-      else if (payment.user.isBanned) error = 'Account suspended.';
+      if (!payment?.user) error = msg.notFound;
+      else if (payment.status !== 'PENDING') error = msg.used;
+      else if (payment.user.telegramId !== BigInt(query.from.id)) error = msg.otherAccount;
+      else if (payment.amount !== query.total_amount || query.currency !== 'XTR') error = msg.priceChanged;
+      else if (payment.user.isBanned) error = msg.suspended;
     } catch (err) {
       this.logger.error(`pre-checkout validation failed: ${(err as Error).message}`);
-      error = 'Temporary error, please retry.';
+      error = msg.temporary;
     }
     await this.bot.answerPreCheckoutQuery(query.id, error === null, error ?? undefined);
     if (error) this.metrics.paymentsTotal.inc({ product: 'unknown', outcome: 'precheckout_rejected' });
@@ -158,14 +162,14 @@ export class PaymentsService {
     this.metrics.paymentsTotal.inc({ product: product.id, outcome: isRenewal ? 'renewal' : 'paid' });
     await this.queues.notify({
       userId: original.userId,
-      text:
+      message:
         product.kind === 'credits'
-          ? `✅ ${product.credits} credits added. Thanks for supporting Mascot AI!`
+          ? { key: 'creditsAdded', params: { credits: product.credits ?? 0 } }
           : isRenewal
-            ? '✅ Premium renewed. Keep creating!'
-            : '👑 Premium unlocked! Unlimited mascots, all styles, videos and HD export are now yours.',
+            ? { key: 'premiumRenewed', params: {} }
+            : { key: 'premiumUnlocked', params: {} },
       path: product.kind === 'credits' ? '/profile' : '/',
-      buttonText: 'Open Mascot AI',
+      button: 'openApp',
     });
     this.logger.log(`payment ${product.id} from tg:${from.id} fulfilled (renewal=${isRenewal})`);
   }

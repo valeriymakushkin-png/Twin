@@ -4,7 +4,7 @@ import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@ta
 import { useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 import type { PaywallReason, StarProductId } from '@mascot/shared';
-import { ApiRequestError } from '@/lib/api';
+import { ApiRequestError, errorMessage, paywallMessage } from '@/lib/api';
 import { haptic } from '@/lib/telegram';
 import { usePaywall } from '@/store/paywall';
 
@@ -13,12 +13,13 @@ function handleError(error: unknown, silent = false): void {
     haptic.warning();
     usePaywall
       .getState()
-      .show(error.body.paywall!.reason as PaywallReason, error.body.message, (error.body.paywall!.suggestedProductId as StarProductId) ?? null);
+      
+      .show(error.body.paywall!.reason as PaywallReason, paywallMessage(error), (error.body.paywall!.suggestedProductId as StarProductId) ?? null);
     return;
   }
   if (silent) return;
   haptic.error();
-  toast.error(error instanceof ApiRequestError ? error.body.message : 'Network error — check your connection.');
+  toast.error(errorMessage(error));
 }
 
 export function QueryProvider({ children }: { children: ReactNode }) {

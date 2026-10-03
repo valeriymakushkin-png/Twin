@@ -3,6 +3,7 @@
 import { Check } from 'lucide-react';
 import { PHOTO_GUIDE, type PhotoPose } from '@mascot/shared';
 import { cn } from '@/lib/cn';
+import { useT } from '@/lib/i18n';
 
 const ROTATE: Record<string, number> = { FRONT: 0, LEFT: -28, RIGHT: 28, SMILE: 0, NEUTRAL: 0 };
 
@@ -24,9 +25,11 @@ function FaceGlyph({ pose }: { pose: PhotoPose }) {
 
 /** The five guide poses; each lights up once a matching photo is detected by face analysis. */
 export function PhotoGuide({ covered }: { covered: Set<PhotoPose> }) {
+  const { t } = useT();
   return (
     <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
-      {PHOTO_GUIDE.map(({ pose, title, hint }) => {
+      {PHOTO_GUIDE.map(({ pose }) => {
+        const { title, hint } = t.guide[pose];
         const done = covered.has(pose) || (pose === 'FRONT' && (covered.has('SMILE') || covered.has('NEUTRAL')));
         return (
           <div

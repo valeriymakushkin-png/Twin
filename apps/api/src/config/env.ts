@@ -36,6 +36,11 @@ export const EnvSchema = z
     JWT_TTL_SECONDS: z.coerce.number().int().default(60 * 60 * 24),
     ADMIN_JWT_TTL_SECONDS: z.coerce.number().int().default(60 * 60 * 12),
     DEV_AUTH_ENABLED: bool.default(false),
+    /** Comma-separated client IPs exempt from rate limits (load generators on staging). */
+    RATE_LIMIT_EXEMPT_IPS: z
+      .string()
+      .default('')
+      .transform((v) => v.split(',').map((s) => s.trim()).filter(Boolean)),
     METRICS_TOKEN: z.string().optional(),
 
     TELEGRAM_BOT_TOKEN: z.string().default('000000:dev-token'),

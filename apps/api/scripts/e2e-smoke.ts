@@ -5,7 +5,7 @@
  * launched with TELEGRAM_API_BASE=http://localhost:4099 and the same TELEGRAM_BOT_TOKEN /
  * TELEGRAM_WEBHOOK_SECRET as below. Covers: auth → upload → avatar pipeline → stickers
  * (FREE quota + paywall) → publish to Telegram → meme → PFP → Stars payment via webhook
- * → Premium video → style variant → share → admin analytics.
+ * → Premium video → style variant → share → EN/RU localization → admin analytics.
  *
  *   API_URL=http://localhost:4000 pnpm --filter @mascot/api test:e2e
  */
@@ -50,10 +50,10 @@ function startMockTelegram(): Promise<void> {
   return new Promise((resolve) => {
     createServer((req, res) => {
       const method = (req.url ?? '').split('/').pop() ?? '';
-      let body = '';
-      req.on('data', (c: Buffer) => (body += c.toString('latin1')));
+      const chunks: Buffer[] = [];
+      req.on('data', (c: Buffer) => chunks.push(c));
       req.on('end', () => {
-        telegramCalls.push({ method, body: body.slice(0, 2000) });
+        telegramCalls.push({ method, body: Buffer.concat(chunks).toString('utf8').slice(0, 2000) });
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ ok: true, result: method === 'uploadStickerFile' ? { file_id: `file_${telegramCalls.length}`, file_unique_id: 'u' } : (results[method] ?? true) }));
       });
@@ -251,7 +251,28 @@ async function main(): Promise<void> {
   const cancel = await api('POST', '/v1/payments/subscription/cancel');
   check(cancel.status === 200, 'subscription cancel → editUserStarSubscription');
 
-  console.log('\n8. Admin');
+  console.log('\n8. Localization');
+  const sentTexts = async (needle: string, timeoutMs = 10_000) => {
+    const deadline = Date.now() + timeoutMs;
+    while (Date.now() < deadline) {
+      if (telegramCalls.some((c) => (c.method === 'sendMessage' || c.method === 'sendPhoto') && c.body.includes(needle))) return true;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    return false;
+  };
+  check(await sentTexts('is ready'), 'notifications rendered in English for an "en" Telegram client');
+  const ru = await api('PATCH', '/v1/profile', { locale: 'ru' });
+  check(ru.status === 200 && ru.data.locale === 'ru', 'language override saved (ru)');
+  await webhook({ update_id: Date.now() % 1_000_000_000, message: { message_id: 9, date: Math.floor(Date.now() / 1000), chat: { id: TG_USER_ID, type: 'private' }, from: { id: TG_USER_ID, is_bot: false, first_name: 'Jay', language_code: 'en' }, text: '/help' } });
+  check(await sentTexts('Команды'), 'bot command answered in the chosen language (ru)');
+  const invoiceRu = await api('POST', '/v1/payments/invoice', { productId: 'credits_60' });
+  check(invoiceRu.status === 201 && telegramCalls.some((c) => c.method === 'createInvoiceLink' && c.body.includes('60 кредитов')), 'Stars invoice title localized');
+  const memeRu = await api('POST', '/v1/generate-meme', { avatarId, format: 'nobody-me', text: 'Я в 9 утра | Я после планёрки' });
+  check(memeRu.status === 201 && (await waitFor(memeRu.data.generation.id)).status === 'SUCCEEDED', 'Cyrillic meme rendered with Russian template captions');
+  const reset = await api('PATCH', '/v1/profile', { locale: null });
+  check(reset.status === 200 && reset.data.locale === null, 'language reset to follow Telegram');
+
+  console.log('\n9. Admin');
   const savedToken = token;
   token = '';
   const adminLogin = await api('POST', '/v1/auth/dev', { telegramId: 900000001, username: 'ops', admin: true });

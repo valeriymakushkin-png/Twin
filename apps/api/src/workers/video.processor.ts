@@ -123,9 +123,9 @@ export class VideoProcessor extends GenerationProcessor {
     await this.generations.succeed(generation.id, { resultId: video.id, outputKeys: [videoKey, thumbnailKey] });
     await this.queues.notify({
       userId: generation.userId,
-      text: `🎬 Your ${template.label.toLowerCase()} video is ready!`,
+      message: { key: 'videoReady', params: { template: template.key } },
       path: `/mascot/${video.avatarId}/videos`,
-      buttonText: 'Watch',
+      button: 'watch',
       photoUrl: this.storage.publicUrl(thumbnailKey) ?? undefined,
     });
   }

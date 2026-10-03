@@ -14,13 +14,15 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/misc';
 import { Sheet } from '@/components/ui/sheet';
-import { api, ApiRequestError } from '@/lib/api';
+import { api, ApiRequestError, errorMessage, paywallMessage } from '@/lib/api';
 import { prepareImage } from '@/lib/image';
 import { useStyles } from '@/lib/queries';
 import { haptic } from '@/lib/telegram';
 import { useCreateFlow, type LocalPhoto } from '@/store/create-flow';
 import { usePaywall } from '@/store/paywall';
 import { useAuth } from '@/providers/auth-provider';
+import { useT } from '@/lib/i18n';
+import { styleName } from '@/lib/i18n/catalog';
 
 const CONSENT_KEY = 'mascot.biometricConsent';
 type Step = 'photos' | 'style' | 'confirm';
@@ -36,6 +38,8 @@ export default function CreatePage() {
   const [consentOpen, setConsentOpen] = useState(false);
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const tr = useT();
+  const { t, f, p } = tr;
 
   const accepted = flow.photos.filter((p) => p.status === 'accepted');
   const uploading = flow.photos.some((p) => p.status === 'uploading');
@@ -79,17 +83,18 @@ export default function CreatePage() {
             remote: photo,
             status: photo.status === 'REJECTED' ? 'rejected' : 'accepted',
             reason: photo.rejectReason ?? undefined,
+            code: photo.rejectCode ?? undefined,
           });
         }
         for (const r of res.rejected) {
           const local = byName.get(r.fileName);
           if (!local) continue;
           byName.delete(r.fileName);
-          flow.updatePhoto(local.key, { status: 'rejected', reason: r.reason });
+          flow.updatePhoto(local.key, { status: 'rejected', reason: r.reason, code: r.code });
         }
-        byName.forEach((l) => flow.updatePhoto(l.key, { status: 'error', reason: 'Not processed' }));
+        byName.forEach((l) => flow.updatePhoto(l.key, { status: 'error', reason: t.create.notProcessed }));
       } catch (error) {
-        const message = error instanceof ApiRequestError ? error.body.message : 'Upload failed';
+        const message = errorMessage(error, t.create.uploadFailed);
         batchLocals.forEach((l) => flow.updatePhoto(l.key, { status: 'error', reason: message }));
       }
     }
@@ -108,7 +113,7 @@ export default function CreatePage() {
   async function generate() {
     if (!selectedStyle) return;
     if (selectedStyle.locked) {
-      showPaywall('PREMIUM_STYLE', `${selectedStyle.name} is a Premium style.`);
+      showPaywall('PREMIUM_STYLE', f(t.create.premiumStyle, { name: styleName(tr, selectedStyle.slug, selectedStyle.name) }));
       return;
     }
     setSubmitting(true);
@@ -123,9 +128,9 @@ export default function CreatePage() {
       router.replace(`/processing/${res.generation.id}?avatar=${res.avatar.id}`);
     } catch (error) {
       if (error instanceof ApiRequestError && error.isPaywall) {
-        showPaywall(error.body.paywall!.reason as never, error.body.message);
+        showPaywall(error.body.paywall!.reason as never, paywallMessage(error));
       } else {
-        toast.error(error instanceof ApiRequestError ? error.body.message : 'Could not start generation');
+        toast.error(errorMessage(error, t.create.startFailed));
       }
     } finally {
       setSubmitting(false);
@@ -138,12 +143,12 @@ export default function CreatePage() {
   return (
     <AppShell tabs={step === 'photos'}>
       <TopBar
-        title={step === 'photos' ? 'Your photos' : step === 'style' ? 'Pick a style' : 'Ready?'}
-        subtitle={`Step ${stepIndex + 1} of 3`}
+        title={step === 'photos' ? t.create.titlePhotos : step === 'style' ? t.create.titleStyle : t.create.titleConfirm}
+        subtitle={f(t.create.step, { n: stepIndex + 1 })}
         right={
           stepIndex > 0 ? (
             <Button size="sm" variant="ghost" icon={<ArrowLeft className="size-4" />} onClick={() => setStep(STEPS[stepIndex - 1]!)}>
-              Back
+              {t.common.back}
             </Button>
           ) : undefined
         }
@@ -151,7 +156,7 @@ export default function CreatePage() {
       <Progress value={((stepIndex + 1) / 3) * 100} className="mb-5" />
 
       {status === 'outside-telegram' && (
-        <Card className="mb-4 p-4 text-[13px] text-muted">Open Mascot AI inside Telegram to create your mascot.</Card>
+        <Card className="mb-4 p-4 text-[13px] text-muted">{t.auth.openInTelegram}</Card>
       )}
 
       <AnimatePresence mode="wait">
@@ -161,16 +166,16 @@ export default function CreatePage() {
               <PhotoGuide covered={covered} />
               <div className="flex items-baseline justify-between px-1">
                 <span className="text-[13px] text-ink-2">
-                  <span className="font-mono text-lg font-semibold text-white">{accepted.length}</span> / {UPLOAD_RULES.minPhotos} minimum
+                  <span className="font-mono text-lg font-semibold text-white">{accepted.length}</span> {f(t.create.minimum, { min: UPLOAD_RULES.minPhotos })}
                 </span>
                 <span className="text-[12px] text-muted">
-                  {UPLOAD_RULES.recommendedMin}–{UPLOAD_RULES.recommendedMax} recommended
+                  {f(t.create.recommended, { from: UPLOAD_RULES.recommendedMin, to: UPLOAD_RULES.recommendedMax })}
                 </span>
               </div>
               <PhotoGrid photos={flow.photos} onAdd={onAdd} onRemove={flow.removePhoto} />
               <Card className="flex items-start gap-3 p-3.5 text-[12px] leading-relaxed text-muted">
                 <ShieldCheck className="mt-0.5 size-4 shrink-0 text-emerald-300" />
-                Only you, good light, no sunglasses. Photos are stored privately and deleted automatically after 30 days.
+                {t.create.tips}
               </Card>
             </div>
           )}
@@ -182,7 +187,7 @@ export default function CreatePage() {
                 value={flow.styleSlug}
                 onChange={(s) => {
                   flow.setStyle(s.slug as StyleSlug);
-                  if (s.locked) showPaywall('PREMIUM_STYLE', `${s.name} is part of Premium.`);
+                  if (s.locked) showPaywall('PREMIUM_STYLE', f(t.create.premiumStyle, { name: styleName(tr, s.slug, s.name) }));
                 }}
               />
             </div>
@@ -191,19 +196,19 @@ export default function CreatePage() {
           {step === 'confirm' && (
             <div className="space-y-4">
               <Card className="p-4">
-                <label className="text-[12px] font-medium uppercase tracking-wider text-muted">Mascot name</label>
+                <label className="text-[12px] font-medium uppercase tracking-wider text-muted">{t.create.nameLabel}</label>
                 <input
                   value={flow.name}
                   onChange={(e) => flow.setName(e.target.value.slice(0, 40))}
-                  placeholder="e.g. Captain Me"
+                  placeholder={t.create.namePlaceholder}
                   className="mt-2 h-12 w-full rounded-xl border border-line bg-white/[0.04] px-4 text-[15px] outline-none placeholder:text-faint focus:border-violet-400/60"
                 />
               </Card>
               <Card className="divide-y divide-line">
-                <Row label="Photos" value={`${accepted.length} accepted`} />
-                <Row label="Poses covered" value={`${covered.size} / 5`} />
-                <Row label="Style" value={selectedStyle?.name ?? flow.styleSlug} />
-                <Row label="Time" value="~60 seconds" />
+                <Row label={t.create.summaryPhotos} value={f(t.create.summaryAccepted, { count: accepted.length })} />
+                <Row label={t.create.summaryPoses} value={`${covered.size} / 5`} />
+                <Row label={t.create.summaryStyle} value={styleName(tr, flow.styleSlug, selectedStyle?.name ?? flow.styleSlug)} />
+                <Row label={t.create.summaryTime} value={t.create.summaryTimeValue} />
               </Card>
               <div className="grid grid-cols-4 gap-1.5">
                 {accepted.slice(0, 8).map((p) => (
@@ -219,25 +224,25 @@ export default function CreatePage() {
       <div className="sticky bottom-[88px] z-20 -mx-4 mt-6 bg-gradient-to-t from-canvas via-canvas/95 to-transparent px-4 pb-3 pt-8">
         {step === 'confirm' ? (
           <Button size="lg" block loading={submitting} onClick={generate} icon={<Sparkles className="size-[18px]" />}>
-            Generate my mascot
+            {t.create.generate}
           </Button>
         ) : (
           <Button size="lg" block disabled={!canContinue} onClick={() => setStep(STEPS[stepIndex + 1]!)}>
             {step === 'photos' && accepted.length < UPLOAD_RULES.minPhotos
-              ? `Add ${UPLOAD_RULES.minPhotos - accepted.length} more photo${UPLOAD_RULES.minPhotos - accepted.length === 1 ? '' : 's'}`
-              : 'Continue'}
+              ? p(t.create.addMore, UPLOAD_RULES.minPhotos - accepted.length)
+              : t.common.continue}
             <ArrowRight className="size-4" />
           </Button>
         )}
       </div>
 
-      <Sheet open={consentOpen} onClose={() => setConsentOpen(false)} title="Your face data">
+      <Sheet open={consentOpen} onClose={() => setConsentOpen(false)} title={t.consent.title}>
         <div className="space-y-3 text-[13px] leading-relaxed text-ink-2">
-          <p>To create a mascot that looks like you, we analyse facial features (face shape, proportions, colours) from your photos and store a numeric face signature with your mascot.</p>
+          <p>{t.consent.body}</p>
           <ul className="list-disc space-y-1 pl-5 text-muted">
-            <li>Photos are private and auto-deleted after 30 days.</li>
-            <li>We never sell or share your data, or use it to identify you.</li>
-            <li>Delete everything anytime: Profile → Delete account.</li>
+            {t.consent.points.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
           </ul>
         </div>
         <Button
@@ -254,10 +259,10 @@ export default function CreatePage() {
             void uploadFiles(pendingFiles, true);
           }}
         >
-          I agree, continue
+          {t.consent.agree}
         </Button>
         <a href="/legal" className="mt-3 block text-center text-[12px] text-muted underline underline-offset-2">
-          Privacy policy
+          {t.consent.privacy}
         </a>
       </Sheet>
     </AppShell>

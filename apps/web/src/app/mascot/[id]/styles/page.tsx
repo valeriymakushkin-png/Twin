@@ -13,6 +13,8 @@ import { Chip, Progress } from '@/components/ui/misc';
 import { api } from '@/lib/api';
 import { qk, useAvatar, useGeneration, useInvalidate, useMutation, useProfile, useStyles } from '@/lib/queries';
 import { usePaywall } from '@/store/paywall';
+import { useT } from '@/lib/i18n';
+import { styleName } from '@/lib/i18n/catalog';
 
 export default function StylesPage() {
   const { id: avatarId } = useParams<{ id: string }>();
@@ -27,13 +29,15 @@ export default function StylesPage() {
   const [pose, setPose] = useState<string | undefined>();
   const [generationId, setGenerationId] = useState<string | null>(null);
   const premium = profile?.plan === 'PREMIUM';
+  const tr = useT();
+  const { t, f, pick } = tr;
   const current = styleSlug ?? (avatar?.styleSlug as StyleSlug | undefined) ?? 'pixar';
 
   const { data: generation } = useGeneration(generationId, (g) => {
     setGenerationId(null);
     void invalidate(qk.avatar(avatarId), qk.avatars, qk.profile);
     if (g.status === 'SUCCEEDED') {
-      toast.success('New look ready!');
+      toast.success(t.styles.ready);
       router.push(`/mascot/${avatarId}`);
     }
   });
@@ -47,32 +51,32 @@ export default function StylesPage() {
 
   return (
     <AppShell>
-      <TopBar title="Change style" subtitle="Same you, new universe — your Mascot DNA is reused" />
+      <TopBar title={t.styles.title} subtitle={t.styles.subtitle} />
       <StylePicker
         styles={styles}
         value={current}
         previewDna={avatar?.dna}
         onChange={(s) => {
           setStyleSlug(s.slug as StyleSlug);
-          if (s.locked) showPaywall('PREMIUM_STYLE', `${s.name} is part of Premium — or use credits.`);
+          if (s.locked) showPaywall('PREMIUM_STYLE', f(t.styles.premiumOrCredits, { name: styleName(tr, s.slug, s.name) }));
         }}
       />
       <Card className="mt-4 p-4">
-        <SectionTitle title="Outfit" className="px-0" />
+        <SectionTitle title={t.pfp.outfit} className="px-0" />
         <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1">
-          <Chip active={!outfit} onClick={() => setOutfit(undefined)}>Casual</Chip>
+          <Chip active={!outfit} onClick={() => setOutfit(undefined)}>{t.common.casual}</Chip>
           {OUTFITS.map((o) => (
             <Chip key={o.key} active={outfit === o.key} locked={o.isPremium && !premium} onClick={() => setOutfit(o.key)}>
-              {o.label}
+              {pick(t.wardrobe.outfits, o.key, o.label)}
             </Chip>
           ))}
         </div>
-        <SectionTitle title="Pose" className="mt-4 px-0" />
+        <SectionTitle title={t.pfp.pose} className="mt-4 px-0" />
         <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1">
-          <Chip active={!pose} onClick={() => setPose(undefined)}>Portrait</Chip>
+          <Chip active={!pose} onClick={() => setPose(undefined)}>{t.common.portrait}</Chip>
           {POSES.filter((p) => p.key !== 'portrait').map((p) => (
             <Chip key={p.key} active={pose === p.key} locked={p.isPremium && !premium} onClick={() => setPose(p.key)}>
-              {p.label}
+              {pick(t.wardrobe.poses, p.key, p.label)}
             </Chip>
           ))}
         </div>
@@ -80,16 +84,16 @@ export default function StylesPage() {
       {generation && generation.status !== 'SUCCEEDED' && (
         <Card className="mt-4 p-4">
           <div className="mb-2 flex items-center gap-2 text-[13px] text-ink-2">
-            <Loader2 className="size-4 animate-spin text-violet-300" /> Re-rendering in a new style…
+            <Loader2 className="size-4 animate-spin text-violet-300" /> {t.styles.rerendering}
           </div>
           <Progress value={generation.progress} />
         </Card>
       )}
       <div className="sticky bottom-[88px] z-20 -mx-4 mt-6 bg-gradient-to-t from-canvas via-canvas/95 to-transparent px-4 pb-3 pt-8">
         <Button size="lg" block loading={busy} icon={busy ? undefined : <Palette className="size-4" />} onClick={() => restyle.mutate()}>
-          {busy ? 'Creating new look…' : (
+          {busy ? t.styles.creating : (
             <>
-              Apply style <Sparkles className="size-4 opacity-70" />
+              {t.styles.apply} <Sparkles className="size-4 opacity-70" />
             </>
           )}
         </Button>

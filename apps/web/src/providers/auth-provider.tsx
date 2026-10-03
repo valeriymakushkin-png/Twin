@@ -8,6 +8,7 @@ import { api, setAccessToken, setUnauthorizedHandler } from '@/lib/api';
 import { env } from '@/lib/env';
 import { bootstrapWebApp, getWebApp } from '@/lib/telegram';
 import { qk } from '@/lib/queries';
+import { useT } from '@/lib/i18n';
 
 type AuthStatus = 'loading' | 'authenticated' | 'outside-telegram' | 'error';
 
@@ -120,14 +121,15 @@ function Splash() {
 }
 
 function AuthError({ message, onRetry }: { message: string | null; onRetry: () => void }) {
+  const { t } = useT();
   return (
     <div className="mx-auto grid min-h-dvh max-w-sm place-items-center px-6 text-center">
       <div>
         <div className="text-4xl">🔌</div>
-        <h1 className="mt-3 text-lg font-semibold">Can’t reach Mascot AI</h1>
-        <p className="mt-1 text-[13px] text-muted">{message ?? 'Please check your connection and try again.'}</p>
+        <h1 className="mt-3 text-lg font-semibold">{t.auth.errorTitle}</h1>
+        <p className="mt-1 text-[13px] text-muted">{message ?? t.auth.errorBody}</p>
         <button onClick={onRetry} className="mt-5 rounded-2xl bg-white/[0.08] px-5 py-3 text-[14px] font-semibold">
-          Try again
+          {t.common.retry}
         </button>
       </div>
     </div>

@@ -6,20 +6,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/cn';
 import { haptic } from '@/lib/telegram';
+import { useT } from '@/lib/i18n';
 
 const TABS = [
-  { href: '/', label: 'Home', icon: Home },
-  { href: '/create', label: 'Create', icon: Plus, accent: true },
-  { href: '/library', label: 'Library', icon: FolderHeart },
-  { href: '/profile', label: 'Profile', icon: UserRound },
-];
+  { href: '/', key: 'home', icon: Home },
+  { href: '/create', key: 'create', icon: Plus, accent: true },
+  { href: '/library', key: 'library', icon: FolderHeart },
+  { href: '/profile', key: 'profile', icon: UserRound },
+] as const;
 
 export function TabBar() {
   const pathname = usePathname();
+  const { t } = useT();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md px-4 pb-safe">
       <div className="mb-3 flex items-center justify-around rounded-[22px] border border-line bg-[#101016]/92 px-2 py-1.5 shadow-card backdrop-blur-xl">
-        {TABS.map(({ href, label, icon: Icon, accent }) => {
+        {TABS.map(({ href, key, icon: Icon, ...rest }) => {
+          const accent = 'accent' in rest && rest.accent;
           const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
           return (
             <Link
@@ -38,7 +41,7 @@ export function TabBar() {
               ) : (
                 <Icon className="size-[22px]" strokeWidth={active ? 2.3 : 1.9} />
               )}
-              {label}
+              {t.nav[key]}
             </Link>
           );
         })}

@@ -247,9 +247,9 @@ export class AvatarProcessor extends GenerationProcessor {
     await this.users.rewardReferrerOnFirstMascot(userId).catch((e: Error) => this.logger.warn(`referral reward failed: ${e.message}`));
     await this.queues.notify({
       userId,
-      text: `✨ ${avatar.name} is ready! Your personal mascot just came to life.`,
+      message: { key: 'avatarReady', params: { name: avatar.name } },
       path: `/mascot/${avatarId}`,
-      buttonText: 'See my mascot',
+      button: 'seeMascot',
       photoUrl: this.storage.publicUrl(stored.shareKey) ?? undefined,
     });
   }
@@ -320,9 +320,9 @@ export class AvatarProcessor extends GenerationProcessor {
     if (Date.now() - started > 45_000) {
       await this.queues.notify({
         userId: generation.userId,
-        text: `🎨 Your ${ctx.style.recipe.name} look is ready!`,
+        message: { key: 'styleReady', params: { slug: ctx.style.recipe.slug, name: ctx.style.recipe.name } },
         path: `/mascot/${ctx.avatarId}`,
-        buttonText: 'Open',
+        button: 'open',
         photoUrl: this.storage.publicUrl(stored.shareKey) ?? undefined,
       });
     }

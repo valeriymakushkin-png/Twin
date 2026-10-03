@@ -4,6 +4,7 @@ import type { Response } from 'express';
 import type { AppRequest } from '../../common/auth-context';
 import { RATE_LIMIT, type RateLimitOptions } from '../../common/decorators';
 import { RedisService } from '../../infra/redis/redis.service';
+import { AppConfig } from '../../config/app-config';
 
 /** Redis fixed-window rate limiter shared by all API replicas. */
 @Injectable()
@@ -11,6 +12,7 @@ export class RateLimitGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly redis: RedisService,
+    private readonly config: AppConfig,
   ) {}
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
@@ -18,6 +20,7 @@ export class RateLimitGuard implements CanActivate {
     const opts = this.reflector.getAllAndOverride<RateLimitOptions | undefined>(RATE_LIMIT, [ctx.getHandler(), ctx.getClass()]);
     if (!opts) return true;
     const req = ctx.switchToHttp().getRequest<AppRequest>();
+    if (req.ip && this.config.RATE_LIMIT_EXEMPT_IPS.includes(req.ip)) return true;
     const subject = opts.by === 'ip' || !req.auth ? `ip:${req.ip}` : `u:${req.auth.userId}`;
     const window = Math.floor(Date.now() / 1000 / opts.windowSec);
     const key = `rl:${opts.key}:${subject}:${window}`;

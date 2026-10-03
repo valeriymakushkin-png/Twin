@@ -156,6 +156,8 @@ model User {
   firstName            String?   @map("first_name")
   lastName             String?   @map("last_name")
   languageCode         String?   @map("language_code")
+  /// Explicit app language override (en|ru); null = follow Telegram language_code.
+  locale               String?   @db.VarChar(8)
   photoUrl             String?   @map("photo_url")
   isTelegramPremium    Boolean   @default(false) @map("is_telegram_premium")
   allowsWriteToPm      Boolean   @default(false) @map("allows_write_to_pm")

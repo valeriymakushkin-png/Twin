@@ -20,14 +20,16 @@ import { cn } from '@/lib/cn';
 import { qk, useAvatar, useInvalidate, useProfile } from '@/lib/queries';
 import { downloadFile, haptic } from '@/lib/telegram';
 import { usePaywall } from '@/store/paywall';
+import { useT } from '@/lib/i18n';
+import { styleName } from '@/lib/i18n/catalog';
 
 const ACTIONS = [
-  { key: 'stickers', label: 'Stickers', desc: 'Telegram pack', icon: Smile, tint: 'from-pink-500/25' },
-  { key: 'memes', label: 'Memes', desc: 'Type & meme', icon: Laugh, tint: 'from-amber-500/25' },
-  { key: 'pfp', label: 'Profile pics', desc: 'Backgrounds & poses', icon: ImageIcon, tint: 'from-sky-500/25' },
-  { key: 'videos', label: 'Videos', desc: 'Dance, talk, promo', icon: Clapperboard, tint: 'from-violet-500/25', premium: true },
-  { key: 'styles', label: 'Change style', desc: '11 styles', icon: Palette, tint: 'from-emerald-500/25' },
-];
+  { key: 'stickers', icon: Smile, tint: 'from-pink-500/25', premium: false },
+  { key: 'memes', icon: Laugh, tint: 'from-amber-500/25', premium: false },
+  { key: 'pfp', icon: ImageIcon, tint: 'from-sky-500/25', premium: false },
+  { key: 'videos', icon: Clapperboard, tint: 'from-violet-500/25', premium: true },
+  { key: 'styles', icon: Palette, tint: 'from-emerald-500/25', premium: false },
+] as const;
 
 function MascotInner() {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +41,8 @@ function MascotInner() {
   const [shareOpen, setShareOpen] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const isNew = search.get('new') === '1';
+  const tr = useT();
+  const { t } = tr;
 
   if (isLoading || !avatar) {
     return (
@@ -62,17 +66,17 @@ function MascotInner() {
         downloadFile(url, `${avatar!.name}-hd.png`);
       } else {
         downloadFile(primary.imageUrl, `${avatar!.name}.webp`);
-        toast('Saved in standard quality', { description: 'Premium unlocks HD transparent PNG without watermark.' });
+        toast(t.mascot.savedStandard, { description: t.mascot.savedStandardHint });
       }
     } catch (error) {
-      if (!(error instanceof ApiRequestError && error.isPaywall)) toast.error('Download failed');
+      if (!(error instanceof ApiRequestError && error.isPaywall)) toast.error(t.mascot.downloadFailed);
     } finally {
       setDownloading(false);
     }
   }
 
   async function rename() {
-    const name = window.prompt('Rename your mascot', avatar!.name)?.trim();
+    const name = window.prompt(t.mascot.renamePrompt, avatar!.name)?.trim();
     if (!name || name === avatar!.name) return;
     await api.avatars.rename(avatar!.id, name);
     await invalidate(qk.avatar(avatar!.id), qk.avatars);
@@ -104,7 +108,7 @@ function MascotInner() {
               {avatar.name} <Pencil className="size-3.5 opacity-60" />
             </button>
             <div className="mt-1 flex gap-1.5">
-              <Badge>{style?.name ?? avatar.styleSlug}</Badge>
+              <Badge>{styleName(tr, avatar.styleSlug, style?.name ?? avatar.styleSlug)}</Badge>
               {premium && <Badge tone="premium" icon={<Crown className="size-3" />}>HD</Badge>}
             </div>
           </div>
@@ -113,20 +117,20 @@ function MascotInner() {
 
       <div className="mt-3 grid grid-cols-3 gap-2">
         <Button variant="secondary" icon={<Download className="size-4" />} loading={downloading} onClick={download}>
-          Save
+          {t.common.save}
         </Button>
         <Button variant="secondary" icon={<Share2 className="size-4" />} onClick={() => setShareOpen(true)}>
-          Share
+          {t.common.share}
         </Button>
         <Button variant="secondary" icon={<IdCard className="size-4" />} onClick={() => avatar.cardUrl && downloadFile(avatar.cardUrl, `${avatar.name}-card.png`)}>
-          Card
+          {t.common.card}
         </Button>
       </div>
 
       <section className="mt-7">
-        <SectionTitle title="Create with your mascot" />
+        <SectionTitle title={t.mascot.createWith} />
         <div className="grid grid-cols-2 gap-2.5">
-          {ACTIONS.map(({ key, label, desc, icon: Icon, tint, premium: needsPremium }, i) => (
+          {ACTIONS.map(({ key, icon: Icon, tint, premium: needsPremium }, i) => (
             <motion.div key={key} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} className={cn(key === 'styles' && 'col-span-2')}>
               <Link
                 href={`/mascot/${avatar.id}/${key}`}
@@ -134,7 +138,7 @@ function MascotInner() {
                   haptic.tap();
                   if (needsPremium && !premium) {
                     e.preventDefault();
-                    showPaywall('VIDEO_PREMIUM_ONLY', 'Videos are part of Premium.');
+                    showPaywall('VIDEO_PREMIUM_ONLY', t.mascot.videosPremium);
                   }
                 }}
                 className={cn('glass relative flex items-center gap-3 overflow-hidden rounded-3xl p-4 bg-gradient-to-br to-transparent', tint)}
@@ -143,8 +147,8 @@ function MascotInner() {
                   <Icon className="size-5" />
                 </span>
                 <div className="min-w-0">
-                  <div className="text-[14px] font-semibold">{label}</div>
-                  <div className="truncate text-[11.5px] text-muted">{desc}</div>
+                  <div className="text-[14px] font-semibold">{t.mascot.actions[key].label}</div>
+                  <div className="truncate text-[11.5px] text-muted">{t.mascot.actions[key].desc}</div>
                 </div>
                 {needsPremium && !premium && <span className="absolute right-3 top-3 text-[11px] text-amber-300">★</span>}
               </Link>
@@ -155,7 +159,7 @@ function MascotInner() {
 
       {avatar.renders.length > 1 && (
         <section className="mt-7">
-          <SectionTitle title="Looks" action={<span className="text-[12px] text-muted">tap to set main</span>} />
+          <SectionTitle title={t.mascot.looks} action={<span className="text-[12px] text-muted">{t.mascot.tapToSetMain}</span>} />
           <div className="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-1">
             {avatar.renders.map((r) => {
               const rs = getStyleRecipe(r.styleSlug);
@@ -168,7 +172,7 @@ function MascotInner() {
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={r.thumbnailUrl} alt="" className="aspect-square w-full object-contain" />
-                  <div className="bg-black/40 py-1 text-[10px] font-semibold">{rs?.name ?? r.styleSlug}</div>
+                  <div className="bg-black/40 py-1 text-[10px] font-semibold">{styleName(tr, r.styleSlug, rs?.name ?? r.styleSlug)}</div>
                 </button>
               );
             })}

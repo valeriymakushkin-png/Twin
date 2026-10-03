@@ -1,6 +1,6 @@
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import type { Photo, Prisma } from '@prisma/client';
-import { UPLOAD_RULES, type PhotoDto, type UploadResponseDto } from '@mascot/shared';
+import { PHOTO_REJECT_CODES, UPLOAD_RULES, type PhotoDto, type PhotoRejectCode, type UploadResponseDto } from '@mascot/shared';
 import { AppException, PipelineError } from '../../common/errors';
 import { mapLimit } from '../../common/utils/async';
 import { sha256Hex } from '../../common/utils/crypto';
@@ -21,6 +21,26 @@ export interface IncomingFile {
 
 /** Age under which uploads are rejected outright (Telegram ToS 13+, our ToS 16+ for paid features). */
 const MIN_AGE = 13;
+
+/** Default (English) texts; clients localize by `code`. Stored verbatim in photos.reject_reason. */
+const REJECT_MESSAGES = {
+  NO_FACE: 'No face detected. Make sure your face is clearly visible.',
+  MULTIPLE_FACES: 'Multiple faces detected. Use photos with only you in them.',
+  FACE_TOO_SMALL: 'Your face is too small in this photo. Move closer.',
+  TOO_DARK: 'Photo is too dark.',
+  TOO_BLURRY: 'Photo is too blurry.',
+  AGE_RESTRICTED: 'Mascot AI is available for ages 16+.',
+  DUPLICATE: 'Duplicate photo.',
+  UNPROCESSABLE: 'Could not process this file.',
+} satisfies Partial<Record<PhotoRejectCode, string>>;
+
+const isRejectCode = (code: string): code is PhotoRejectCode => (PHOTO_REJECT_CODES as readonly string[]).includes(code);
+
+function rejectCodeOf(reason: string | null): PhotoRejectCode | null {
+  if (!reason) return null;
+  const hit = (Object.entries(REJECT_MESSAGES) as Array<[PhotoRejectCode, string]>).find(([, text]) => text === reason);
+  return hit ? hit[0] : 'UNPROCESSABLE';
+}
 
 @Injectable()
 export class UploadsService {
@@ -43,6 +63,7 @@ export class UploadsService {
       pose: photo.pose,
       status: photo.status,
       rejectReason: photo.rejectReason,
+      rejectCode: rejectCodeOf(photo.rejectReason),
       qualityScore: photo.qualityScore,
     };
   }
@@ -85,7 +106,12 @@ export class UploadsService {
         }
         return { file, sha256, normalized, quality, phash };
       } catch (error) {
-        rejected.push({ fileName: file.originalname, reason: error instanceof PipelineError ? (error.userMessage ?? error.message) : 'Could not process this file.' });
+        const known = error instanceof PipelineError && isRejectCode(error.code);
+        rejected.push({
+          fileName: file.originalname,
+          reason: error instanceof PipelineError ? (error.userMessage ?? error.message) : REJECT_MESSAGES.UNPROCESSABLE,
+          code: known ? (error.code as PhotoRejectCode) : 'UNPROCESSABLE',
+        });
         return null;
       }
     });
@@ -106,7 +132,7 @@ export class UploadsService {
         fileNames.set(dup.id, a.file.originalname);
       }
       if (dup || seen.has(a.sha256)) {
-        if (!dup) rejected.push({ fileName: a.file.originalname, reason: 'Duplicate photo.' });
+        if (!dup) rejected.push({ fileName: a.file.originalname, reason: REJECT_MESSAGES.DUPLICATE, code: 'DUPLICATE' });
         seen.add(a.sha256);
         return false;
       }
@@ -129,16 +155,16 @@ export class UploadsService {
       let status: Photo['status'] = 'UPLOADED';
       let rejectReason: string | null = null;
       if (analysis) {
-        if (analysis.faceCount === 0) rejectReason = 'No face detected. Make sure your face is clearly visible.';
-        else if (analysis.faceCount > 1) rejectReason = 'Multiple faces detected. Use photos with only you in them.';
-        else if (analysis.quality.faceAreaRatio < 0.02) rejectReason = 'Your face is too small in this photo. Move closer.';
-        else if (item.quality.brightness < 0.12) rejectReason = 'Photo is too dark.';
-        else if (item.quality.sharpness < 12) rejectReason = 'Photo is too blurry.';
+        if (analysis.faceCount === 0) rejectReason = REJECT_MESSAGES.NO_FACE;
+        else if (analysis.faceCount > 1) rejectReason = REJECT_MESSAGES.MULTIPLE_FACES;
+        else if (analysis.quality.faceAreaRatio < 0.02) rejectReason = REJECT_MESSAGES.FACE_TOO_SMALL;
+        else if (item.quality.brightness < 0.12) rejectReason = REJECT_MESSAGES.TOO_DARK;
+        else if (item.quality.sharpness < 12) rejectReason = REJECT_MESSAGES.TOO_BLURRY;
         status = rejectReason ? 'REJECTED' : 'ACCEPTED';
         if (analysis.age !== null && analysis.age < MIN_AGE) {
           await this.abuse.record('MINOR_DETECTED', 'HIGH', userId, { estimatedAge: analysis.age, photoId: id });
           status = 'REJECTED';
-          rejectReason = 'Mascot AI is available for ages 16+.';
+          rejectReason = REJECT_MESSAGES.AGE_RESTRICTED;
         }
       }
       fileNames.set(id, item.file.originalname);

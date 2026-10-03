@@ -5,6 +5,8 @@ import { Camera, ChevronsLeftRight } from 'lucide-react';
 import { useRef } from 'react';
 import { getStyleRecipe, type MascotDna } from '@mascot/shared';
 import { MascotArt } from '@/components/brand/mascot-art';
+import { useT } from '@/lib/i18n';
+import { styleName } from '@/lib/i18n/catalog';
 
 /**
  * Draggable before/after comparison. `beforeUrl`/`afterUrl` take real showcase images when
@@ -17,6 +19,8 @@ export function BeforeAfter({ dna, styleSlug, beforeUrl, afterUrl }: { dna: Masc
   const clip = useTransform(pos, (v) => `inset(0 0 0 ${v}%)`);
   const left = useTransform(pos, (v) => `${v}%`);
   const style = getStyleRecipe(styleSlug)!;
+  const tr = useT();
+  const { t } = tr;
 
   const update = (clientX: number) => {
     const rect = ref.current?.getBoundingClientRect();
@@ -48,7 +52,7 @@ export function BeforeAfter({ dna, styleSlug, beforeUrl, afterUrl }: { dna: Masc
           </div>
         )}
         <span className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-semibold backdrop-blur">
-          <Camera className="size-3.5" /> Your selfies
+          <Camera className="size-3.5" /> {t.landing.yourSelfies}
         </span>
       </div>
 
@@ -60,7 +64,7 @@ export function BeforeAfter({ dna, styleSlug, beforeUrl, afterUrl }: { dna: Masc
         ) : (
           <MascotArt dna={dna} className="absolute inset-x-0 bottom-0 w-full" />
         )}
-        <span className="absolute bottom-4 right-4 rounded-full bg-black/40 px-2.5 py-1 text-[11px] font-semibold backdrop-blur">{style.name}</span>
+        <span className="absolute bottom-4 right-4 rounded-full bg-black/40 px-2.5 py-1 text-[11px] font-semibold backdrop-blur">{styleName(tr, style.slug, style.name)}</span>
       </motion.div>
 
       <motion.div className="absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white/90" style={{ left }}>

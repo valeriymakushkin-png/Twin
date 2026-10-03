@@ -4,12 +4,14 @@ import type { ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import { PaywallSheet } from '@/components/paywall/paywall-sheet';
 import { AuthProvider } from './auth-provider';
+import { LocaleProvider } from './locale-provider';
 import { QueryProvider } from './query-provider';
 import { TelegramBackButton } from './telegram-back-button';
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <QueryProvider>
+      <LocaleProvider />
       <AuthProvider>
         <TelegramBackButton />
         {children}

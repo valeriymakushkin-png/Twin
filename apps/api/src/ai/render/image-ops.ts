@@ -1,5 +1,5 @@
 import sharp from 'sharp';
-import type { MemeFormat, PfpBackground, VideoAspectRatio } from '@mascot/shared';
+import type { Locale, MemeFormat, PfpBackground, VideoAspectRatio } from '@mascot/shared';
 import { MEME_FORMAT_CATALOG } from '@mascot/shared';
 import { PipelineError } from '../../common/errors';
 import { escapeXml, fitText, MEME_FONT, textBlock, UI_FONT } from './svg-text';
@@ -405,6 +405,17 @@ export async function characterCard(opts: {
 /* Memes                                                               */
 /* ------------------------------------------------------------------ */
 
+/** Fixed captions baked into meme templates, per language of the meme. */
+const MEME_LABELS: Record<Locale, { pov: string; nobody: string; me: string; expectation: string; reality: string; now: string }> = {
+  en: { pov: 'POV:', nobody: 'Nobody:', me: 'Me:', expectation: 'EXPECTATION', reality: 'REALITY', now: 'now' },
+  ru: { pov: 'POV:', nobody: 'Никто:', me: 'Я:', expectation: 'ОЖИДАНИЕ', reality: 'РЕАЛЬНОСТЬ', now: 'сейчас' },
+};
+
+/** Meme language: Cyrillic text wins, otherwise the user's locale. */
+export function memeLocale(text: string, fallback: Locale): Locale {
+  return /[\u0400-\u04FF]/.test(text) ? 'ru' : fallback;
+}
+
 export interface MemeTexts {
   top?: string | null;
   bottom?: string | null;
@@ -414,9 +425,10 @@ export async function composeMeme(
   format: MemeFormat,
   panels: Buffer[],
   texts: MemeTexts,
-  opts: { gradient: [string, string]; watermark: boolean; displayName: string },
+  opts: { gradient: [string, string]; watermark: boolean; displayName: string; locale?: Locale },
 ): Promise<Buffer> {
   const recipe = MEME_FORMAT_CATALOG[format];
+  const L = MEME_LABELS[opts.locale ?? 'en'];
   const W = recipe.width;
   const H = recipe.height;
   const [g1, g2] = opts.gradient;
@@ -444,7 +456,7 @@ export async function composeMeme(
       break;
     }
     case 'pov': {
-      const caption = `POV: ${top || bottom}`;
+      const caption = `${L.pov} ${top || bottom}`;
       const t = fitText(caption, { width: W - 120, height: 300 }, { max: 72, min: 40, ratio: 0.52, maxLines: 4 });
       svgBody = `<rect width="${W}" height="${H}" fill="url(#g)"/><rect width="${W}" height="${H}" fill="url(#shade)"/>`;
       layers.push({ input: await fitPanel(panels[0]!, W, H - 260), top: 260, left: 0 });
@@ -457,9 +469,9 @@ export async function composeMeme(
     }
     case 'nobody-me': {
       const me = bottom || top;
-      const t = fitText(`Me: ${me}`, { width: W - 120, height: 220 }, { max: 58, min: 36, ratio: 0.5, maxLines: 4 });
+      const t = fitText(`${L.me} ${me}`, { width: W - 120, height: 220 }, { max: 58, min: 36, ratio: 0.5, maxLines: 4 });
       svgBody = `<rect width="${W}" height="${H}" fill="#ffffff"/><rect y="400" width="${W}" height="${H - 400}" fill="url(#g)"/>
-        <text x="60" y="110" font-family="${UI_FONT}" font-size="58" font-weight="700" fill="#0f0f14">Nobody:</text>
+        <text x="60" y="110" font-family="${UI_FONT}" font-size="58" font-weight="700" fill="#0f0f14">${L.nobody}</text>
         <text x="60" y="190" font-family="${UI_FONT}" font-size="58" font-weight="700" fill="#0f0f14">${escapeXml(top && bottom ? top : '')}</text>
         ${textBlock(t.lines, { x: 60, y: 210, fontSize: t.fontSize, fill: '#0f0f14', font: UI_FONT, weight: 700, anchor: 'start' })}`;
       layers.push({ input: await fitPanel(panels[0]!, W, H - 420), top: 420, left: 0 });
@@ -468,8 +480,8 @@ export async function composeMeme(
     case 'expectation-reality': {
       const half = H / 2;
       svgBody = `<rect width="${W}" height="${half}" fill="url(#g)"/><rect y="${half}" width="${W}" height="${half}" fill="#16161d"/>
-        <rect x="40" y="36" width="380" height="70" rx="16" fill="#000" fill-opacity="0.55"/><text x="230" y="84" font-family="${MEME_FONT}" font-size="44" fill="#fff" text-anchor="middle">EXPECTATION</text>
-        <rect x="40" y="${half + 36}" width="300" height="70" rx="16" fill="#ffffff" fill-opacity="0.9"/><text x="190" y="${half + 84}" font-family="${MEME_FONT}" font-size="44" fill="#000" text-anchor="middle">REALITY</text>`;
+        <rect x="40" y="36" width="380" height="70" rx="16" fill="#000" fill-opacity="0.55"/><text x="230" y="84" font-family="${MEME_FONT}" font-size="44" fill="#fff" text-anchor="middle">${L.expectation}</text>
+        <rect x="40" y="${half + 36}" width="${L.reality.length > 8 ? 380 : 300}" height="70" rx="16" fill="#ffffff" fill-opacity="0.9"/><text x="${L.reality.length > 8 ? 230 : 190}" y="${half + 84}" font-family="${MEME_FONT}" font-size="44" fill="#000" text-anchor="middle">${L.reality}</text>`;
       layers.push({ input: await fitPanel(panels[0]!, W - 300, half - 20), top: 20, left: 300 });
       layers.push({ input: await fitPanel(panels[1] ?? panels[0]!, W - 300, half - 20), top: half + 20, left: 300 });
       const t = fitText(top, { width: 280, height: half - 180 }, { max: 52, min: 28, ratio: 0.5, maxLines: 6 });
@@ -489,7 +501,7 @@ export async function composeMeme(
       svgBody = `<rect width="${W}" height="${H}" fill="#0b0b10"/><rect x="40" y="40" width="${W - 80}" height="${H - 80}" rx="44" fill="#16161f" stroke="#ffffff" stroke-opacity="0.1"/>
         <circle cx="140" cy="150" r="54" fill="url(#g)"/>
         <text x="220" y="140" font-family="${UI_FONT}" font-size="38" font-weight="800" fill="#ffffff">${escapeXml(opts.displayName.slice(0, 22))}</text>
-        <text x="220" y="186" font-family="${UI_FONT}" font-size="30" font-weight="500" fill="#8b8b9a">${escapeXml(handle)} · now</text>
+        <text x="220" y="186" font-family="${UI_FONT}" font-size="30" font-weight="500" fill="#8b8b9a">${escapeXml(handle)} · ${L.now}</text>
         ${textBlock(t.lines, { x: 100, y: 230, fontSize: t.fontSize, fill: '#f4f4f8', font: UI_FONT, weight: 500, anchor: 'start', lineHeight: 1.2 })}
         <rect x="100" y="${textBottom + 30}" width="${W - 200}" height="${H - textBottom - 170}" rx="32" fill="url(#g)"/>`;
       const panelH = Math.round(H - textBottom - 190);

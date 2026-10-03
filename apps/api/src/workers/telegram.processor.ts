@@ -85,9 +85,9 @@ export class TelegramProcessor extends WorkerHost {
       });
       await this.queues.notify({
         userId: pack.userId,
-        text: `✅ "${pack.title}" is ready in Telegram: https://t.me/addstickers/${setName}`,
+        message: { key: 'packPublished', params: { title: pack.title, url: `https://t.me/addstickers/${setName}` } },
         path: `/mascot/${pack.avatarId}/stickers?pack=${pack.id}`,
-        buttonText: 'Open Mascot AI',
+        button: 'openApp',
       });
     } catch (error) {
       const final = job.attemptsMade + 1 >= (job.opts.attempts ?? 1);

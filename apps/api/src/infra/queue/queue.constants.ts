@@ -1,4 +1,5 @@
 import type { GenerationType } from '@mascot/shared';
+import type { ButtonKey, NotifyMessage } from '../../i18n/bot-messages';
 
 export const QUEUES = {
   AVATAR: 'avatar',
@@ -32,10 +33,11 @@ export type TelegramJobData = { kind: 'publish-sticker-pack'; packId: string };
 
 export interface NotifyJobData {
   userId: string;
-  text: string;
+  /** Keyed message, rendered in the recipient's language when the job runs. */
+  message: NotifyMessage;
   /** Mini App path to open from the inline button, e.g. /mascot/abc */
   path?: string;
-  buttonText?: string;
+  button?: ButtonKey;
   photoUrl?: string;
 }
 

@@ -9,3 +9,4 @@ export * from './plans';
 export * from './generation';
 export * from './api';
 export * from './mascot-svg';
+export * from './locale';

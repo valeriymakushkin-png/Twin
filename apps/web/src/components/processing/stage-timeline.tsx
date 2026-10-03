@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Check, Loader2 } from 'lucide-react';
 import { AVATAR_STAGES } from '@mascot/shared';
 import { cn } from '@/lib/cn';
+import { useT } from '@/lib/i18n';
 
 export function StageTimeline({ stage, done }: { stage: string | null; done: boolean }) {
+  const { t } = useT();
   const current = done ? AVATAR_STAGES.length : Math.max(0, AVATAR_STAGES.findIndex((s) => s.key === stage));
   return (
     <ol className="space-y-1">
@@ -30,8 +32,8 @@ export function StageTimeline({ stage, done }: { stage: string | null; done: boo
               {state === 'done' ? <Check className="size-3.5" strokeWidth={3} /> : state === 'active' ? <Loader2 className="size-3.5 animate-spin" /> : i + 1}
             </span>
             <div className="min-w-0">
-              <div className={cn('text-[14px] font-semibold', state === 'todo' && 'text-faint')}>{s.label}</div>
-              {state === 'active' && <div className="text-[12px] text-muted">{s.description}</div>}
+              <div className={cn('text-[14px] font-semibold', state === 'todo' && 'text-faint')}>{t.stages[s.key].label}</div>
+              {state === 'active' && <div className="text-[12px] text-muted">{t.stages[s.key].description}</div>}
             </div>
           </motion.li>
         );

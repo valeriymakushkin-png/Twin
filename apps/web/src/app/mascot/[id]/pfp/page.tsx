@@ -15,6 +15,7 @@ import { api, ApiRequestError } from '@/lib/api';
 import { cn } from '@/lib/cn';
 import { qk, useInvalidate, useMutation, usePfps, useProfile } from '@/lib/queries';
 import { downloadFile, haptic } from '@/lib/telegram';
+import { useT } from '@/lib/i18n';
 
 export default function PfpPage() {
   const { id: avatarId } = useParams<{ id: string }>();
@@ -27,6 +28,7 @@ export default function PfpPage() {
   const [outfit, setOutfit] = useState<string | undefined>();
   const [pose, setPose] = useState<string | undefined>();
   const [share, setShare] = useState<ProfilePictureDto | null>(null);
+  const { t, pick } = useT();
 
   const generate = useMutation({
     mutationFn: () =>
@@ -41,9 +43,9 @@ export default function PfpPage() {
     try {
       const { url } = premium ? await api.pfp.hd(p.id) : { url: p.imageUrl! };
       downloadFile(url, `pfp-${p.id}.png`);
-      if (!premium) toast('Saved in 1024px', { description: 'Premium unlocks 2048px without watermark.' });
+      if (!premium) toast(t.pfp.saved1024, { description: t.pfp.saved1024Hint });
     } catch (error) {
-      if (!(error instanceof ApiRequestError && error.isPaywall)) toast.error('Download failed');
+      if (!(error instanceof ApiRequestError && error.isPaywall)) toast.error(t.mascot.downloadFailed);
     }
   }
 
@@ -51,18 +53,18 @@ export default function PfpPage() {
 
   return (
     <AppShell>
-      <TopBar title="Profile pictures" subtitle="Made for Telegram, TikTok, Twitch & Discord" />
+      <TopBar title={t.pfp.title} subtitle={t.pfp.subtitle} />
       <Segmented
         value={mode}
         onChange={setMode}
         options={[
-          { value: 'composite', label: <span className="inline-flex items-center gap-1.5"><Zap className="size-3.5" /> Instant</span> },
-          { value: 'ai', label: <span className="inline-flex items-center gap-1.5"><Sparkles className="size-3.5" /> AI scene ★</span> },
+          { value: 'composite', label: <span className="inline-flex items-center gap-1.5"><Zap className="size-3.5" /> {t.pfp.instant}</span> },
+          { value: 'ai', label: <span className="inline-flex items-center gap-1.5"><Sparkles className="size-3.5" /> {t.pfp.aiScene}</span> },
         ]}
       />
 
       <Card className="mt-3 p-4">
-        <SectionTitle title="Background" className="px-0" />
+        <SectionTitle title={t.pfp.background} className="px-0" />
         <div className="grid grid-cols-4 gap-2">
           {backgrounds.map((b) => (
             <motion.button
@@ -75,7 +77,7 @@ export default function PfpPage() {
               className={cn('relative aspect-square overflow-hidden rounded-2xl border-2', background === b.key ? 'border-white' : 'border-transparent')}
               style={{ background: `linear-gradient(135deg, ${b.colors.join(', ')})` }}
             >
-              <span className="absolute inset-x-0 bottom-0 bg-black/40 py-0.5 text-[9.5px] font-semibold">{b.label}</span>
+              <span className="absolute inset-x-0 bottom-0 bg-black/40 py-0.5 text-[9.5px] font-semibold">{pick(t.pfp.backgrounds, b.key, b.label)}</span>
               {b.isPremium && !premium && <span className="absolute right-1 top-1 text-[10px] text-amber-300">★</span>}
             </motion.button>
           ))}
@@ -83,28 +85,28 @@ export default function PfpPage() {
 
         {mode === 'ai' && (
           <>
-            <SectionTitle title="Outfit" className="mt-5 px-0" />
+            <SectionTitle title={t.pfp.outfit} className="mt-5 px-0" />
             <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1">
-              <Chip active={!outfit} onClick={() => setOutfit(undefined)}>Original</Chip>
+              <Chip active={!outfit} onClick={() => setOutfit(undefined)}>{t.common.original}</Chip>
               {OUTFITS.map((o) => (
                 <Chip key={o.key} active={outfit === o.key} locked={o.isPremium && !premium} onClick={() => setOutfit(o.key)}>
-                  {o.label}
+                  {pick(t.wardrobe.outfits, o.key, o.label)}
                 </Chip>
               ))}
             </div>
-            <SectionTitle title="Pose" className="mt-4 px-0" />
+            <SectionTitle title={t.pfp.pose} className="mt-4 px-0" />
             <div className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-1">
-              <Chip active={!pose} onClick={() => setPose(undefined)}>Portrait</Chip>
+              <Chip active={!pose} onClick={() => setPose(undefined)}>{t.common.portrait}</Chip>
               {POSES.filter((p) => p.key !== 'portrait').map((p) => (
                 <Chip key={p.key} active={pose === p.key} locked={p.isPremium && !premium} onClick={() => setPose(p.key)}>
-                  {p.label}
+                  {pick(t.wardrobe.poses, p.key, p.label)}
                 </Chip>
               ))}
             </div>
           </>
         )}
         <Button block size="lg" className="mt-5" loading={generate.isPending} icon={<Sparkles className="size-4" />} onClick={() => generate.mutate()}>
-          Create profile picture
+          {t.pfp.create}
         </Button>
       </Card>
 
@@ -122,10 +124,10 @@ export default function PfpPage() {
             </div>
             {p.status === 'READY' && (
               <div className="flex justify-around py-1.5">
-                <button aria-label="Download" onClick={() => downloadHd(p)} className="p-2 text-muted">
+                <button aria-label={t.common.download} onClick={() => downloadHd(p)} className="p-2 text-muted">
                   <Download className="size-4" />
                 </button>
-                <button aria-label="Share" onClick={() => setShare(p)} className="p-2 text-muted">
+                <button aria-label={t.common.share} onClick={() => setShare(p)} className="p-2 text-muted">
                   <Share2 className="size-4" />
                 </button>
               </div>
@@ -133,9 +135,9 @@ export default function PfpPage() {
           </motion.div>
         ))}
       </section>
-      {pfps?.length === 0 && <EmptyState icon={<ImageIcon className="size-6" />} title="No profile pictures yet" body="Instant ones are free and take a second." />}
+      {pfps?.length === 0 && <EmptyState icon={<ImageIcon className="size-6" />} title={t.pfp.emptyTitle} body={t.pfp.emptyBody} />}
       <p className="mt-6 px-2 text-center text-[11px] leading-relaxed text-faint">
-        To set it in Telegram: save the image → Settings → tap your photo → Set new photo.
+        {t.pfp.howToSet}
       </p>
       {share && <ShareSheet open onClose={() => setShare(null)} target={{ kind: 'pfp', id: share.id }} mediaUrl={share.imageUrl} fileName="pfp.png" />}
     </AppShell>

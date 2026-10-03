@@ -1,13 +1,13 @@
 import { Logger } from '@nestjs/common';
 import { Processor } from '@nestjs/bullmq';
 import type { Generation } from '@prisma/client';
-import { MEME_EMOTION_KEYWORDS, MEME_FORMAT_CATALOG, type MemeFormat, type StickerEmotion } from '@mascot/shared';
+import { MEME_EMOTION_KEYWORDS, MEME_FORMAT_CATALOG, userLocale, type MemeFormat, type StickerEmotion } from '@mascot/shared';
 import { loadEnv } from '../config/env';
 import { PrismaService } from '../infra/prisma/prisma.service';
 import { QUEUES } from '../infra/queue/queue.constants';
 import { StorageKeys, StorageService } from '../infra/storage/storage.service';
 import { MascotEngine } from '../ai/mascot-engine.service';
-import { composeMeme } from '../ai/render/image-ops';
+import { composeMeme, memeLocale } from '../ai/render/image-ops';
 import { GenerationsService } from '../modules/generations/generations.service';
 import { QuotaService } from '../modules/quota/quota.service';
 import { GenerationProcessor } from './shared/generation.processor';
@@ -64,6 +64,7 @@ export class MemeProcessor extends GenerationProcessor {
       gradient: ctx.style.recipe.gradient,
       watermark: this.quota.entitlements(user).watermark,
       displayName: ctx.name,
+      locale: memeLocale(text, userLocale(user)),
     });
     const imageKey = StorageKeys.meme(meme.id);
     await this.storage.putPublic(imageKey, image, 'image/jpeg');
