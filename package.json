@@ -1,0 +1,41 @@
+{
+  "name": "mascot-ai",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Mascot AI — personal AI mascots inside Telegram",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css,yml,yaml}\"",
+    "db:migrate": "pnpm --filter @mascot/api prisma:migrate",
+    "db:deploy": "pnpm --filter @mascot/api prisma:deploy",
+    "db:seed": "pnpm --filter @mascot/api prisma:seed",
+    "db:studio": "pnpm --filter @mascot/api prisma:studio",
+    "telegram:setup": "pnpm --filter @mascot/api telegram:setup"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.8",
+    "typescript": "~5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@prisma/client",
+      "@prisma/engines",
+      "@tailwindcss/oxide",
+      "esbuild",
+      "msgpackr-extract",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
+  }
+}

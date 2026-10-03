@@ -1,0 +1,680 @@
+// Mascot AI — PostgreSQL schema
+//
+// Conventions
+//  - Table names are snake_case plural (@@map), columns snake_case (@map).
+//  - IDs are cuid strings (URL safe, sortable enough, no enumeration).
+//  - Telegram IDs are BIGINT (Telegram guarantees <= 52 significant bits).
+//  - Money is stored as integer Telegram Stars (XTR); internal provider cost in USD micro-cents.
+//  - Soft deletes only where user-facing recovery matters (avatars); photos are hard-deleted
+//    by the retention job for privacy.
+
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-3.0.x"]
+  previewFeatures = []
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Enums
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  USER
+  SUPPORT
+  ADMIN
+}
+
+enum Plan {
+  FREE
+  PREMIUM
+}
+
+enum PhotoStatus {
+  UPLOADED
+  ACCEPTED
+  REJECTED
+}
+
+enum PhotoPose {
+  FRONT
+  LEFT
+  RIGHT
+  SMILE
+  NEUTRAL
+  OTHER
+}
+
+enum AvatarStatus {
+  DRAFT
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum GenerationType {
+  AVATAR
+  STYLE_VARIANT
+  STICKER_PACK
+  MEME
+  PROFILE_PICTURE
+  VIDEO
+}
+
+enum GenerationStatus {
+  QUEUED
+  PROCESSING
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+enum StickerPackStatus {
+  GENERATING
+  READY
+  PUBLISHING
+  PUBLISHED
+  FAILED
+}
+
+enum AssetStatus {
+  PENDING
+  READY
+  FAILED
+}
+
+enum VideoStatus {
+  QUEUED
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+  EXPIRED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+  PAST_DUE
+}
+
+enum CreditReason {
+  PURCHASE
+  REFERRAL_BONUS
+  SIGNUP_BONUS
+  SPEND
+  REFUND
+  ADMIN_GRANT
+  GENERATION_FAILED_REFUND
+}
+
+enum ModerationType {
+  NSFW_UPLOAD
+  MULTIPLE_IDENTITIES
+  MINOR_DETECTED
+  NO_FACE_SPAM
+  RATE_LIMIT
+  TEXT_POLICY
+  PAYMENT_ABUSE
+  REFERRAL_ABUSE
+  GENERATION_ABUSE
+}
+
+enum ModerationSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ModerationStatus {
+  OPEN
+  RESOLVED
+  DISMISSED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Identity
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id                   String    @id @default(cuid())
+  telegramId           BigInt    @unique @map("telegram_id")
+  username             String?
+  firstName            String?   @map("first_name")
+  lastName             String?   @map("last_name")
+  languageCode         String?   @map("language_code")
+  photoUrl             String?   @map("photo_url")
+  isTelegramPremium    Boolean   @default(false) @map("is_telegram_premium")
+  allowsWriteToPm      Boolean   @default(false) @map("allows_write_to_pm")
+  notificationsEnabled Boolean   @default(true) @map("notifications_enabled")
+  role                 UserRole  @default(USER)
+  /// Denormalised from subscriptions for O(1) entitlement checks; kept in sync by SubscriptionService.
+  plan                 Plan      @default(FREE)
+  premiumUntil         DateTime? @map("premium_until")
+  credits              Int       @default(0)
+  /// Lifetime counters used for FREE quotas (atomic conditional updates).
+  stickersGenerated    Int       @default(0) @map("stickers_generated")
+  avatarsCreated       Int       @default(0) @map("avatars_created")
+  referralCode         String    @unique @map("referral_code")
+  referredById         String?   @map("referred_by_id")
+  referralRewardedAt   DateTime? @map("referral_rewarded_at")
+  acquisitionSource    String?   @map("acquisition_source")
+  /// Explicit consent to biometric (face) processing, required before the first upload (GDPR art. 9).
+  biometricConsentAt   DateTime? @map("biometric_consent_at")
+  riskScore            Int       @default(0) @map("risk_score")
+  isBanned             Boolean   @default(false) @map("is_banned")
+  banReason            String?   @map("ban_reason")
+  lastSeenAt           DateTime? @map("last_seen_at")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+  deletedAt            DateTime? @map("deleted_at")
+
+  referredBy       User?             @relation("Referrals", fields: [referredById], references: [id], onDelete: SetNull)
+  referrals        User[]            @relation("Referrals")
+  photos           Photo[]
+  avatars          Avatar[]
+  generations      Generation[]
+  stickerPacks     StickerPack[]
+  memes            Meme[]
+  profilePictures  ProfilePicture[]
+  videos           Video[]
+  payments         Payment[]
+  subscriptions    Subscription[]
+  creditLedger     CreditLedger[]
+  moderationEvents ModerationEvent[]
+  auditLogs        AuditLog[]        @relation("AuditActor")
+
+  @@index([createdAt])
+  @@index([plan, premiumUntil])
+  @@index([referredById])
+  @@index([lastSeenAt])
+  @@index([isBanned])
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Source photos (private bucket, retention-limited)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Photo {
+  id           String      @id @default(cuid())
+  userId       String      @map("user_id")
+  avatarId     String?     @map("avatar_id")
+  storageKey   String      @unique @map("storage_key")
+  mimeType     String      @map("mime_type")
+  width        Int
+  height       Int
+  sizeBytes    Int         @map("size_bytes")
+  sha256       String
+  /// 64-bit perceptual hash (hex) for near-duplicate / reuse detection.
+  phash        String
+  status       PhotoStatus @default(UPLOADED)
+  pose         PhotoPose   @default(OTHER)
+  rejectReason String?     @map("reject_reason")
+  qualityScore Float?      @map("quality_score")
+  faceCount    Int?        @map("face_count")
+  /// Raw face-service output (bbox, yaw/pitch/roll, age, landmarks metrics). Embedding lives in avatar_dna.
+  analysis     Json?
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar Avatar? @relation(fields: [avatarId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, sha256])
+  @@index([userId, createdAt])
+  @@index([avatarId])
+  @@index([phash])
+  @@index([createdAt])
+  @@map("photos")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Mascots
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Style {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  tagline        String
+  isPremium      Boolean  @default(false) @map("is_premium")
+  isActive       Boolean  @default(true) @map("is_active")
+  sortOrder      Int      @default(0) @map("sort_order")
+  /// Overrides for the code-defined recipe (look, lighting, negative...), editable from the admin panel.
+  promptOverrides Json?   @map("prompt_overrides")
+  previewKey     String?  @map("preview_key")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  avatars      Avatar[]
+  renders      AvatarRender[]
+  stickerPacks StickerPack[]
+  generations  Generation[]
+
+  @@index([isActive, sortOrder])
+  @@map("styles")
+}
+
+model Avatar {
+  id               String       @id @default(cuid())
+  userId           String       @map("user_id")
+  name             String
+  status           AvatarStatus @default(DRAFT)
+  styleId          String       @map("style_id")
+  /// Deterministic seed reused across generations for visual consistency.
+  seed             Int
+  shareSlug        String       @unique @map("share_slug")
+  isPublic         Boolean      @default(true) @map("is_public")
+  primaryRenderId  String?      @unique @map("primary_render_id")
+  cardKey          String?      @map("card_key")
+  failureReason    String?      @map("failure_reason")
+  createdAt        DateTime     @default(now()) @map("created_at")
+  updatedAt        DateTime     @updatedAt @map("updated_at")
+  deletedAt        DateTime?    @map("deleted_at")
+
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  style         Style            @relation(fields: [styleId], references: [id])
+  dna           AvatarDna?
+  primaryRender AvatarRender?    @relation("PrimaryRender", fields: [primaryRenderId], references: [id], onDelete: SetNull)
+  renders       AvatarRender[]   @relation("AvatarRenders")
+  photos        Photo[]
+  generations   Generation[]
+  stickerPacks  StickerPack[]
+  memes         Meme[]
+  pfps          ProfilePicture[]
+  videos        Video[]
+
+  @@index([userId, status, createdAt])
+  @@index([status])
+  @@map("avatars")
+}
+
+/// Mascot DNA: identity traits extracted once, reused by every subsequent generation.
+model AvatarDna {
+  id                     String   @id @default(cuid())
+  avatarId               String   @unique @map("avatar_id")
+  version                Int      @default(1)
+  faceShape              String   @map("face_shape")
+  eyeShape               String   @map("eye_shape")
+  eyeColor               String   @map("eye_color")
+  hairStyle              String   @map("hair_style")
+  hairColor              String   @map("hair_color")
+  noseShape              String   @map("nose_shape")
+  mouthShape             String   @map("mouth_shape")
+  skinTone               String   @map("skin_tone")
+  eyebrows               String
+  ageGroup               String   @map("age_group")
+  facialHair             String   @default("none") @map("facial_hair")
+  glasses                String   @default("none")
+  presentation           String   @default("androgynous")
+  freckles               Boolean  @default(false)
+  dimples                Boolean  @default(false)
+  distinguishingFeatures String[] @default([]) @map("distinguishing_features")
+  /// Landmark-derived proportions (FaceProportions in @mascot/shared).
+  proportions            Json?
+  /// Per-trait confidence [0..1].
+  confidence             Json?
+  /// L2-normalised 512-d ArcFace (InsightFace) identity embedding, mean of accepted photos.
+  faceEmbedding          Float[]  @default([]) @map("face_embedding")
+  /// Cached compiled identity description (describeDna) used inside every prompt.
+  promptFragment         String   @map("prompt_fragment")
+  /// Storage keys of the best reference photos (frontal first) used as identity references.
+  referencePhotoKeys     String[] @default([]) @map("reference_photo_keys")
+  extractorVersion       String   @map("extractor_version")
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+
+  avatar Avatar @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+
+  @@index([faceShape])
+  @@index([hairStyle])
+  @@index([skinTone])
+  @@map("avatar_dna")
+}
+
+/// A rendered look of a mascot in a given style / outfit / pose.
+model AvatarRender {
+  id           String   @id @default(cuid())
+  avatarId     String   @map("avatar_id")
+  styleId      String   @map("style_id")
+  generationId String?  @map("generation_id")
+  outfitKey    String?  @map("outfit_key")
+  poseKey      String?  @map("pose_key")
+  /// Transparent master PNG (private bucket, HD).
+  masterKey    String   @map("master_key")
+  /// Web-optimised display image (public bucket, watermarked on FREE).
+  imageKey     String   @map("image_key")
+  thumbKey     String   @map("thumb_key")
+  /// Identity similarity score (cosine vs DNA embedding) of the chosen candidate, if measurable.
+  identityScore Float?  @map("identity_score")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  avatar        Avatar      @relation("AvatarRenders", fields: [avatarId], references: [id], onDelete: Cascade)
+  primaryFor    Avatar?     @relation("PrimaryRender")
+  style         Style       @relation(fields: [styleId], references: [id])
+  generation    Generation? @relation(fields: [generationId], references: [id], onDelete: SetNull)
+
+  @@index([avatarId, createdAt])
+  @@index([styleId])
+  @@map("avatar_renders")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Generations (job ledger for every AI operation)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Generation {
+  id             String           @id @default(cuid())
+  userId         String           @map("user_id")
+  avatarId       String?          @map("avatar_id")
+  styleId        String?          @map("style_id")
+  type           GenerationType
+  status         GenerationStatus @default(QUEUED)
+  stage          String?
+  progress       Int              @default(0)
+  /// Validated request payload.
+  input          Json
+  /// Final compiled prompt(s) for auditability and prompt-regression analysis.
+  prompt         String?
+  provider       String?
+  model          String?
+  outputKeys     String[]         @default([]) @map("output_keys")
+  /// ID of the domain object produced (avatar render, sticker pack, meme, pfp, video).
+  resultId       String?          @map("result_id")
+  creditsCharged Int              @default(0) @map("credits_charged")
+  /// Lifetime FREE allowance units consumed (e.g. stickers) — refunded on failure.
+  quotaUnits     Int              @default(0) @map("quota_units")
+  /// Estimated provider cost in USD micro-dollars (1e-6 USD).
+  costMicros     Int              @default(0) @map("cost_micros")
+  errorCode      String?          @map("error_code")
+  errorMessage   String?          @map("error_message")
+  attempts       Int              @default(0)
+  priority       Int              @default(5)
+  idempotencyKey String?          @map("idempotency_key")
+  queuedAt       DateTime         @default(now()) @map("queued_at")
+  startedAt      DateTime?        @map("started_at")
+  completedAt    DateTime?        @map("completed_at")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar  Avatar?        @relation(fields: [avatarId], references: [id], onDelete: SetNull)
+  style   Style?         @relation(fields: [styleId], references: [id])
+  renders AvatarRender[]
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, createdAt])
+  @@index([userId, type, createdAt])
+  @@index([status, createdAt])
+  @@index([type, createdAt])
+  @@index([avatarId])
+  @@map("generations")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Outputs
+// ─────────────────────────────────────────────────────────────────────────────
+
+model StickerPack {
+  id              String            @id @default(cuid())
+  userId          String            @map("user_id")
+  avatarId        String            @map("avatar_id")
+  styleId         String            @map("style_id")
+  generationId    String?           @unique @map("generation_id")
+  title           String
+  status          StickerPackStatus @default(GENERATING)
+  /// Telegram set name: <prefix>_by_<bot_username>, unique on Telegram's side.
+  telegramSetName String?           @unique @map("telegram_set_name")
+  publishedAt     DateTime?         @map("published_at")
+  publishError    String?           @map("publish_error")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar   Avatar    @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+  style    Style     @relation(fields: [styleId], references: [id])
+  stickers Sticker[]
+
+  @@index([userId, createdAt])
+  @@index([avatarId])
+  @@map("sticker_packs")
+}
+
+model Sticker {
+  id             String      @id @default(cuid())
+  packId         String      @map("pack_id")
+  emotion        String
+  emoji          String
+  status         AssetStatus @default(PENDING)
+  /// 512x512 WEBP with transparency (Telegram static sticker format).
+  imageKey       String?     @map("image_key")
+  /// Transparent PNG master, reused by the meme generator.
+  masterKey      String?     @map("master_key")
+  telegramFileId String?     @map("telegram_file_id")
+  sortOrder      Int         @default(0) @map("sort_order")
+  errorMessage   String?     @map("error_message")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+
+  pack StickerPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+
+  @@unique([packId, emotion])
+  @@index([packId, sortOrder])
+  @@index([emotion])
+  @@map("stickers")
+}
+
+model Meme {
+  id           String      @id @default(cuid())
+  userId       String      @map("user_id")
+  avatarId     String      @map("avatar_id")
+  generationId String?     @unique @map("generation_id")
+  format       String
+  emotion      String?
+  topText      String?     @map("top_text")
+  bottomText   String?     @map("bottom_text")
+  status       AssetStatus @default(PENDING)
+  imageKey     String?     @map("image_key")
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar Avatar @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("memes")
+}
+
+model ProfilePicture {
+  id            String      @id @default(cuid())
+  userId        String      @map("user_id")
+  avatarId      String      @map("avatar_id")
+  generationId  String?     @unique @map("generation_id")
+  backgroundKey String      @map("background_key")
+  mode          String
+  outfitKey     String?     @map("outfit_key")
+  poseKey       String?     @map("pose_key")
+  status        AssetStatus @default(PENDING)
+  imageKey      String?     @map("image_key")
+  hdKey         String?     @map("hd_key")
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar Avatar @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("profile_pictures")
+}
+
+model Video {
+  id            String      @id @default(cuid())
+  userId        String      @map("user_id")
+  avatarId      String      @map("avatar_id")
+  generationId  String?     @unique @map("generation_id")
+  template      String
+  aspectRatio   String      @map("aspect_ratio")
+  prompt        String?
+  script        String?
+  voice         String?
+  provider      String?
+  providerJobId String?     @map("provider_job_id")
+  status        VideoStatus @default(QUEUED)
+  videoKey      String?     @map("video_key")
+  thumbnailKey  String?     @map("thumbnail_key")
+  durationSec   Float?      @map("duration_sec")
+  costUnits     Int         @default(1) @map("cost_units")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  avatar Avatar @relation(fields: [avatarId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([provider, providerJobId])
+  @@map("videos")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Monetisation
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Payment {
+  id                      String        @id @default(cuid())
+  userId                  String        @map("user_id")
+  subscriptionId          String?       @map("subscription_id")
+  productId               String        @map("product_id")
+  /// Amount in Telegram Stars.
+  amount                  Int
+  currency                String        @default("XTR")
+  status                  PaymentStatus @default(PENDING)
+  /// Opaque payload sent with the invoice; equals the original payment id for renewals' parent.
+  invoicePayload          String        @map("invoice_payload")
+  telegramPaymentChargeId String?       @unique @map("telegram_payment_charge_id")
+  providerPaymentChargeId String?       @map("provider_payment_charge_id")
+  isRecurring             Boolean       @default(false) @map("is_recurring")
+  isFirstRecurring        Boolean       @default(false) @map("is_first_recurring")
+  subscriptionExpiresAt   DateTime?     @map("subscription_expires_at")
+  raw                     Json?
+  paidAt                  DateTime?     @map("paid_at")
+  refundedAt              DateTime?     @map("refunded_at")
+  createdAt               DateTime      @default(now()) @map("created_at")
+  updatedAt               DateTime      @updatedAt @map("updated_at")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@index([invoicePayload])
+  @@index([paidAt])
+  @@map("payments")
+}
+
+model Subscription {
+  id                       String             @id @default(cuid())
+  userId                   String             @map("user_id")
+  productId                String             @map("product_id")
+  status                   SubscriptionStatus @default(ACTIVE)
+  isRecurring              Boolean            @default(true) @map("is_recurring")
+  /// Charge id of the first payment; required by editUserStarSubscription to cancel / re-enable.
+  telegramChargeId         String?            @unique @map("telegram_charge_id")
+  currentPeriodStart       DateTime           @map("current_period_start")
+  currentPeriodEnd         DateTime           @map("current_period_end")
+  cancelAtPeriodEnd        Boolean            @default(false) @map("cancel_at_period_end")
+  canceledAt               DateTime?          @map("canceled_at")
+  createdAt                DateTime           @default(now()) @map("created_at")
+  updatedAt                DateTime           @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payments Payment[]
+
+  @@index([userId, status])
+  @@index([status, currentPeriodEnd])
+  @@map("subscriptions")
+}
+
+/// Append-only credits ledger; users.credits is the running balance.
+model CreditLedger {
+  id           String       @id @default(cuid())
+  userId       String       @map("user_id")
+  delta        Int
+  balanceAfter Int          @map("balance_after")
+  reason       CreditReason
+  refType      String?      @map("ref_type")
+  refId        String?      @map("ref_id")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([refType, refId])
+  @@map("credit_ledger")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Trust & safety, operations
+// ─────────────────────────────────────────────────────────────────────────────
+
+model ModerationEvent {
+  id         String             @id @default(cuid())
+  userId     String?            @map("user_id")
+  type       ModerationType
+  severity   ModerationSeverity @default(LOW)
+  status     ModerationStatus   @default(OPEN)
+  details    Json
+  resolvedBy String?            @map("resolved_by")
+  resolvedAt DateTime?          @map("resolved_at")
+  createdAt  DateTime           @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([status, severity, createdAt])
+  @@index([userId, createdAt])
+  @@index([type, createdAt])
+  @@map("moderation_events")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?  @map("actor_id")
+  action     String
+  targetType String   @map("target_type")
+  targetId   String   @map("target_id")
+  metadata   Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  actor User? @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([targetType, targetId])
+  @@index([actorId, createdAt])
+  @@map("audit_logs")
+}
+
+/// Daily rollups written by the maintenance worker (DAU from Redis HLL, revenue, generations).
+model DailyStat {
+  date            DateTime @id @db.Date
+  newUsers        Int      @default(0) @map("new_users")
+  activeUsers     Int      @default(0) @map("active_users")
+  avatarsCreated  Int      @default(0) @map("avatars_created")
+  generations     Int      @default(0)
+  failedGenerations Int    @default(0) @map("failed_generations")
+  starsRevenue    Int      @default(0) @map("stars_revenue")
+  newPremium      Int      @default(0) @map("new_premium")
+  costMicros      BigInt   @default(0) @map("cost_micros")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("daily_stats")
+}
