@@ -64,6 +64,16 @@ The user is upserted from `initData.user` (premium flag, language, `allows_write
 Queued (`notify` queue, ≤ 25 msg/s globally, below Telegram's ~30 msg/s broadcast limit). Photo + caption + web_app button
 to the exact screen (`/mascot/:id`, sticker pack, video). 403 (blocked) → `notifications_enabled=false`, `allows_write_to_pm=false`.
 
+## Localisation
+
+Everything the bot says comes from a typed catalog (`apps/api/src/i18n/bot-messages.ts`, EN + RU): command replies,
+notifications, button labels, Stars invoice titles/descriptions, pre-checkout errors and share captions.
+Notifications are queued as keyed messages (`{ key: 'avatarReady', params: { name } }`) and rendered in the
+recipient's language when sent — explicit choice (`users.locale`) first, then Telegram's `language_code`. Jobs from a
+previous release that still carry pre-rendered text are delivered as-is (rolling deploys). Meme templates ("Nobody:",
+"EXPECTATION / REALITY") follow the language of the meme text. `pnpm telegram:setup` registers RU command
+descriptions and bot description too.
+
 ## Viral loops
 
 | Loop | Mechanism |

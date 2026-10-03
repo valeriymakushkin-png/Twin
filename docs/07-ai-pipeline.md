@@ -147,6 +147,26 @@ All costs are recorded per generation (`cost_micros`) and exported as `ai_provid
 
 ## Quality loop
 
+**Likeness evaluation harness** — `pnpm --filter @mascot/api eval:likeness --dir ./golden --styles all`
+(`apps/api/scripts/eval-likeness.ts`). Runs the production pipeline (face analysis → DNA → prompt compiler →
+provider → best-of-N) over a golden set of consenting testers (`<dir>/<tester>/consent.json` + 5–15 selfies), with
+no database or queues, and reports per style:
+
+| Metric | Meaning |
+|---|---|
+| identity | ArcFace cosine between the mascot's face and the tester's DNA embedding |
+| detection | share of mascots whose stylised face is still detectable |
+| rank-1 | the mascot is closer to its own tester than to every other tester (closed-set identification) |
+| margin | own similarity − best impostor similarity |
+| self-sim | leave-one-out similarity between a tester's own photos (the realistic ceiling) |
+
+Outputs `results.json` (next run's `--baseline`), `results.csv` (with a `human_rating_1_5` column for the 200-person
+panel), `report.md` and an `index.html` contact sheet. Gates — `--min-mean`, `--min-rank1`, `--min-detect`,
+`--baseline … --max-regression 0.02` — exit non-zero, so a prompt (`PROMPT_VERSION`), provider or model change is
+blocked when likeness regresses. `--synthetic N` runs the harness on procedural selfies with the mock analyzer
+(pipeline smoke test; scores are synthetic and flagged as such).
+
+
 - `identity_score`, prompts (`PROMPT_VERSION`), provider and model are stored per render → offline evaluation of likeness by style/provider.
 - `extractor_version` on DNA enables re-extraction campaigns when the extractor improves.
 - Admin style overrides allow A/B-style prompt fixes without deploys; failures are aggregated by `error_code` in the admin dashboard.

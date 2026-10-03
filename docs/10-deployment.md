@@ -66,6 +66,15 @@ flowchart TB
 3. **deploy.yml** (release / manual): pin image tags with `kustomize edit set image` → run `db-migrate` Job and wait → `kubectl apply -k` → wait for every rollout → `pnpm telegram:setup` (idempotent webhook/commands).
 4. Rollback: re-run deploy with the previous SHA (migrations are expand-only, so the previous release stays compatible).
 
+## Load testing (`infra/loadtest`)
+
+k6 script with Telegram-signed initData (every virtual user is a distinct Telegram account): `browse` (returning users:
+auth, profile, styles, mascots, library) and `create` (consent upload → mascot → progress polling → 5-sticker pack →
+meme). Profiles: `smoke`, `load` (target `MASCOTS_PER_HOUR`, default 5,000), `spike` (10× burst, then queue drain).
+Thresholds: HTTP errors < 1 %, read p95 < 300 ms, mascot end-to-end p95 < 90 s, generation success > 97 %.
+Run against staging with stub AI providers and the generators' IPs in `RATE_LIMIT_EXEMPT_IPS`; see
+`infra/loadtest/README.md` for commands and the reference single-node result.
+
 ## Configuration checklist (production)
 
 - [ ] `NODE_ENV=production` (boot fails on dev JWT secret, dev auth, local storage, dev bot token/webhook secret, missing CDN URL)

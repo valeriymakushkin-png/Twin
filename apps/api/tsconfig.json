@@ -17,6 +17,6 @@
     "tsBuildInfoFile": "dist/.tsbuildinfo",
     "types": ["node", "jest"]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/**/*.ts", "prisma/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

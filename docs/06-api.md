@@ -20,14 +20,14 @@ the original result instead of charging twice.
 | Method | Path | Description |
 |---|---|---|
 | GET | `/profile` | `UserProfileDto`: plan, premiumUntil, credits, entitlements, usage, subscription, referral link |
-| PATCH | `/profile` | `{ notificationsEnabled?, languageCode? }` |
+| PATCH | `/profile` | `{ notificationsEnabled?, locale?: 'en' \| 'ru' \| null }` — `null` = follow Telegram `language_code` |
 | GET | `/profile/referrals` | invited / activated / credits earned |
 | DELETE | `/profile` | GDPR erasure (202, async) |
 
 ### Photos
 | Method | Path | Description |
 |---|---|---|
-| POST | `/upload` | multipart: `photos` (1–20 files, ≤ 15 MB each), `consent=true` on first upload. → `{ photos: PhotoDto[], rejected: [{fileName, reason}] }`. Each photo: normalised, moderated, face-checked (count, pose, age gate). 40/hour |
+| POST | `/upload` | multipart: `photos` (1–20 files, ≤ 15 MB each), `consent=true` on first upload. → `{ photos: PhotoDto[], rejected: [{fileName, reason, code}] }` (`code`/`rejectCode` ∈ `PHOTO_REJECT_CODES` for localized UI). Each photo: normalised, moderated, face-checked (count, pose, age gate). 40/hour |
 | GET | `/photos` | recent unassigned photos (signed URLs) |
 | DELETE | `/photos/:id` | delete a photo |
 

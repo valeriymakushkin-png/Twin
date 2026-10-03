@@ -27,11 +27,14 @@ Status legend: ✅ implemented in this repository · 🔜 next · 💡 later
 
 - ✅ Video generation (Kling/Runway/Veo) with TTS voice-over, premium styles/outfits/poses, AI profile pictures
 - ✅ Viral surfaces: shareMessage, Stories widget, inline mode, public share page, referral credits
-- 🔜 Likeness evaluation harness: golden set of consenting testers, automatic identity-score + human rating per style/provider; gate prompt changes on it
-- 🔜 Localisation (RU, ES, PT, TR, ID — Telegram's largest markets) — strings are already centralised per screen
+- ✅ Likeness evaluation harness (`eval:likeness`): identity score, detection, rank-1 and margin per style + human-rating sheet; regression gates for prompt/provider changes
+- 🔜 Assemble the golden set (200 consenting testers) and record the first real baseline
+- ✅ Localisation EN + RU: Mini App (typed dictionaries, plurals, auto-detect + switch), bot, notifications, invoices, meme templates
+- 🔜 More languages (ES, PT, TR, ID — Telegram's largest markets): add a dictionary + bot catalog entry
 - 🔜 Telegram test-environment payment QA, Stars reconciliation script against `getStarTransactions`
 - 🔜 Legal review of style naming (brand-inspired styles), ToS/Privacy, DPA with every AI vendor
-- 🔜 Load test: 5k mascots/hour with provider stubs (k6 against API + KEDA scaling)
+- ✅ k6 load test (smoke / load / spike) with signed initData; single 4-vCPU node: ~1,350 mascots/hour at 0 % errors
+- 🔜 Staging run at 5k mascots/hour to validate KEDA scaling
 
 **KPIs:** D1 retention ≥ 35 %, share rate ≥ 20 % of activated users, K-factor ≥ 0.4, FREE → Premium ≥ 3 %.
 

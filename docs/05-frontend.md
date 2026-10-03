@@ -77,6 +77,22 @@ Procedural art: landing showcase, style previews and placeholders use `renderMas
 (DNA-driven SVG), so the marketing site works before any real showcase assets exist; real images can be swapped in
 via `NEXT_PUBLIC_SHOWCASE_BEFORE/AFTER`.
 
+### Localisation (EN / RU)
+
+- Dictionaries in `src/lib/i18n/{en,ru}.ts`. `en` is the source of truth; `ru` is typed as `Dict`, so a missing key
+  fails the build. `pnpm --filter @mascot/web i18n:check` (also in CI) verifies `{placeholder}` parity and Russian
+  plural forms (`one/few/many` via `Intl.PluralRules`).
+- `useT()` returns `{ t, f, p, pick }`: typed dictionary access (`t.create.generate`), interpolation, plurals and
+  catalog lookups with fallback (emotions, outfits, poses, backgrounds, meme formats, video templates, style names
+  and taglines, Mascot DNA traits).
+- Language resolution: saved choice (localStorage, mirrored to `users.locale` via `PATCH /profile`) → Telegram
+  `language_code` (ru, uk, be, kk… → Russian) → browser language. Profile → Settings → Language: Auto / EN / RU.
+- Server errors are localized by their stable `code` (`errors.codes`, photo reject codes `errors.photo`);
+  English falls back to the server's more specific message. Paywall copy uses localized headlines per reason.
+- The public share page `/m/<slug>` is server-rendered and picks the language from `Accept-Language`.
+- Adding a language: copy `ru.ts`, add the locale to `SUPPORTED_LOCALES` (`@mascot/shared`) and to the bot catalog
+  (`apps/api/src/i18n/bot-messages.ts`) — the compiler lists every missing string.
+
 ### Performance budget
 
 - First load JS for `/` < 200 KB gz; images are CDN WebP; generated media served from R2 with immutable caching.

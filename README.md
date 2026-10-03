@@ -66,10 +66,13 @@ Connecting a real bot: see [docs/08-telegram.md](docs/08-telegram.md) (BotFather
 ## Testing
 
 ```bash
-pnpm --filter @mascot/api test        # Jest: Telegram auth, DNA builder, prompts, image ops (33 tests)
+pnpm --filter @mascot/api test        # Jest: Telegram auth, DNA builder, prompts, image ops, i18n (46 tests)
 pnpm --filter @mascot/api test:e2e    # end-to-end against a running API + worker (mock AI + fake Bot API):
                                       # auth → upload → avatar pipeline → stickers + publish → meme → PFP →
-                                      # Stars payment via webhook → video → style variant → share → admin
+                                      # Stars payment via webhook → video → style variant → share → EN/RU → admin
+pnpm --filter @mascot/web i18n:check  # translation parity (placeholders, Russian plural forms)
+pnpm --filter @mascot/api eval:likeness --synthetic 3   # likeness harness smoke (real: --dir ./golden)
+k6 run infra/loadtest/k6-mascot.js -e PROFILE=smoke     # load test (see infra/loadtest/README.md)
 cd apps/face-service && pytest        # geometry & colorimetry
 pnpm -r typecheck && pnpm -r build
 ```
@@ -91,5 +94,7 @@ docs/              Architecture & operations documentation
 - **Mascot DNA**: identity extracted once (closed-vocabulary traits + landmark proportions + ArcFace embedding) and reused by every generation → consistent character across styles, stickers, memes and videos.
 - **Identity-scored generation**: candidates are re-analysed and ranked by ArcFace similarity to the user.
 - **Charge-before-work, refund-on-failure** with exactly-once semantics; idempotency keys on every generation.
+- **EN / RU out of the box**: typed dictionaries for the Mini App, localized bot, notifications, invoices and memes; auto-detected from Telegram.
+- **Measured likeness**: an evaluation harness scores identity per style and gates prompt/model changes.
 - **Privacy by design**: explicit biometric consent, private bucket + signed URLs, 30-day photo retention, GDPR erasure.
 - **Built for 100k users**: stateless API, queue-depth autoscaling (KEDA), cluster-wide provider rate limiting, priority queue for Premium, CDN-served media.

@@ -19,6 +19,7 @@ build/
 .storage/
 *.log
 coverage/
+reports/
 
 # python
 __pycache__/

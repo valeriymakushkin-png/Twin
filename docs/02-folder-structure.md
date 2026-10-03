@@ -12,13 +12,15 @@ pnpm workspace + Turborepo monorepo. One shared domain package, three TypeScript
 │   │   │   └── seed.ts              Styles + optional bootstrap admin
 │   │   ├── scripts/
 │   │   │   ├── e2e-smoke.ts         End-to-end test incl. mock Telegram Bot API
-│   │   │   └── telegram-setup.ts    setWebhook, commands, menu button, descriptions
+│   │   │   ├── eval-likeness.ts     Likeness evaluation harness (identity / rank-1 / gates)
+│   │   │   └── telegram-setup.ts    setWebhook, commands, menu button, descriptions (EN + RU)
 │   │   ├── src/
 │   │   │   ├── main.ts              HTTP entrypoint (helmet, CORS, /v1 prefix, body limits)
 │   │   │   ├── worker.ts            Worker entrypoint (+ /health, /metrics on :4001)
 │   │   │   ├── app.module.ts        API composition
 │   │   │   ├── worker.module.ts     Worker composition
 │   │   │   ├── core.module.ts       Shared infra + domain services (logger, prisma, redis, queues, AI…)
+│   │   │   ├── i18n/                bot catalog (EN/RU): commands, notifications, invoices, captions
 │   │   │   ├── config/              zod-validated env (prod refuses unsafe defaults) → AppConfig
 │   │   │   ├── common/              errors (Paywall/Pipeline/Provider), decorators, zod pipe, filter, utils
 │   │   │   ├── infra/
@@ -64,7 +66,8 @@ pnpm workspace + Turborepo monorepo. One shared domain package, three TypeScript
 │   │       │                        /library · /premium · /profile · /legal · /m/[slug] (SSR share page)
 │   │       ├── components/          ui kit, brand, landing, upload, processing, mascot, paywall, share
 │   │       ├── lib/                 api client, Telegram SDK wrapper, React Query hooks, image resize
-│   │       ├── providers/           auth (initData → JWT), query, Telegram back button
+│   │       │   └── i18n/            en.ts (source of truth) · ru.ts · useT() · catalog helpers
+│   │       ├── providers/           auth (initData → JWT), locale, query, Telegram back button
 │   │       └── store/               zustand: create flow, paywall
 │   ├── admin/                       Admin dashboard (Next.js + Recharts)
 │   │   └── src/{app,components,lib} overview, users, revenue, generations, abuse, payments, styles, login
@@ -75,11 +78,12 @@ pnpm workspace + Turborepo monorepo. One shared domain package, three TypeScript
 ├── packages/
 │   └── shared/                      Domain model shared by API, web and admin
 │       └── src/                     dna · styles · emotions · wardrobe · memes · videos · pfp · plans
-│                                    generation · api (zod request schemas + DTOs) · mascot-svg (procedural renderer)
+│                                    generation · api (zod request schemas + DTOs) · mascot-svg (procedural renderer) · locale
 ├── infra/
 │   ├── k8s/                         Kustomize base: deployments, HPA, KEDA, PDB, ingress, netpol, monitoring, alerts
 │   ├── minio/                       local R2 stand-in bootstrap
-│   └── cloudflare/                  R2 CORS + lifecycle rules
+│   ├── cloudflare/                  R2 CORS + lifecycle rules
+│   └── loadtest/                    k6 scenarios (signed initData) + fixtures
 ├── docs/                            This documentation
 ├── .github/workflows/               ci.yml (typecheck, tests, builds, e2e, images) · deploy.yml
 ├── docker-compose.yml               Postgres, Redis, MinIO (+ full app with --profile app)
