@@ -158,6 +158,15 @@ export class QuotaService {
     }
   }
 
+  /** Non-charging pre-check so the paywall is shown before the user is asked about photos. */
+  async assertCanCreateAvatar(user: QuotaUser): Promise<void> {
+    const ent = this.entitlements(user);
+    if (ent.maxAvatars === null) return;
+    const processing = await this.prisma.avatar.count({ where: { userId: user.id, status: 'PROCESSING', deletedAt: null } });
+    if (user.avatarsCreated + processing < ent.maxAvatars || user.credits >= CREDIT_COSTS.extraAvatar) return;
+    throw new PaywallException('AVATAR_LIMIT', 'Your free mascot is already created. Unlock unlimited mascots with Premium.');
+  }
+
   async authorizeStyleRender(userId: string, style: Pick<StyleRecipe, 'isPremium'>, premiumWardrobe: boolean): Promise<Charge> {
     const user = await this.loadUser(userId);
     const ent = this.entitlements(user);

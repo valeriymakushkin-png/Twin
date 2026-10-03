@@ -20,6 +20,9 @@ import { QuotaService } from '../quota/quota.service';
 import { TelegramBotService } from '../telegram/telegram-bot.service';
 import type { TgPreCheckoutQuery, TgRefundedPayment, TgSuccessfulPayment, TgUser } from '../telegram/telegram.types';
 
+type OwnedPayment = Payment & { userId: string };
+const isOwned = (p: Payment): p is OwnedPayment => p.userId !== null;
+
 /** Grace period before a recurring subscription without a renewal payment is expired. */
 const RENEWAL_GRACE_MS = 6 * 3600_000;
 
@@ -87,7 +90,7 @@ export class PaymentsService {
     let error: string | null = null;
     try {
       const payment = await this.prisma.payment.findUnique({ where: { id: query.invoice_payload }, include: { user: true } });
-      if (!payment) error = 'Invoice not found. Please try again from the app.';
+      if (!payment?.user) error = 'Invoice not found. Please try again from the app.';
       else if (payment.status !== 'PENDING') error = 'This invoice was already used. Please create a new one.';
       else if (payment.user.telegramId !== BigInt(query.from.id)) error = 'This invoice belongs to another account.';
       else if (payment.amount !== query.total_amount || query.currency !== 'XTR') error = 'Price changed. Please reopen the offer.';
@@ -105,7 +108,7 @@ export class PaymentsService {
     if (duplicate) return;
 
     const original = await this.prisma.payment.findUnique({ where: { id: sp.invoice_payload } });
-    if (!original) {
+    if (!original || !isOwned(original)) {
       this.logger.error(`successful_payment for unknown payload ${sp.invoice_payload} (charge ${sp.telegram_payment_charge_id})`);
       return;
     }
@@ -149,7 +152,7 @@ export class PaymentsService {
           },
         });
       }
-      await this.fulfil(tx, payment, product, original, expiresAt, isRenewal);
+      await this.fulfil(tx, { ...payment, userId: original.userId }, product, original, expiresAt, isRenewal);
     });
 
     this.metrics.paymentsTotal.inc({ product: product.id, outcome: isRenewal ? 'renewal' : 'paid' });
@@ -169,7 +172,7 @@ export class PaymentsService {
 
   private async fulfil(
     tx: Prisma.TransactionClient,
-    payment: Payment,
+    payment: OwnedPayment,
     product: StarProduct,
     original: Payment,
     expiresAt: Date | null,
@@ -232,7 +235,7 @@ export class PaymentsService {
 
   async handleRefund(refund: TgRefundedPayment): Promise<void> {
     const payment = await this.prisma.payment.findUnique({ where: { telegramPaymentChargeId: refund.telegram_payment_charge_id } });
-    if (!payment || payment.status === 'REFUNDED') return;
+    if (!payment || !isOwned(payment) || payment.status === 'REFUNDED') return;
     await this.revoke(payment);
     const refunds = await this.prisma.payment.count({
       where: { userId: payment.userId, status: 'REFUNDED', refundedAt: { gte: addDays(new Date(), -90) } },
@@ -240,7 +243,7 @@ export class PaymentsService {
     if (refunds >= 3) await this.abuse.record('PAYMENT_ABUSE', 'MEDIUM', payment.userId, { refundsLast90d: refunds });
   }
 
-  private async revoke(payment: Payment): Promise<void> {
+  private async revoke(payment: OwnedPayment): Promise<void> {
     const product = STAR_PRODUCTS[payment.productId as StarProductId];
     await this.prisma.$transaction(async (tx) => {
       await tx.payment.update({ where: { id: payment.id }, data: { status: 'REFUNDED', refundedAt: new Date() } });
@@ -265,7 +268,9 @@ export class PaymentsService {
   async refund(paymentId: string, actorId: string): Promise<void> {
     const payment = await this.prisma.payment.findUnique({ where: { id: paymentId }, include: { user: true } });
     if (!payment) throw new NotFound('Payment');
-    if (payment.status !== 'PAID' || !payment.telegramPaymentChargeId) throw new AppException('NOT_REFUNDABLE', 'Only paid payments can be refunded');
+    if (payment.status !== 'PAID' || !payment.telegramPaymentChargeId || !payment.user || !isOwned(payment)) {
+      throw new AppException('NOT_REFUNDABLE', 'Only paid payments of existing users can be refunded');
+    }
     await this.bot.refundStarPayment(Number(payment.user.telegramId), payment.telegramPaymentChargeId);
     await this.revoke(payment);
     await this.prisma.auditLog.create({ data: { actorId, action: 'payment.refund', targetType: 'payment', targetId: payment.id } });

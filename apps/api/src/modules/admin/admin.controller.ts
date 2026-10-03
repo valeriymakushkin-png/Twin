@@ -284,8 +284,8 @@ export class AdminController {
     return rows.map((p) => ({
       id: p.id,
       userId: p.userId,
-      username: p.user.username,
-      telegramId: p.user.telegramId.toString(),
+      username: p.user?.username ?? null,
+      telegramId: p.user?.telegramId.toString() ?? null,
       productId: p.productId,
       amount: p.amount,
       status: p.status,

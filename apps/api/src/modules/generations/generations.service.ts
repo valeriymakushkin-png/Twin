@@ -79,6 +79,10 @@ export class GenerationsService {
     return created.result;
   }
 
+  findIdempotent(userId: string, idempotencyKey: string): Promise<Generation | null> {
+    return this.prisma.generation.findUnique({ where: { userId_idempotencyKey: { userId, idempotencyKey } } });
+  }
+
   async toDto(generation: Generation): Promise<GenerationDto> {
     let queuePosition: number | null = null;
     if (generation.status === 'QUEUED') {

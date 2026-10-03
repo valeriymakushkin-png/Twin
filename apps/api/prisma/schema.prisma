@@ -553,7 +553,8 @@ model Video {
 
 model Payment {
   id                      String        @id @default(cuid())
-  userId                  String        @map("user_id")
+  /// Nullable: financial records are retained (anonymised) when a user exercises GDPR erasure.
+  userId                  String?       @map("user_id")
   subscriptionId          String?       @map("subscription_id")
   productId               String        @map("product_id")
   /// Amount in Telegram Stars.
@@ -573,7 +574,7 @@ model Payment {
   createdAt               DateTime      @default(now()) @map("created_at")
   updatedAt               DateTime      @updatedAt @map("updated_at")
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
   subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
 
   @@index([userId, createdAt])

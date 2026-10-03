@@ -147,7 +147,7 @@ function hairLayers(style: HairStyle, g: HeadGeometry, color: string, seed: numb
     case 'quiff':
     case 'pompadour':
       front.push(`<path d="${cap(style === 'pompadour' ? 70 : 52, 56)}" fill="${fill}"/>`);
-      front.push(`<path d="M ${CX - 60} ${top - 18} C ${CX - 20} ${top - (style === 'pompadour' ? 80 : 60)} ${CX + 70} ${top - 50} ${CX + 70} ${top + 6}" stroke="${light}" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.6"/>`);
+      front.push(`<path d="M ${CX - 64} ${top + 8} C ${CX - 30} ${top - (style === 'pompadour' ? 34 : 22)} ${CX + 40} ${top - (style === 'pompadour' ? 30 : 18)} ${CX + 72} ${top + 18}" stroke="${light}" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.55"/>`);
       break;
     case 'mohawk':
       front.push(`<path d="${cap(4, 50)}" fill="${color}" opacity="0.35"/>`);
@@ -359,7 +359,7 @@ function facialHair(dna: MascotDna, g: HeadGeometry, hairHex: string): string {
   const y = CY + g.h * 0.5;
   switch (dna.facialHair) {
     case 'stubble':
-      return `<path d="M ${CX - g.jw} ${CY + g.h * 0.35} C ${CX - g.jw} ${CY + g.h * 1.05} ${CX + g.jw} ${CY + g.h * 1.05} ${CX + g.jw} ${CY + g.h * 0.35} C ${CX + 40} ${y + 30} ${CX - 40} ${y + 30} ${CX - g.jw} ${CY + g.h * 0.35} Z" fill="${c}" opacity="0.22"/>`;
+      return `<path d="M ${CX - g.jw + 6} ${CY + g.h * 0.5} C ${CX - g.jw + 6} ${CY + g.h * 1.02} ${CX + g.jw - 6} ${CY + g.h * 1.02} ${CX + g.jw - 6} ${CY + g.h * 0.5} C ${CX + 50} ${y + 46} ${CX - 50} ${y + 46} ${CX - g.jw + 6} ${CY + g.h * 0.5} Z" fill="${c}" opacity="0.13"/>`;
     case 'mustache':
       return `<path d="M ${CX - 40} ${y - 4} Q ${CX - 20} ${y - 22} ${CX} ${y - 10} Q ${CX + 20} ${y - 22} ${CX + 40} ${y - 4} Q ${CX} ${y - 2} ${CX - 40} ${y - 4} Z" fill="${c}"/>`;
     case 'goatee':

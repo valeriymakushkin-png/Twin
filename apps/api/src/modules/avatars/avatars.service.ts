@@ -50,17 +50,25 @@ export class AvatarsService {
 
   /** POST /generate-avatar */
   async generate(userId: string, input: GenerateAvatarInput, idempotencyKey?: string): Promise<AvatarLaunchResult> {
+    if (idempotencyKey) {
+      const existing = await this.generations.findIdempotent(userId, idempotencyKey);
+      if (existing?.avatarId) {
+        return { avatar: this.mapper.avatar(await this.loadOwned(userId, existing.avatarId)), generation: await this.generations.toDto(existing) };
+      }
+    }
     const style = await this.styles.bySlug(input.styleSlug);
     const wardrobe = validateWardrobe(input.outfitKey, input.poseKey);
     const user = await this.quota.loadUser(userId);
     this.quota.assertStyleAllowed(user, style, wardrobe.premium);
+    await this.quota.assertCanCreateAvatar(user);
 
+    // Photos can be reused across a user's mascots, except while another pipeline is using them.
     const photos = await this.prisma.photo.findMany({
       where: {
         id: { in: input.photoIds },
         userId,
         status: { in: ['ACCEPTED', 'UPLOADED'] },
-        OR: [{ avatarId: null }, { avatar: { status: 'FAILED' } }],
+        OR: [{ avatarId: null }, { avatar: { status: { not: 'PROCESSING' } } }],
       },
       select: { id: true },
     });

@@ -10,6 +10,7 @@ import { cosine } from './dna/dna-builder';
 import { FACE_ANALYZER, type FaceAnalyzer } from './face/face.types';
 import { IMAGE_PROVIDER, type ImageGenerationRequest, type ImageProvider } from './image/image-provider.types';
 import type { PromptContext } from './prompts/prompt-compiler';
+import { ProviderRateLimiter } from './provider-rate-limiter';
 import { fitMaster, hasTransparentBackground, removeUniformBackground } from './render/image-ops';
 
 export interface GeneratedMaster {
@@ -51,6 +52,7 @@ export class MascotEngine {
     private readonly storage: StorageService,
     private readonly styles: StyleCatalogService,
     private readonly metrics: MetricsService,
+    private readonly limiter: ProviderRateLimiter,
   ) {}
 
   async loadAvatarContext(avatarId: string, styleId?: string): Promise<AvatarContext> {
@@ -135,9 +137,10 @@ export class MascotEngine {
    * transparent 1024² master. Identity scoring is best-effort: stylised faces are not
    * always detectable, in which case the first candidate wins.
    */
-  async generateMaster(req: ImageGenerationRequest, scoreAgainst?: number[]): Promise<GeneratedMaster> {
+  async generateMaster(req: ImageGenerationRequest, scoreAgainst?: number[], opts: { raw?: boolean } = {}): Promise<GeneratedMaster> {
     const started = Date.now();
     let result;
+    if (this.images.name !== 'mock') await this.limiter.acquire(`image:${this.images.name}`, this.config.IMAGE_PROVIDER_RPM);
     try {
       result = await this.images.generate(req);
       this.metrics.providerRequests.inc({ provider: result.provider, operation: req.operation, outcome: 'ok' });
@@ -147,6 +150,9 @@ export class MascotEngine {
       throw error;
     }
     if (!result.images.length) throw new PipelineError('EMPTY_RESULT', 'Provider returned no images', true);
+    if (opts.raw) {
+      return { master: result.images[0]!, identityScore: null, provider: result.provider, model: result.model, costMicros: result.costMicros };
+    }
 
     const candidates = await Promise.all(
       result.images.map(async (img) => fitMaster(await this.ensureTransparent(img, result.transparent))),

@@ -11,6 +11,7 @@ import { IMAGE_PROVIDER, type ImageProvider } from './image/image-provider.types
 import { MockImageProvider } from './image/mock-image.provider';
 import { OpenAiImageProvider } from './image/openai-image.provider';
 import { MascotEngine } from './mascot-engine.service';
+import { ProviderRateLimiter } from './provider-rate-limiter';
 import { MockTtsProvider, OpenAiTtsProvider, TTS_PROVIDER, type TtsProvider } from './tts/tts.service';
 import { KlingVideoProvider } from './video/kling.provider';
 import { MockVideoProvider } from './video/mock.provider';
@@ -73,8 +74,9 @@ import { VIDEO_PROVIDER, type VideoProvider } from './video/video-provider.types
       useFactory: (config: AppConfig): TtsProvider =>
         config.TTS_PROVIDER === 'openai' ? new OpenAiTtsProvider(config) : new MockTtsProvider(),
     },
+    ProviderRateLimiter,
     MascotEngine,
   ],
-  exports: [IMAGE_PROVIDER, VIDEO_PROVIDER, FACE_ANALYZER, VISION_EXTRACTOR, TTS_PROVIDER, MascotEngine],
+  exports: [IMAGE_PROVIDER, VIDEO_PROVIDER, FACE_ANALYZER, VISION_EXTRACTOR, TTS_PROVIDER, MascotEngine, ProviderRateLimiter],
 })
 export class AiModule {}

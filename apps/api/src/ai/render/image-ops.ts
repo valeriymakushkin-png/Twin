@@ -179,7 +179,12 @@ export async function removeUniformBackground(input: Buffer, tolerance = 42): Pr
     if (i < w * (h - 1)) seed(i + w);
   }
 
-  const feathered = await sharp(Buffer.from(mask), { raw: { width: w, height: h, channels: 1 } }).blur(1.1).raw().toBuffer();
+  const feathered = await sharp(Buffer.from(mask), { raw: { width: w, height: h, channels: 1 } })
+    .blur(1.1)
+    .toColourspace('b-w')
+    .extractChannel(0)
+    .raw()
+    .toBuffer();
   for (let i = 0; i < w * h; i++) {
     data[i * 4 + 3] = Math.min(data[i * 4 + 3] as number, feathered[i] as number);
   }
@@ -256,7 +261,8 @@ export async function stickerize(png: Buffer): Promise<Buffer> {
     .extend({ top: PAD, bottom: PAD, left: PAD, right: PAD, background: TRANSPARENT })
     .png()
     .toBuffer();
-  const alpha = await sharp(inner).extractChannel(3).blur(6).threshold(6).raw().toBuffer();
+  const alpha = await sharp(inner).extractChannel(3).blur(6).threshold(6).toColourspace('b-w').extractChannel(0).raw().toBuffer();
+  if (alpha.length !== S * S) throw new PipelineError('STICKER_MASK', `unexpected mask size ${alpha.length}`, true);
   const outline = await sharp({ create: { width: S, height: S, channels: 3, background: '#ffffff' } })
     .joinChannel(alpha, { raw: { width: S, height: S, channels: 1 } })
     .png()
@@ -366,7 +372,7 @@ export async function characterCard(opts: {
     const col = i % 2;
     const row = Math.floor(i / 2);
     const x = 70 + col * 480;
-    const y = 1085 + row * 78;
+    const y = 1030 + row * 76;
     const value = h.value.length > 22 ? `${h.value.slice(0, 21)}…` : h.value;
     return `<g><rect x="${x}" y="${y}" width="460" height="62" rx="18" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.12"/>
       <text x="${x + 22}" y="${y + 40}" font-family="${UI_FONT}" font-size="22" font-weight="600" fill="#ffffff" fill-opacity="0.55">${escapeXml(h.label.toUpperCase())}</text>
@@ -385,12 +391,12 @@ export async function characterCard(opts: {
     <text x="80" y="110" font-family="${UI_FONT}" font-size="26" font-weight="800" letter-spacing="6" fill="#ffffff" fill-opacity="0.85">MASCOT DNA</text>
     <rect x="${W - 80 - 260}" y="74" width="260" height="52" rx="26" fill="#000000" fill-opacity="0.35"/>
     <text x="${W - 80 - 130}" y="109" font-family="${UI_FONT}" font-size="24" font-weight="700" fill="#ffffff" text-anchor="middle">${escapeXml(opts.styleName)}</text>
-    <text x="80" y="1040" font-family="${UI_FONT}" font-size="76" font-weight="900" fill="#ffffff">${escapeXml(name)}</text>
-    <text x="${W - 80}" y="${H - 64}" font-family="${UI_FONT}" font-size="24" font-weight="700" fill="#ffffff" fill-opacity="0.6" text-anchor="end">✦ Mascot AI</text>
+    <text x="80" y="1000" font-family="${UI_FONT}" font-size="76" font-weight="900" fill="#ffffff">${escapeXml(name)}</text>
+    <text x="${W - 80}" y="${H - 62}" font-family="${UI_FONT}" font-size="24" font-weight="700" fill="#ffffff" fill-opacity="0.6" text-anchor="end">✦ Mascot AI</text>
     ${chips.join('')}
   </svg>`;
-  const mascot = await sharp(opts.render).resize(860, 860, { fit: 'contain', background: TRANSPARENT }).png().toBuffer();
-  let card = await sharp(Buffer.from(svg)).composite([{ input: mascot, top: 140, left: 110 }]).png().toBuffer();
+  const mascot = await sharp(opts.render).resize(800, 800, { fit: 'contain', background: TRANSPARENT }).png().toBuffer();
+  let card = await sharp(Buffer.from(svg)).composite([{ input: mascot, top: 130, left: 140 }]).png().toBuffer();
   if (opts.watermark) card = await applyWatermark(card);
   return card;
 }

@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { z } from 'zod';
 
 const bool = z
@@ -133,8 +134,15 @@ export type Env = z.infer<typeof EnvSchema>;
 
 let cached: Env | undefined;
 
+let dotenvLoaded = false;
+
 export function loadEnv(source: NodeJS.ProcessEnv = process.env): Env {
   if (cached && source === process.env) return cached;
+  // Local convenience: load ./.env outside production (real environment variables win).
+  if (!dotenvLoaded && source === process.env && process.env.NODE_ENV !== 'production' && existsSync('.env')) {
+    process.loadEnvFile('.env');
+    dotenvLoaded = true;
+  }
   const parsed = EnvSchema.safeParse(source);
   if (!parsed.success) {
     const message = parsed.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n');

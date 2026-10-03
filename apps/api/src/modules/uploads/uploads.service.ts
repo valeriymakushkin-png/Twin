@@ -97,10 +97,17 @@ export class UploadsService {
     const existingBySha = new Map(existing.map((p) => [p.sha256, p]));
 
     const created: Photo[] = [];
+    const seen = new Set<string>();
     const fresh = accepted.filter((a) => {
       const dup = existingBySha.get(a.sha256);
-      if (dup) created.push(dup);
-      return !dup;
+      if (dup && !seen.has(a.sha256)) created.push(dup);
+      if (dup || seen.has(a.sha256)) {
+        if (!dup) rejected.push({ fileName: a.file.originalname, reason: 'Duplicate photo.' });
+        seen.add(a.sha256);
+        return false;
+      }
+      seen.add(a.sha256);
+      return true;
     });
 
     // Face analysis on the normalised bytes (batched) for immediate per-photo feedback.
