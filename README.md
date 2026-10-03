@@ -50,8 +50,9 @@ pnpm --filter @mascot/web dev                  # Mini App http://localhost:3000 
 pnpm --filter @mascot/admin dev                # Admin    http://localhost:3001  ("Dev login")
 ```
 
-With mock providers every feature works end to end: face analysis is simulated, mascots are rendered procedurally
-from the extracted DNA, videos are produced locally with ffmpeg.
+With mock providers every feature works end to end: face analysis is simulated, mascots are rendered from the
+extracted DNA by the same three.js 3D renderer the Mini App uses (headless Chromium; procedural SVG if Chromium is
+missing), videos are produced locally with ffmpeg.
 
 Full stack in containers (incl. MinIO as R2 and the real face service):
 
@@ -84,13 +85,15 @@ apps/api           NestJS API, Telegram webhook, BullMQ workers, Prisma schema
 apps/web           Telegram Mini App
 apps/admin         Admin dashboard
 apps/face-service  FastAPI · InsightFace · MediaPipe · rembg
-packages/shared    Mascot DNA, style engine, plans, API contracts, procedural mascot renderer
+packages/shared    Mascot DNA, style engine, plans, wardrobe, API contracts, SVG fallback renderer
+packages/mascot-3d Real-time 3D character renderer (three.js): live viewer, snapshots, headless bundle
 infra/             Kubernetes (Kustomize), MinIO bootstrap, Cloudflare R2 config
 docs/              Architecture & operations documentation
 ```
 
 ## Highlights
 
+- **Live 3D character**: the Mini App renders your mascot in real time from its DNA (three.js) — rotate it, switch styles, outfits and accessories instantly; black & red design system.
 - **Mascot DNA**: identity extracted once (closed-vocabulary traits + landmark proportions + ArcFace embedding) and reused by every generation → consistent character across styles, stickers, memes and videos.
 - **Identity-scored generation**: candidates are re-analysed and ranked by ArcFace similarity to the user.
 - **Charge-before-work, refund-on-failure** with exactly-once semantics; idempotency keys on every generation.

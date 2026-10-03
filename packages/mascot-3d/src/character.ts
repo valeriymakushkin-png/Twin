@@ -127,7 +127,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   const lashMat = material(look, 'gloss', { color: shade(hairHex, -0.6), roughness: 0.4 });
   const feminine = dna.presentation === 'feminine';
   const shapeLid =
-    dna.eyeShape === 'hooded' ? 0.32 : dna.eyeShape === 'monolid' ? 0.36 : dna.eyeShape === 'almond' ? 0.2 : dna.eyeShape === 'round' ? 0.02 : dna.eyeShape === 'deep-set' ? 0.22 : 0.12;
+    dna.eyeShape === 'hooded' ? 0.32 : dna.eyeShape === 'monolid' ? 0.36 : dna.eyeShape === 'almond' ? 0.12 : dna.eyeShape === 'round' ? 0.02 : dna.eyeShape === 'deep-set' ? 0.22 : 0.12;
   const shapeTilt = dna.eyeShape === 'upturned' ? 0.14 : dna.eyeShape === 'downturned' ? -0.14 : 0;
   const eyes: EyeRig[] = [];
   for (const s of [-1, 1] as const) {
@@ -213,7 +213,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   const hair = buildHair(look.face === 'dots' ? 'crew-cut' : dna.hairStyle, P, hairMat, seed, look.hairDetail, look.face === 'dots');
   head.add(hair.group);
   if (look.face === 'full') {
-    const beard = buildFacialHair(dna.facialHair, P, hairMat, seed);
+    const beard = buildFacialHair(dna.facialHair, P, hairMat, seed, (x, y) => map.surfaceZ(x, y) || 0.85);
     if (beard) head.add(beard);
   }
 

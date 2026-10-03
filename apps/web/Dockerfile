@@ -11,9 +11,11 @@ ARG NEXT_PUBLIC_MINI_APP_SHORT_NAME=app
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL NEXT_PUBLIC_BOT_USERNAME=$NEXT_PUBLIC_BOT_USERNAME NEXT_PUBLIC_MINI_APP_SHORT_NAME=$NEXT_PUBLIC_MINI_APP_SHORT_NAME
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json tsconfig.base.json ./
 COPY packages/shared/package.json packages/shared/
+COPY packages/mascot-3d/package.json packages/mascot-3d/
 COPY apps/web/package.json apps/web/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter @mascot/web...
 COPY packages/shared packages/shared
+COPY packages/mascot-3d packages/mascot-3d
 COPY apps/web apps/web
 RUN pnpm --filter @mascot/shared build && pnpm --filter @mascot/web build
 

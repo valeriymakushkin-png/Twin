@@ -163,3 +163,9 @@
   background-size: 18px 18px;
   background-position: 0 0, 0 9px, 9px -9px, -9px 0;
 }
+
+/* Characters are cut at the chest: fade the bottom edge into the canvas instead of a hard line. */
+@utility fade-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 97%);
+  mask-image: linear-gradient(to bottom, #000 70%, transparent 97%);
+}

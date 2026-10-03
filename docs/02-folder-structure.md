@@ -33,7 +33,7 @@ pnpm workspace + Turborepo monorepo. One shared domain package, three TypeScript
 │   │   │   │   ├── face/            FaceAnalyzer interface, face-service client, deterministic mock
 │   │   │   │   ├── dna/             DNA builder (pure), OpenAI vision extractor (strict JSON schema), mock
 │   │   │   │   ├── prompts/         Prompt compiler (avatar, style, sticker, meme, pfp, video)
-│   │   │   │   ├── image/           OpenAI Images, Flux Kontext, procedural mock
+│   │   │   │   ├── image/           OpenAI Images, Flux Kontext, mock (headless 3D / SVG)
 │   │   │   │   ├── video/           Kling, Runway, Veo, ffmpeg mock
 │   │   │   │   ├── tts/             OpenAI TTS, mock
 │   │   │   │   ├── media/           ffmpeg helpers (mux, thumbnail, normalise)
@@ -76,9 +76,13 @@ pnpm workspace + Turborepo monorepo. One shared domain package, three TypeScript
 │       ├── tests/                   pytest (geometry, colorimetry)
 │       └── Dockerfile               bakes model weights into the image
 ├── packages/
-│   └── shared/                      Domain model shared by API, web and admin
-│       └── src/                     dna · styles · emotions · wardrobe · memes · videos · pfp · plans
-│                                    generation · api (zod request schemas + DTOs) · mascot-svg (procedural renderer) · locale
+│   ├── shared/                      Domain model shared by API, web and admin
+│   │   └── src/                     dna · styles · emotions · wardrobe · memes · videos · pfp · plans
+│   │                                generation · api (zod request schemas + DTOs) · mascot-svg (SVG fallback) · locale
+│   └── mascot-3d/                   Real-time three.js character renderer
+│       ├── src/                     head (sculpt + front map) · face (painted texture) · hair · clumps · body
+│       │                            accessories · props · expressions · styles · materials · character · stage · scan
+│       └── headless/                entry bundled to dist/headless.js for server-side renders (mock provider)
 ├── infra/
 │   ├── k8s/                         Kustomize base: deployments, HPA, KEDA, PDB, ingress, netpol, monitoring, alerts
 │   ├── minio/                       local R2 stand-in bootstrap

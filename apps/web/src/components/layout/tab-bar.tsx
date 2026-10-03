@@ -20,6 +20,8 @@ export function TabBar() {
   const { t } = useT();
   return (
     <nav className="fixed inset-x-0 bottom-0 z-30 mx-auto max-w-md px-4 pb-safe">
+      {/* Scrim: content scrolling under the floating bar fades into the canvas. */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[120px] bg-gradient-to-t from-canvas via-canvas/90 to-transparent" />
       <div className="mb-3 flex items-center justify-around rounded-[24px] border border-white/[0.08] bg-[#0c0c0e]/95 px-2 py-1.5 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.9)] backdrop-blur-xl">
         {TABS.map(({ href, key, icon: Icon, ...rest }) => {
           const accent = 'accent' in rest && rest.accent;

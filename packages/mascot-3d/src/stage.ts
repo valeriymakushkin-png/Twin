@@ -4,9 +4,10 @@ import type { MascotDna } from '@mascot/shared';
 import { buildMascot, type MascotOptions, type MascotRig } from './character';
 import type { StyleLook } from './styles';
 
-export type Framing = 'bust' | 'portrait' | 'head' | 'sticker';
+export type Framing = 'hero' | 'bust' | 'portrait' | 'head' | 'sticker';
 
 const FRAMES: Record<Framing, { y: number; dist: number; fov: number }> = {
+  hero: { y: -0.55, dist: 11.4, fov: 22 },
   bust: { y: -0.36, dist: 10.2, fov: 22 },
   portrait: { y: -0.12, dist: 8.6, fov: 22 },
   head: { y: 0.1, dist: 7.2, fov: 22 },

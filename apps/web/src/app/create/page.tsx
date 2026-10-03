@@ -140,7 +140,7 @@ export default function CreatePage() {
         right={
           flow.photos.length > 0 ? (
             <span className="mt-1.5 shrink-0 rounded-full border border-brand/40 bg-brand/10 px-2.5 py-1 font-mono text-[12px] font-semibold text-white">
-              {accepted.length}/{UPLOAD_RULES.minPhotos}
+              {enough ? `${accepted.length} ✓` : `${accepted.length}/${UPLOAD_RULES.minPhotos}`}
             </span>
           ) : undefined
         }

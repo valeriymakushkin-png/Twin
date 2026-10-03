@@ -30,7 +30,7 @@ export function Hero({ onCreate, ctaLabel }: { onCreate: () => void; ctaLabel?: 
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="mt-3 text-[32px] font-extrabold leading-[1.05] tracking-[-0.04em]"
       >
-        {t.landing.h1a} <span className="text-brand-grad">{t.landing.h1b}</span>
+        {t.landing.h1a} <span className="text-brand-grad whitespace-nowrap">{t.landing.h1b}</span>
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 12 }}
@@ -43,7 +43,7 @@ export function Hero({ onCreate, ctaLabel }: { onCreate: () => void; ctaLabel?: 
 
       <div className="relative mx-auto mt-2 h-[400px] w-full">
         <div className="glow-red absolute left-1/2 top-[46%] size-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl" />
-        <Mascot3D dna={HERO_DNA} framing="bust" className="absolute inset-x-[-6%] -top-2 bottom-0" />
+        <Mascot3D dna={HERO_DNA} framing="hero" className="fade-bottom absolute inset-x-[-6%] -top-2 bottom-0" />
         {TILES.map((tile) => (
           <motion.div
             key={tile.emotion}

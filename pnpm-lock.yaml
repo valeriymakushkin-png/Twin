@@ -78,6 +78,9 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.700.0
         version: 3.1146.0
+      '@mascot/mascot-3d':
+        specifier: workspace:*
+        version: link:../../packages/mascot-3d
       '@mascot/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -172,6 +175,10 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
+    optionalDependencies:
+      playwright-core:
+        specifier: 1.56.1
+        version: 1.56.1
 
   apps/web:
     dependencies:
@@ -3510,6 +3517,11 @@ packages:
 
   pkg-types@2.3.3:
     resolution: {integrity: sha512-j/lCFdcppV0JxWpCEITdbDltBxPP6cHT+yNJ6Go2OgoSA9518X847X9z0p6LtA4Nc16+eQzCZjRrWanTGvHJ5w==}
+
+  playwright-core@1.56.1:
+    resolution: {integrity: sha512-hutraynyn31F+Bifme+Ps9Vq59hKuUCz7H1kDOcBs+2oGguKkWTU50bBWrtz34OUWmIwpBTWDxaRPXrIXkgvmQ==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   pluralize@8.0.0:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
@@ -7693,6 +7705,9 @@ snapshots:
       confbox: 0.3.1
       exsolve: 1.1.1
       pathe: 2.0.3
+
+  playwright-core@1.56.1:
+    optional: true
 
   pluralize@8.0.0: {}
 

@@ -8,11 +8,15 @@ WORKDIR /repo
 FROM base AS build
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json tsconfig.base.json ./
 COPY packages/shared/package.json packages/shared/
+COPY packages/mascot-3d/package.json packages/mascot-3d/
 COPY apps/api/package.json apps/api/
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --filter @mascot/api... --ignore-scripts
 COPY packages/shared packages/shared
+COPY packages/mascot-3d packages/mascot-3d
 COPY apps/api apps/api
+# mascot-3d ships the headless three.js bundle used by the dev/mock image provider
 RUN pnpm --filter @mascot/shared build \
+ && pnpm --filter @mascot/mascot-3d build \
  && pnpm --filter @mascot/api exec prisma generate \
  && pnpm --filter @mascot/api build \
  && pnpm --filter @mascot/api deploy --legacy --prod /prod/api \

@@ -65,9 +65,9 @@ export default function PremiumPage() {
       <Card className="mt-2.5 flex items-center gap-3 p-4">
         <LogoMark className="size-9" />
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 text-[14.5px] font-bold">
-            {t.premium.yearly}
-            <Badge tone="premium">{t.premium.save}</Badge>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[14.5px] font-bold">
+            <span className="whitespace-nowrap">{t.premium.yearly}</span>
+            <Badge tone="premium" className="whitespace-nowrap">{t.premium.save}</Badge>
           </div>
           <p className="mt-0.5 text-[11.5px] leading-snug text-muted">{t.premium.yearlyDesc}</p>
         </div>

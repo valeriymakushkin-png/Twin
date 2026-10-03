@@ -47,7 +47,7 @@ function ReadyView({ avatar, onNext }: { avatar: AvatarDto; onNext: () => void }
         <div className="glow-red absolute left-1/2 top-1/2 size-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl" />
         {avatar.imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={avatar.imageUrl} alt={avatar.name} className="relative mx-auto aspect-square w-[92%] object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]" />
+          <img src={avatar.imageUrl} alt={avatar.name} className="fade-bottom relative mx-auto aspect-square w-[92%] object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]" />
         )}
       </motion.div>
       <Card className="relative -mt-6 p-3.5">
@@ -166,13 +166,13 @@ function MascotInner() {
           <AnimatePresence mode="wait">
             {view3d && avatar.dna ? (
               <motion.div key="3d" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative aspect-[4/5] w-full">
-                <Mascot3D dna={avatar.dna} style={avatar.styleSlug} outfit={primary?.outfitKey ?? undefined} accessory={primary?.accessoryKey ?? null} framing="bust" spin={spin} className="size-full" />
+                <Mascot3D dna={avatar.dna} style={avatar.styleSlug} outfit={primary?.outfitKey ?? undefined} accessory={primary?.accessoryKey ?? null} framing="bust" spin={spin} className="fade-bottom size-full" />
               </motion.div>
             ) : (
               <motion.div key="img" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative aspect-[4/5] w-full">
                 {avatar.imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={avatar.imageUrl} alt={avatar.name} className="size-full animate-float object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]" />
+                  <img src={avatar.imageUrl} alt={avatar.name} className="fade-bottom size-full animate-float object-contain drop-shadow-[0_30px_50px_rgba(0,0,0,0.7)]" />
                 )}
               </motion.div>
             )}

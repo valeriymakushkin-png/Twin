@@ -100,7 +100,7 @@ meme reaction (emotion + situation), PFP scene, video motion prompt (+ negative 
 |---|---|---|
 | **OpenAI Images** `gpt-image-1` (default) | `/images/edits` with up to 16 reference images, `input_fidelity=high` | native transparent PNG |
 | **FLUX Kontext Pro** (BFL) | single reference image, async task polling | opaque → matted |
-| **Mock** | procedural DNA-driven SVG | transparent PNG |
+| **Mock** | the in-app three.js character rendered in headless Chromium (`MOCK_IMAGE_RENDERER=3d`, auto-detects Chromium or `CHROMIUM_PATH`); falls back to procedural DNA-driven SVG | transparent PNG (opaque requests get a black/red studio backdrop) |
 
 References: avatar = top-3 photos; everything downstream = **master render first** (style/character anchor) + 1–2 photos (likeness).
 

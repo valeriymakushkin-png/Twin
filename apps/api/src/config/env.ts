@@ -69,6 +69,9 @@ export const EnvSchema = z
     SIGNED_URL_TTL_SECONDS: z.coerce.number().int().default(900),
 
     AI_IMAGE_PROVIDER: z.enum(['openai', 'flux', 'mock']).default('mock'),
+    /** Mock image renderer: the in-app three.js character via headless Chromium (falls back to SVG), or SVG only. */
+    MOCK_IMAGE_RENDERER: z.enum(['3d', 'svg']).default('3d'),
+    CHROMIUM_PATH: z.string().optional(),
     AI_VIDEO_PROVIDER: z.enum(['kling', 'runway', 'veo', 'mock']).default('mock'),
     FACE_ANALYSIS_PROVIDER: z.enum(['service', 'mock']).default('mock'),
     VISION_PROVIDER: z.enum(['openai', 'mock']).default('mock'),

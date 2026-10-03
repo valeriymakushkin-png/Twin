@@ -36,7 +36,7 @@ import { VIDEO_PROVIDER, type VideoProvider } from './video/video-provider.types
           case 'flux':
             return new FluxImageProvider(config);
           default:
-            return new MockImageProvider();
+            return new MockImageProvider(config.MOCK_IMAGE_RENDERER);
         }
       },
     },

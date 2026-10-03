@@ -65,7 +65,7 @@ function PrimaryCard({ avatar }: { avatar: AvatarDto }) {
         <div className="glow-red absolute left-1/2 top-[45%] size-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl" />
         {avatar.imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={avatar.imageUrl} alt={avatar.name} className="relative mx-auto aspect-square w-[82%] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]" />
+          <img src={avatar.imageUrl} alt={avatar.name} className="fade-bottom relative mx-auto aspect-square w-[82%] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]" />
         )}
         <div className="relative flex items-center gap-3 border-t border-white/5 bg-black/30 px-4 py-3 backdrop-blur">
           <div className="min-w-0 flex-1">

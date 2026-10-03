@@ -340,10 +340,12 @@ function clumpSpecsFor(style: HairStyle, spec: ShellSpec, P: HeadParams): ClumpS
   const front = (d: THREE.Vector3) => smoothstep(0.35, 0.8, d.z) * smoothstep(0.3, 0.75, d.y);
   const sweep = spec.sweep ?? 1;
   const longFall = (len: number): Partial<ClumpSpec> => ({ fall: (_d, r) => len * (0.88 + r * 0.24), fallFrom: 0.3, splay: 0.05 });
+  // Short cuts end at the hairline over the face instead of dangling onto the forehead.
+  const floor = (d: THREE.Vector3) => (d.z > 0.2 ? hairline(d, spec) - 0.015 : -2);
   void P;
   switch (style) {
     case 'crew-cut':
-      return [{ count: 320, region: above(0.03), flow: crownFlow, length: (_d, r) => 0.2 + r * 0.1, lift: (d) => 0.02 + 0.035 * top(d), base: 0.012, width: [0.05, 0.075], thickness: 0.02, tip: 0.25 }];
+      return [{ count: 320, region: above(0.03), flow: crownFlow, length: (_d, r) => 0.2 + r * 0.1, lift: (d) => 0.02 + 0.035 * top(d), base: 0.012, width: [0.05, 0.075], thickness: 0.02, tip: 0.25, floor }];
     case 'short-textured':
       return [{
         count: 380,
@@ -355,14 +357,15 @@ function clumpSpecsFor(style: HairStyle, spec: ShellSpec, P: HeadParams): ClumpS
         width: [0.06, 0.09],
         thickness: 0.03,
         tip: 0.12,
+        floor,
       }];
     case 'side-part':
-      return [{ count: 420, region: above(0.03), flow: partFlow(spec.part ?? -0.3, 0.55), length: (_d, r) => 0.38 + r * 0.18, lift: (d) => 0.025 + 0.06 * top(d), base: 0.014, width: [0.06, 0.085], thickness: 0.024, tip: 0.3 }];
+      return [{ count: 420, region: above(0.03), flow: partFlow(spec.part ?? -0.3, 0.55), length: (_d, r) => 0.38 + r * 0.18, lift: (d) => 0.025 + 0.06 * top(d), base: 0.014, width: [0.06, 0.085], thickness: 0.024, tip: 0.3, floor }];
     case 'quiff':
     case 'pompadour': {
       const big = style === 'pompadour' ? 1.4 : 1;
       return [
-        { count: 300, region: (d) => above(0.03)(d) && front(d) < 0.3, flow: crownFlow, length: (_d, r) => 0.3 + r * 0.12, lift: (d) => 0.02 + 0.05 * top(d), base: 0.014, width: [0.06, 0.085], thickness: 0.024, tip: 0.3 },
+        { count: 300, region: (d) => above(0.03)(d) && front(d) < 0.3, flow: crownFlow, length: (_d, r) => 0.3 + r * 0.12, lift: (d) => 0.02 + 0.05 * top(d), base: 0.014, width: [0.06, 0.085], thickness: 0.024, tip: 0.3, floor },
         {
           count: 220,
           region: (d) => above(0.02)(d) && front(d) >= 0.3,
@@ -373,21 +376,22 @@ function clumpSpecsFor(style: HairStyle, spec: ShellSpec, P: HeadParams): ClumpS
           width: [0.07, 0.1],
           thickness: 0.032,
           tip: 0.25,
+          floor,
         },
       ];
     }
     case 'undercut':
-      return [{ count: 300, region: (d) => above(0.02)(d), flow: partFlow(-0.22, 0.7), length: (_d, r) => 0.5 + r * 0.15, lift: (d) => 0.05 + 0.07 * top(d), base: 0.02, width: [0.07, 0.1], thickness: 0.03, tip: 0.25 }];
+      return [{ count: 300, region: (d) => above(0.02)(d), flow: partFlow(-0.22, 0.7), length: (_d, r) => 0.5 + r * 0.15, lift: (d) => 0.05 + 0.07 * top(d), base: 0.02, width: [0.07, 0.1], thickness: 0.03, tip: 0.25, floor }];
     case 'mohawk':
-      return [{ count: 160, region: (d) => Math.abs(d.x) < 0.16 && d.y > -0.25 && d.z > -0.9, flow: (_d, o) => o.set(0, 1, 0.25), length: () => 0.18, lift: (_d, u) => 0.08 + 0.26 * u, base: 0.02, width: [0.05, 0.07], thickness: 0.035, tip: 0.05 }];
+      return [{ count: 170, region: (d) => Math.abs(d.x) < 0.16 && above(0.02)(d) && d.y > -0.25, flow: (_d, o) => o.set(0, 0.3, -1), length: () => 0.2, lift: (_d, u) => 0.08 + 0.3 * u, base: 0.02, width: [0.05, 0.07], thickness: 0.035, tip: 0.05 }];
     case 'pixie':
       return [
-        { count: 260, region: (d) => above(0.03)(d) && front(d) < 0.25, flow: crownFlow, length: (_d, r) => 0.28 + r * 0.1, lift: (d) => 0.03 + 0.04 * top(d), base: 0.015, width: [0.06, 0.08], thickness: 0.024, tip: 0.25 },
+        { count: 260, region: (d) => above(0.03)(d) && front(d) < 0.25, flow: crownFlow, length: (_d, r) => 0.28 + r * 0.1, lift: (d) => 0.03 + 0.04 * top(d), base: 0.015, width: [0.06, 0.08], thickness: 0.024, tip: 0.25, floor },
         { count: 160, region: (d) => above(0.0)(d) && front(d) >= 0.25, flow: fringeFlow(sweep), length: (_d, r) => 0.38 + r * 0.1, lift: () => 0.04, base: 0.02, width: [0.06, 0.09], thickness: 0.026, tip: 0.2 },
       ];
     case 'mullet':
       return [
-        { count: 300, region: (d) => above(0.03)(d) && d.z > -0.3, flow: crownFlow, length: (_d, r) => 0.25 + r * 0.1, lift: (d) => 0.03 + 0.05 * top(d), base: 0.015, width: [0.06, 0.085], thickness: 0.026, tip: 0.25 },
+        { count: 300, region: (d) => above(0.03)(d) && d.z > -0.3, flow: crownFlow, length: (_d, r) => 0.25 + r * 0.1, lift: (d) => 0.03 + 0.05 * top(d), base: 0.015, width: [0.06, 0.085], thickness: 0.026, tip: 0.25, floor },
         { count: 260, region: (d) => above(0.0)(d) && d.z <= -0.3, flow: (_d, o) => o.set(0, -1, -0.2), length: () => 0.3, lift: () => 0.04, base: 0.02, width: [0.07, 0.1], thickness: 0.03, tip: 0.35, ...longFall(0.75) },
       ];
     case 'medium-wavy':
@@ -429,60 +433,134 @@ function clumpSpecsFor(style: HairStyle, spec: ShellSpec, P: HeadParams): ClumpS
 
 /* ----------------------------- facial hair ----------------------------- */
 
-/** 3D beard / moustache / goatee clumps (stubble stays painted). */
-export function buildFacialHair(kind: string, P: HeadParams, mat: THREE.Material, seed: number): THREE.Group | null {
-  if (kind === 'none' || kind === 'stubble') return null;
-  const g = new THREE.Group();
+/**
+ * Offset shell over the head where `mask(dir)` > 0: thickness eases in from the edge, so the
+ * mass reads as one sculpted volume (Pixar-style beard) instead of a fur of spikes.
+ */
+function facialShell(P: HeadParams, mask: (d: THREE.Vector3, q: THREE.Vector3) => number, thickness: (q: THREE.Vector3) => number, base: THREE.Color): THREE.BufferGeometry {
+  const geo = new THREE.SphereGeometry(1, 160, 120);
+  const pos = geo.attributes.position as THREE.BufferAttribute;
+  const colors = new Float32Array(pos.count * 4);
+  const keep = new Uint8Array(pos.count);
+  const d = new THREE.Vector3();
   const q = new THREE.Vector3();
-  const r = rng(seed + 11);
-  const my = P.mouthY;
-  const inMouth = (x: number, y: number) => (x / 0.4) ** 2 + ((y - my + 0.08) / 0.16) ** 2 < 1;
-  // Beard line: from the sideburn down to just below the mouth corners; cheeks stay clean.
-  const beardLine = (ax: number) => (ax < 0.38 ? my - 0.12 : lerp(my - 0.02, -0.08, smoothstep(0.38, 0.92 * P.width, ax)));
-  const beardRegion = (d: THREE.Vector3) => {
-    if (d.z < -0.25) return false;
+  const out = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++) {
+    d.fromBufferAttribute(pos, i).normalize();
     sculpt(d, P, q);
-    if (inMouth(q.x, q.y)) return false;
-    return q.y < beardLine(Math.abs(q.x)) && Math.abs(q.x) < 0.99 * P.width;
-  };
-  const stache = (d: THREE.Vector3) => {
-    if (d.z < 0.4) return false;
-    sculpt(d, P, q);
-    return Math.abs(q.x) < 0.3 && q.y > my + 0.025 && q.y < my + 0.14;
-  };
-  const goatee = (d: THREE.Vector3) => {
-    if (d.z < 0.3) return false;
-    sculpt(d, P, q);
-    return Math.abs(q.x) < 0.17 && q.y < my - 0.1 && q.y > -1.2 * P.height;
-  };
-  const specs: ClumpSpec[] = [];
-  const full = kind === 'full-beard';
-  if (kind === 'short-beard' || full) {
-    specs.push({
-      count: full ? 700 : 620,
-      region: beardRegion,
-      flow: (d, o) => o.set(d.x * 0.25, -1, 0.35),
-      length: (_d, rr) => (full ? 0.16 : 0.08) + rr * 0.05,
-      lift: (_d, u) => 0.01 + (full ? 0.05 : 0.018) * Math.sin(u * Math.PI * 0.8),
-      base: 0.006,
-      width: [0.026, 0.04],
-      thickness: 0.012,
-      tip: 0.3,
-      segments: 6,
-      colorJitter: 0.35,
-    });
+    const m = mask(d, q);
+    keep[i] = m > 0.02 ? 1 : 0;
+    const t = 0.004 + thickness(q) * Math.pow(Math.max(0, m), 0.55);
+    sculpt(d, P, out, 1 + t);
+    pos.setXYZ(i, out.x, out.y, out.z);
+    // Roots darker, tips lighter: depth without textures.
+    const k = 0.72 + 0.28 * m;
+    colors[i * 4] = base.r * k;
+    colors[i * 4 + 1] = base.g * k;
+    colors[i * 4 + 2] = base.b * k;
+    // Edges fade out, hiding the grid's stair-stepped boundary.
+    colors[i * 4 + 3] = smoothstep(0.02, 0.4, m);
   }
-  if (kind === 'goatee') specs.push({ count: 260, region: goatee, flow: (_d, o) => o.set(0, -1, 0.2), length: () => 0.14, lift: (_d, u) => 0.012 + 0.04 * u, base: 0.006, width: [0.025, 0.035], thickness: 0.012, tip: 0.3, segments: 6 });
-  if (kind !== 'none') specs.push({ count: 220, region: stache, flow: (d, o) => o.set(Math.sign(d.x) || 1, -0.7, 0.1), length: () => 0.12, lift: (_d, u) => 0.012 + 0.03 * u, base: 0.006, width: [0.025, 0.035], thickness: 0.012, tip: 0.3, segments: 6 });
-  const cmat = (mat as THREE.MeshPhysicalMaterial).clone();
-  cmat.vertexColors = true;
-  cmat.color = new THREE.Color('#ffffff');
-  cmat.side = THREE.DoubleSide;
-  const baseColor = (mat as THREE.MeshPhysicalMaterial).color.clone();
-  for (const s of specs) {
-    const mesh = new THREE.Mesh(buildClumps(P, s, r, baseColor), cmat);
+  const src = geo.index!;
+  const idx: number[] = [];
+  for (let i = 0; i < src.count; i += 3) {
+    const a = src.getX(i);
+    const b = src.getX(i + 1);
+    const c = src.getX(i + 2);
+    if (keep[a]! | keep[b]! | keep[c]!) idx.push(a, b, c);
+  }
+  geo.setIndex(idx);
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 4));
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/** Swept moustache: chunky in the middle of each side, dipped at the philtrum, tapered tips. */
+function moustacheGeometry(P: HeadParams, surfaceZ: (x: number, y: number) => number, scale: number): THREE.BufferGeometry {
+  const my = P.mouthY;
+  const n = 40;
+  const radial = 14;
+  const centres: THREE.Vector3[] = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const x = (t - 0.5) * 0.66 * scale;
+    const ax = Math.abs(x) / (0.33 * scale);
+    const y = my + 0.125 - 0.1 * ax * ax;
+    centres.push(new THREE.Vector3(x, y, surfaceZ(x, y) + 0.03));
+  }
+  const positions: number[] = [];
+  const indices: number[] = [];
+  const T = new THREE.Vector3();
+  const depth = new THREE.Vector3();
+  const up = new THREE.Vector3();
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const c = centres[i]!;
+    T.subVectors(centres[Math.min(n, i + 1)]!, centres[Math.max(0, i - 1)]!).normalize();
+    depth.set(0, 0, 1).addScaledVector(T, -T.z).normalize();
+    up.crossVectors(T, depth).normalize();
+    const side = Math.abs(t - 0.5) * 2;
+    const r = (0.014 + 0.062 * Math.pow(Math.sin(Math.PI * t), 0.7)) * (1 - 0.32 * Math.exp(-(side * side) / 0.012)) * scale;
+    for (let j = 0; j <= radial; j++) {
+      const a = (j / radial) * Math.PI * 2;
+      const ca = Math.cos(a);
+      const sa = Math.sin(a);
+      // Flat against the lip, fuller at the top edge.
+      const dz = sa * r * 0.55 + r * 0.25;
+      positions.push(c.x + up.x * ca * r + depth.x * dz, c.y + up.y * ca * r * (ca > 0 ? 1 : 0.8) + depth.y * dz, c.z + up.z * ca * r + depth.z * dz);
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < radial; j++) {
+      const a = i * (radial + 1) + j;
+      const b = a + radial + 1;
+      indices.push(a, b, a + 1, b, b + 1, a + 1);
+    }
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.setIndex(indices);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/** Sculpted beard / moustache / goatee volumes (stubble stays painted). */
+export function buildFacialHair(kind: string, P: HeadParams, mat: THREE.Material, seed: number, surfaceZ: (x: number, y: number) => number): THREE.Group | null {
+  if (kind === 'none' || kind === 'stubble') return null;
+  void seed;
+  const g = new THREE.Group();
+  const my = P.mouthY;
+  const base = (mat as THREE.MeshPhysicalMaterial).color.clone();
+  const shellMat = (mat as THREE.MeshPhysicalMaterial).clone();
+  shellMat.vertexColors = true;
+  shellMat.transparent = true;
+  shellMat.color = new THREE.Color('#ffffff');
+  // Mouth opening stays clear whatever the expression.
+  const mouthClear = (q: THREE.Vector3) => smoothstep(1, 1.6, Math.hypot(q.x / 0.36, (q.y - my + 0.06) / 0.15));
+  const chinK = (q: THREE.Vector3) => gauss(q.x * q.x * 1.6 + (q.y + 0.95 * P.height) ** 2, 0.18);
+
+  if (kind === 'short-beard' || kind === 'full-beard') {
+    const full = kind === 'full-beard';
+    // Beard line: sideburn → jaw → just under the mouth corners; cheeks stay clean.
+    const line = (ax: number) => (ax < 0.36 ? my - 0.1 : lerp(my - 0.02, -0.06, smoothstep(0.36, 0.9 * P.width, ax)));
+    const mask = (d: THREE.Vector3, q: THREE.Vector3) =>
+      smoothstep(0, 0.09, line(Math.abs(q.x)) - q.y) * mouthClear(q) * smoothstep(-0.42, -0.12, d.z);
+    const thick = (q: THREE.Vector3) => (full ? 0.06 + 0.11 * chinK(q) : 0.032 + 0.03 * chinK(q));
+    const mesh = new THREE.Mesh(facialShell(P, mask, thick, base), shellMat);
     mesh.castShadow = true;
     g.add(mesh);
   }
+  if (kind === 'goatee') {
+    const mask = (d: THREE.Vector3, q: THREE.Vector3) =>
+      smoothstep(0.22, 0.13, Math.abs(q.x)) * smoothstep(my - 0.05, my - 0.15, q.y) * mouthClear(q) * smoothstep(-0.2, 0.15, d.z);
+    const mesh = new THREE.Mesh(facialShell(P, mask, (q) => 0.03 + 0.06 * chinK(q), base), shellMat);
+    mesh.castShadow = true;
+    g.add(mesh);
+  }
+  const stacheMat = (mat as THREE.MeshPhysicalMaterial).clone();
+  stacheMat.color = base.clone().multiplyScalar(0.85);
+  const stache = new THREE.Mesh(moustacheGeometry(P, surfaceZ, kind === 'full-beard' ? 1.12 : 1), stacheMat);
+  stache.castShadow = true;
+  g.add(stache);
   return g;
 }

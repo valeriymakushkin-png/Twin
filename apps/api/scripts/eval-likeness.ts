@@ -108,7 +108,7 @@ function providers(config: AppConfig): { faces: FaceAnalyzer; vision: VisionExtr
       ? new OpenAiImageProvider(config)
       : config.AI_IMAGE_PROVIDER === 'flux'
         ? new FluxImageProvider(config)
-        : new MockImageProvider();
+        : new MockImageProvider(config.MOCK_IMAGE_RENDERER);
   return { faces, vision, images };
 }
 

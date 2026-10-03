@@ -14,7 +14,7 @@ Telegram Mini App, a Telegram bot, an asynchronous AI pipeline and an internal a
 | **Charge before work, refund on failure — exactly once** | `QuotaService` returns a `Charge` stored in `generation.input.charge`; `GenerationsService.fail()` refunds it under a status guard so retries never double-refund. |
 | **Idempotent everywhere** | `Idempotency-Key` header on generation endpoints, jobId = generation id, Telegram `update_id` de-dupe, `telegram_payment_charge_id` unique constraint. |
 | **Privacy by design** | Explicit biometric consent before the first upload, private bucket + signed URLs for photos, automatic deletion after 30 days, GDPR erasure endpoint, face service unreachable from outside the cluster. |
-| **Runs end-to-end with zero AI keys** | Mock providers (procedural DNA-driven SVG mascots, ffmpeg "video model", deterministic face analysis) make local dev, CI and the e2e test exercise the real pipeline. |
+| **Runs end-to-end with zero AI keys** | Mock providers (DNA-driven 3D mascots from the in-app three.js renderer via headless Chromium, SVG fallback, ffmpeg "video model", deterministic face analysis) make local dev, CI and the e2e test exercise the real pipeline. |
 
 ## System context
 

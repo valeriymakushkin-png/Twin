@@ -30,6 +30,8 @@ export interface ClumpSpec {
   splay?: number;
   segments?: number;
   colorJitter?: number;
+  /** Clumps stop when their path drops below this height (dir.y) — keeps short cuts off the face. */
+  floor?: (d: THREE.Vector3) => number;
 }
 
 const C = new THREE.Vector3();
@@ -84,6 +86,7 @@ export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, 
           if (t.lengthSq() < 1e-8) t.set(0, -1, 0);
           t.normalize();
           dir.addScaledVector(t, ds).normalize();
+          if (spec.floor && dir.y < spec.floor(dir)) break;
           if (fallLen > 0 && dir.y < fallFrom) {
             falling = true;
             fallStep = fallLen / Math.max(1, steps - i - 1);

@@ -48,7 +48,7 @@ const BASE: Expression = {
 
 const PRESETS: Record<Emotion, Partial<Expression>> = {
   neutral: { mouth: 'flat', upperLid: 0.18, lowerLid: 0.08, blush: 0.15 },
-  happy: { mouth: 'grin', upperLid: 0.14, lowerLid: 0.32, browLift: [0.025, 0.025], blush: 0.32, headTilt: 0.04 },
+  happy: { mouth: 'grin', upperLid: 0.14, lowerLid: 0.2, browLift: [0.025, 0.025], blush: 0.32, headTilt: 0.04 },
   laughing: {
     mouth: 'laugh',
     upperLid: 0.92,

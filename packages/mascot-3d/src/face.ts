@@ -81,7 +81,23 @@ export class FacePainter {
 
   private px(x: number, y: number): Pt | null {
     const h = this.map.hit(x, y, this.hit);
-    return h ? [h.uv.x * this.W, (1 - h.uv.y) * this.H] : null;
+    // Silhouette hits can land just past the UV seam (u ≈ 1 on the -x side); a polygon through
+    // such a point would wrap across the whole texture as a dark band, so drop it.
+    if (!h || h.uv.x > 0.6) return null;
+    return [h.uv.x * this.W, (1 - h.uv.y) * this.H];
+  }
+
+  /** Pixel of the last surface point on the segment from the face centre towards (x, y). */
+  private pxClamped(x: number, y: number): Pt | null {
+    const cy = -0.3;
+    let lo = 0;
+    let hi = 1;
+    for (let i = 0; i < 14; i++) {
+      const mid = (lo + hi) / 2;
+      if (this.px(x * mid, cy + (y - cy) * mid)) lo = mid;
+      else hi = mid;
+    }
+    return lo > 0 ? this.px(x * lo, cy + (y - cy) * lo) : null;
   }
 
   /** Pixels per face unit around (x, y) — for radii of soft spots. */
@@ -98,7 +114,9 @@ export class FacePainter {
     ctx.beginPath();
     let started = false;
     for (const [x, y] of points) {
-      const p = this.px(x, y);
+      // Points past the silhouette (e.g. the jaw line of a narrow chin) snap onto its edge;
+      // skipping them would close the polygon across the face.
+      const p = this.px(x, y) ?? this.pxClamped(x, y);
       if (!p) continue;
       if (!started) {
         ctx.moveTo(p[0], p[1]);
@@ -471,7 +489,7 @@ export class FacePainter {
     const ctx = this.ctx;
     ctx.filter = 'blur(14px)';
     if (kind === 'stubble') this.fill(jaw, rgba(hair, 0.2));
-    if (kind === 'short-beard' || kind === 'full-beard') this.fill(jaw, rgba(shade(hair, -0.25), kind === 'full-beard' ? 0.75 : 0.5));
+    if (kind === 'short-beard' || kind === 'full-beard') this.fill(jaw, rgba(shade(hair, -0.25), kind === 'full-beard' ? 0.45 : 0.3));
     ctx.filter = 'none';
     for (let i = 0; i < dots; i++) {
       const x = (r() - 0.5) * 1.8;

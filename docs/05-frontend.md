@@ -9,15 +9,16 @@ the official Telegram Mini Apps SDK (`telegram-web-app.js`, Bot API 8+), Geist f
 
 | Route | Purpose |
 |---|---|
-| `/` | Landing (hero with mascot stack, showcase marquee, before/after slider, how it works, outputs, styles, CTA) for new users; dashboard (quick actions, my mascots, invite card) once a mascot exists |
-| `/create` | 3-step flow: **photo guide + upload grid** (live face check, detected pose per photo, 5 min / 10–15 recommended) → **style picker** (locked premium styles open the paywall) → **confirm & generate**. Biometric consent sheet on first upload |
-| `/processing/[id]` | Orbit animation, % progress, 5-stage timeline (Uploading → Face analysis → Feature extraction → Character generation → Rendering), queue position, rotating tips; failure card with refund note |
-| `/mascot/[id]` | Hero render, rename, Save (HD for Premium) / Share / Character card; action grid (Stickers, Memes, Profile pics, Videos, Change style); looks strip; Mascot DNA card; confetti on first view |
-| `/mascot/[id]/stickers` | Emotion picker (10), free-allowance math, pack previews, **Add to Telegram** (sticker set) |
-| `/mascot/[id]/memes` | Formats (classic, POV, Nobody/Me, Expectation vs Reality, Post, Caption), emotion auto-detect or manual, ideas, results with download/share |
+| `/` | Landing after the brand reference: red-star logo, headline, live **3D hero** (drag to rotate) with floating emotion tiles, how it works, 11-style strip, sticker grid with captions, "Use your character everywhere" (Telegram/TikTok/Instagram/Discord/YouTube + more), pricing cards (Free vs Premium «Popular»), final CTA, slogan. Dashboard (quick actions, my mascots, invite card) once a mascot exists |
+| `/create` | One screen: **"Upload photos"** (min 5 highlighted in red), photo grid with red check marks, pose examples (front, left/right profile, smile, neutral), live face check per photo; biometric consent sheet on first upload; sticky **Upload photos → Create character** CTA |
+| `/processing/[id]` | **Photo analysis**: wireframe 3D head inside red scan brackets, checklist (face, features, character, render), % progress, queue position, rotating tips; failure card with refund note |
+| `/mascot/[id]` | First visit: **"Ready!"** reveal (your mascot / style, Change style, Next). Then the **3D viewer**: side look thumbnails, Rotate / Camera (PNG snapshot) / Download, "Your mascot" card, action grid (Stickers, Memes, Profile pics, Videos, Change style, Customize), Mascot DNA card |
+| `/mascot/[id]/stickers` | 3×3 emotion grid with captions (live 3D previews until renders exist), free-allowance math, pack previews, **Add to Telegram** (sticker set) |
+| `/mascot/[id]/memes` | Prompt + **Generate**, formats (classic, POV, Nobody/Me, Expectation vs Reality, Post, Caption), emotion auto-detect or manual, ideas, results with download/share |
 | `/mascot/[id]/pfp` | Instant (Sharp composite, free) vs AI scene (Premium), backgrounds, outfits, poses, circle-crop preview |
-| `/mascot/[id]/videos` | Templates (dance, talk, walk, podcast, promo), script + voice, aspect ratio, player |
-| `/mascot/[id]/styles` | 11 styles + outfits + poses → re-render from stored DNA |
+| `/mascot/[id]/videos` | Templates as cards (Dance, Talking, Walk, Podcast, Promo), script + voice, aspect ratio, **Create video**, player |
+| `/mascot/[id]/styles` | **"Choose a style"**: 3-column grid of the same character in 11 styles (red selection), **Apply style** → re-render from stored DNA |
+| `/mascot/[id]/customize` | **"Customize your style"**: live 3D preview, tabs Outfit / Accessories / Background / Poses, premium items locked, **Save** → new look |
 | `/library` | Mascots, sticker packs, memes, PFPs, videos |
 | `/premium` | Plans (monthly Star subscription, 12-month pass), Free vs Premium table, credit packs |
 | `/profile` | Plan, usage meters, credits, referral link, subscription (cancel/resume auto-renew), notifications, support, legal, **delete account** |
@@ -65,17 +66,40 @@ back to tiles by echoed file name.
 
 ### Design system
 
-Dark-first, Linear/Arc-inspired: near-black canvas `#07070a`, hairline borders (`white/8%`), glass surfaces, one
-**aurora** accent gradient (violet → fuchsia → amber), Geist Sans/Mono, 20–28 px radii, mobile-first `max-w-md` shell.
+Black & red, cinematic (built to the brand reference): near-black canvas `#060607` with a red atmospheric glow,
+graphite cards (`card`) with hairline borders, **one hot accent** — brand red `#ff2b3d` — for primary actions, selection
+(`selected`: red ring + glow), progress and highlights in headlines (`text-brand-grad`). Geist Sans/Mono, 16–26 px radii,
+mobile-first `max-w-md` shell, red-star logo with the tagline "Your AI character for Telegram".
 Tokens are Tailwind v4 `@theme` variables in `globals.css` (`--color-canvas`, `--color-surface*`, `--color-ink*`,
-utilities `glass`, `bg-aurora`, `text-aurora`, `skeleton`, `checker`, `pt-safe`/`pb-safe`).
+`--color-brand*`, utilities `card`, `glass`, `selected`, `glow-red`, `bg-brand-grad`, `text-brand-grad`, `skeleton`,
+`checker`, `pt-safe`/`pb-safe`). UI kit: `Button` (red primary / graphite secondary), `Card` + `ScreenTitle`,
+`Badge`, `CheckDot` / `LockDot`, bottom `Sheet`, `TabBar` with a raised red create button.
 
 Motion (Framer Motion): spring taps (`scale 0.97`), shared-layout tab indicator, staggered grids, page fade/slide,
-orbit loader, confetti on first reveal — all transform/opacity only (GPU-friendly), no layout thrash.
+floating emotion tiles, scan line, confetti on first reveal — transform/opacity only. `prefers-reduced-motion` is
+honoured everywhere, including the 3D viewer (renders on demand instead of continuously).
 
-Procedural art: landing showcase, style previews and placeholders use `renderMascotSvg()` from `@mascot/shared`
-(DNA-driven SVG), so the marketing site works before any real showcase assets exist; real images can be swapped in
-via `NEXT_PUBLIC_SHOWCASE_BEFORE/AFTER`.
+### 3D character (`@mascot/mascot-3d`)
+
+Every character image in the app is rendered live from the mascot DNA by a three.js renderer — no static art:
+
+- **Character**: sculpted head (face shape, jaw, cheeks, nose, ears), painted face texture (brows, mouth per emotion,
+  blush, freckles, stubble), eyeballs with iris textures and animated lids (blink), groomed hair (shells + flow-field
+  clumps + curls for 30 hair styles), outfits (hoodie, tee, jacket…), accessories (cap, beanie, sunglasses,
+  headphones, chain, earrings), emotion props (hearts, tears, sweat, steam, sparkles, thinking/facepalm hands).
+- **Styles**: 11 looks map to shading models (PBR skin with sheen, vinyl, plastic, toon with ink outlines), saturation and
+  rim-light colours, so "Pixar", "Anime", "Lego", "Cyberpunk"… are the same identity in different materials.
+- **Stage**: neutral tone mapping, room environment reflections, warm key light, red rim lights that separate the
+  character from black backgrounds, soft shadows.
+- **Web integration** (`components/three`): `Mascot3D` — interactive viewer (drag, spin, idle breathing/blinking,
+  30 fps cap, pauses off-screen); `MascotShot` — cached PNG snapshots from one shared offscreen stage via a render
+  queue (`lib/mascot3d.ts`), used for tiles, style grids and sticker previews; SVG fallback when WebGL is unavailable.
+  The bundle is code-split and loaded on demand.
+- **Server**: `headless/entry.ts` is bundled to `dist/headless.js`; the API's mock image provider loads it into headless
+  Chromium so dev/demo pipeline outputs (avatars, stickers, PFPs) match the in-app look (see AI pipeline docs).
+
+Production character images come from the configured image model (OpenAI / FLUX); the 3D renderer powers live
+previews, the viewer, showcase art and zero-key development.
 
 ### Localisation (EN / RU)
 
