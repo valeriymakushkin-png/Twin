@@ -140,7 +140,7 @@ function hairLayers(style: HairStyle, g: HeadGeometry, color: string, seed: numb
       if (style === 'short-textured') {
         for (let i = 0; i < 7; i++) {
           const x = CX - w + 20 + i * ((w * 2 - 40) / 6);
-          front.push(`<path d="M ${x} ${top + 4} q 8 -22 16 -4" stroke="${light}" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.7"/>`);
+          front.push(`<path d="M ${x} ${top + 30} q 8 -16 16 -3" stroke="${light}" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.55"/>`);
         }
       }
       break;

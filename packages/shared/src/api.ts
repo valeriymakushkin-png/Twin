@@ -172,6 +172,8 @@ export interface AuthResponseDto {
 
 export interface PhotoDto {
   id: string;
+  /** Echo of the uploaded file name (upload responses only), so clients can match results. */
+  fileName?: string;
   url: string;
   width: number;
   height: number;

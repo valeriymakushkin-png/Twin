@@ -97,10 +97,14 @@ export class UploadsService {
     const existingBySha = new Map(existing.map((p) => [p.sha256, p]));
 
     const created: Photo[] = [];
+    const fileNames = new Map<string, string>();
     const seen = new Set<string>();
     const fresh = accepted.filter((a) => {
       const dup = existingBySha.get(a.sha256);
-      if (dup && !seen.has(a.sha256)) created.push(dup);
+      if (dup && !seen.has(a.sha256)) {
+        created.push(dup);
+        fileNames.set(dup.id, a.file.originalname);
+      }
       if (dup || seen.has(a.sha256)) {
         if (!dup) rejected.push({ fileName: a.file.originalname, reason: 'Duplicate photo.' });
         seen.add(a.sha256);
@@ -137,6 +141,7 @@ export class UploadsService {
           rejectReason = 'Mascot AI is available for ages 16+.';
         }
       }
+      fileNames.set(id, item.file.originalname);
       const key = StorageKeys.photo(userId, id);
       await this.storage.putPrivate(key, item.normalized.jpeg, 'image/jpeg');
       created.push(
@@ -165,7 +170,10 @@ export class UploadsService {
     if (rejected.length >= 5 && created.length === 0) {
       await this.abuse.record('NO_FACE_SPAM', 'LOW', userId, { rejected: rejected.length });
     }
-    return { photos: await Promise.all(created.map((p) => this.toDto(p))), rejected };
+    return {
+      photos: await Promise.all(created.map(async (p) => ({ ...(await this.toDto(p)), fileName: fileNames.get(p.id) }))),
+      rejected,
+    };
   }
 
   async listRecent(userId: string): Promise<PhotoDto[]> {
