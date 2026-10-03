@@ -1,0 +1,35 @@
+# Non-secret configuration. Secrets (DATABASE_URL, REDIS_URL, JWT_SECRET, TELEGRAM_*, S3 keys,
+# provider API keys) live in the `mascot-secrets` Secret, synced from the cloud secret manager
+# by External Secrets Operator — see secrets.example.yaml.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mascot-config
+data:
+  NODE_ENV: production
+  LOG_LEVEL: info
+  PUBLIC_API_URL: https://api.mascot.ai
+  WEB_APP_URL: https://app.mascot.ai
+  ADMIN_APP_URL: https://admin.mascot.ai
+  TRUST_PROXY_HOPS: "2"
+  STORAGE_DRIVER: s3
+  S3_REGION: auto
+  S3_PRIVATE_BUCKET: mascot-private
+  S3_PUBLIC_BUCKET: mascot-public
+  PUBLIC_CDN_URL: https://cdn.mascot.ai
+  AI_IMAGE_PROVIDER: openai
+  OPENAI_IMAGE_MODEL: gpt-image-1
+  OPENAI_IMAGE_QUALITY: high
+  AI_VIDEO_PROVIDER: kling
+  FACE_ANALYSIS_PROVIDER: service
+  FACE_SERVICE_URL: http://face-service:8000
+  BACKGROUND_REMOVAL: face-service
+  VISION_PROVIDER: openai
+  TTS_PROVIDER: openai
+  MODERATION_PROVIDER: openai
+  AVATAR_CANDIDATES: "2"
+  PHOTO_RETENTION_DAYS: "30"
+  IMAGE_PROVIDER_RPM: "300"
+  VIDEO_PROVIDER_RPM: "30"
+  TELEGRAM_BOT_USERNAME: MascotAIBot
+  TELEGRAM_MINI_APP_SHORT_NAME: app

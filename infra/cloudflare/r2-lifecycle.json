@@ -1,0 +1,16 @@
+{
+  "rules": [
+    {
+      "id": "purge-source-photos-safety-net",
+      "enabled": true,
+      "conditions": { "prefix": "photos/" },
+      "deleteObjectsTransition": { "condition": { "type": "Age", "maxAge": 3024000 } }
+    },
+    {
+      "id": "abort-incomplete-multipart",
+      "enabled": true,
+      "conditions": { "prefix": "" },
+      "abortMultipartUploadsTransition": { "condition": { "type": "Age", "maxAge": 86400 } }
+    }
+  ]
+}

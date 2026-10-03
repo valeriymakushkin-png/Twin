@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin
+  labels: { app: admin, tier: frontend }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: admin } }
+  template:
+    metadata:
+      labels: { app: admin, tier: frontend }
+    spec:
+      securityContext: { runAsNonRoot: true, runAsUser: 10001, seccompProfile: { type: RuntimeDefault } }
+      containers:
+        - name: admin
+          image: ghcr.io/valeriymakushkin-png/mascot-admin
+          ports: [{ name: http, containerPort: 3001 }]
+          resources:
+            requests: { cpu: 200m, memory: 256Mi }
+            limits: { memory: 512Mi }
+          readinessProbe:
+            httpGet: { path: /login, port: http }
+            periodSeconds: 10
+          securityContext: { allowPrivilegeEscalation: false, capabilities: { drop: ["ALL"] } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin
+  labels: { app: admin }
+spec:
+  selector: { app: admin }
+  ports: [{ name: http, port: 80, targetPort: http }]

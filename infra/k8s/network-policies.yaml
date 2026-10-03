@@ -1,0 +1,41 @@
+# Default-deny ingress inside the namespace; open only what is needed.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-controller
+spec:
+  podSelector:
+    matchExpressions: [{ key: app, operator: In, values: [api, web, admin] }]
+  ingress:
+    - from:
+        - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: ingress-nginx } }
+---
+# Face data never leaves the cluster: only API and workers may call the face service.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: face-service-from-backend
+spec:
+  podSelector: { matchLabels: { app: face-service } }
+  ingress:
+    - from:
+        - podSelector: { matchExpressions: [{ key: tier, operator: In, values: [backend, worker] }] }
+      ports: [{ port: 8000 }]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-prometheus-scrape
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: monitoring } }

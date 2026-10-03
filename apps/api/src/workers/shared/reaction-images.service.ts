@@ -34,6 +34,8 @@ export class ReactionImages {
     const compiled = compileMemeReactionPrompt(this.engine.promptContext(ctx), emotion, situation);
     const generated = await this.engine.generateMaster({
       operation: 'meme',
+        // 512px outputs: medium quality is visually identical and ~4x cheaper than high.
+        quality: 'medium',
       prompt: compiled.prompt,
       negative: compiled.negative,
       references: await this.engine.characterReferences(ctx, 1),

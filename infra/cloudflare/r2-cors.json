@@ -1,0 +1,9 @@
+[
+  {
+    "AllowedOrigins": ["https://app.mascot.ai", "https://admin.mascot.ai", "https://web.telegram.org"],
+    "AllowedMethods": ["GET", "HEAD"],
+    "AllowedHeaders": ["*"],
+    "ExposeHeaders": ["ETag", "Content-Length"],
+    "MaxAgeSeconds": 86400
+  }
+]

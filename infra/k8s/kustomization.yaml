@@ -1,0 +1,25 @@
+# kubectl apply -k infra/k8s   (images pinned per release by CI via `kustomize edit set image`)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: mascot-ai
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - api.yaml
+  - workers.yaml
+  - face-service.yaml
+  - web.yaml
+  - admin.yaml
+  - ingress.yaml
+  - network-policies.yaml
+  - keda-scaledobjects.yaml
+  - service-monitors.yaml
+images:
+  - name: ghcr.io/valeriymakushkin-png/mascot-api
+    newTag: latest
+  - name: ghcr.io/valeriymakushkin-png/mascot-web
+    newTag: latest
+  - name: ghcr.io/valeriymakushkin-png/mascot-admin
+    newTag: latest
+  - name: ghcr.io/valeriymakushkin-png/mascot-face
+    newTag: latest

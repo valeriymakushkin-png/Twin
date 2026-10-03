@@ -1,0 +1,34 @@
+# Queue-depth autoscaling (KEDA). BullMQ keeps prioritised jobs in a sorted set, so we scale on
+# the `queue_jobs` gauge the API exports (waiting + prioritized) through Prometheus.
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: worker-general
+spec:
+  scaleTargetRef: { name: worker-general }
+  minReplicaCount: 3
+  maxReplicaCount: 60
+  cooldownPeriod: 300
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-operated.monitoring:9090
+        # ~8 queued image jobs per worker replica (4 concurrent each, ~30-60 s per job).
+        query: sum(max by (queue, state) (queue_jobs{namespace="mascot-ai",queue=~"avatar|sticker|meme|pfp",state=~"waiting|prioritized"}))
+        threshold: "8"
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: worker-video
+spec:
+  scaleTargetRef: { name: worker-video }
+  minReplicaCount: 2
+  maxReplicaCount: 20
+  cooldownPeriod: 600
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-operated.monitoring:9090
+        query: sum(max by (queue, state) (queue_jobs{namespace="mascot-ai",queue="video",state=~"waiting|prioritized|active"}))
+        threshold: "10"

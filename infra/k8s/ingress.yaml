@@ -1,0 +1,51 @@
+# Cloudflare (proxied DNS, WAF, bot management) → NGINX Ingress → services.
+# Static assets & generated media are served by Cloudflare straight from R2 (cdn.mascot.ai).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mascot
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/proxy-body-size: "120m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+    nginx.ingress.kubernetes.io/enable-real-ip: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [api.mascot.ai, app.mascot.ai]
+      secretName: mascot-tls
+  rules:
+    - host: api.mascot.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: { service: { name: api, port: { number: 80 } } }
+    - host: app.mascot.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: { service: { name: web, port: { number: 80 } } }
+---
+# Admin is additionally restricted to the office/VPN egress IPs (and Cloudflare Access in front).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mascot-admin
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/whitelist-source-range: "203.0.113.0/24"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [admin.mascot.ai]
+      secretName: mascot-admin-tls
+  rules:
+    - host: admin.mascot.ai
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: { service: { name: admin, port: { number: 80 } } }

@@ -182,6 +182,10 @@ export class AvatarProcessor extends GenerationProcessor {
       opaqueOutput: !this.engine.images.supportsTransparency,
     };
     const compiled = compileAvatarPrompt(promptCtx);
+    const user = await this.quota.loadUser(userId);
+    const ent = this.quota.entitlements(user);
+    // Cost lever: best-of-N identity scoring for Premium, a single high-quality candidate for FREE.
+    const candidates = ent.priorityQueue ? this.config.AVATAR_CANDIDATES : 1;
     const generated = await this.engine.generateMaster(
       {
         operation: 'avatar',
@@ -190,7 +194,7 @@ export class AvatarProcessor extends GenerationProcessor {
         references: ranked.slice(0, 3).map((p) => p.buffer),
         size: '1024x1024',
         transparent: true,
-        n: this.config.AVATAR_CANDIDATES,
+        n: candidates,
         seed: avatar.seed,
         mock: { dna, style: style.recipe, emotion: 'happy' },
       },
@@ -201,8 +205,7 @@ export class AvatarProcessor extends GenerationProcessor {
 
     /* 5. RENDERING — variants, share image, character card */
     await stage('RENDERING', 88);
-    const user = await this.quota.loadUser(userId);
-    const watermark = this.quota.entitlements(user).watermark;
+    const watermark = ent.watermark;
     const stored = await this.assets.storeRender(avatarId, generated.master, { watermark, gradient: style.recipe.gradient });
     const card = await characterCard({
       render: generated.master,

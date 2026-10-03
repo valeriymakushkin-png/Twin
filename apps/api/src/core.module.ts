@@ -18,6 +18,17 @@ import { StylesModule } from './modules/styles/styles.module';
 import { TelegramModule } from './modules/telegram/telegram.module';
 import { UsersModule } from './modules/users/users.module';
 
+/** pino-pretty is a dev dependency: only use it when it is actually installed. */
+function prettyTransport(isProduction: boolean) {
+  if (isProduction) return undefined;
+  try {
+    require.resolve('pino-pretty');
+    return { target: 'pino-pretty', options: { singleLine: true, colorize: true } };
+  } catch {
+    return undefined;
+  }
+}
+
 /** Infrastructure + domain services shared by the HTTP API and the workers. */
 @Module({
   imports: [
@@ -37,7 +48,7 @@ import { UsersModule } from './modules/users/users.module';
             censor: '[redacted]',
           },
           autoLogging: { ignore: (req) => req.url === '/health' || req.url === '/metrics' },
-          transport: config.isProduction ? undefined : { target: 'pino-pretty', options: { singleLine: true, colorize: true } },
+          transport: prettyTransport(config.isProduction),
         },
       }),
     }),

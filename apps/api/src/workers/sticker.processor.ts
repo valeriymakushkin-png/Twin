@@ -50,6 +50,8 @@ export class StickerProcessor extends GenerationProcessor {
       lastPrompt = compiled.prompt;
       const generated = await this.engine.generateMaster({
         operation: 'sticker',
+        // 512px outputs: medium quality is visually identical and ~4x cheaper than high.
+        quality: 'medium',
         prompt: compiled.prompt,
         negative: compiled.negative,
         references,

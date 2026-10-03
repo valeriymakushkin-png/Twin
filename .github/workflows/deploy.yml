@@ -1,0 +1,56 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: Image tag (git SHA) to deploy
+        required: true
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      TAG: ${{ github.event.inputs.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-kubectl@v4
+      - name: Configure cluster access
+        run: |
+          mkdir -p ~/.kube && echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+      - name: Pin images
+        working-directory: infra/k8s
+        run: |
+          for img in mascot-api mascot-web mascot-admin mascot-face; do
+            kustomize edit set image ghcr.io/valeriymakushkin-png/$img=ghcr.io/${{ github.repository_owner }}/$img:$TAG
+          done
+      - name: Migrate database (expand-only migrations; blocks rollout on failure)
+        run: |
+          kubectl -n mascot-ai delete job db-migrate --ignore-not-found
+          kubectl kustomize infra/k8s | yq 'select(.kind == "Job")' | kubectl apply -f -
+          kubectl -n mascot-ai wait --for=condition=complete job/db-migrate --timeout=300s
+      - name: Roll out
+        run: |
+          kubectl apply -k infra/k8s
+          for d in api worker-general worker-video face-service web admin; do
+            kubectl -n mascot-ai rollout status deploy/$d --timeout=600s
+          done
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - name: Configure Telegram webhook, commands & menu button (idempotent)
+        run: pnpm install --frozen-lockfile --filter @mascot/api... && pnpm telegram:setup
+        env:
+          NODE_ENV: production
+          DATABASE_URL: postgresql://unused
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
+          PUBLIC_API_URL: https://api.mascot.ai
+          WEB_APP_URL: https://app.mascot.ai
+          STORAGE_DRIVER: s3
+          PUBLIC_CDN_URL: https://cdn.mascot.ai
+          AI_IMAGE_PROVIDER: mock

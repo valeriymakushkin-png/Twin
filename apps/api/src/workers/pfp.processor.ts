@@ -56,6 +56,7 @@ export class PfpProcessor extends GenerationProcessor {
         const generated = await this.engine.generateMaster(
           {
             operation: 'pfp',
+            quality: 'medium',
             prompt: compiled.prompt,
             references,
             size: '1024x1024',
@@ -73,6 +74,7 @@ export class PfpProcessor extends GenerationProcessor {
         const compiled = compileStyleVariantPrompt(promptCtx);
         const generated = await this.engine.generateMaster({
           operation: 'pfp',
+            quality: 'medium',
           prompt: compiled.prompt,
           references,
           size: '1024x1024',

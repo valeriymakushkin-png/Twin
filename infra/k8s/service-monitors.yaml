@@ -1,0 +1,60 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: api
+spec:
+  selector: { matchLabels: { app: api } }
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      bearerTokenSecret: { name: mascot-secrets, key: METRICS_TOKEN }
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: workers
+spec:
+  selector: { matchExpressions: [{ key: tier, operator: In, values: [worker] }] }
+  podMetricsEndpoints: [{ port: metrics, path: /metrics, interval: 15s }]
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: face-service
+spec:
+  selector: { matchLabels: { app: face-service } }
+  endpoints: [{ port: http, path: /metrics, interval: 15s }]
+---
+# Alerting rules — page on what users feel.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mascot-alerts
+spec:
+  groups:
+    - name: mascot.slo
+      rules:
+        - alert: GenerationFailureRateHigh
+          expr: sum(rate(generation_total{status="failed"}[10m])) / clamp_min(sum(rate(generation_total[10m])), 1e-9) > 0.05
+          for: 10m
+          labels: { severity: page }
+          annotations: { summary: "More than 5% of AI generations are failing" }
+        - alert: AvatarQueueBacklog
+          expr: sum(queue_jobs{queue="avatar",state=~"waiting|prioritized"}) > 500
+          for: 5m
+          labels: { severity: page }
+          annotations: { summary: "Avatar queue backlog above 500 jobs" }
+        - alert: ApiLatencyHigh
+          expr: histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{route!~".*upload.*"}[5m]))) > 1
+          for: 10m
+          labels: { severity: ticket }
+          annotations: { summary: "API p95 latency above 1s" }
+        - alert: ProviderSpendSpike
+          expr: sum(increase(ai_provider_cost_micro_usd_total[1h])) / 1e6 > 400
+          labels: { severity: page }
+          annotations: { summary: "AI provider spend above $400/hour" }
+        - alert: PaymentsWebhookSilent
+          expr: sum(increase(payments_total{outcome="paid"}[3h])) == 0 and sum(increase(payments_total{outcome="invoice"}[3h])) > 20
+          labels: { severity: page }
+          annotations: { summary: "Invoices created but no successful payments for 3h (webhook down?)" }
