@@ -33,3 +33,4 @@ models/
 .idea/
 .vscode/*
 !.vscode/extensions.json
+apps/web/public/mascot3d-worker.js

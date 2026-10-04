@@ -1,4 +1,5 @@
 import type { StickerEmotion } from '@mascot/shared';
+import type { PoseKey } from './poses';
 
 export type MouthKind = 'grin' | 'smile' | 'laugh' | 'o' | 'wail' | 'grit' | 'smirk' | 'flat' | 'pout';
 export type Emotion = StickerEmotion | 'neutral';
@@ -25,8 +26,8 @@ export interface Expression {
   sunglasses?: boolean;
   /** Extra props around the character. */
   extra?: 'hearts' | 'sweat' | 'steam' | 'question' | 'sparkles';
-  /** Hand pose. */
-  hand?: 'chin' | 'face';
+  /** Upper-body pose (arms and hands). */
+  pose: PoseKey;
   /** Head tilt (roll, radians) and nod (pitch). */
   headTilt: number;
   headNod: number;
@@ -44,11 +45,12 @@ const BASE: Expression = {
   blush: 0.25,
   headTilt: 0,
   headNod: 0,
+  pose: 'pockets',
 };
 
 const PRESETS: Record<Emotion, Partial<Expression>> = {
-  neutral: { mouth: 'flat', upperLid: 0.18, lowerLid: 0.08, blush: 0.15 },
-  happy: { mouth: 'grin', upperLid: 0.14, lowerLid: 0.2, browLift: [0.025, 0.025], blush: 0.32, headTilt: 0.04 },
+  neutral: { mouth: 'flat', upperLid: 0.18, lowerLid: 0.08, blush: 0.15, pose: 'pockets' },
+  happy: { mouth: 'grin', upperLid: 0.14, lowerLid: 0.2, browLift: [0.025, 0.025], blush: 0.32, headTilt: 0.04, pose: 'wave' },
   laughing: {
     mouth: 'laugh',
     upperLid: 0.92,
@@ -59,6 +61,7 @@ const PRESETS: Record<Emotion, Partial<Expression>> = {
     extra: 'sparkles',
     headTilt: -0.08,
     headNod: -0.08,
+    pose: 'belly',
   },
   crying: {
     mouth: 'wail',
@@ -70,6 +73,7 @@ const PRESETS: Record<Emotion, Partial<Expression>> = {
     tears: true,
     blush: 0.35,
     headNod: 0.06,
+    pose: 'slump',
   },
   angry: {
     mouth: 'grit',
@@ -81,6 +85,7 @@ const PRESETS: Record<Emotion, Partial<Expression>> = {
     blush: 0.5,
     extra: 'steam',
     headNod: 0.07,
+    pose: 'fists',
   },
   shocked: {
     mouth: 'o',
@@ -91,8 +96,9 @@ const PRESETS: Record<Emotion, Partial<Expression>> = {
     extra: 'sweat',
     blush: 0.1,
     headNod: -0.04,
+    pose: 'cheeks',
   },
-  love: { mouth: 'smile', mouthWidth: 0.9, heartEyes: true, upperLid: 0.1, lowerLid: 0.22, blush: 0.65, extra: 'hearts', headTilt: 0.12 },
+  love: { mouth: 'smile', mouthWidth: 0.9, heartEyes: true, upperLid: 0.1, lowerLid: 0.22, blush: 0.65, extra: 'hearts', headTilt: 0.12, pose: 'heart' },
   sigma: {
     mouth: 'smirk',
     upperLid: 0.46,
@@ -103,15 +109,16 @@ const PRESETS: Record<Emotion, Partial<Expression>> = {
     blush: 0.08,
     headNod: -0.05,
     headTilt: -0.05,
+    pose: 'crossed',
   },
-  cool: { mouth: 'smirk', sunglasses: true, browLift: [0, 0.02], blush: 0.12, headTilt: -0.06 },
+  cool: { mouth: 'smirk', sunglasses: true, browLift: [0, 0.02], blush: 0.12, headTilt: -0.06, pose: 'thumbsUp' },
   thinking: {
     mouth: 'pout',
     upperLid: 0.2,
     gaze: [0.22, 0.2],
     browLift: [0.02, 0.07],
     browAngle: [0.1, -0.2],
-    hand: 'chin',
+    pose: 'think',
     extra: 'question',
     blush: 0.15,
     headTilt: 0.1,
@@ -121,7 +128,7 @@ const PRESETS: Record<Emotion, Partial<Expression>> = {
     upperLid: 1,
     lowerLid: 0.2,
     browAngle: [-0.3, -0.3],
-    hand: 'face',
+    pose: 'facepalm',
     extra: 'sweat',
     blush: 0.2,
     headNod: 0.14,

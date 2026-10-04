@@ -29,14 +29,15 @@ export interface HeadParams {
   mouthY: number;
 }
 
+// Cartoon proportions: full cranium and cheeks, a jaw that clearly tapers into a defined chin.
 const SHAPES: Record<FaceShape, Pick<HeadParams, 'width' | 'height' | 'forehead' | 'jaw' | 'chin' | 'cheek'>> = {
-  oval: { width: 0.93, height: 1.08, forehead: 0.97, jaw: 0.9, chin: 0.26, cheek: 0.9 },
-  round: { width: 0.99, height: 1.02, forehead: 0.98, jaw: 0.96, chin: 0.1, cheek: 1.15 },
-  square: { width: 0.97, height: 1.06, forehead: 0.98, jaw: 1.0, chin: 0.06, cheek: 0.7 },
-  heart: { width: 0.95, height: 1.07, forehead: 1, jaw: 0.84, chin: 0.4, cheek: 0.9 },
-  oblong: { width: 0.88, height: 1.15, forehead: 0.95, jaw: 0.9, chin: 0.2, cheek: 0.65 },
-  diamond: { width: 0.93, height: 1.08, forehead: 0.9, jaw: 0.86, chin: 0.34, cheek: 1.2 },
-  triangle: { width: 0.93, height: 1.07, forehead: 0.88, jaw: 1.0, chin: 0.14, cheek: 0.8 },
+  oval: { width: 0.94, height: 1.09, forehead: 0.98, jaw: 0.86, chin: 0.32, cheek: 1.1 },
+  round: { width: 0.99, height: 1.04, forehead: 0.98, jaw: 0.92, chin: 0.2, cheek: 1.3 },
+  square: { width: 0.97, height: 1.08, forehead: 0.98, jaw: 0.93, chin: 0.2, cheek: 0.75 },
+  heart: { width: 0.95, height: 1.09, forehead: 1, jaw: 0.8, chin: 0.45, cheek: 1.05 },
+  oblong: { width: 0.88, height: 1.16, forehead: 0.95, jaw: 0.85, chin: 0.3, cheek: 0.85 },
+  diamond: { width: 0.93, height: 1.1, forehead: 0.9, jaw: 0.82, chin: 0.4, cheek: 1.3 },
+  triangle: { width: 0.93, height: 1.09, forehead: 0.88, jaw: 0.92, chin: 0.28, cheek: 0.85 },
 };
 
 export function headParamsFromDna(dna: MascotDna, overrides: Partial<HeadParams> = {}): HeadParams {
@@ -77,18 +78,23 @@ export function sculpt(dir: THREE.Vector3, P: HeadParams, out: THREE.Vector3, sc
     z = lerp(z, z / n, t);
   }
 
-  const lower = smoothstep(-0.05, -1, y);
+  // Cheeks stay full down to the mouth, then the jaw tapers into the chin.
+  const lower = smoothstep(-0.2, -1, y);
   const upper = smoothstep(0.2, 1, y);
   let wf = lerp(1, P.jaw, Math.pow(lower, 1.15)) * lerp(1, P.forehead, upper);
   wf *= 1 - P.chin * 0.42 * smoothstep(-0.6, -1, y);
-  const df = lerp(1, 0.86, lower);
+  const df = lerp(1, 0.84, lower);
   const front = Math.max(0, z);
-  const cheek = P.cheek * gauss((Math.abs(x) - 0.6) ** 2 + (y + 0.22) ** 2, 0.2) * front;
+  // Full, round cheeks low on the face (the cartoon "apple" cheeks).
+  const cheek = P.cheek * gauss((Math.abs(x) - 0.58) ** 2 + (y + 0.34) ** 2, 0.22) * front;
 
-  x *= P.width * wf * (1 + cheek * 0.07);
+  x *= P.width * wf * (1 + cheek * 0.1);
+  z += cheek * 0.05 * front;
   z *= P.depth * df;
   y *= P.height;
   if (z < 0) z *= 1 + 0.12 * P.cranium * smoothstep(-0.7, 0.6, dir.y);
+  // Underside of the jaw: the back half of the lower head tucks in, so the neck reads behind it.
+  if (z < 0.35) z = lerp(z, z * 0.72 - 0.06, smoothstep(-0.5, -0.95, dir.y) * smoothstep(0.35, -0.2, z));
   // Slightly flatter face plane reads as "character" rather than "ball".
   if (z > 0) z *= 1 - 0.05 * smoothstep(-0.4, 0.6, dir.y);
 
@@ -97,16 +103,16 @@ export function sculpt(dir: THREE.Vector3, P: HeadParams, out: THREE.Vector3, sc
   if (fw > 0) {
     const ax = Math.abs(x);
     const tipY = -0.24 * P.noseLength;
-    const nw = 0.085 * P.noseWidth;
+    const nw = 0.1 * P.noseWidth;
     // Nose: bridge, tip, alae.
     const bridge = 0.05 * P.noseBridge * gauss(x * x, nw * 0.55) * smoothstep(0.14, -0.02, y) * smoothstep(tipY - 0.04, tipY + 0.1, y);
-    const tip = 0.11 * P.noseTip * gauss(x * x + ((y - tipY - P.noseUp * 0.02) * 1.15) ** 2, nw);
-    const alae = 0.045 * gauss((ax - nw * 1.05) ** 2 + (y - tipY + 0.035) ** 2, nw * 0.62);
+    const tip = 0.15 * P.noseTip * gauss(x * x + ((y - tipY - P.noseUp * 0.02) * 1.1) ** 2, nw);
+    const alae = 0.06 * gauss((ax - nw * 1.0) ** 2 + (y - tipY + 0.04) ** 2, nw * 0.6);
     // Eye sockets, brow ridge, muzzle, chin.
     const socket = -0.05 * gauss((ax - P.eyeX) ** 2 + ((y - P.eyeY) * 1.2) ** 2, 0.12);
     const brow = 0.035 * gauss((y - (P.eyeY + 0.24)) ** 2, 0.06) * gauss(x * x, 0.42);
     const muzzle = 0.045 * gauss(x * x * 1.4 + (y - P.mouthY + 0.02) ** 2, 0.22);
-    const chin = 0.05 * gauss(x * x * 2 + (y + 0.98 * P.height) ** 2, 0.13);
+    const chin = 0.075 * gauss(x * x * 1.6 + (y + 0.95 * P.height) ** 2, 0.14);
     z += fw * (bridge + tip + alae + socket + brow + muzzle + chin);
   }
   return out.set(x * scale, y * scale, z * scale);

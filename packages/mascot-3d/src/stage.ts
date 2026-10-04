@@ -7,11 +7,13 @@ import type { StyleLook } from './styles';
 export type Framing = 'hero' | 'bust' | 'portrait' | 'head' | 'sticker';
 
 const FRAMES: Record<Framing, { y: number; dist: number; fov: number }> = {
-  hero: { y: -0.55, dist: 11.4, fov: 22 },
-  bust: { y: -0.36, dist: 10.2, fov: 22 },
-  portrait: { y: -0.12, dist: 8.6, fov: 22 },
-  head: { y: 0.1, dist: 7.2, fov: 22 },
-  sticker: { y: -0.05, dist: 9.6, fov: 22 },
+  // Waist-up: the whole character with arms and gestures.
+  hero: { y: -1.1, dist: 15.2, fov: 22 },
+  bust: { y: -1.0, dist: 14.6, fov: 22 },
+  // Chest-up / sticker: head large, gestures at chest height still in frame.
+  portrait: { y: -0.6, dist: 10.6, fov: 22 },
+  sticker: { y: -0.85, dist: 12.4, fov: 22 },
+  head: { y: 0.05, dist: 7.4, fov: 22 },
 };
 
 export interface StageOptions {
@@ -68,10 +70,10 @@ export class MascotStage {
     this.key.position.set(-6.5, 5, 5.5);
     this.key.castShadow = true;
     this.key.shadow.mapSize.set(1024, 1024);
-    this.key.shadow.camera.left = -3;
-    this.key.shadow.camera.right = 3;
+    this.key.shadow.camera.left = -3.4;
+    this.key.shadow.camera.right = 3.4;
     this.key.shadow.camera.top = 3;
-    this.key.shadow.camera.bottom = -4;
+    this.key.shadow.camera.bottom = -5.6;
     this.key.shadow.bias = -0.0004;
     this.key.shadow.normalBias = 0.02;
     this.key.shadow.radius = 4;
@@ -136,6 +138,17 @@ export class MascotStage {
     this.pivot.rotation.y = opts.yaw ?? 0;
     this.render();
     return (this.renderer.domElement as HTMLCanvasElement).toDataURL('image/png');
+  }
+
+  /** Same as `snapshot`, as a PNG Blob (works on an OffscreenCanvas inside a Web Worker). */
+  async snapshotBlob(dna: MascotDna, opts: MascotOptions & { framing?: Framing; yaw?: number } = {}): Promise<Blob> {
+    this.setMascot(dna, opts);
+    this.setFraming(opts.framing ?? 'bust');
+    this.pivot.rotation.y = opts.yaw ?? 0;
+    this.render();
+    const canvas = this.renderer.domElement as unknown as OffscreenCanvas | HTMLCanvasElement;
+    if ('convertToBlob' in canvas) return canvas.convertToBlob({ type: 'image/png' });
+    return new Promise((resolve, reject) => (canvas as HTMLCanvasElement).toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png'));
   }
 
   dispose() {

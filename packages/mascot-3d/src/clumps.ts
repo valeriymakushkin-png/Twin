@@ -32,6 +32,8 @@ export interface ClumpSpec {
   colorJitter?: number;
   /** Clumps stop when their path drops below this height (dir.y) — keeps short cuts off the face. */
   floor?: (d: THREE.Vector3) => number;
+  /** Body volume (signed distance) that falling hair rests on instead of passing through. */
+  collider?: (x: number, y: number, z: number) => number;
 }
 
 const C = new THREE.Vector3();
@@ -105,14 +107,28 @@ export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, 
         const endK = smoothstep(0.7, 1, fallen / fallLen);
         p.x -= Math.sign(p.x) * endK * fallStep * 0.18;
         p.z += endK * fallStep * 0.08;
-        // Keep falling hair outside the shoulders.
-        const sh = smoothstep(-1.1, -1.7, p.y);
-        const minR = lerp(0, 1.05, sh);
-        const radXZ = Math.hypot(p.x / 1.25, p.z / 0.75);
-        if (radXZ < minR && radXZ > 1e-3) {
-          const k = minR / radXZ;
-          p.x *= k;
-          p.z *= k;
+        // Keep falling hair outside the body (shoulders, hood, chest).
+        if (spec.collider) {
+          const f = spec.collider;
+          const margin = 0.05;
+          for (let it = 0; it < 3; it++) {
+            const d = f(p.x, p.y, p.z);
+            if (d >= margin) break;
+            const e = 0.01;
+            C.set(f(p.x + e, p.y, p.z) - f(p.x - e, p.y, p.z), f(p.x, p.y + e, p.z) - f(p.x, p.y - e, p.z), f(p.x, p.y, p.z + e) - f(p.x, p.y, p.z - e));
+            if (C.lengthSq() < 1e-12) break;
+            C.normalize();
+            p.addScaledVector(C, margin - d);
+          }
+        } else {
+          const sh = smoothstep(-1.1, -1.7, p.y);
+          const minR = lerp(0, 1.05, sh);
+          const radXZ = Math.hypot(p.x / 1.25, p.z / 0.75);
+          if (radXZ < minR && radXZ > 1e-3) {
+            const k = minR / radXZ;
+            p.x *= k;
+            p.z *= k;
+          }
         }
         centers.push(p.clone());
       }

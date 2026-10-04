@@ -3,7 +3,6 @@ import type { Expression } from './expressions';
 import type { FrontMap, HeadParams } from './head';
 import { taperedTube } from './hair';
 import { material } from './materials';
-import { shade } from './math';
 import type { StyleLook } from './styles';
 
 export function heartShape(size = 1): THREE.Shape {
@@ -126,37 +125,4 @@ export function buildProps(expr: Expression, look: StyleLook, map: FrontMap, P: 
     }
   }
   return g;
-}
-
-/** Simple stylised hand for "thinking" (chin) and "facepalm" (face) poses. */
-export function buildHand(kind: 'chin' | 'face', skin: string, look: StyleLook, map: FrontMap, P: HeadParams): THREE.Group {
-  const mat = material(look, 'skin', { color: shade(skin, 0.02) });
-  const hand = new THREE.Group();
-  const palm = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 24), mat);
-  palm.scale.set(0.24, 0.27, 0.11);
-  hand.add(palm);
-  for (let i = 0; i < 4; i++) {
-    const f = new THREE.Mesh(new THREE.CapsuleGeometry(0.052, 0.17 - Math.abs(i - 1.5) * 0.03, 6, 12), mat);
-    f.position.set(-0.15 + i * 0.1, 0.33 - Math.abs(i - 1.5) * 0.02, 0);
-    f.rotation.z = (i - 1.5) * -0.08;
-    hand.add(f);
-  }
-  const thumb = new THREE.Mesh(new THREE.CapsuleGeometry(0.056, 0.14, 6, 12), mat);
-  thumb.position.set(0.25, 0.02, 0.04);
-  thumb.rotation.z = -0.9;
-  hand.add(thumb);
-  hand.traverse((o) => {
-    if ((o as THREE.Mesh).isMesh) o.castShadow = true;
-  });
-  if (kind === 'chin') {
-    // Fist under the chin, index finger along the cheek.
-    hand.scale.setScalar(1.05);
-    hand.position.set(0.3, -0.98 * P.height, (map.surfaceZ(0.25, -0.85) || 0.6) + 0.16);
-    hand.rotation.set(-0.5, -0.3, 0.25);
-  } else {
-    hand.scale.setScalar(1.45);
-    hand.position.set(0.05, P.eyeY + 0.12, (map.surfaceZ(0, P.eyeY + 0.1) || 0.9) + 0.22);
-    hand.rotation.set(-0.15, 0, Math.PI + 0.25);
-  }
-  return hand;
 }

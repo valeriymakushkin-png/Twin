@@ -100,7 +100,7 @@ export function buildGlasses(kind: string, look: StyleLook, map: FrontMap, P: He
   return g;
 }
 
-export function buildAccessory(key: AccessoryKey, look: StyleLook, map: FrontMap, P: HeadParams, crown: number, color = '#111114'): THREE.Group {
+export function buildAccessory(key: AccessoryKey, look: StyleLook, map: FrontMap, P: HeadParams, crown: number, color = '#111114', surfaceZ?: (x: number, y: number) => number): THREE.Group {
   const g = new THREE.Group();
   g.name = `accessory-${key}`;
   const dir = new THREE.Vector3();
@@ -169,24 +169,23 @@ export function buildAccessory(key: AccessoryKey, look: StyleLook, map: FrontMap
     }
     case 'chain': {
       const mat = material(look, 'metal', { color: '#f2c14e', roughness: 0.22 });
-      const curve = new THREE.CatmullRomCurve3([
-        new THREE.Vector3(-0.52, -1.25, 0.2),
-        new THREE.Vector3(-0.4, -1.62, 0.74),
-        new THREE.Vector3(0, -1.88, 0.94),
-        new THREE.Vector3(0.4, -1.62, 0.74),
-        new THREE.Vector3(0.52, -1.25, 0.2),
-      ]);
-      const n = 34;
+      const z = (x: number, y: number, lift: number) => (surfaceZ ? surfaceZ(x, y) : 0.7) + lift;
+      const curve = new THREE.CatmullRomCurve3(
+        ([[-0.5, -1.4, 0], [-0.42, -1.75, 0.04], [-0.22, -2.02, 0.05], [0, -2.1, 0.05], [0.22, -2.02, 0.05], [0.42, -1.75, 0.04], [0.5, -1.4, 0]] as const).map(
+          ([x, y, l]) => new THREE.Vector3(x, y, z(x, y, l)),
+        ),
+      );
+      const n = 40;
       for (let i = 0; i < n; i++) {
         const t = i / (n - 1);
-        const link = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.016, 8, 16), mat);
+        const link = new THREE.Mesh(new THREE.TorusGeometry(0.042, 0.015, 8, 16), mat);
         link.position.copy(curve.getPointAt(t));
         link.lookAt(curve.getPointAt(Math.min(1, t + 0.02)));
         link.rotateY(i % 2 ? Math.PI / 2 : 0);
         g.add(link);
       }
       const pendant = new THREE.Mesh(new THREE.OctahedronGeometry(0.11, 0), mat);
-      pendant.position.set(0, -2.0, 0.98);
+      pendant.position.set(0, -2.24, z(0, -2.24, 0.1));
       g.add(pendant);
       break;
     }

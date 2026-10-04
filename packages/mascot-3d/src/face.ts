@@ -199,7 +199,10 @@ export class FacePainter {
     } else {
       this.simpleMouth(expr, look);
     }
-    this.brows(dna, expr, look);
+    // Full faces get sculpted 3D brows (brows.ts); paint only their soft contact shadow.
+    if (look.face === 'full') {
+      for (const [i, s] of [[0, -1], [1, 1]] as const) this.spot(s * (P.eyeX * 0.75 + 0.05), P.eyeY + 0.2 + expr.browLift[i], 0.2, shade(skin, -0.35), 0.18, 0.06);
+    } else this.brows(dna, expr, look);
 
     const tex = new THREE.CanvasTexture(this.canvas as HTMLCanvasElement);
     tex.colorSpace = THREE.SRGBColorSpace;
@@ -405,10 +408,13 @@ export class FacePainter {
         break;
       }
       case 'flat': {
-        const upper = qb([-mw * 0.72, my - 0.01], [0, my - 0.022], [mw * 0.72, my - 0.01]);
-        const lower = qb([mw * 0.72, my - 0.01], [0, my - 0.045], [-mw * 0.72, my - 0.01]);
-        this.fill([...upper, ...lower], rgba(shade(lip, -0.3), 0.9));
-        this.fill([...lower.map(([x, y]) => [x, y - 0.004] as Pt), ...lower.slice().reverse().map(([x, y]) => [x * 0.9, y - 0.03 * lipFull] as Pt)], rgba(lip, 0.45));
+        // Closed mouth: upper lip (cupid's bow), parting line, fuller lower lip.
+        const w = mw * 0.74;
+        const upperLip = [...qb([-w, my - 0.012], [-w * 0.4, my + 0.045 * lipFull], [0, my + 0.022], 12), ...qb([0, my + 0.022], [w * 0.4, my + 0.045 * lipFull], [w, my - 0.012], 12), ...qb([w, my - 0.012], [0, my - 0.02], [-w, my - 0.012], 12)];
+        this.fill(upperLip, rgba(shade(lip, -0.12), 0.7));
+        const lowerLip = [...qb([-w * 0.92, my - 0.018], [0, my - 0.03], [w * 0.92, my - 0.018], 12), ...qb([w * 0.92, my - 0.018], [0, my - 0.075 * lipFull - 0.02], [-w * 0.92, my - 0.018], 12)];
+        this.fill(lowerLip, this.gradientFor(lowerLip, rgba(lip, 0.75), rgba(shade(lip, 0.1), 0.55)));
+        this.fill([...qb([-w, my - 0.012], [0, my - 0.024], [w, my - 0.012]), ...qb([w, my - 0.012], [0, my - 0.032], [-w, my - 0.012])], rgba(shade(lip, -0.5), 0.9));
         break;
       }
       case 'smile':

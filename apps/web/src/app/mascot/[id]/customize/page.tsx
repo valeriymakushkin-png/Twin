@@ -91,7 +91,7 @@ export default function CustomizePage() {
         <div className="absolute inset-0 opacity-60" style={{ background: `linear-gradient(135deg, ${bg.colors.join(', ')})` }} />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent_30%,rgba(6,6,7,0.85)_80%)]" />
         {dna ? (
-          <Mascot3D dna={dna} style={avatar?.styleSlug} outfit={currentOutfit} accessory={currentAccessory ?? null} framing="bust" className="relative aspect-[5/4] w-full" />
+          <Mascot3D dna={dna} style={avatar?.styleSlug} outfit={currentOutfit} accessory={currentAccessory ?? null} framing="portrait" className="relative aspect-[5/4] w-full" />
         ) : (
           <Skeleton className="aspect-[5/4] w-full" />
         )}

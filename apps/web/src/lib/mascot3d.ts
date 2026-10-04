@@ -33,14 +33,45 @@ export function webglSupported(): boolean {
 
 const idle = () => new Promise<void>((r) => (typeof requestIdleCallback !== 'undefined' ? requestIdleCallback(() => r(), { timeout: 120 }) : setTimeout(r, 16)));
 
-/**
- * Renders DNA-driven 3D snapshots one at a time on a single shared WebGL context
- * (thumbnails for styles, outfits, emotions…), memoised per DNA + options.
- */
-export function renderShot(dna: MascotDna, opts: ShotOptions = {}): Promise<string> {
-  const key = JSON.stringify([dna, opts]);
-  const hit = cache.get(key);
-  if (hit) return hit;
+/* Off-main-thread rendering (OffscreenCanvas + Web Worker) with a main-thread fallback. */
+let worker: Worker | null = null;
+let workerBroken = false;
+let jobId = 0;
+const pending = new Map<number, { resolve: (url: string) => void; reject: (e: Error) => void }>();
+
+function getWorker(): Worker | null {
+  if (workerBroken || typeof Worker === 'undefined' || typeof OffscreenCanvas === 'undefined') return null;
+  if (worker) return worker;
+  try {
+    worker = new Worker('/mascot3d-worker.js');
+    worker.onmessage = (e: MessageEvent<{ id: number; blob?: Blob; error?: string }>) => {
+      const job = pending.get(e.data.id);
+      if (!job) return;
+      pending.delete(e.data.id);
+      if (e.data.blob) job.resolve(URL.createObjectURL(e.data.blob));
+      else job.reject(new Error(e.data.error ?? 'worker render failed'));
+    };
+    worker.onerror = () => {
+      workerBroken = true;
+      for (const job of pending.values()) job.reject(new Error('worker crashed'));
+      pending.clear();
+    };
+    return worker;
+  } catch {
+    workerBroken = true;
+    return null;
+  }
+}
+
+function renderInWorker(w: Worker, dna: MascotDna, opts: ShotOptions): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const id = ++jobId;
+    pending.set(id, { resolve, reject });
+    w.postMessage({ id, dna, opts });
+  });
+}
+
+function renderOnMainThread(dna: MascotDna, opts: ShotOptions): Promise<string> {
   const job = queue.then(async () => {
     const mod = await import('@mascot/mascot-3d');
     const size = opts.size ?? 512;
@@ -58,6 +89,25 @@ export function renderShot(dna: MascotDna, opts: ShotOptions = {}): Promise<stri
     });
   });
   queue = job.catch(() => undefined);
+  return job;
+}
+
+/**
+ * Renders DNA-driven 3D snapshots (thumbnails for styles, outfits, emotions…), memoised per
+ * DNA + options. Runs in a Web Worker when OffscreenCanvas WebGL is available.
+ */
+export function renderShot(dna: MascotDna, opts: ShotOptions = {}): Promise<string> {
+  const key = JSON.stringify([dna, opts]);
+  const hit = cache.get(key);
+  if (hit) return hit;
+  const w = getWorker();
+  const job = w
+    ? renderInWorker(w, dna, opts).catch(() => {
+        // WebGL in workers unsupported here: fall back for this and every later shot.
+        workerBroken = true;
+        return renderOnMainThread(dna, opts);
+      })
+    : renderOnMainThread(dna, opts);
   cache.set(key, job);
   job.catch(() => cache.delete(key));
   return job;

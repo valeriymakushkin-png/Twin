@@ -103,7 +103,7 @@ export function strandTexture(): THREE.CanvasTexture {
 }
 
 /** Builds the hair for a style out of a sculpted shell plus style-specific volumes. */
-export function buildHair(style: HairStyle, P: HeadParams, mat: THREE.Material, seed: number, detail: number, simple = false): HairResult {
+export function buildHair(style: HairStyle, P: HeadParams, mat: THREE.Material, seed: number, detail: number, simple = false, collider?: (x: number, y: number, z: number) => number): HairResult {
   const group = new THREE.Group();
   if (style === 'bald') return { group, crown: 0 };
   const spec = simple ? { ...SPECS['crew-cut']!, base: 0.1, top: 0.08, noiseAmp: 0, frontBoost: 0.02 } : (SPECS[style] ?? SPECS['crew-cut']!);
@@ -223,6 +223,22 @@ export function buildHair(style: HairStyle, P: HeadParams, mat: THREE.Material, 
     const curtain = new THREE.LatheGeometry(pts, 72, phiStart, 2 * (Math.PI - phiStart));
     const cp = curtain.attributes.position as THREE.BufferAttribute;
     for (let i = 0; i < cp.count; i++) cp.setXYZ(i, cp.getX(i) * P.width, cp.getY(i) * P.height * 0.98, cp.getZ(i) * P.depth * 0.95);
+    if (collider) {
+      // Drape over the shoulders / hood instead of cutting through them.
+      const p = new THREE.Vector3();
+      const n = new THREE.Vector3();
+      const e = 0.01;
+      for (let i = 0; i < cp.count; i++) {
+        p.fromBufferAttribute(cp, i);
+        for (let it = 0; it < 3; it++) {
+          const d = collider(p.x, p.y, p.z);
+          if (d >= 0.06) break;
+          n.set(collider(p.x + e, p.y, p.z) - collider(p.x - e, p.y, p.z), collider(p.x, p.y + e, p.z) - collider(p.x, p.y - e, p.z), collider(p.x, p.y, p.z + e) - collider(p.x, p.y, p.z - e)).normalize();
+          p.addScaledVector(n, 0.06 - d);
+        }
+        cp.setXYZ(i, p.x, p.y, p.z);
+      }
+    }
     curtain.computeVertexNormals();
     const cmat = (mat as THREE.MeshPhysicalMaterial).clone();
     cmat.side = THREE.DoubleSide;
@@ -243,7 +259,7 @@ export function buildHair(style: HairStyle, P: HeadParams, mat: THREE.Material, 
     shellMat.color = baseColor.clone().multiplyScalar(0.62);
     shell.material = shellMat;
     for (const cs of clumpSpecs) {
-      const geo = buildClumps(P, cs, r, baseColor);
+      const geo = buildClumps(P, { ...cs, collider }, r, baseColor);
       const mesh = new THREE.Mesh(geo, cmat);
       mesh.castShadow = true;
       mesh.receiveShadow = true;

@@ -1,14 +1,15 @@
 import * as THREE from 'three';
 import { EYE_COLOR_HEX, HAIR_COLOR_HEX, SKIN_TONE_HEX, type MascotDna } from '@mascot/shared';
 import { buildAccessory, buildGlasses, type AccessoryKey } from './accessories';
-import { buildBody, type OutfitKey } from './body';
+import { bodyCollider, buildBody, type OutfitKey } from './body';
+import { buildBrows } from './brows';
 import { expressionFor, type Emotion, type Expression } from './expressions';
 import { FacePainter, paintEyeTexture } from './face';
 import { buildFacialHair, buildHair, strandTexture } from './hair';
 import { buildHeadGeometry, FrontMap, headParamsFromDna, type HeadParams } from './head';
 import { material, outlineMaterial } from './materials';
 import { hashString, lerp, shade } from './math';
-import { buildHand, buildProps } from './props';
+import { buildProps } from './props';
 import { styleLook, type StyleLook } from './styles';
 
 export interface MascotOptions {
@@ -100,13 +101,17 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     for (const s of [-1, 1]) {
       const ear = new THREE.Group();
       const outer = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 24), earMat);
-      outer.scale.set(0.075, 0.2, 0.14);
+      outer.scale.set(0.09, 0.25, 0.165);
       const inner = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), innerMat);
-      inner.scale.set(0.04, 0.13, 0.08);
-      inner.position.set(s * 0.04, -0.01, 0.03);
-      ear.add(outer, inner);
-      ear.position.set(s * earX, earY, -0.06);
-      ear.rotation.y = s * 0.35;
+      inner.scale.set(0.05, 0.16, 0.095);
+      inner.position.set(s * 0.05, -0.01, 0.035);
+      // Lobe.
+      const lobe = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), earMat);
+      lobe.scale.set(0.07, 0.08, 0.08);
+      lobe.position.set(s * 0.01, -0.2, 0.02);
+      ear.add(outer, inner, lobe);
+      ear.position.set(s * (earX + 0.02), earY, -0.04);
+      ear.rotation.y = s * 0.42;
       ear.rotation.z = s * -0.08;
       outer.castShadow = true;
       head.add(ear);
@@ -210,9 +215,12 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   // Hair.
   const strands = look.shading === 'pbr' ? strandTexture() : undefined;
   const hairMat = material(look, 'hair', { color: look.shading === 'plastic' ? shade(hairHex, 0.05) : hairHex, map: strands, bumpMap: strands });
-  const hair = buildHair(look.face === 'dots' ? 'crew-cut' : dna.hairStyle, P, hairMat, seed, look.hairDetail, look.face === 'dots');
+  const hair = buildHair(look.face === 'dots' ? 'crew-cut' : dna.hairStyle, P, hairMat, seed, look.hairDetail, look.face === 'dots', bodyCollider(opts.outfit));
   head.add(hair.group);
   if (look.face === 'full') {
+    const browHex = dna.hairStyle === 'bald' ? shade(hairHex, -0.2) : shade(hairHex, -0.3);
+    const browMat = material(look, 'hair', { color: browHex, roughness: 0.6, side: THREE.DoubleSide });
+    head.add(buildBrows(dna, expr, look, map, P, browMat));
     const beard = buildFacialHair(dna.facialHair, P, hairMat, seed, (x, y) => map.surfaceZ(x, y) || 0.85);
     if (beard) head.add(beard);
   }
@@ -223,11 +231,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   if (glassesKind !== 'none' && look.face === 'full') head.add(buildGlasses(glassesKind, look, map, P, eyeR, eyeX));
   if (glassesKind === 'sunglasses' && look.face !== 'full') head.add(buildGlasses('sunglasses', look, map, P, eyeR, eyeX));
 
-  if (accessory && accessory !== 'sunglasses') {
-    const acc = buildAccessory(accessory, look, map, P, hair.crown);
-    if (accessory === 'chain') root.add(acc);
-    else head.add(acc);
-  }
+  if (accessory && accessory !== 'sunglasses' && accessory !== 'chain') head.add(buildAccessory(accessory, look, map, P, hair.crown));
   if (look.extra === 'stud') {
     const stud = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.22, 40), skinMat.clone());
     (stud.material as THREE.MeshPhysicalMaterial).map = null;
@@ -244,12 +248,12 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
 
   // Props & hands.
   root.add(buildProps(expr, look, map, P, eyeR));
-  if (expr.hand) root.add(buildHand(expr.hand, skin, look, map, P));
 
   // Body.
   const outfit = (OUTFITS.has(opts.outfit as OutfitKey) ? opts.outfit : 'casual-hoodie') as OutfitKey;
-  const body = buildBody({ outfit, color: opts.outfitColor, skin, look });
-  root.add(body);
+  const body = buildBody({ outfit, color: opts.outfitColor, skin, look, pose: expr.pose });
+  root.add(body.group);
+  if (accessory === 'chain') root.add(buildAccessory('chain', look, map, P, hair.crown, undefined, body.surfaceZ));
   if (outfit === 'streamer' && !accessory) head.add(buildAccessory('headphones', look, map, P, hair.crown));
   if (outfit === 'wizard') {
     const hat = new THREE.Mesh(new THREE.ConeGeometry(0.85, 1.5, 48, 1, true), material(look, 'fabric', { color: '#4c1d95', side: THREE.DoubleSide }));
@@ -305,7 +309,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
       root.traverse((o) => {
         const m = o as THREE.Mesh;
         if (!m.isMesh) return;
-        m.geometry.dispose();
+        if (!m.geometry.userData.shared) m.geometry.dispose();
         const mats = Array.isArray(m.material) ? m.material : [m.material];
         for (const mat of mats) {
           for (const v of Object.values(mat)) if (v instanceof THREE.Texture) v.dispose();
