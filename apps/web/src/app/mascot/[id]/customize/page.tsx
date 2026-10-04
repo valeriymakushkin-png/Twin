@@ -97,7 +97,7 @@ export default function CustomizePage() {
         styleSlug: (avatar?.styleSlug ?? 'pixar') as StyleSlug,
         outfitKey: currentOutfit,
         poseKey: pose,
-        accessoryKey: currentAccessory,
+        accessoryKey: currentAccessory ?? undefined,
       });
     },
     onSuccess: (g) => setGenerationId(g.id),

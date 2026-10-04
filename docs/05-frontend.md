@@ -13,12 +13,12 @@ the official Telegram Mini Apps SDK (`telegram-web-app.js`, Bot API 8+), Geist f
 | `/create` | One screen: **"Upload photos"** (min 5 highlighted in red), photo grid with red check marks, pose examples (front, left/right profile, smile, neutral), live face check per photo; biometric consent sheet on first upload; sticky **Upload photos → Create character** CTA |
 | `/processing/[id]` | **Photo analysis**: wireframe 3D head inside red scan brackets, checklist (face, features, character, render), % progress, queue position, rotating tips; failure card with refund note |
 | `/mascot/[id]` | First visit: **"Ready!"** reveal (your mascot / style, Change style, Next). Then the **3D viewer**: side look thumbnails, Rotate / Camera (PNG snapshot) / Download, "Your mascot" card, action grid (Stickers, Memes, Profile pics, Videos, Change style, Customize), Mascot DNA card |
-| `/mascot/[id]/stickers` | 3×3 emotion grid with captions (live 3D previews until renders exist), free-allowance math, pack previews, **Add to Telegram** (sticker set) |
+| `/mascot/[id]/stickers` | 62-emotion grid with captions (lazy 3D previews), select all / clear, default pack of 10, free-allowance math, pack previews, **Add to Telegram** (sticker set) |
 | `/mascot/[id]/memes` | Prompt + **Generate**, formats (classic, POV, Nobody/Me, Expectation vs Reality, Post, Caption), emotion auto-detect or manual, ideas, results with download/share |
 | `/mascot/[id]/pfp` | Instant (Sharp composite, free) vs AI scene (Premium), backgrounds, outfits, poses, circle-crop preview |
 | `/mascot/[id]/videos` | Templates as cards (Dance, Talking, Walk, Podcast, Promo), script + voice, aspect ratio, **Create video**, player |
 | `/mascot/[id]/styles` | **"Choose a style"**: 3-column grid of the same character in 11 styles (red selection), **Apply style** → re-render from stored DNA |
-| `/mascot/[id]/customize` | **"Customize your style"**: live 3D preview, tabs Outfit / Accessories / Background / Poses, premium items locked, **Save** → new look |
+| `/mascot/[id]/customize` | **"Customize your style"**: live 3D preview, tabs Outfit / **Hair** (252 styles, women / men / all + 18 family filters) / **Glasses** (104 pairs, optical / retro / sun / sport / fun) / Accessories / Background / Poses, lazy 3D tiles, premium items locked, **Save** → stores the look on the DNA + new render |
 | `/library` | Mascots, sticker packs, memes, PFPs, videos |
 | `/premium` | Plans (monthly Star subscription, 12-month pass), Free vs Premium table, credit packs |
 | `/profile` | Plan, usage meters, credits, referral link, subscription (cancel/resume auto-renew), notifications, support, legal, **delete account** |
@@ -83,20 +83,35 @@ honoured everywhere, including the 3D viewer (renders on demand instead of conti
 
 Every character image in the app is rendered live from the mascot DNA by a three.js renderer — no static art:
 
-- **Character**: sculpted head (face shape, defined jaw and chin, apple cheeks, nose, ears), painted face
-  texture (lips per emotion, blush, freckles, stubble), sculpted 3D eyebrows, eyeballs with iris textures and
-  animated lids (blink), groomed hair (shells + flow-field clumps + curls for 30 hair styles; long hair drapes over
-  the shoulders), accessories (cap, beanie, sunglasses, headphones, chain, earrings), emotion props (hearts, tears,
-  sweat, steam, sparkles, question mark).
+- **Head** (`skull.ts`): an SDF-sculpted cartoon head — cranium, face mass, jaw and chin, cheeks, brow ridge, eye
+  sockets, muzzle and lips, nose, ears and neck blended with smooth unions and meshed with surface nets; a cached
+  radius map lets hair and beards sculpt shells over the exact surface. The head pivots at the top of the neck.
+  Painted face texture (lips per emotion, blush, freckles, stubble), sculpted 3D brows, eyeballs with iris textures
+  (plus star / dollar / spiral / X eyes) and animated lids.
+- **Hairstyles** (`hairdo.ts`, catalog in `@mascot/shared/hairstyles.ts`): **252 hairstyles** tagged female / male /
+  unisex in 18 families. Each is a semantic recipe (cut, length, texture, sides, bangs, part, shape, ties, strands)
+  compiled into layers: a scalp shell with a soft hairline, a stubble shell with a real fade gradient (taper, low /
+  mid / high / skin fade, undercut, side shave), flow-field clumps (waves, flips, layers, a-line / inverted / hime
+  lengths), instanced curls and filled volumes (afro, high top, puffs), tails made of locks (ponytails, pigtails,
+  bubble and braided tails), buns (messy, ballerina, donut, braided, space buns), scalp braids (French, Dutch, crown),
+  box braids, twists, locs and cornrows. Long hair and tails drape over the hood and shoulders.
+- **Eyewear** (`eyewear.ts`, catalog in `@mascot/shared/eyewear.ts`): **104 pairs** — 40 frame families from real
+  optics and sunglasses (round wire, panto, browline, pilot, navigator, cat-eye, butterfly, hexagon, D-frame,
+  trapezoid, shield, sport wrap, ski goggles, monocle…) in real finishes. Parametric rims (full, thick acetate, wire,
+  half-rim, rimless), bridges (single, double bar, keyhole, saddle), temples, nose pads, tortoise acetate, clear /
+  dark / gradient / mirror / colour lenses. A catalog entry can point at a licensed **GLB** (`glb` field):
+  `preloadEyewearModel()` loads it, centres and scales it to the face, tints nodes named `lens*`, and the viewer /
+  snapshots swap it in automatically.
 - **Body**: a full upper body modelled as signed-distance "clay" and meshed with a narrow-band surface-nets
   polygonizer (`sdf.ts`): torso with shoulders, folded hood, kangaroo pocket and drawstrings; sleeves with elbow
-  folds and ribbed cuffs posed by two-bone IK; neck; chunky 5-finger hands (`hands.ts`). Ambient occlusion is baked
-  into vertex colours. The torso is cached per outfit, sleeves and hands per pose. All 12 outfits (hoodie, tee,
-  denim jacket over a tee, suit with shirt and tie, puffer vest, astronaut, superhero cape, samurai, wizard,
-  techwear…) share this body.
-- **Poses** (`poses.ts`): every emotion has body language — wave (happy), hands in pockets (neutral), belly laugh,
-  slumped (crying), fists (angry), hands on cheeks (shocked), heart hands (love), crossed arms (sigma),
-  thumbs up (cool), hand on chin (thinking), facepalm.
+  folds and ribbed cuffs; chunky 5-finger hands in 12 poses (`hands.ts`). Arms are rigid segments built once per
+  outfit and posed every frame with two-bone IK, so poses and dances are cheap. Ambient occlusion is baked into
+  vertex colours. All 12 outfits share this body.
+- **Emotions & poses** (`expressions.ts`, `poses.ts`): 62 sticker emotions, each with eyes, brows, mouth, props
+  (hearts, tears, zzz, stars, money, snow, bulb, confetti…), skin tint and one of 35 body poses (wave, facepalm,
+  salute, shrug, mind-blown, hug, clap, pray, scared…).
+- **Dances** (`dances.ts`): 12 original dance loops (keyframes on the beat: bounce, twist, lean, head groove and arm
+  poses) played by the live viewer.
 - **Styles**: 11 looks map to shading models (PBR skin with sheen, vinyl, plastic, toon with ink outlines), saturation and
   rim-light colours, so "Pixar", "Anime", "Lego", "Cyberpunk"… are the same identity in different materials.
 - **Stage**: neutral tone mapping, room environment reflections, warm key light, red rim lights that separate the

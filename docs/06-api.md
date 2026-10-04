@@ -39,7 +39,8 @@ the original result instead of charging twice.
 | GET | `/avatars/:id` | `AvatarDto` |
 | PATCH | `/avatars/:id` | `{ name?, isPublic? }` |
 | DELETE | `/avatars/:id` | soft delete + async storage cleanup |
-| POST | `/avatars/:id/styles` | `{ styleSlug, outfitKey?, poseKey? }` → `GenerationDto` — re-render from stored DNA |
+| POST | `/avatars/:id/styles` | `{ styleSlug, outfitKey?, poseKey?, accessoryKey? }` → `GenerationDto` — re-render from stored DNA |
+| PATCH | `/avatars/:id/look` | `{ hairKey?, glassesKey? }` (catalog keys, `glassesKey: "none"` removes glasses, `null` resets to the extracted trait) → `AvatarDto`; free, updates the DNA and its prompt fragment |
 | POST | `/avatars/:id/renders/:renderId/primary` | make a look the main one |
 | GET | `/avatars/:id/renders/:renderId/hd` | signed URL (10 min) to the transparent HD master — Premium (402 `HD_EXPORT`) |
 | GET | `/public/avatars/:slug` **public** | share-page payload (name, style, image, card, referral code) |

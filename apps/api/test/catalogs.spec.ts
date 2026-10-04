@@ -48,7 +48,7 @@ describe('look catalogs', () => {
     const picked = MascotDnaSchema.parse({ ...dna, hairKey: 'space-buns', glassesKey: 'heart-pink-rose' });
     const text = describeDna(picked);
     expect(text).toContain('space buns hairstyle');
-    expect(text).toContain(getEyewear('heart-pink-rose')!.label.toLowerCase());
+    expect(text).toContain(`wearing ${getEyewear('heart-pink-rose')!.modelLabel.toLowerCase()} sunglasses`);
   });
 
   it('validates look updates', () => {

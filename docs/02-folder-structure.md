@@ -76,11 +76,13 @@ pnpm workspace + Turborepo monorepo. One shared domain package, three TypeScript
 │       ├── tests/                   pytest (geometry, colorimetry)
 │       └── Dockerfile               bakes model weights into the image
 ├── packages/
-│   ├── shared/                      Domain model shared by API, web and admin
+│   ├── shared/                      Domain model shared by API, web and admin (DNA, styles, emotions, dances,
+│   │                                hairstyles, eyewear, wardrobe, plans, API contracts, SVG fallback)
 │   │   └── src/                     dna · styles · emotions · wardrobe · memes · videos · pfp · plans
 │   │                                generation · api (zod request schemas + DTOs) · mascot-svg (SVG fallback) · locale
 │   └── mascot-3d/                   Real-time three.js character renderer
-│       ├── src/                     head (sculpt + front map) · face (painted texture) · brows · hair · clumps
+│       ├── src/                     head (sculpt + front map) · skull (SDF head) · face (painted texture) · brows
+│       │                            hairdo (hairstyle compiler) · hair · clumps · eyewear (frames + GLB loader) · dances
 │       │                            sdf (clay toolkit + surface nets) · body (torso, sleeves, outfits) · hands · poses
 │       │                            accessories · props · expressions · styles · materials · character · stage · scan
 │       └── headless/                entry bundled to dist/headless.js for server-side renders (mock provider)

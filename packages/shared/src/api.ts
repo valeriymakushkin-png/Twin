@@ -47,7 +47,7 @@ export const StyleVariantSchema = z.object({
   styleSlug: z.enum(STYLE_SLUGS),
   outfitKey: z.string().max(40).optional(),
   poseKey: z.string().max(40).optional(),
-  accessoryKey: z.enum(ACCESSORY_KEYS).optional(),
+  accessoryKey: z.enum(ACCESSORY_KEYS).nullish(),
 });
 
 /** Free look edits stored on the Mascot DNA (hairstyle / eyewear catalog keys; null resets). */

@@ -65,8 +65,10 @@ export interface EyewearDef {
   key: string;
   model: string;
   finish: string;
-  /** English name (also used inside prompts). */
+  /** English name, e.g. "Pilot, gold / green". */
   label: string;
+  modelLabel: string;
+  finishLabel: string;
   family: EyewearFamily;
   sun: boolean;
   spec: EyewearSpec;
@@ -188,6 +190,8 @@ function eyewearList(): EyewearDef[] {
         model: m.key,
         finish: f,
         label: `${m.label}, ${fin.label.toLowerCase()}`,
+        modelLabel: m.label,
+        finishLabel: fin.label,
         family: m.family,
         sun: m.sun,
         spec: { material: fin.material, frame: fin.frame, accent: fin.accent, lens: fin.lens ?? (m.sun ? 'dark' : 'clear'), ...m.spec },
@@ -224,5 +228,6 @@ export function resolveEyewear(dna: Pick<MascotDna, 'glasses' | 'glassesKey'>): 
 }
 
 export function describeEyewear(def: EyewearDef): string {
-  return `wearing ${def.label.toLowerCase()} ${def.sun ? 'sunglasses' : 'glasses'}`;
+  const kind = def.sun && !/sunglasses|goggles|visor/i.test(def.modelLabel) ? ' sunglasses' : !def.sun && !/readers|glasses|monocle|pince-nez/i.test(def.modelLabel) ? ' glasses' : '';
+  return `wearing ${def.modelLabel.toLowerCase()}${kind} (${def.finishLabel.toLowerCase()})`;
 }

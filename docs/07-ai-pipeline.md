@@ -85,11 +85,16 @@ Sectioned, deterministic prompts (`apps/api/src/ai/prompts/prompt-compiler.ts`, 
 
 ```
 Create a stylised character portrait (a personal mascot) of the person in the reference photos.
-IDENTITY — … must be instantly recognisable … Traits to preserve: <describeDna()> … Keep their glasses.
+IDENTITY — … must be instantly recognisable … Traits to preserve: <describeDna()> … Keep their glasses exactly as described.
 STYLE — <look>. Character design: <characterDesign>. Lighting: <lighting>.
 SCENE — <pose>, <outfit>. Centered … isolated on a fully transparent background.
 CONSTRAINTS — single character only, no text, no watermark, no logos … Avoid: <negative>.
 ```
+
+Looks picked in the customizer are part of the DNA: `hairKey` (one of 252 catalog hairstyles) and `glassesKey` (one of
+104 eyewear pairs or `none`) override the extracted `hairStyle` / `glasses`. `describeDna()` then reads e.g. *"red hair,
+box braids hairstyle, wearing pilot sunglasses (gold / green)"*, so every later avatar, sticker, meme and video keeps
+the chosen hair and glasses; the 3D mock renderer resolves the same keys.
 
 Variants: style re-render (anchored on the master render + photos), sticker (emotion expression + pose + accent),
 meme reaction (emotion + situation), PFP scene, video motion prompt (+ negative prompt for identity drift).
@@ -121,7 +126,7 @@ cannot be detected fall back to the first candidate. FREE mascots use one candid
 
 | Generator | Pipeline |
 |---|---|
-| **Stickers** | per emotion (10: happy, laughing, crying, angry, shocked, love, sigma, cool, thinking, facepalm) → transparent render (medium quality) → `stickerize`: trim, 512² canvas, **die-cut white outline** from dilated alpha, WebP < 512 KB → Telegram `uploadStickerFile` + `createNewStickerSet` (emoji list + keywords per emotion). Parallelism 3, resumable, partial refunds |
+| **Stickers** | per emotion (62 in the catalog — happy, laughing, crying, angry, shocked, love, sigma, cool, thinking, facepalm, wink, kiss, shy, scared, sleepy, mind-blown, money, party…; the default pack is the first 10, users pick any set) → transparent render (medium quality) → `stickerize`: trim, 512² canvas, **die-cut white outline** from dilated alpha, WebP < 512 KB → Telegram `uploadStickerFile` + `createNewStickerSet` (emoji list + keywords per emotion). Parallelism 3, resumable, partial refunds |
 | **Memes** | emotion from explicit choice or EN/RU keyword classifier → **reuses the sticker render of that emotion if one exists (zero AI cost)** else generates a reaction → Sharp/SVG composition in 6 original formats (no copyrighted templates), auto-fit text, watermark on FREE |
 | **Profile pictures** | *instant*: master over Sharp-rendered gradient/pattern backgrounds (halftone, rays, synth grid) at 2048² · *AI*: new pose/outfit render or full AI scene, face kept in the circle-safe centre |
 | **Videos** | 9:16 / 1:1 / 16:9 start frame (master on template background) → **Kling** (`image2video`, JWT auth) / **Runway** (`gen4_turbo`) / **Veo** (Gemini long-running op) → poll with backoff (job id persisted for resume) → ffmpeg normalise (H.264, faststart) → optional **TTS voice-over** (OpenAI `gpt-4o-mini-tts`, character voice) muxed with looping video → thumbnail |

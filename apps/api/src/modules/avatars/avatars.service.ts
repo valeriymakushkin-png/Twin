@@ -135,7 +135,7 @@ export class AvatarsService {
     const avatar = await this.loadOwned(userId, avatarId);
     if (avatar.status !== 'READY') throw new AppException('AVATAR_NOT_READY', 'Your mascot is still being created.');
     const style = await this.styles.bySlug(input.styleSlug);
-    const wardrobe = validateWardrobe(input.outfitKey, input.poseKey, input.accessoryKey);
+    const wardrobe = validateWardrobe(input.outfitKey, input.poseKey, input.accessoryKey ?? undefined);
     return this.generations.launch<GenerationDto>({
       userId,
       type: 'STYLE_VARIANT',
