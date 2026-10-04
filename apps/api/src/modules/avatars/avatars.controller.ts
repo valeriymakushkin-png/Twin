@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post } from '@nestjs/common';
 import { z } from 'zod';
-import { GenerateAvatarSchema, StyleVariantSchema, type GenerateAvatarInput, type StyleVariantInput } from '@mascot/shared';
+import { GenerateAvatarSchema, StyleVariantSchema, UpdateLookSchema, type GenerateAvatarInput, type StyleVariantInput, type UpdateLookInput } from '@mascot/shared';
 import type { AuthContext } from '../../common/auth-context';
 import { CurrentUser, IdempotencyKey, Public, RateLimit } from '../../common/decorators';
 import { ZodPipe } from '../../common/pipes/zod.pipe';
@@ -40,6 +40,13 @@ export class AvatarsController {
   @Patch('avatars/:id')
   update(@CurrentUser() auth: AuthContext, @Param('id') id: string, @Body(new ZodPipe(UpdateAvatarSchema)) body: z.infer<typeof UpdateAvatarSchema>) {
     return this.avatars.update(auth.userId, id, body);
+  }
+
+  /** Hairstyle / eyewear picks (free; stored on the Mascot DNA). */
+  @Patch('avatars/:id/look')
+  @RateLimit({ key: 'update-look', limit: 60, windowSec: 600 })
+  updateLook(@CurrentUser() auth: AuthContext, @Param('id') id: string, @Body(new ZodPipe(UpdateLookSchema)) body: UpdateLookInput) {
+    return this.avatars.updateLook(auth.userId, id, body);
   }
 
   @Delete('avatars/:id')

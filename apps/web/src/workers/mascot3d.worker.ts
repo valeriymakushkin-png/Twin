@@ -9,7 +9,7 @@ import { MascotStage, type Framing, type PoseKey } from '@mascot/mascot-3d';
 interface Job {
   id: number;
   dna: MascotDna;
-  opts: { style?: string; emotion?: string; outfit?: string; outfitColor?: string; accessory?: string | null; framing?: Framing; yaw?: number; size?: number; pose?: PoseKey };
+  opts: { style?: string; emotion?: string; outfit?: string; outfitColor?: string; accessory?: string | null; framing?: Framing; yaw?: number; size?: number; pose?: PoseKey; hair?: string; glasses?: string };
 }
 
 let stage: MascotStage | null = null;
@@ -31,6 +31,8 @@ self.onmessage = (event: MessageEvent<Job>) => {
         framing: opts.framing,
         yaw: opts.yaw,
         pose: opts.pose,
+        hair: opts.hair,
+        glasses: opts.glasses,
       });
       (self as unknown as DedicatedWorkerGlobalScope).postMessage({ id, blob });
     } catch (error) {

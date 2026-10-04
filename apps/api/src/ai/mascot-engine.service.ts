@@ -81,6 +81,8 @@ export class MascotEngine {
       dimples: d.dimples,
       distinguishingFeatures: d.distinguishingFeatures,
       proportions: d.proportions ?? undefined,
+      hairKey: d.hairKey,
+      glassesKey: d.glassesKey,
     });
     return {
       avatarId: avatar.id,

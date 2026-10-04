@@ -50,6 +50,15 @@ export const StyleVariantSchema = z.object({
   accessoryKey: z.enum(ACCESSORY_KEYS).optional(),
 });
 
+/** Free look edits stored on the Mascot DNA (hairstyle / eyewear catalog keys; null resets). */
+export const UpdateLookSchema = z
+  .object({
+    hairKey: z.string().max(48).nullable().optional(),
+    glassesKey: z.string().max(48).nullable().optional(),
+  })
+  .refine((v) => v.hairKey !== undefined || v.glassesKey !== undefined, { message: 'Nothing to update' });
+export type UpdateLookInput = z.infer<typeof UpdateLookSchema>;
+
 export const GenerateStickersSchema = z.object({
   avatarId: id,
   emotions: z.array(z.enum(STICKER_EMOTIONS)).min(1).max(STICKER_EMOTIONS.length).optional(),

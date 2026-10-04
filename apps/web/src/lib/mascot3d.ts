@@ -14,6 +14,9 @@ export interface ShotOptions {
   yaw?: number;
   size?: number;
   pose?: PoseKey;
+  /** Hairstyle / eyewear catalog keys (previews in the customizer). */
+  hair?: string;
+  glasses?: string;
 }
 
 let stage: MascotStage | null = null;
@@ -88,6 +91,8 @@ function renderOnMainThread(dna: MascotDna, opts: ShotOptions): Promise<string> 
       framing: opts.framing,
       yaw: opts.yaw,
       pose: opts.pose,
+      hair: opts.hair,
+      glasses: opts.glasses,
     });
   });
   queue = job.catch(() => undefined);

@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {
-  getAccessory, getOutfit,
+  describeDna,
+  getAccessory,
+  getEyewear,
+  getHairstyle,
+  getOutfit,
   getPose,
+  MascotDnaSchema,
+  type UpdateLookInput,
   type AvatarDto,
   type GenerateAvatarInput,
   type GenerationDto,
@@ -172,6 +178,21 @@ export class AvatarsService {
   async update(userId: string, avatarId: string, data: { name?: string; isPublic?: boolean }): Promise<AvatarDto> {
     await this.loadOwned(userId, avatarId);
     await this.prisma.avatar.update({ where: { id: avatarId }, data });
+    return this.get(userId, avatarId);
+  }
+
+  /** Hairstyle / eyewear picked in the customizer: stored on the DNA, used by every later render and prompt. */
+  async updateLook(userId: string, avatarId: string, input: UpdateLookInput): Promise<AvatarDto> {
+    const avatar = await this.loadOwned(userId, avatarId);
+    if (!avatar.dna) throw new AppException('DNA_MISSING', 'This mascot has no DNA yet');
+    if (input.hairKey && !getHairstyle(input.hairKey)) throw new AppException('UNKNOWN_HAIRSTYLE', `Unknown hairstyle ${input.hairKey}`);
+    if (input.glassesKey && input.glassesKey !== 'none' && !getEyewear(input.glassesKey)) throw new AppException('UNKNOWN_EYEWEAR', `Unknown eyewear ${input.glassesKey}`);
+    const next = {
+      hairKey: input.hairKey === undefined ? avatar.dna.hairKey : input.hairKey,
+      glassesKey: input.glassesKey === undefined ? avatar.dna.glassesKey : input.glassesKey,
+    };
+    const dna = MascotDnaSchema.parse({ ...avatar.dna, proportions: avatar.dna.proportions ?? undefined, ...next });
+    await this.prisma.avatarDna.update({ where: { avatarId }, data: { ...next, promptFragment: describeDna(dna) } });
     return this.get(userId, avatarId);
   }
 

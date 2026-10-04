@@ -321,6 +321,10 @@ model AvatarDna {
   ageGroup               String   @map("age_group")
   facialHair             String   @default("none") @map("facial_hair")
   glasses                String   @default("none")
+  /// Picked hairstyle (HAIRSTYLE_CATALOG key); overrides the extracted hair_style when set.
+  hairKey                String?  @map("hair_key")
+  /// Picked eyewear (EYEWEAR_CATALOG key, or "none"); overrides glasses when set.
+  glassesKey             String?  @map("glasses_key")
   presentation           String   @default("androgynous")
   freckles               Boolean  @default(false)
   dimples                Boolean  @default(false)

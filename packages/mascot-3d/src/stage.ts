@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import type { MascotDna } from '@mascot/shared';
+import { prepareEyewear } from './eyewear';
 import { buildMascot, type MascotOptions, type MascotRig } from './character';
 import { danceFrame, type DanceId } from './dances';
 import type { StyleLook } from './styles';
 
-export type Framing = 'hero' | 'bust' | 'portrait' | 'head' | 'sticker';
+export type Framing = 'hero' | 'bust' | 'portrait' | 'head' | 'sticker' | 'hair';
 
 const FRAMES: Record<Framing, { y: number; dist: number; fov: number }> = {
   // Waist-up: the whole character with arms and gestures.
@@ -15,6 +16,8 @@ const FRAMES: Record<Framing, { y: number; dist: number; fov: number }> = {
   portrait: { y: -0.6, dist: 10.6, fov: 22 },
   sticker: { y: -0.85, dist: 12.4, fov: 22 },
   head: { y: 0.05, dist: 7.4, fov: 22 },
+  // Head and shoulders with headroom for buns, afros and long hair (hairstyle picker).
+  hair: { y: -0.15, dist: 10.2, fov: 22 },
 };
 
 export interface StageOptions {
@@ -144,6 +147,7 @@ export class MascotStage {
 
   /** Same as `snapshot`, as a PNG Blob (works on an OffscreenCanvas inside a Web Worker). */
   async snapshotBlob(dna: MascotDna, opts: MascotOptions & { framing?: Framing; yaw?: number } = {}): Promise<Blob> {
+    await prepareEyewear(dna, opts.glasses);
     this.setMascot(dna, opts);
     this.setFraming(opts.framing ?? 'bust');
     this.pivot.rotation.y = opts.yaw ?? 0;
@@ -200,7 +204,9 @@ export class MascotViewer {
     private opts: ViewerOptions = {},
   ) {
     this.stage = new MascotStage({ canvas, pixelRatio: typeof window !== 'undefined' ? Math.min(1.75, window.devicePixelRatio || 1) : 1 });
+    this.dna = dna;
     this.stage.setMascot(dna, opts);
+    this.whenEyewearLoads();
     this.stage.setFraming(opts.framing ?? 'bust');
     this.fit();
     if (typeof ResizeObserver !== 'undefined') {
@@ -248,9 +254,25 @@ export class MascotViewer {
 
   update(dna: MascotDna, opts: ViewerOptions) {
     this.opts = { ...this.opts, ...opts };
+    this.dna = dna;
     this.stage.setMascot(dna, this.opts);
     this.stage.setFraming(this.opts.framing ?? 'bust');
     this.dirty = true;
+    this.whenEyewearLoads();
+  }
+
+  private dna: MascotDna | null = null;
+
+  /** A licensed GLB pair finished loading: rebuild once with the real model. */
+  private whenEyewearLoads() {
+    const dna = this.dna;
+    if (!dna) return;
+    void prepareEyewear(dna, this.opts.glasses).then((loaded) => {
+      if (loaded && dna === this.dna) {
+        this.stage.setMascot(dna, this.opts);
+        this.dirty = true;
+      }
+    });
   }
 
   private dance: DanceId | null = null;

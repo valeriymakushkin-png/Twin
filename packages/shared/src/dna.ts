@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { describeEyewear, getEyewear } from './eyewear';
+import { describeHairstyle, getHairstyle } from './hairstyles';
 
 /**
  * Mascot DNA — the canonical, provider-agnostic identity description of a user.
@@ -182,6 +184,10 @@ export const MascotDnaSchema = z.object({
   ageGroup: z.enum(AGE_GROUPS),
   facialHair: z.enum(FACIAL_HAIR).default('none'),
   glasses: z.enum(GLASSES).default('none'),
+  /** Picked hairstyle (HAIRSTYLE_CATALOG key); falls back to the extracted `hairStyle`. */
+  hairKey: z.string().max(48).nullish(),
+  /** Picked eyewear (EYEWEAR_CATALOG key); overrides `glasses` when set. */
+  glassesKey: z.string().max(48).nullish(),
   presentation: z.enum(PRESENTATIONS).default('androgynous'),
   freckles: z.boolean().default(false),
   dimples: z.boolean().default(false),
@@ -276,13 +282,13 @@ export function describeDna(dna: MascotDna): string {
   parts.push(`${humanize(dna.eyebrows)} eyebrows`);
   parts.push(`${humanize(dna.noseShape)} nose`);
   parts.push(`${humanize(dna.mouthShape)} lips`);
-  parts.push(
-    dna.hairStyle === 'bald'
-      ? 'bald head'
-      : `${humanize(dna.hairColor)} ${humanize(dna.hairStyle)} hair`,
-  );
+  const hairstyle = getHairstyle(dna.hairKey);
+  if (hairstyle) parts.push(hairstyle.look.cut === 'bald' ? 'bald head' : `${humanize(dna.hairColor)} hair, ${describeHairstyle(hairstyle)}`);
+  else parts.push(dna.hairStyle === 'bald' ? 'bald head' : `${humanize(dna.hairColor)} ${humanize(dna.hairStyle)} hair`);
   if (dna.facialHair !== 'none') parts.push(humanize(dna.facialHair));
-  if (dna.glasses !== 'none') {
+  const eyewear = getEyewear(dna.glassesKey);
+  if (eyewear) parts.push(describeEyewear(eyewear));
+  else if (dna.glasses !== 'none' && dna.glassesKey !== 'none') {
     parts.push(dna.glasses === 'sunglasses' ? 'wearing sunglasses' : `${humanize(dna.glasses)} glasses`);
   }
   if (dna.freckles) parts.push('freckles');
@@ -331,6 +337,8 @@ export function dnaFingerprint(dna: MascotDna): string {
     'facialHair',
     'glasses',
     'presentation',
+    'hairKey',
+    'glassesKey',
   ];
-  return keys.map((k) => String(dna[k])).join('|');
+  return keys.map((k) => String(dna[k] ?? '')).join('|');
 }

@@ -34,6 +34,12 @@ export interface ClumpSpec {
   floor?: (d: THREE.Vector3) => number;
   /** Body volume (signed distance) that falling hair rests on instead of passing through. */
   collider?: (x: number, y: number, z: number) => number;
+  /** Lateral waves while falling (world units / cycles per unit). */
+  wave?: { amp: number; freq: number };
+  /** Ends flip outwards (60s flip) instead of curling under; 0..1. */
+  flip?: number;
+  /** Height multiplier by position (soft hairlines). */
+  edge?: (d: THREE.Vector3) => number;
 }
 
 const C = new THREE.Vector3();
@@ -80,7 +86,7 @@ export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, 
     for (let i = 0; i <= steps; i++) {
       const u = i / steps;
       if (!falling) {
-        sculpt(dir, P, p, 1 + spec.base + spec.lift(dir, Math.min(1, i / segs)));
+        sculpt(dir, P, p, 1 + (spec.base + spec.lift(dir, Math.min(1, i / segs))) * (spec.edge ? spec.edge(dir) : 1));
         centers.push(p.clone());
         if (i < segs) {
           spec.flow(dir, t);
@@ -105,8 +111,22 @@ export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, 
         p.y -= fallStep;
         // Ends curl slightly inwards like a blow-dried cut.
         const endK = smoothstep(0.7, 1, fallen / fallLen);
-        p.x -= Math.sign(p.x) * endK * fallStep * 0.18;
-        p.z += endK * fallStep * 0.08;
+        if (spec.flip) {
+          p.x += Math.sign(p.x) * endK * fallStep * 0.55 * spec.flip;
+          p.y += endK * fallStep * 1.15 * spec.flip;
+        } else {
+          p.x -= Math.sign(p.x) * endK * fallStep * 0.18;
+          p.z += endK * fallStep * 0.08;
+        }
+        if (spec.wave) {
+          // Sideways around the head; the difference of sines keeps the path continuous.
+          const ph = r * 6.283;
+          const k = spec.wave.freq * 6.283;
+          const dw = spec.wave.amp * (Math.sin(fallen * k + ph) - Math.sin((fallen - fallStep) * k + ph)) * smoothstep(0, 0.25, fallen);
+          C.set(-last.z, 0, last.x).normalize();
+          p.addScaledVector(C, dw);
+          p.z += dw * 0.35;
+        }
         // Keep falling hair outside the body (shoulders, hood, chest).
         if (spec.collider) {
           const f = spec.collider;

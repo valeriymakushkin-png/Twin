@@ -11,3 +11,5 @@ export * from './api';
 export * from './mascot-svg';
 export * from './locale';
 export * from './dances';
+export * from './hairstyles';
+export * from './eyewear';

@@ -18,7 +18,11 @@ export function dnaHighlightsT(tr: Translator, dna: MascotDna): Array<{ label: s
     { label: L.Eyes, value: `${trait(tr, 'eyeShape', dna.eyeShape)}, ${trait(tr, 'eyeColor', dna.eyeColor)}` },
     {
       label: L.Hair,
-      value: dna.hairStyle === 'bald' ? tr.t.dna.bald : `${trait(tr, 'hairStyle', dna.hairStyle)}, ${trait(tr, 'hairColor', dna.hairColor)}`,
+      value: dna.hairKey
+        ? `${hairstyleName(tr, dna.hairKey)}, ${trait(tr, 'hairColor', dna.hairColor)}`
+        : dna.hairStyle === 'bald'
+          ? tr.t.dna.bald
+          : `${trait(tr, 'hairStyle', dna.hairStyle)}, ${trait(tr, 'hairColor', dna.hairColor)}`,
     },
     { label: L.Nose, value: trait(tr, 'noseShape', dna.noseShape) },
     { label: L.Lips, value: trait(tr, 'mouthShape', dna.mouthShape) },
@@ -26,6 +30,17 @@ export function dnaHighlightsT(tr: Translator, dna: MascotDna): Array<{ label: s
     { label: L.Skin, value: dna.skinTone.toUpperCase() },
     { label: L.Age, value: trait(tr, 'ageGroup', dna.ageGroup) },
   ];
+}
+
+export function hairstyleName(tr: Translator, key: string): string {
+  return (tr.t.hairstyles.names as Record<string, string>)[key] ?? key;
+}
+
+/** Eyewear name: model + finish, e.g. "Pilot · Gold / green". */
+export function eyewearName(tr: Translator, model: string, finish: string): string {
+  const m = (tr.t.eyewear.models as Record<string, string>)[model] ?? model;
+  const f = (tr.t.eyewear.finishes as Record<string, string>)[finish] ?? finish;
+  return `${m} · ${f}`;
 }
 
 /** Style display name: the catalog/admin name in English, the dictionary name elsewhere. */

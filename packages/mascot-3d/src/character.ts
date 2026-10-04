@@ -1,8 +1,9 @@
 import * as THREE from 'three';
-import { EYE_COLOR_HEX, HAIR_COLOR_HEX, SKIN_TONE_HEX, type MascotDna } from '@mascot/shared';
+import { EYE_COLOR_HEX, getEyewear, getHairstyle, HAIR_COLOR_HEX, resolveEyewear, resolveHairstyle, SKIN_TONE_HEX, type MascotDna } from '@mascot/shared';
 import { buildAccessory, buildGlasses, type AccessoryKey } from './accessories';
 import { bodyCollider, buildBody, type OutfitKey } from './body';
 import { buildBrows } from './brows';
+import { buildEyewear } from './eyewear';
 import { expressionFor, type Emotion, type Expression } from './expressions';
 import { FacePainter, paintEyeTexture } from './face';
 import { buildFacialHair, buildHair, strandTexture } from './hair';
@@ -24,6 +25,10 @@ export interface MascotOptions {
   accessory?: AccessoryKey | string | null;
   /** Overrides the emotion's body pose (e.g. a calm pose for photo-guide examples). */
   pose?: PoseKey;
+  /** Hairstyle catalog key (preview); defaults to the DNA's pick / extracted style. */
+  hair?: string;
+  /** Eyewear catalog key (preview); 'none' removes glasses. */
+  glasses?: string;
 }
 
 interface EyeRig {
@@ -62,6 +67,9 @@ const RENDER_SKIN: Record<string, string> = {
   'mst-9': '#4e2e21',
   'mst-10': '#36221b',
 };
+
+/** Pair used for the 'cool' emotion and the sunglasses accessory. */
+const SUNGLASSES_KEY = 'trapezoid-black-dark';
 
 const BODY_DROP = 0.16;
 const dropCollider = (f: (x: number, y: number, z: number) => number) => (x: number, y: number, z: number) => f(x, y + BODY_DROP, z);
@@ -243,10 +251,12 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   // Hair.
   const strands = look.shading === 'pbr' ? strandTexture() : undefined;
   const hairMat = material(look, 'hair', { color: look.shading === 'plastic' ? shade(hairHex, 0.05) : hairHex, map: strands, bumpMap: strands });
-  const hair = buildHair(look.face === 'dots' ? 'crew-cut' : dna.hairStyle, P, hairMat, seed, look.hairDetail, look.face === 'dots', shape ? dropCollider(bodyCollider(opts.outfit)) : bodyCollider(opts.outfit));
+  const hairDef = getHairstyle(opts.hair) ?? resolveHairstyle(dna);
+  const collider = shape ? dropCollider(bodyCollider(opts.outfit)) : bodyCollider(opts.outfit);
+  const hair = buildHair(hairDef.look, P, hairMat, seed, look.hairDetail, look.face === 'dots', collider, new THREE.Color(baseSkin));
   head.add(hair.group);
   if (look.face === 'full') {
-    const browHex = dna.hairStyle === 'bald' ? shade(hairHex, -0.2) : shade(hairHex, -0.3);
+    const browHex = hairDef.look.cut === 'bald' ? shade(hairHex, -0.2) : shade(hairHex, -0.3);
     const browMat = material(look, 'hair', { color: browHex, roughness: 0.6, side: THREE.DoubleSide });
     head.add(buildBrows(dna, expr, look, map, P, browMat));
     const beard = buildFacialHair(dna.facialHair, P, hairMat, seed, (x, y) => map.surfaceZ(x, y) || 0.85);
@@ -255,9 +265,10 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
 
   // Glasses (DNA) or sunglasses (expression / accessory).
   const accessory = (opts.accessory ?? null) as AccessoryKey | null;
-  const glassesKind = expr.sunglasses || accessory === 'sunglasses' ? 'sunglasses' : dna.glasses;
-  if (glassesKind !== 'none' && look.face === 'full') head.add(buildGlasses(glassesKind, look, map, P, eyeR, eyeX));
-  if (glassesKind === 'sunglasses' && look.face !== 'full') head.add(buildGlasses('sunglasses', look, map, P, eyeR, eyeX));
+  const shades = expr.sunglasses || accessory === 'sunglasses';
+  const eyewear = shades ? getEyewear(SUNGLASSES_KEY)! : opts.glasses === 'none' ? null : (getEyewear(opts.glasses) ?? resolveEyewear(dna));
+  if (eyewear && look.face === 'full') head.add(buildEyewear(eyewear, look, map, P, eyeR, eyeX));
+  if (shades && look.face !== 'full') head.add(buildGlasses('sunglasses', look, map, P, eyeR, eyeX));
 
   if (accessory && accessory !== 'sunglasses' && accessory !== 'chain') head.add(buildAccessory(accessory, look, map, P, hair.crown));
   if (look.extra === 'stud') {

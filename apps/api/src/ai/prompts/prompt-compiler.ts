@@ -1,5 +1,6 @@
 import {
   EMOTION_CATALOG,
+  resolveEyewear,
   VIDEO_TEMPLATE_CATALOG,
   type MascotDna,
   type PfpBackground,
@@ -52,7 +53,7 @@ function identityBlock(ctx: PromptContext, referenceKind: 'photos' | 'character'
     `IDENTITY — this is ${source}; the result must be instantly recognisable as them.`,
     `Traits to preserve: ${ctx.identity}.`,
     'Keep the same face shape, hairline and hairstyle silhouette, skin tone, eye shape and colour, eyebrow shape, nose shape, lip shape and facial proportions.',
-    ctx.dna.glasses !== 'none' ? 'Keep their glasses.' : '',
+    resolveEyewear(ctx.dna) ? 'Keep their glasses exactly as described.' : '',
     ctx.dna.facialHair !== 'none' ? 'Keep their facial hair.' : '',
   ]
     .filter(Boolean)

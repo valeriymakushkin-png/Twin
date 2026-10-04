@@ -7,3 +7,4 @@ export type { OutfitKey } from './body';
 export type { PoseKey } from './poses';
 export { ScanViewer } from './scan';
 export { DANCES, danceFrame, type DanceFrame, type DanceId } from './dances';
+export { preloadEyewearModel } from './eyewear';
