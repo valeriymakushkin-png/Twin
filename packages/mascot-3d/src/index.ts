@@ -4,4 +4,5 @@ export { expressionFor, type Emotion, type Expression } from './expressions';
 export { styleLook, STYLE_LOOKS, type StyleLook } from './styles';
 export { ACCESSORY_KEYS, type AccessoryKey } from './accessories';
 export type { OutfitKey } from './body';
+export type { PoseKey } from './poses';
 export { ScanViewer } from './scan';

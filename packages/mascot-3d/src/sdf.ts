@@ -81,6 +81,8 @@ export interface PolygonizeOptions {
   ao?: number;
   /** Extra geometry that occludes (AO only), e.g. the torso behind a sleeve. */
   occluder?: Sdf;
+  /** Emit planar-projected UVs (scale = texture repeats per unit) for detail/bump maps. */
+  uvScale?: number;
 }
 
 /**
@@ -244,6 +246,22 @@ export function polygonize(f: Sdf, min: Vec3, max: Vec3, step: number, opts: Pol
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   geo.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
+  if (opts.uvScale) {
+    // Projection along the dominant normal axis (cheap triplanar): fine fabric detail only.
+    const uv = new Float32Array(count * 2);
+    for (let v = 0; v < count; v++) {
+      const ax = Math.abs(normals[v * 3]!);
+      const ay = Math.abs(normals[v * 3 + 1]!);
+      const az = Math.abs(normals[v * 3 + 2]!);
+      const x = pos[v * 3]!;
+      const y = pos[v * 3 + 1]!;
+      const z = pos[v * 3 + 2]!;
+      const [a, b] = az >= ax && az >= ay ? [x, y] : ax >= ay ? [z, y] : [x, z];
+      uv[v * 2] = a * opts.uvScale;
+      uv[v * 2 + 1] = b * opts.uvScale;
+    }
+    geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  }
   if (colors) geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   geo.setIndex(index);
   return geo;

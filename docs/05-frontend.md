@@ -83,18 +83,29 @@ honoured everywhere, including the 3D viewer (renders on demand instead of conti
 
 Every character image in the app is rendered live from the mascot DNA by a three.js renderer — no static art:
 
-- **Character**: sculpted head (face shape, jaw, cheeks, nose, ears), painted face texture (brows, mouth per emotion,
-  blush, freckles, stubble), eyeballs with iris textures and animated lids (blink), groomed hair (shells + flow-field
-  clumps + curls for 30 hair styles), outfits (hoodie, tee, jacket…), accessories (cap, beanie, sunglasses,
-  headphones, chain, earrings), emotion props (hearts, tears, sweat, steam, sparkles, thinking/facepalm hands).
+- **Character**: sculpted head (face shape, defined jaw and chin, apple cheeks, nose, ears), painted face
+  texture (lips per emotion, blush, freckles, stubble), sculpted 3D eyebrows, eyeballs with iris textures and
+  animated lids (blink), groomed hair (shells + flow-field clumps + curls for 30 hair styles; long hair drapes over
+  the shoulders), accessories (cap, beanie, sunglasses, headphones, chain, earrings), emotion props (hearts, tears,
+  sweat, steam, sparkles, question mark).
+- **Body**: a full upper body modelled as signed-distance "clay" and meshed with a narrow-band surface-nets
+  polygonizer (`sdf.ts`): torso with shoulders, folded hood, kangaroo pocket and drawstrings; sleeves with elbow
+  folds and ribbed cuffs posed by two-bone IK; neck; chunky 5-finger hands (`hands.ts`). Ambient occlusion is baked
+  into vertex colours. The torso is cached per outfit, sleeves and hands per pose. All 12 outfits (hoodie, tee,
+  denim jacket over a tee, suit with shirt and tie, puffer vest, astronaut, superhero cape, samurai, wizard,
+  techwear…) share this body.
+- **Poses** (`poses.ts`): every emotion has body language — wave (happy), hands in pockets (neutral), belly laugh,
+  slumped (crying), fists (angry), hands on cheeks (shocked), heart hands (love), crossed arms (sigma),
+  thumbs up (cool), hand on chin (thinking), facepalm.
 - **Styles**: 11 looks map to shading models (PBR skin with sheen, vinyl, plastic, toon with ink outlines), saturation and
   rim-light colours, so "Pixar", "Anime", "Lego", "Cyberpunk"… are the same identity in different materials.
 - **Stage**: neutral tone mapping, room environment reflections, warm key light, red rim lights that separate the
   character from black backgrounds, soft shadows.
 - **Web integration** (`components/three`): `Mascot3D` — interactive viewer (drag, spin, idle breathing/blinking,
-  30 fps cap, pauses off-screen); `MascotShot` — cached PNG snapshots from one shared offscreen stage via a render
-  queue (`lib/mascot3d.ts`), used for tiles, style grids and sticker previews; SVG fallback when WebGL is unavailable.
-  The bundle is code-split and loaded on demand.
+  30 fps cap, pauses off-screen); `MascotShot` — cached PNG snapshots used for tiles, style grids, pose examples and
+  sticker previews. Snapshots render in a Web Worker on an `OffscreenCanvas` (`src/workers/mascot3d.worker.ts`,
+  bundled by `scripts/build-worker.mjs` into `public/mascot3d-worker.js` and loaded lazily), so the UI never stalls;
+  browsers without WebGL in workers fall back to a shared main-thread stage, and to SVG without WebGL at all.
 - **Server**: `headless/entry.ts` is bundled to `dist/headless.js`; the API's mock image provider loads it into headless
   Chromium so dev/demo pipeline outputs (avatars, stickers, PFPs) match the in-app look (see AI pipeline docs).
 

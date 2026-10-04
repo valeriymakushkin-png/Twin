@@ -34,7 +34,7 @@ const mirror = (a: ArmPose): ArmPose => ({
   hand: a.hand,
 });
 
-const POCKET: ArmPose = { wrist: [-0.4, -3.52, 0.46], pole: [-1, -0.1, -0.7], fingers: [0.6, -0.6, 0.2], palm: [0, 0, -1], hand: null };
+const POCKET: ArmPose = { wrist: [-0.36, -3.56, 0.3], pole: [-1, -0.1, -0.7], fingers: [0.6, -0.6, 0.2], palm: [0, 0, -1], hand: null };
 const HANG: ArmPose = { wrist: [-1.42, -4.2, 0.18], pole: [-0.2, 0, -1], fingers: [0.06, -1, 0.12], palm: [1, 0, 0.15], hand: 'relaxed' };
 
 const POSES: Record<PoseKey, BodyPose> = {

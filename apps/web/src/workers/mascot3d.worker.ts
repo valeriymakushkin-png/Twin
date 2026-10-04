@@ -4,12 +4,12 @@
  * never stalls while thumbnails (styles, stickers, poses) are generated.
  */
 import type { MascotDna } from '@mascot/shared';
-import { MascotStage, type Framing } from '@mascot/mascot-3d';
+import { MascotStage, type Framing, type PoseKey } from '@mascot/mascot-3d';
 
 interface Job {
   id: number;
   dna: MascotDna;
-  opts: { style?: string; emotion?: string; outfit?: string; outfitColor?: string; accessory?: string | null; framing?: Framing; yaw?: number; size?: number };
+  opts: { style?: string; emotion?: string; outfit?: string; outfitColor?: string; accessory?: string | null; framing?: Framing; yaw?: number; size?: number; pose?: PoseKey };
 }
 
 let stage: MascotStage | null = null;
@@ -30,6 +30,7 @@ self.onmessage = (event: MessageEvent<Job>) => {
         accessory: opts.accessory ?? null,
         framing: opts.framing,
         yaw: opts.yaw,
+        pose: opts.pose,
       });
       (self as unknown as DedicatedWorkerGlobalScope).postMessage({ id, blob });
     } catch (error) {

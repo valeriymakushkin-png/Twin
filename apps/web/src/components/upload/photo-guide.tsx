@@ -9,12 +9,12 @@ import type { ShotOptions } from '@/lib/mascot3d';
 
 /** Example shot for each guide pose: the demo character, turned and posed like the photo we want. */
 const POSE_SHOT: Record<PhotoPose, ShotOptions> = {
-  OTHER: { emotion: 'neutral', framing: 'head' },
-  FRONT: { emotion: 'neutral', framing: 'head' },
-  LEFT: { emotion: 'neutral', framing: 'head', yaw: -0.95 },
-  RIGHT: { emotion: 'neutral', framing: 'head', yaw: 0.95 },
-  SMILE: { emotion: 'happy', framing: 'head' },
-  NEUTRAL: { emotion: 'neutral', framing: 'portrait' },
+  OTHER: { emotion: 'neutral', framing: 'head', pose: 'pockets' },
+  FRONT: { emotion: 'neutral', framing: 'head', pose: 'pockets' },
+  LEFT: { emotion: 'neutral', framing: 'head', yaw: -0.95, pose: 'pockets' },
+  RIGHT: { emotion: 'neutral', framing: 'head', yaw: 0.95, pose: 'pockets' },
+  SMILE: { emotion: 'happy', framing: 'head', pose: 'pockets' },
+  NEUTRAL: { emotion: 'neutral', framing: 'portrait', pose: 'pockets' },
 };
 
 /** The five guide poses; each lights up once a matching photo is detected by face analysis. */

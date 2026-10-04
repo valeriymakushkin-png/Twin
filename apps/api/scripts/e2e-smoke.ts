@@ -80,7 +80,10 @@ async function api<T = any>(method: string, path: string, body?: unknown, extra:
   return { status: res.status, data: (text ? JSON.parse(text) : null) as T };
 }
 
-async function waitFor(generationId: string, timeoutMs = 90_000): Promise<any> {
+// Mock renders are fast with MOCK_IMAGE_RENDERER=svg (CI); the headless 3D renderer on software GL needs longer.
+const GEN_TIMEOUT_MS = Number(process.env.E2E_GENERATION_TIMEOUT_MS ?? 240_000);
+
+async function waitFor(generationId: string, timeoutMs = GEN_TIMEOUT_MS): Promise<any> {
   const start = Date.now();
   let last: any;
   while (Date.now() - start < timeoutMs) {
@@ -235,7 +238,7 @@ async function main(): Promise<void> {
   console.log('\n7. Premium features');
   const video = await api('POST', '/v1/generate-video', { avatarId, template: 'talking', script: 'Hey! This is my AI mascot talking.', aspectRatio: '9:16' });
   check(video.status === 201, 'talking video queued');
-  const videoDone = await waitFor(video.data.generation.id, 180_000);
+  const videoDone = await waitFor(video.data.generation.id, Math.max(GEN_TIMEOUT_MS, 180_000));
   check(videoDone.status === 'SUCCEEDED', `video rendered (${videoDone.error?.message ?? 'mp4 + voice-over'})`);
   const videos = await api('GET', `/v1/videos?avatarId=${avatarId}`);
   check(videos.data[0]?.videoUrl && videos.data[0]?.durationSec > 1, `video served (${videos.data[0]?.durationSec?.toFixed?.(1)}s)`);

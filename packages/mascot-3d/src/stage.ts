@@ -77,8 +77,9 @@ export class MascotStage {
     this.key.shadow.bias = -0.0004;
     this.key.shadow.normalBias = 0.02;
     this.key.shadow.radius = 4;
-    this.rimA.position.set(4.5, 3.5, -5);
-    this.rimB.position.set(-4.5, 2, -5);
+    // Rims sit well behind the character: they outline the silhouette without tinting the face.
+    this.rimA.position.set(4.2, 3.2, -7);
+    this.rimB.position.set(-4.2, 1.8, -7);
     this.rimA.target.position.set(0, 0, 0);
     this.rimB.target.position.set(0, -0.5, 0);
     this.bounce.position.set(5, -1, 6);
@@ -104,8 +105,8 @@ export class MascotStage {
   private applyLook(look: StyleLook) {
     this.rimA.color.set(look.rim[0]);
     this.rimB.color.set(look.rim[1]);
-    this.rimA.intensity = 4.2 * look.rimIntensity;
-    this.rimB.intensity = 2.4 * look.rimIntensity;
+    this.rimA.intensity = 3.6 * look.rimIntensity;
+    this.rimB.intensity = 2.2 * look.rimIntensity;
     this.key.color.setHSL(0.08, 0.6 * Math.max(0, look.keyWarmth), 0.96 - Math.max(0, -look.keyWarmth) * 0.1);
     if (look.keyWarmth < 0) this.key.color.set('#e8f0ff');
     this.key.intensity = look.shading === 'toon' ? 2.5 : 2.1;

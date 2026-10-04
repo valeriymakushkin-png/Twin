@@ -93,7 +93,7 @@ docs/              Architecture & operations documentation
 
 ## Highlights
 
-- **Live 3D character**: the Mini App renders your mascot in real time from its DNA (three.js) — rotate it, switch styles, outfits and accessories instantly; black & red design system.
+- **Live 3D character**: the Mini App renders your mascot in real time from its DNA (three.js) — a sculpted cartoon character with a full upper body, hands and a pose for every emotion; rotate it, switch styles, outfits and accessories instantly; black & red design system.
 - **Mascot DNA**: identity extracted once (closed-vocabulary traits + landmark proportions + ArcFace embedding) and reused by every generation → consistent character across styles, stickers, memes and videos.
 - **Identity-scored generation**: candidates are re-analysed and ranked by ArcFace similarity to the user.
 - **Charge-before-work, refund-on-failure** with exactly-once semantics; idempotency keys on every generation.

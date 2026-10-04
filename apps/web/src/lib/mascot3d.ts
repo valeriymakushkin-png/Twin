@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { MascotDna } from '@mascot/shared';
-import type { Framing, MascotStage } from '@mascot/mascot-3d';
+import type { Framing, MascotStage, PoseKey } from '@mascot/mascot-3d';
 
 export interface ShotOptions {
   style?: string;
@@ -13,6 +13,7 @@ export interface ShotOptions {
   framing?: Framing;
   yaw?: number;
   size?: number;
+  pose?: PoseKey;
 }
 
 let stage: MascotStage | null = null;
@@ -86,6 +87,7 @@ function renderOnMainThread(dna: MascotDna, opts: ShotOptions): Promise<string> 
       accessory: opts.accessory ?? null,
       framing: opts.framing,
       yaw: opts.yaw,
+      pose: opts.pose,
     });
   });
   queue = job.catch(() => undefined);

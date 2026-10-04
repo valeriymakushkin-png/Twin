@@ -173,7 +173,7 @@ export class FacePainter {
       }
       // Warmth on nose, cheeks; depth around eyes and under the lower lip.
       const tipY = -0.24 * P.noseLength;
-      this.spot(0, tipY, 0.09, mix(skin, '#e0566a', 0.6), 0.22);
+      this.spot(0, tipY, 0.09, mix(skin, '#c8505a', 0.35), 0.14);
       for (const s of [-1, 1]) {
         this.spot(s * P.eyeX, P.eyeY + 0.01, 0.22, shade(skin, -0.3), 0.07, 0.17);
         this.spot(s * 0.045 * P.noseWidth, tipY - 0.055, 0.022, '#2a0f0c', 0.55, 0.013);

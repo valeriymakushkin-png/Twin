@@ -9,6 +9,7 @@ import { buildFacialHair, buildHair, strandTexture } from './hair';
 import { buildHeadGeometry, FrontMap, headParamsFromDna, type HeadParams } from './head';
 import { material, outlineMaterial } from './materials';
 import { hashString, lerp, shade } from './math';
+import type { PoseKey } from './poses';
 import { buildProps } from './props';
 import { styleLook, type StyleLook } from './styles';
 
@@ -18,6 +19,8 @@ export interface MascotOptions {
   outfit?: OutfitKey | string;
   outfitColor?: string;
   accessory?: AccessoryKey | string | null;
+  /** Overrides the emotion's body pose (e.g. a calm pose for photo-guide examples). */
+  pose?: PoseKey;
 }
 
 interface EyeRig {
@@ -251,7 +254,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
 
   // Body.
   const outfit = (OUTFITS.has(opts.outfit as OutfitKey) ? opts.outfit : 'casual-hoodie') as OutfitKey;
-  const body = buildBody({ outfit, color: opts.outfitColor, skin, look, pose: expr.pose });
+  const body = buildBody({ outfit, color: opts.outfitColor, skin, look, pose: opts.pose ?? expr.pose });
   root.add(body.group);
   if (accessory === 'chain') root.add(buildAccessory('chain', look, map, P, hair.crown, undefined, body.surfaceZ));
   if (outfit === 'streamer' && !accessory) head.add(buildAccessory('headphones', look, map, P, hair.crown));

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { fabricBump } from './face';
 import { handGeometry } from './hands';
 import { material, tune } from './materials';
 import { clamp, gauss, lerp, shade, smoothstep } from './math';
@@ -148,7 +149,12 @@ function armSdf(chain: ArmChain, g: Garment, bulk: number): ArmSdf {
   const cuffLen = g.ribs ? 0.17 : 0.06;
   const W0: Vec3 = [W[0] - F.x * cuffLen, W[1] - F.y * cuffLen, W[2] - F.z * cuffLen];
   const Wc: Vec3 = [W[0] - F.x * 0.01, W[1] - F.y * 0.01, W[2] - F.z * 0.01];
-  const sleeve: Sdf = (x, y, z) => smin(sdRoundCone(x, y, z, S, E, 0.35 + bulk, 0.3 + bulk), sdRoundCone(x, y, z, E, W0, 0.3 + bulk, 0.272 + bulk), 0.07);
+  const sleeve: Sdf = (x, y, z) => {
+    const d = smin(sdRoundCone(x, y, z, S, E, 0.35 + bulk, 0.3 + bulk), sdRoundCone(x, y, z, E, W0, 0.3 + bulk, 0.272 + bulk), 0.07);
+    // Soft fabric folds bunching around the elbow.
+    const de = Math.hypot(x - E[0], y - E[1], z - E[2]);
+    return d + 0.011 * Math.sin(de * 26) * Math.exp(-(de * de) / 0.12);
+  };
   const cuff: Sdf = (x, y, z) => sdRoundCone(x, y, z, W0, Wc, g.ribs ? 0.245 + bulk * 0.5 : 0.27 + bulk, g.ribs ? 0.235 + bulk * 0.5 : 0.265 + bulk);
   return { sleeve, cuff };
 }
@@ -159,6 +165,16 @@ export function bodyCollider(outfit: OutfitKey | string | undefined): Sdf {
   const torso = torsoSdf((garment.bulk ?? 0) + 0.04);
   const hood = garment.collar === 'hood' ? hoodSdf(garment.bulk ?? 0) : null;
   return (x, y, z) => (hood ? Math.min(torso(x, y, z), hood(x, y, z) - 0.03) : torso(x, y, z));
+}
+
+let knitTex: THREE.Texture | null = null;
+/** Fine knit bump shared by all fabric garments (UVs come from the polygonizer). */
+function fabricKnit(): THREE.Texture {
+  if (!knitTex) {
+    knitTex = fabricBump(11);
+    knitTex.repeat.set(6, 6);
+  }
+  return knitTex;
 }
 
 /* ----------------------------- assembly ----------------------------- */
@@ -265,7 +281,7 @@ export function buildBody(o: BodyOptions): BodyResult {
 
   const outfitKey = JSON.stringify([o.outfit, o.color ?? '', look.saturation]);
   const torsoGeos = remember(torsoCache, outfitKey, () => {
-    const garmentGeo = share(polygonize(core, [-1.85, -4.95, -1.45], [1.85, -0.85, 1.3], 0.042, { color: torsoColor, ao: 0.55 }));
+    const garmentGeo = share(polygonize(core, [-1.85, -4.95, -1.45], [1.85, -0.85, 1.3], 0.042, { color: torsoColor, ao: 0.55, uvScale: 1.2 }));
     let extraLayer: THREE.BufferGeometry | null = null;
     if (inner && wedge) {
       // The layer underneath (tee / shirt), only where the opening reveals it.
@@ -327,7 +343,7 @@ export function buildBody(o: BodyOptions): BodyResult {
       };
       const end = garment.sleeve === 'short' ? [chain.S, chain.E] : [chain.S, chain.E, chain.W];
       const [min, max] = chainBounds(end as Vec3[], 0.5);
-      return share(polygonize(sdf, min, max, 0.04, { color, ao: 0.5, occluder: core }));
+      return share(polygonize(sdf, min, max, 0.04, { color, ao: 0.5, occluder: core, uvScale: 1.2 }));
     });
   });
 
@@ -352,7 +368,8 @@ export function buildBody(o: BodyOptions): BodyResult {
         )
       : [];
 
-  const fabricMat = material(look, garment.finish === 'gloss' ? 'gloss' : 'fabric', { color: '#ffffff', roughness: garment.roughness });
+  const knit = look.shading === 'pbr' && garment.finish !== 'gloss' ? fabricKnit() : undefined;
+  const fabricMat = material(look, garment.finish === 'gloss' ? 'gloss' : 'fabric', { color: '#ffffff', roughness: garment.roughness, bumpMap: knit });
   (fabricMat as THREE.MeshStandardMaterial).vertexColors = true;
   // Sheen derived from white would wash the garment pink: tint it with the garment colour.
   if ((fabricMat as THREE.MeshPhysicalMaterial).sheenColor) {

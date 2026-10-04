@@ -80,7 +80,8 @@ pnpm workspace + Turborepo monorepo. One shared domain package, three TypeScript
 │   │   └── src/                     dna · styles · emotions · wardrobe · memes · videos · pfp · plans
 │   │                                generation · api (zod request schemas + DTOs) · mascot-svg (SVG fallback) · locale
 │   └── mascot-3d/                   Real-time three.js character renderer
-│       ├── src/                     head (sculpt + front map) · face (painted texture) · hair · clumps · body
+│       ├── src/                     head (sculpt + front map) · face (painted texture) · brows · hair · clumps
+│       │                            sdf (clay toolkit + surface nets) · body (torso, sleeves, outfits) · hands · poses
 │       │                            accessories · props · expressions · styles · materials · character · stage · scan
 │       └── headless/                entry bundled to dist/headless.js for server-side renders (mock provider)
 ├── infra/

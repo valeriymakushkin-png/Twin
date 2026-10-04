@@ -68,7 +68,8 @@ export class MockImageProvider implements ImageProvider, OnModuleDestroy {
     const side = Math.min(w, h);
     const png = await renderer.render({
       dna: mock.dna,
-      size: Math.min(1024, side),
+      // Software GL on GPU-less dev machines is per-pixel bound: render at 768 and upscale.
+      size: Math.min(768, side),
       style: mock.style?.slug,
       emotion: mock.emotion ?? (req.operation === 'avatar' ? 'happy' : 'neutral'),
       outfit: mock.outfit,
@@ -77,7 +78,7 @@ export class MockImageProvider implements ImageProvider, OnModuleDestroy {
       // Candidates differ by a slight turn, like separate takes.
       yaw: index === 0 ? 0 : (index % 2 ? -1 : 1) * 0.14 * Math.ceil(index / 2),
     });
-    const character = await sharp(png).resize(side, side).png().toBuffer();
+    const character = await sharp(png).resize(side, side, { kernel: 'lanczos3' }).png().toBuffer();
     const canvas = req.transparent
       ? sharp({ create: { width: w, height: h, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
       : sharp(Buffer.from(backdropSvg(w, h, mock.background ?? STUDIO)));
