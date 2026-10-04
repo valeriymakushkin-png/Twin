@@ -14,6 +14,18 @@ export function heartShape(size = 1): THREE.Shape {
   return s;
 }
 
+function starShape(size: number): THREE.Shape {
+  const s = new THREE.Shape();
+  for (let i = 0; i < 10; i++) {
+    const r = i % 2 ? size * 0.45 : size;
+    const a = (i / 10) * Math.PI * 2 + Math.PI / 2;
+    if (i === 0) s.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+    else s.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+  }
+  s.closePath();
+  return s;
+}
+
 function sparkleShape(size: number): THREE.Shape {
   const s = new THREE.Shape();
   const n = 4;
@@ -105,6 +117,116 @@ export function buildProps(expr: Expression, look: StyleLook, map: FrontMap, P: 
         const sp = new THREE.Mesh(new THREE.ShapeGeometry(sparkleShape(s)), mat);
         sp.position.set(x, y, 0.5);
         g.add(sp);
+      }
+      break;
+    }
+    case 'zzz': {
+      const mat = material(look, 'gloss', { color: '#9fd3ff', roughness: 0.3 });
+      [[1.25, 0.9, 0.16], [1.55, 1.25, 0.21], [1.9, 1.65, 0.27]].forEach(([x, y, sz]) => {
+        const z = new THREE.Shape();
+        const pts: Array<[number, number]> = [[-1, 1], [1, 1], [1, 0.62], [-0.38, -0.62], [1, -0.62], [1, -1], [-1, -1], [-1, -0.62], [0.38, 0.62], [-1, 0.62]];
+        pts.forEach(([px, py], i) => (i ? z.lineTo(px * sz!, py * sz!) : z.moveTo(px * sz!, py * sz!)));
+        z.closePath();
+        const m = new THREE.Mesh(extrude(z, sz! * 0.25), mat);
+        m.position.set(x!, y!, 0.2);
+        m.rotation.z = -0.15;
+        g.add(m);
+      });
+      break;
+    }
+    case 'exclaim': {
+      const mat = material(look, 'gloss', { color: '#ff2a3c', roughness: 0.3 });
+      for (const [x, y, sc, rz] of [[1.35, 1.0, 1, -0.15], [-1.42, 0.9, 0.8, 0.2]] as const) {
+        const ex = new THREE.Group();
+        const bar = new THREE.Mesh(new THREE.CapsuleGeometry(0.06, 0.32, 6, 12), mat);
+        bar.position.y = 0.12;
+        const dot = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 12), mat);
+        dot.position.y = -0.2;
+        ex.add(bar, dot);
+        ex.position.set(x, y, 0.3);
+        ex.rotation.z = rz;
+        ex.scale.setScalar(sc);
+        g.add(ex);
+      }
+      break;
+    }
+    case 'stars': {
+      const mat = material(look, 'emissive', { color: '#ffd23f' });
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2;
+        const st = new THREE.Mesh(extrude(starShape(0.12), 0.03), mat);
+        st.position.set(Math.cos(a) * 1.05, 1.15 + Math.sin(a) * 0.12, Math.sin(a) * 0.9);
+        g.add(st);
+      }
+      break;
+    }
+    case 'money': {
+      const gold = material(look, 'metal', { color: '#f2c14e', roughness: 0.25 });
+      for (const [x, y, rz] of [[1.35, 0.95, 0.4], [-1.45, 0.7, -0.5], [1.6, 0.25, 0.9], [-1.25, 1.3, 0.2]] as const) {
+        const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.035, 32), gold);
+        coin.position.set(x, y, 0.35);
+        coin.rotation.set(Math.PI / 2 - 0.3, 0, rz);
+        g.add(coin);
+      }
+      break;
+    }
+    case 'snow': {
+      const mat = material(look, 'emissive', { color: '#e8f4ff' });
+      for (const [x, y, sz] of [[1.35, 1.1, 0.13], [-1.45, 0.85, 0.11], [1.55, 0.3, 0.09], [-1.3, 1.4, 0.08], [0.9, 1.55, 0.07]] as const) {
+        const flake = new THREE.Group();
+        for (let k = 0; k < 3; k++) {
+          const arm = new THREE.Mesh(new THREE.CapsuleGeometry(sz * 0.12, sz * 2, 4, 8), mat);
+          arm.rotation.z = (k / 3) * Math.PI;
+          flake.add(arm);
+        }
+        flake.position.set(x, y, 0.4);
+        g.add(flake);
+      }
+      break;
+    }
+    case 'bulb': {
+      const glow = material(look, 'emissive', { color: '#fff1a8' });
+      const bulb = new THREE.Group();
+      const glass = new THREE.Mesh(new THREE.SphereGeometry(0.22, 24, 18), glow);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.11, 0.16, 16), material(look, 'metal', { color: '#b8bcc6', roughness: 0.3 }));
+      base.position.y = -0.24;
+      bulb.add(glass, base);
+      for (let k = 0; k < 6; k++) {
+        const ray = new THREE.Mesh(new THREE.CapsuleGeometry(0.018, 0.12, 4, 8), glow);
+        const a = (k / 6) * Math.PI - Math.PI * 0.0;
+        ray.position.set(Math.cos(a) * 0.36, Math.sin(a) * 0.36, 0);
+        ray.rotation.z = a - Math.PI / 2;
+        bulb.add(ray);
+      }
+      bulb.position.set(0.0, 1.62, 0.25);
+      g.add(bulb);
+      break;
+    }
+    case 'confetti': {
+      const colors = ['#ff2a3c', '#ffd23f', '#3ec6ff', '#7ef08a', '#c084fc', '#ff8a3d'];
+      let seed = 7;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      for (let k = 0; k < 26; k++) {
+        const m = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.035, 0.01), material(look, 'gloss', { color: colors[k % colors.length]!, roughness: 0.4 }));
+        const side = k % 2 ? 1 : -1;
+        m.position.set(side * (1.0 + rnd() * 0.9), -0.2 + rnd() * 1.9, 0.2 + rnd() * 0.4);
+        m.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3);
+        g.add(m);
+      }
+      break;
+    }
+    case 'blush': {
+      const mat = material(look, 'emissive', { color: '#ff5a76' });
+      for (const s of [-1, 1]) {
+        for (let k = 0; k < 3; k++) {
+          const x = s * (0.48 + k * 0.07);
+          const y = -0.3;
+          const hit = map.hit(x, y);
+          const line = new THREE.Mesh(new THREE.CapsuleGeometry(0.012, 0.07, 4, 8), mat);
+          line.position.set(x, y, (hit?.position.z ?? 0.7) + 0.02);
+          line.rotation.z = 0.5;
+          g.add(line);
+        }
       }
       break;
     }

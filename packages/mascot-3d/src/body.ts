@@ -3,7 +3,7 @@ import { fabricBump } from './face';
 import { handGeometry } from './hands';
 import { material, tune } from './materials';
 import { clamp, gauss, lerp, shade, smoothstep } from './math';
-import { bodyPose, type ArmPose, type PoseKey } from './poses';
+import { bodyPose, withoutPockets, type ArmPose, type BodyPose, type PoseKey } from './poses';
 import { polygonize, probeFront, sdEllipsoid, sdRoundBox, sdRoundCone, sdTorus, smax, smin, type Sdf, type Vec3 } from './sdf';
 import type { StyleLook } from './styles';
 
@@ -101,6 +101,17 @@ function solveArm(side: -1 | 1, pose: ArmPose, shrug: number): ArmChain {
   return { S: arr(S), E: arr(E), W: arr(W), F: W.clone().sub(E).normalize() };
 }
 
+/** Places a canonical segment (built from the origin straight down -Y) between two joints. */
+const tmpM = new THREE.Matrix4();
+function aim(mesh: THREE.Object3D, from: Vec3, to: Vec3) {
+  const y = new THREE.Vector3(from[0] - to[0], from[1] - to[1], from[2] - to[2]).normalize();
+  const ref = Math.abs(y.z) > 0.95 ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 0, 1);
+  const z = ref.addScaledVector(y, -ref.dot(y)).normalize();
+  const x = new THREE.Vector3().crossVectors(y, z);
+  mesh.quaternion.setFromRotationMatrix(tmpM.makeBasis(x, y, z));
+  mesh.position.set(from[0], from[1], from[2]);
+}
+
 /* ----------------------------- SDF parts ----------------------------- */
 
 function torsoSdf(bulk: number): Sdf {
@@ -135,30 +146,6 @@ function hoodSdf(bulk: number): Sdf {
   };
 }
 
-interface ArmSdf {
-  sleeve: Sdf;
-  cuff: Sdf | null;
-}
-
-function armSdf(chain: ArmChain, g: Garment, bulk: number): ArmSdf {
-  const { S, E, W, F } = chain;
-  if (g.sleeve === 'short') {
-    const mid: Vec3 = [S[0] + (E[0] - S[0]) * 0.48, S[1] + (E[1] - S[1]) * 0.48, S[2] + (E[2] - S[2]) * 0.48];
-    return { sleeve: (x, y, z) => sdRoundCone(x, y, z, S, mid, 0.39 + bulk, 0.35 + bulk), cuff: null };
-  }
-  const cuffLen = g.ribs ? 0.17 : 0.06;
-  const W0: Vec3 = [W[0] - F.x * cuffLen, W[1] - F.y * cuffLen, W[2] - F.z * cuffLen];
-  const Wc: Vec3 = [W[0] - F.x * 0.01, W[1] - F.y * 0.01, W[2] - F.z * 0.01];
-  const sleeve: Sdf = (x, y, z) => {
-    const d = smin(sdRoundCone(x, y, z, S, E, 0.35 + bulk, 0.3 + bulk), sdRoundCone(x, y, z, E, W0, 0.3 + bulk, 0.272 + bulk), 0.07);
-    // Soft fabric folds bunching around the elbow.
-    const de = Math.hypot(x - E[0], y - E[1], z - E[2]);
-    return d + 0.011 * Math.sin(de * 26) * Math.exp(-(de * de) / 0.12);
-  };
-  const cuff: Sdf = (x, y, z) => sdRoundCone(x, y, z, W0, Wc, g.ribs ? 0.245 + bulk * 0.5 : 0.27 + bulk, g.ribs ? 0.235 + bulk * 0.5 : 0.265 + bulk);
-  return { sleeve, cuff };
-}
-
 /** Torso (+ hood) volume for hair collision, matching the outfit's silhouette. */
 export function bodyCollider(outfit: OutfitKey | string | undefined): Sdf {
   const garment = (GARMENTS[outfit as OutfitKey] ?? GARMENTS['casual-hoodie'])();
@@ -186,16 +173,26 @@ export interface BodyOptions {
   skin: string;
   look: StyleLook;
   pose?: PoseKey;
+  /** Add a neck (sphere heads); sculpted heads bring their own. */
+  neck?: boolean;
+  /** How far the head sits above the body's default head position (sculpted heads + neck). */
+  headOffset?: number;
 }
 
 export interface BodyResult {
   group: THREE.Group;
   /** Front surface z of the torso at (x, y) — for chains, emblems and badges. */
   surfaceZ: (x: number, y: number) => number;
+  /** Re-poses arms and hands (cheap: no geometry rebuild) — emotions and dances. */
+  applyPose: (pose: BodyPose) => void;
 }
 
 const torsoCache = new Map<string, { garment: THREE.BufferGeometry; extraLayer: THREE.BufferGeometry | null }>();
-const limbCache = new Map<string, THREE.BufferGeometry>();
+interface LimbGeos {
+  upperGeo: THREE.BufferGeometry;
+  foreGeo: THREE.BufferGeometry | null;
+}
+const limbCache = new Map<string, LimbGeos>();
 const neckCache = new Map<string, THREE.BufferGeometry>();
 
 function remember<T>(cache: Map<string, T>, key: string, make: () => T, max = 24): T {
@@ -221,17 +218,6 @@ function linear(hex: string, look: StyleLook): Vec3 {
 const headOcc = (x: number, y: number, z: number) => lerp(0.74, 1, smoothstep(0.02, 0.5, sdEllipsoid(x, y, z, 0, -0.05, 0, 0.98, 1.08, 0.95)));
 const mix = (a: Vec3, b: Vec3, t: number): Vec3 => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
 
-/** Bounds of a limb chain, padded. */
-function chainBounds(points: Vec3[], pad: number): [Vec3, Vec3] {
-  const min: Vec3 = [Infinity, Infinity, Infinity];
-  const max: Vec3 = [-Infinity, -Infinity, -Infinity];
-  for (const p of points) for (let i = 0; i < 3; i++) {
-    min[i] = Math.min(min[i]!, p[i]! - pad);
-    max[i] = Math.max(max[i]!, p[i]! + pad);
-  }
-  return [min, max];
-}
-
 export function buildBody(o: BodyOptions): BodyResult {
   const { look } = o;
   const g = new THREE.Group();
@@ -240,9 +226,6 @@ export function buildBody(o: BodyOptions): BodyResult {
   const bulk = garment.bulk ?? 0;
   const poseKey = o.pose ?? 'pockets';
   const pose = bodyPose(poseKey, Boolean(garment.pocket));
-  const shrug = pose.shrug ?? 0;
-  const armR = solveArm(-1, pose.right, shrug);
-  const armL = solveArm(1, pose.left, shrug);
 
   // Torso (pose-independent, cached per outfit): torso + hood + pocket + collar, opening cut.
   const torso = torsoSdf(bulk);
@@ -311,41 +294,48 @@ export function buildBody(o: BodyOptions): BodyResult {
     return { garment: garmentGeo, extraLayer };
   });
 
-  // Sleeves per pose and side (hard union with the torso; AO still sees the torso).
-  const sleeveGeos = [armR, armL].map((chain, i) => {
-    const side = i === 0 ? -1 : 1;
-    return remember(limbCache, JSON.stringify([outfitKey, poseKey, side, 'sleeve', Boolean(garment.pocket)]), () => {
-      const a = armSdf(chain, garment, bulk);
-      const shoulderCap = (x: number, y: number, z: number) => sdEllipsoid(x, y, z, chain.S[0] * 0.97, chain.S[1] + 0.08, chain.S[2], 0.4 + bulk, 0.42 + bulk, 0.42 + bulk);
-      const sdf: Sdf = (x, y, z) => {
-        let d = smin(a.sleeve(x, y, z), shoulderCap(x, y, z), 0.12);
-        if (a.cuff) d = smin(d, a.cuff(x, y, z), 0.02);
-        return d;
-      };
-      const U = new THREE.Vector3(0, 1, 0).cross(chain.F);
-      if (U.lengthSq() < 1e-4) U.set(1, 0, 0);
-      U.normalize();
-      const V = new THREE.Vector3().crossVectors(chain.F, U).normalize();
-      const color = (x: number, y: number, z: number): Vec3 => {
-        let c = base;
-        if (a.cuff && a.cuff(x, y, z) < 0.03) {
-          if (!garment.ribs) c = trim;
-          else {
-            const px = x - chain.W[0];
-            const py = y - chain.W[1];
-            const pz = z - chain.W[2];
-            const ang = Math.atan2(px * V.x + py * V.y + pz * V.z, px * U.x + py * U.y + pz * U.z);
-            c = mix(trim, base, 0.2 + 0.2 * Math.sin(ang * 22));
-          }
-        } else if (stripe && Math.abs(Math.sin(y * 3.2)) > 0.86 && y < -1.9) c = stripe;
-        const occ = headOcc(x, y, z);
-        return [c[0] * occ, c[1] * occ, c[2] * occ];
-      };
-      const end = garment.sleeve === 'short' ? [chain.S, chain.E] : [chain.S, chain.E, chain.W];
-      const [min, max] = chainBounds(end as Vec3[], 0.5);
-      return share(polygonize(sdf, min, max, 0.04, { color, ao: 0.5, occluder: core, uvScale: 1.2 }));
-    });
+  // Limb segments in canonical (straight-down) space, built once per outfit and posed by the rig.
+  const segs = remember(limbCache, JSON.stringify([outfitKey, 'segments']), () => {
+    const b = bulk;
+    const O: Vec3 = [0, 0, 0];
+    const short = garment.sleeve === 'short';
+    const Eu: Vec3 = [0, -L_UPPER, 0];
+    const cap = (x: number, y: number, z: number) => sdEllipsoid(x, y, z, 0, 0.08, 0, 0.4 + b, 0.42 + b, 0.42 + b);
+    const upperEnd: Vec3 = short ? [0, -L_UPPER * 0.48, 0] : Eu;
+    const upper: Sdf = (x, y, z) => smin(sdRoundCone(x, y, z, O, upperEnd, short ? 0.39 + b : 0.35 + b, short ? 0.35 + b : 0.3 + b), cap(x, y, z), 0.12);
+    const cuffLen = garment.ribs ? 0.17 : 0.06;
+    const W0: Vec3 = [0, -(L_FORE - cuffLen), 0];
+    const Wc: Vec3 = [0, -(L_FORE - 0.01), 0];
+    const cuff = (x: number, y: number, z: number) => sdRoundCone(x, y, z, W0, Wc, garment.ribs ? 0.245 + b * 0.5 : 0.27 + b, garment.ribs ? 0.235 + b * 0.5 : 0.265 + b);
+    const fore: Sdf = (x, y, z) => {
+      const de = Math.hypot(x, y, z);
+      // Soft fabric folds bunching around the elbow.
+      const d = sdRoundCone(x, y, z, O, W0, 0.3 + b, 0.272 + b) + 0.011 * Math.sin(de * 26) * Math.exp(-(de * de) / 0.12);
+      return smin(d, cuff(x, y, z), 0.02);
+    };
+    const shadeCol = (c: Vec3) => (x: number, y: number, z: number): Vec3 => {
+      void x; void z;
+      return stripe && Math.abs(Math.sin(y * 3.2)) > 0.86 ? stripe : c;
+    };
+    const foreColor = (x: number, y: number, z: number): Vec3 => {
+      if (cuff(x, y, z) < 0.03) return garment.ribs ? mix(trim, base, 0.2 + 0.2 * Math.sin(Math.atan2(x, z) * 22)) : trim;
+      return shadeCol(base)(x, y, z);
+    };
+    const upperGeo = share(polygonize(upper, [-0.55, -L_UPPER - 0.45, -0.55], [0.55, 0.6, 0.55], 0.04, { color: shadeCol(base), ao: 0.35, uvScale: 1.2 }));
+    const foreGeo = short ? null : share(polygonize(fore, [-0.42, -L_FORE - 0.35, -0.42], [0.42, 0.4, 0.42], 0.035, { color: foreColor, ao: 0.35, uvScale: 1.2 }));
+    return { upperGeo, foreGeo };
   });
+  const bareSegs = garment.sleeve === 'short'
+    ? remember(limbCache, JSON.stringify([o.skin, look.saturation, 'bare-segments']), () => {
+        const skin = linear(o.skin, look);
+        const upper: Sdf = (x, y, z) => sdRoundCone(x, y, z, [0, 0, 0], [0, -L_UPPER, 0], 0.25, 0.205);
+        const fore: Sdf = (x, y, z) => sdRoundCone(x, y, z, [0, 0, 0], [0, -L_FORE, 0], 0.205, 0.15);
+        return {
+          upperGeo: share(polygonize(upper, [-0.32, -L_UPPER - 0.3, -0.32], [0.32, 0.3, 0.32], 0.03, { color: () => skin, ao: 0.3 })),
+          foreGeo: share(polygonize(fore, [-0.26, -L_FORE - 0.25, -0.26], [0.26, 0.25, 0.26], 0.03, { color: () => skin, ao: 0.3 })),
+        };
+      })
+    : null;
 
   // Skin: neck (cached per skin tone) + bare arms for short sleeves (per pose).
   const skinC = linear(o.skin, look);
@@ -357,17 +347,6 @@ export function buildBody(o: BodyOptions): BodyResult {
     };
     return share(polygonize(neck, [-0.5, -1.8, -0.6], [0.5, -0.3, 0.4], 0.025, { color: shadeNeck, ao: 0.3 }));
   });
-  const bareArms =
-    garment.sleeve === 'short'
-      ? [armR, armL].map((chain, i) =>
-          remember(limbCache, JSON.stringify([o.skin, look.saturation, poseKey, i, 'bare']), () => {
-            const sdf: Sdf = (x, y, z) => smin(sdRoundCone(x, y, z, chain.S, chain.E, 0.25, 0.205), sdRoundCone(x, y, z, chain.E, chain.W, 0.205, 0.15), 0.05);
-            const [min, max] = chainBounds([chain.S, chain.E, chain.W], 0.32);
-            return share(polygonize(sdf, min, max, 0.03, { color: () => skinC, ao: 0.4, occluder: core }));
-          }),
-        )
-      : [];
-
   const knit = look.shading === 'pbr' && garment.finish !== 'gloss' ? fabricKnit() : undefined;
   const fabricMat = material(look, garment.finish === 'gloss' ? 'gloss' : 'fabric', { color: '#ffffff', roughness: garment.roughness, bumpMap: knit });
   (fabricMat as THREE.MeshStandardMaterial).vertexColors = true;
@@ -376,7 +355,7 @@ export function buildBody(o: BodyOptions): BodyResult {
     (fabricMat as THREE.MeshPhysicalMaterial).sheenColor = tune(shade(garment.color, 0.12), look);
     (fabricMat as THREE.MeshPhysicalMaterial).sheen = 0.6;
   }
-  for (const geo of [torsoGeos.garment, ...sleeveGeos]) {
+  for (const geo of [torsoGeos.garment]) {
     const mesh = new THREE.Mesh(geo, fabricMat);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -394,7 +373,7 @@ export function buildBody(o: BodyOptions): BodyResult {
   }
   const skinMat = material(look, 'skin', { color: '#ffffff' });
   (skinMat as THREE.MeshStandardMaterial).vertexColors = true;
-  for (const geo of [neckGeo, ...bareArms]) {
+  for (const geo of o.neck === false ? [] : [neckGeo]) {
     const skinMesh = new THREE.Mesh(geo, skinMat);
     skinMesh.castShadow = true;
     skinMesh.receiveShadow = true;
@@ -403,33 +382,68 @@ export function buildBody(o: BodyOptions): BodyResult {
     g.add(skinMesh);
   }
 
-  // Hands.
+  // Arm rig: rigid sleeve / skin segments + posed hands, re-posable every frame (dances).
   const handMat = material(look, 'skin', { color: shade(o.skin, 0.01) });
-  const addHand = (chain: ArmChain, armPose: ArmPose, side: -1 | 1) => {
-    if (!armPose.hand) return;
-    const Y = v3(armPose.fingers).normalize();
-    const Z = v3(armPose.palm);
-    Z.addScaledVector(Y, -Z.dot(Y)).normalize();
-    const X = new THREE.Vector3().crossVectors(Y, Z);
-    const m = new THREE.Matrix4().makeBasis(X, Y, Z);
-    // Right hand (screen left) uses the canonical right-hand SDF; left hands are mirrored.
-    const hand = new THREE.Mesh(handGeometry(armPose.hand, side === -1 ? 1 : -1), handMat);
-    hand.quaternion.setFromRotationMatrix(m);
-    hand.position.set(chain.W[0] + chain.F.x * 0.02, chain.W[1] + chain.F.y * 0.02, chain.W[2] + chain.F.z * 0.02);
-    hand.scale.setScalar(1.06);
+  const makeArm = (side: -1 | 1) => {
+    const parts: THREE.Mesh[] = [];
+    const add = (geo: THREE.BufferGeometry | null, mat: THREE.Material) => {
+      const m = new THREE.Mesh(geo ?? new THREE.BufferGeometry(), mat);
+      m.castShadow = true;
+      m.receiveShadow = true;
+      m.userData.outline = true;
+      m.visible = Boolean(geo);
+      g.add(m);
+      parts.push(m);
+      return m;
+    };
+    const sleeveUpper = add(segs.upperGeo, fabricMat);
+    const sleeveFore = add(segs.foreGeo, fabricMat);
+    const skinUpper = add(bareSegs?.upperGeo ?? null, skinMat);
+    const skinFore = add(bareSegs?.foreGeo ?? null, skinMat);
+    const hand = new THREE.Mesh(new THREE.BufferGeometry(), handMat);
     hand.castShadow = true;
     hand.receiveShadow = true;
     hand.userData.outline = true;
+    hand.scale.setScalar(1.06);
     g.add(hand);
+    let handPose: string | null = null;
+    return (armPose: ArmPose, shrug: number) => {
+      const chain = solveArm(side, armPose, shrug);
+      for (const [m, from, to] of [[sleeveUpper, chain.S, chain.E], [skinUpper, chain.S, chain.E], [sleeveFore, chain.E, chain.W], [skinFore, chain.E, chain.W]] as const) aim(m, from, to);
+      if (armPose.hand !== handPose) {
+        handPose = armPose.hand;
+        // Right hand (screen left) uses the canonical right-hand SDF; left hands are mirrored.
+        if (armPose.hand) hand.geometry = handGeometry(armPose.hand, side === -1 ? 1 : -1);
+      }
+      hand.visible = Boolean(armPose.hand);
+      if (armPose.hand) {
+        const Y = v3(armPose.fingers).normalize();
+        const Z = v3(armPose.palm);
+        Z.addScaledVector(Y, -Z.dot(Y)).normalize();
+        const X = new THREE.Vector3().crossVectors(Y, Z);
+        hand.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(X, Y, Z));
+        hand.position.set(chain.W[0] + chain.F.x * 0.02, chain.W[1] + chain.F.y * 0.02, chain.W[2] + chain.F.z * 0.02);
+      }
+    };
   };
-  addHand(armR, pose.right, -1);
-  addHand(armL, pose.left, 1);
+  const poseRight = makeArm(-1);
+  const poseLeft = makeArm(1);
+  const hasPocket = Boolean(garment.pocket);
+  // Head-relative wrists (face gestures) follow the head when the body sits lower (neck).
+  const headY = o.headOffset ?? 0;
+  const toBody = (a: ArmPose): ArmPose => (a.head && headY ? { ...a, wrist: [a.wrist[0], a.wrist[1] + headY, a.wrist[2]] } : a);
+  const applyPose = (p: BodyPose) => {
+    const fixed = hasPocket ? p : withoutPockets(p);
+    poseRight(toBody(fixed.right), fixed.shrug ?? 0);
+    poseLeft(toBody(fixed.left), fixed.shrug ?? 0);
+  };
+  applyPose(pose);
 
   // Details placed on the torso surface (ignores arms in front of it).
   const outer: Sdf = (x, y, z) => (hood ? smin(torso(x, y, z), hood(x, y, z), 0.09) : torso(x, y, z));
   const surfaceZ = (x: number, y: number) => probeFront(outer, x, y, 2.2, -0.5) ?? 0.6;
   addOutfitDetails(g, o, garment, look, surfaceZ);
-  return { group: g, surfaceZ };
+  return { group: g, surfaceZ, applyPose };
 }
 
 /* ----------------------------- outfit details ----------------------------- */

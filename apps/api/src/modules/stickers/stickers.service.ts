@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  DEFAULT_PACK_SIZE,
   DEFAULT_STICKER_ORDER,
   EMOTION_CATALOG,
   type GenerateStickersInput,
@@ -40,7 +41,7 @@ export class StickersService {
       throw new PaywallException('PREMIUM_STYLE', 'Stickers in this style are part of Premium.');
     }
 
-    let emotions = input.emotions ? [...new Set(input.emotions)] : [...DEFAULT_STICKER_ORDER];
+    let emotions = input.emotions ? [...new Set(input.emotions)] : DEFAULT_STICKER_ORDER.slice(0, DEFAULT_PACK_SIZE);
     if (!input.emotions && ent.stickerAllowance !== null) {
       const remaining = Math.max(0, ent.stickerAllowance - user.stickersGenerated);
       if (remaining > 0) emotions = emotions.slice(0, remaining);

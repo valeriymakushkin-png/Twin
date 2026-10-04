@@ -6,7 +6,7 @@ import {
   type HairStyle,
   type MascotDna,
 } from './dna';
-import type { StickerEmotion } from './emotions';
+import { baseEmotion, type StickerEmotion } from './emotions';
 
 /**
  * Deterministic procedural mascot renderer (pure SVG string, no DOM).
@@ -395,7 +395,8 @@ function glasses(kind: string, g: HeadGeometry, forceSunglasses: boolean): strin
 
 export function renderMascotSvg(dna: MascotDna, options: MascotSvgOptions = {}): string {
   const size = options.size ?? 512;
-  const emotion = options.emotion ?? 'happy';
+  // The SVG fallback draws the ten base emotions; richer ones map to their closest base.
+  const emotion = baseEmotion(options.emotion ?? 'happy');
   const g = HEAD[dna.faceShape];
   const skin = SKIN_TONE_HEX[dna.skinTone];
   const hairHex = HAIR_COLOR_HEX[dna.hairColor];

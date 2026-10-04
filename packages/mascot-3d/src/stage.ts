@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import type { MascotDna } from '@mascot/shared';
 import { buildMascot, type MascotOptions, type MascotRig } from './character';
+import { danceFrame, type DanceId } from './dances';
 import type { StyleLook } from './styles';
 
 export type Framing = 'hero' | 'bust' | 'portrait' | 'head' | 'sticker';
@@ -252,6 +253,20 @@ export class MascotViewer {
     this.dirty = true;
   }
 
+  private dance: DanceId | null = null;
+  private danceStart = 0;
+
+  /** Starts a dance loop (null stops and returns to the emotion pose). */
+  setDance(id: DanceId | null) {
+    this.dance = id;
+    this.danceStart = performance.now();
+    if (!id) {
+      this.stage.mascot?.applyDance(null);
+      if (this.stage.mascot) this.stage.mascot.group.position.y = 0;
+    }
+    this.dirty = true;
+  }
+
   /** One full turn (the "Rotate" button). */
   spin() {
     this.spinUntil = performance.now() + 2200;
@@ -262,7 +277,8 @@ export class MascotViewer {
     this.raf = requestAnimationFrame(this.loop);
     const now = performance.now();
     const moving = this.dragging || now < this.spinUntil || Math.abs(this.targetYaw - this.yaw) > 0.002;
-    const animate = !this.calm && this.opts.idle !== false;
+    // A dance is user-initiated, so it plays even with reduced motion.
+    const animate = (!this.calm && this.opts.idle !== false) || this.dance !== null;
     if (!this.visible || (!animate && !moving && !this.dirty)) return;
     // 30 fps cap for the idle loop; interaction runs at display rate.
     if (!moving && !this.dirty && now - this.lastFrame < 33) return;
@@ -281,7 +297,11 @@ export class MascotViewer {
       this.targetYaw -= k;
     }
     this.stage.pivot.rotation.y = this.yaw;
-    if (rig && animate) {
+    if (rig && this.dance) {
+      const frame = danceFrame(this.dance, (now - this.danceStart) / 1000);
+      rig.applyDance(frame);
+      rig.group.position.y = frame.bob;
+    } else if (rig && animate) {
       rig.group.position.y = Math.sin(t * 1.6) * 0.025;
       rig.head.rotation.y = Math.sin(t * 0.7) * 0.06;
       if (t > this.nextBlink) {

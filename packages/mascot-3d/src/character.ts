@@ -7,10 +7,13 @@ import { expressionFor, type Emotion, type Expression } from './expressions';
 import { FacePainter, paintEyeTexture } from './face';
 import { buildFacialHair, buildHair, strandTexture } from './hair';
 import { buildHeadGeometry, FrontMap, headParamsFromDna, type HeadParams } from './head';
+import { headShape } from './skull';
 import { material, outlineMaterial } from './materials';
-import { hashString, lerp, shade } from './math';
+import { hashString, lerp, mix, shade } from './math';
 import type { PoseKey } from './poses';
 import { buildProps } from './props';
+import type { DanceFrame } from './dances';
+import { bodyPose } from './poses';
 import { styleLook, type StyleLook } from './styles';
 
 export interface MascotOptions {
@@ -41,6 +44,8 @@ export interface MascotRig {
   setBlink(amount: number): void;
   /** Points the eyes (radians). */
   setGaze(yaw: number, pitch: number): void;
+  /** Plays one dance frame (null returns to the emotion's pose). */
+  applyDance(frame: DanceFrame | null): void;
   dispose(): void;
 }
 
@@ -58,6 +63,9 @@ const RENDER_SKIN: Record<string, string> = {
   'mst-10': '#36221b',
 };
 
+const BODY_DROP = 0.16;
+const dropCollider = (f: (x: number, y: number, z: number) => number) => (x: number, y: number, z: number) => f(x, y + BODY_DROP, z);
+
 const OUTFITS = new Set<OutfitKey>(['casual-hoodie', 'tshirt', 'denim-jacket', 'streetwear', 'business-suit', 'gamer', 'streamer', 'astronaut', 'superhero', 'samurai', 'wizard', 'techwear']);
 
 /** Assembles a full DNA-driven character. Pure scene-graph construction (no renderer needed). */
@@ -65,7 +73,9 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   const look = styleLook(opts.style);
   const expr = expressionFor(opts.emotion ?? 'happy');
   const seed = hashString(JSON.stringify(dna));
-  const skin = look.skinOverride ?? RENDER_SKIN[dna.skinTone] ?? SKIN_TONE_HEX[dna.skinTone];
+  const baseSkin = look.skinOverride ?? RENDER_SKIN[dna.skinTone] ?? SKIN_TONE_HEX[dna.skinTone];
+  // Emotion tints: sick green, cold blue, furious red, pale.
+  const skin = expr.skinTint ? mix(baseSkin, expr.skinTint[0], expr.skinTint[1]) : baseSkin;
   const hairHex = HAIR_COLOR_HEX[dna.hairColor];
   const P = headParamsFromDna(dna, {
     boxy: look.boxy,
@@ -74,19 +84,31 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     noseWidth: headParamsFromDna(dna).noseWidth * Math.max(0.6, look.noseScale),
     ...(look.face === 'dots' ? { jaw: 1, chin: 0, cheek: 0, forehead: 1, width: 0.92, height: 1.02 } : {}),
     ...(look.face === 'button' ? { width: 1, height: 0.98, jaw: 0.92, chin: 0.1 } : {}),
+    // Sculpted heads: shorter lower face (cartoon proportions), mouth sits a little higher.
+    ...(look.face === 'full' ? { organic: true, mouthY: -0.46, eyeX: headParamsFromDna(dna).eyeX * 1.05 } : {}),
   });
+  const shape = P.organic ? headShape(P) : null;
 
   const root = new THREE.Group();
   root.name = 'mascot';
+  // The head turns about the top of the neck (not its centre), so tilts and nods keep the
+  // neck inside the collar.
+  const NECK_PIVOT = -0.95;
+  const headPivot = new THREE.Group();
+  headPivot.name = 'head-pivot';
+  headPivot.position.y = NECK_PIVOT;
+  root.add(headPivot);
   const head = new THREE.Group();
   head.name = 'head';
-  root.add(head);
+  head.position.y = -NECK_PIVOT;
+  headPivot.add(head);
 
   // Head surface + painted face.
-  const headGeo = buildHeadGeometry(P);
+  const headGeo = shape ? shape.geometry : buildHeadGeometry(P);
   const map = new FrontMap(headGeo);
   const painter = new FacePainter(map, P);
   const faceTex = painter.paint(dna, skin, look, expr, seed);
+  if (shape) faceTex.wrapS = THREE.RepeatWrapping;
   const skinMat = material(look, 'skin', { color: '#ffffff', map: faceTex });
   const headMesh = new THREE.Mesh(headGeo, skinMat);
   headMesh.castShadow = true;
@@ -100,7 +122,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   const earX = map.halfWidth(earY) - 0.05;
   const earMat = material(look, 'skin', { color: shade(skin, -0.03) });
   const innerMat = material(look, 'skin', { color: shade(skin, -0.2) });
-  if (look.face !== 'dots') {
+  if (look.face !== 'dots' && !shape) {
     for (const s of [-1, 1]) {
       const ear = new THREE.Group();
       const outer = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 24), earMat);
@@ -122,10 +144,11 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   }
 
   // Eyes.
-  const eyeR = 0.19 * look.eyeScale * (look.face === 'button' ? 1.05 : 1);
+  const eyeR = (shape ? shape.eye.r : 0.19) * look.eyeScale * (look.face === 'button' ? 1.05 : 1);
   const eyeX = P.eyeX * (look.eyeScale > 1 ? 1 + (look.eyeScale - 1) * 0.3 : 1);
   const eyeTex = paintEyeTexture(EYE_COLOR_HEX[dna.eyeColor], {
-    heart: expr.heartEyes,
+    heart: expr.heartEyes || expr.eyes === 'heart',
+    kind: expr.eyes,
     dots: look.face === 'dots',
     button: look.face === 'button',
     irisScale: look.shading === 'toon' ? 1.12 : 1,
@@ -142,7 +165,8 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     const ex = s * eyeX;
     const sz = map.surfaceZ(ex, P.eyeY);
     const eye = new THREE.Group();
-    eye.position.set(ex, P.eyeY, sz - eyeR * (look.face === 'dots' ? 0.8 : 0.42));
+    // Organic heads: the eyeball sits in its socket; sphere heads: on the surface.
+    eye.position.set(ex, P.eyeY, shape ? shape.eye.z + (look.eyeScale - 1) * 0.08 : sz - eyeR * (look.face === 'dots' ? 0.8 : 0.42));
     head.add(eye);
 
     if (look.face === 'dots') {
@@ -184,9 +208,9 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     lidTilt.add(upper);
     const lower = new THREE.Mesh(new THREE.SphereGeometry(eyeR * 1.055, 48, 24, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), lidMat);
     lidTilt.add(lower);
-    if (expr.upperLid >= 0.85) {
-      // Closed eyes read as lash arcs: ^ ^ when laughing, ‿ when resigned.
-      const up = expr.mouth === 'laugh' || expr.mouth === 'grin' ? 1 : -0.6;
+    if (expr.upperLid >= 0.85 || expr.wink === s) {
+      // Closed eyes read as lash arcs: ^ ^ when happy, ‿ when resigned or asleep.
+      const up = expr.closedHappy || expr.wink === s || expr.mouth === 'laugh' || expr.mouth === 'grin' ? 1 : -0.6;
       const arc = new THREE.QuadraticBezierCurve3(
         new THREE.Vector3(-eyeR * 0.95, -eyeR * 0.05, eyeR * 0.72),
         new THREE.Vector3(0, eyeR * (0.05 + 0.5 * up), eyeR * 1.32),
@@ -200,7 +224,8 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   let blink = 0;
   const applyLids = () => {
     for (const e of eyes) {
-      const upperAmt = Math.min(1, Math.max(expr.upperLid, shapeLid * (1 - expr.upperLid * 0.5)) + blink * (1 - expr.upperLid));
+      const lid = expr.wink === e.side ? 1 : expr.upperLid;
+      const upperAmt = Math.min(1, Math.max(lid, shapeLid * (1 - lid * 0.5)) + blink * (1 - lid));
       e.upper.rotation.x = lerp(-1.0, 1.62, upperAmt);
       e.lower.rotation.x = lerp(0.95, -1.05, Math.min(1, expr.lowerLid + blink * 0.2));
       e.lidTilt.rotation.z = e.side * (expr.lidTilt + shapeTilt);
@@ -218,7 +243,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   // Hair.
   const strands = look.shading === 'pbr' ? strandTexture() : undefined;
   const hairMat = material(look, 'hair', { color: look.shading === 'plastic' ? shade(hairHex, 0.05) : hairHex, map: strands, bumpMap: strands });
-  const hair = buildHair(look.face === 'dots' ? 'crew-cut' : dna.hairStyle, P, hairMat, seed, look.hairDetail, look.face === 'dots', bodyCollider(opts.outfit));
+  const hair = buildHair(look.face === 'dots' ? 'crew-cut' : dna.hairStyle, P, hairMat, seed, look.hairDetail, look.face === 'dots', shape ? dropCollider(bodyCollider(opts.outfit)) : bodyCollider(opts.outfit));
   head.add(hair.group);
   if (look.face === 'full') {
     const browHex = dna.hairStyle === 'bald' ? shade(hairHex, -0.2) : shade(hairHex, -0.3);
@@ -254,9 +279,11 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
 
   // Body.
   const outfit = (OUTFITS.has(opts.outfit as OutfitKey) ? opts.outfit : 'casual-hoodie') as OutfitKey;
-  const body = buildBody({ outfit, color: opts.outfitColor, skin, look, pose: opts.pose ?? expr.pose });
+  const body = buildBody({ outfit, color: opts.outfitColor, skin, look, pose: opts.pose ?? expr.pose, neck: !shape, headOffset: shape ? BODY_DROP : 0 });
+  // Sculpted heads show a neck: the body sits a little lower under the head.
+  if (shape) body.group.position.y = -BODY_DROP;
   root.add(body.group);
-  if (accessory === 'chain') root.add(buildAccessory('chain', look, map, P, hair.crown, undefined, body.surfaceZ));
+  if (accessory === 'chain') body.group.add(buildAccessory('chain', look, map, P, hair.crown, undefined, body.surfaceZ));
   if (outfit === 'streamer' && !accessory) head.add(buildAccessory('headphones', look, map, P, hair.crown));
   if (outfit === 'wizard') {
     const hat = new THREE.Mesh(new THREE.ConeGeometry(0.85, 1.5, 48, 1, true), material(look, 'fabric', { color: '#4c1d95', side: THREE.DoubleSide }));
@@ -277,8 +304,8 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   }
 
   // Head pose.
-  head.rotation.z = expr.headTilt;
-  head.rotation.x = expr.headNod;
+  headPivot.rotation.z = expr.headTilt;
+  headPivot.rotation.x = expr.headNod;
 
   // Toon outline (inverted hull) for ink styles.
   if (look.outline > 0) {
@@ -299,7 +326,7 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
 
   return {
     group: root,
-    head,
+    head: headPivot,
     look,
     expression: expr,
     params: P,
@@ -308,6 +335,17 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
       applyLids();
     },
     setGaze,
+    applyDance(frame: DanceFrame | null) {
+      if (!frame) {
+        body.applyPose(bodyPose(opts.pose ?? expr.pose));
+        body.group.rotation.set(0, 0, 0);
+        headPivot.rotation.set(expr.headNod, 0, expr.headTilt);
+        return;
+      }
+      body.applyPose(frame.pose);
+      body.group.rotation.set(0, frame.twist, frame.lean);
+      headPivot.rotation.set(expr.headNod * 0.5 + frame.headNod, frame.twist * 0.6 + frame.headTurn, expr.headTilt * 0.5 + frame.headTilt + frame.lean * 0.6);
+    },
     dispose() {
       root.traverse((o) => {
         const m = o as THREE.Mesh;

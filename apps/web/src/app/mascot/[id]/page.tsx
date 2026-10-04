@@ -1,12 +1,12 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, Camera, Clapperboard, Download, Image as ImageIcon, Laugh, Palette, Pencil, Plus, Rotate3d, Share2, Shirt, Smile } from 'lucide-react';
+import { ArrowRight, Camera, Clapperboard, Download, Image as ImageIcon, Laugh, Music2, Palette, Pencil, Plus, Rotate3d, Share2, Shirt, Smile, Square } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import { toast } from 'sonner';
-import { getStyleRecipe, type AvatarDto } from '@mascot/shared';
+import { DANCE_EMOJI, DANCE_IDS, getStyleRecipe, type AvatarDto } from '@mascot/shared';
 import { AppShell } from '@/components/layout/app-shell';
 import { CharacterCard } from '@/components/mascot/character-card';
 import { Confetti } from '@/components/mascot/confetti';
@@ -15,6 +15,7 @@ import { Mascot3D } from '@/components/three/mascot-3d';
 import { Button } from '@/components/ui/button';
 import { Card, ScreenTitle, SectionTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/misc';
+import { Sheet } from '@/components/ui/sheet';
 import { api, ApiRequestError } from '@/lib/api';
 import { cn } from '@/lib/cn';
 import { useT } from '@/lib/i18n';
@@ -85,6 +86,8 @@ function MascotInner() {
   const [downloading, setDownloading] = useState(false);
   const [view3d, setView3d] = useState(false);
   const [spin, setSpin] = useState(0);
+  const [dance, setDance] = useState<string | null>(null);
+  const [danceOpen, setDanceOpen] = useState(false);
   const [ready, setReady] = useState(search.get('new') === '1');
   const tr = useT();
   const { t, f } = tr;
@@ -166,7 +169,7 @@ function MascotInner() {
           <AnimatePresence mode="wait">
             {view3d && avatar.dna ? (
               <motion.div key="3d" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative aspect-[4/5] w-full">
-                <Mascot3D dna={avatar.dna} style={avatar.styleSlug} outfit={primary?.outfitKey ?? undefined} accessory={primary?.accessoryKey ?? null} framing="bust" spin={spin} className="fade-bottom size-full" />
+                <Mascot3D dna={avatar.dna} style={avatar.styleSlug} outfit={primary?.outfitKey ?? undefined} accessory={primary?.accessoryKey ?? null} framing="bust" spin={spin} dance={dance} className="fade-bottom size-full" />
               </motion.div>
             ) : (
               <motion.div key="img" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="relative aspect-[4/5] w-full">
@@ -195,15 +198,26 @@ function MascotInner() {
         </div>
       </div>
 
-      <div className="mt-2 grid grid-cols-3 gap-2">
+      <div className="mt-2 grid grid-cols-4 gap-2">
         <ToolButton
           icon={<Rotate3d className="size-[18px]" />}
           label={t.mascot.rotate}
-          active={view3d}
+          active={view3d && !dance}
           disabled={!can3d}
           onClick={() => {
             if (!view3d) setView3d(true);
             setSpin((n) => n + 1);
+          }}
+        />
+        <ToolButton
+          icon={dance ? <Square className="size-[16px] fill-current" /> : <Music2 className="size-[18px]" />}
+          label={dance ? t.dances.stop : t.mascot.dance}
+          active={Boolean(dance)}
+          disabled={!can3d}
+          onClick={() => {
+            haptic.tap();
+            if (dance) setDance(null);
+            else setDanceOpen(true);
           }}
         />
         <ToolButton icon={<Camera className="size-[18px]" />} label={t.mascot.camera} disabled={!can3d} onClick={camera} />
@@ -262,6 +276,26 @@ function MascotInner() {
         </section>
       )}
 
+      <Sheet open={danceOpen} onClose={() => setDanceOpen(false)} title={t.dances.title}>
+        <div className="grid grid-cols-3 gap-2">
+          {DANCE_IDS.map((id) => (
+            <button
+              key={id}
+              onClick={() => {
+                haptic.select();
+                setView3d(true);
+                setDance(id);
+                setDanceOpen(false);
+              }}
+              className={cn('card flex flex-col items-center gap-1 rounded-2xl px-2 py-3', dance === id && 'selected')}
+            >
+              <span className="text-[26px] leading-none">{DANCE_EMOJI[id]}</span>
+              <span className="text-center text-[12px] font-semibold leading-tight">{t.dances.names[id]}</span>
+            </button>
+          ))}
+        </div>
+      </Sheet>
+
       <ShareSheet open={shareOpen} onClose={() => setShareOpen(false)} target={{ kind: 'avatar', id: avatar.id }} mediaUrl={avatar.imageUrl} fileName={`${avatar.name}.webp`} />
     </AppShell>
   );
@@ -273,7 +307,7 @@ function ToolButton({ icon, label, onClick, active, disabled, loading }: { icon:
       whileTap={{ scale: 0.95 }}
       disabled={disabled || loading}
       onClick={onClick}
-      className={cn('card flex h-12 items-center justify-center gap-2 rounded-2xl text-[12.5px] font-semibold transition-colors disabled:opacity-40', active && 'selected text-white')}
+      className={cn('card flex h-[58px] flex-col items-center justify-center gap-1 rounded-2xl text-[11.5px] font-semibold transition-colors disabled:opacity-40', active && 'selected text-white')}
     >
       <span className={cn(active ? 'text-brand' : 'text-ink-2', loading && 'animate-pulse')}>{icon}</span>
       {label}

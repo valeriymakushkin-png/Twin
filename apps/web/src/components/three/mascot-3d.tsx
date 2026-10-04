@@ -19,11 +19,13 @@ export interface Mascot3DProps {
   interactive?: boolean;
   /** Increment to trigger a full 360° turn. */
   spin?: number;
+  /** Dance loop id (see @mascot/mascot-3d DANCE_IDS); null = idle. */
+  dance?: string | null;
   className?: string;
 }
 
 /** Live, DNA-driven 3D character: drag to rotate, idle breathing and blinking. */
-export function Mascot3D({ dna, style, emotion, outfit, outfitColor, accessory, framing = 'bust', autoRotate = true, interactive = true, spin = 0, className }: Mascot3DProps) {
+export function Mascot3D({ dna, style, emotion, outfit, outfitColor, accessory, framing = 'bust', autoRotate = true, interactive = true, spin = 0, dance = null, className }: Mascot3DProps) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const viewer = useRef<MascotViewer | null>(null);
   const [ready, setReady] = useState(false);
@@ -41,6 +43,7 @@ export function Mascot3D({ dna, style, emotion, outfit, outfitColor, accessory, 
       .then(({ MascotViewer }) => {
         if (!alive || !canvas.current) return;
         viewer.current = new MascotViewer(canvas.current, dna, opts);
+        if (dance) viewer.current.setDance(dance as never);
         requestAnimationFrame(() => alive && setReady(true));
       })
       .catch(() => setFallback(true));
@@ -60,6 +63,10 @@ export function Mascot3D({ dna, style, emotion, outfit, outfitColor, accessory, 
   useEffect(() => {
     if (spin) viewer.current?.spin();
   }, [spin]);
+
+  useEffect(() => {
+    viewer.current?.setDance((dance ?? null) as never);
+  }, [dance]);
 
   if (fallback) return <MascotArt dna={dna} emotion={(emotion as never) ?? 'happy'} className={className} />;
   return (

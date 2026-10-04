@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import type { MascotDna } from '@mascot/shared';
 import { MascotArt } from '@/components/brand/mascot-art';
 import { cn } from '@/lib/cn';
@@ -19,6 +20,26 @@ export function MascotShot({ dna, className, imgClassName, ...opts }: ShotOption
       ) : (
         <div className="absolute inset-[14%] animate-pulse-soft rounded-full bg-white/[0.05]" />
       )}
+    </div>
+  );
+}
+
+/** MascotShot that only starts rendering once scrolled near the viewport (long grids). */
+export function LazyMascotShot({ placeholder, ...props }: Parameters<typeof MascotShot>[0] & { placeholder?: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || visible) return;
+    if (typeof IntersectionObserver === 'undefined') return setVisible(true);
+    const io = new IntersectionObserver((entries) => entries.some((e) => e.isIntersecting) && setVisible(true), { rootMargin: '240px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [visible]);
+  if (visible) return <MascotShot {...props} />;
+  return (
+    <div ref={ref} className={cn('relative grid place-items-center', props.className)}>
+      {placeholder}
     </div>
   );
 }

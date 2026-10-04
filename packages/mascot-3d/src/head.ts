@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { FaceShape, MascotDna } from '@mascot/shared';
 import { clamp, gauss, lerp, smoothstep } from './math';
+import { headRadius } from './skull';
 
 /**
  * Head geometry: a high-resolution unit sphere deformed by an analytic sculpting function.
@@ -27,6 +28,8 @@ export interface HeadParams {
   eyeX: number;
   eyeY: number;
   mouthY: number;
+  /** Sculpted organic head (skull.ts) instead of the deformed sphere (toy styles). */
+  organic?: boolean;
 }
 
 // Cartoon proportions: full cranium and cheeks, a jaw that clearly tapers into a defined chin.
@@ -64,6 +67,11 @@ export function headParamsFromDna(dna: MascotDna, overrides: Partial<HeadParams>
 
 /** Sculpts a unit-sphere direction into a head-surface point (scale > 1 → offset shells). */
 export function sculpt(dir: THREE.Vector3, P: HeadParams, out: THREE.Vector3, scale = 1): THREE.Vector3 {
+  if (P.organic) {
+    const r = headRadius(P)(dir.x, dir.y, dir.z) * scale;
+    const l = dir.length() || 1;
+    return out.set((dir.x / l) * r, (dir.y / l) * r, (dir.z / l) * r);
+  }
   let x = dir.x;
   let y = dir.y;
   let z = dir.z;

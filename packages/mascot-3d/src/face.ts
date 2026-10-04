@@ -83,7 +83,8 @@ export class FacePainter {
     const h = this.map.hit(x, y, this.hit);
     // Silhouette hits can land just past the UV seam (u ≈ 1 on the -x side); a polygon through
     // such a point would wrap across the whole texture as a dark band, so drop it.
-    if (!h || h.uv.x > 0.6) return null;
+    // Organic heads use cylindrical UVs (front at u = 0.5, seam at the back).
+    if (!h || (this.P.organic ? Math.abs(h.uv.x - 0.5) > 0.36 : h.uv.x > 0.6)) return null;
     return [h.uv.x * this.W, (1 - h.uv.y) * this.H];
   }
 
@@ -175,7 +176,7 @@ export class FacePainter {
       const tipY = -0.24 * P.noseLength;
       this.spot(0, tipY, 0.09, mix(skin, '#c8505a', 0.35), 0.14);
       for (const s of [-1, 1]) {
-        this.spot(s * P.eyeX, P.eyeY + 0.01, 0.22, shade(skin, -0.3), 0.07, 0.17);
+        if (!P.organic) this.spot(s * P.eyeX, P.eyeY + 0.01, 0.22, shade(skin, -0.3), 0.07, 0.17);
         this.spot(s * 0.045 * P.noseWidth, tipY - 0.055, 0.022, '#2a0f0c', 0.55, 0.013);
       }
       this.spot(0, P.mouthY - 0.17, 0.12, shade(skin, -0.25), 0.12, 0.05);
@@ -417,6 +418,68 @@ export class FacePainter {
         this.fill([...qb([-w, my - 0.012], [0, my - 0.024], [w, my - 0.012]), ...qb([w, my - 0.012], [0, my - 0.032], [-w, my - 0.012])], rgba(shade(lip, -0.5), 0.9));
         break;
       }
+      case 'tongue': {
+        const w = mw * 0.88;
+        const upper = qb([-w, my + 0.04], [0, my - 0.01], [w, my + 0.04]);
+        const lower = qb([w, my + 0.04], [0, my - 0.17], [-w, my + 0.04]);
+        openMouth(upper, lower, { teethTop: 0.05 });
+        // Tongue sticking out over the lower lip.
+        const tongue = ellipsePts(0.03, my - 0.17, w * 0.46, 0.12);
+        this.fill(tongue, this.gradientFor(tongue, '#ff8f9c', '#d9506a'));
+        this.fill([...qb([0.03, my - 0.09], [0.035, my - 0.17], [0.03, my - 0.25], 8), ...qb([0.034, my - 0.25], [0.04, my - 0.17], [0.036, my - 0.09], 8)], rgba('#b23a52', 0.55));
+        break;
+      }
+      case 'kiss': {
+        const lips = ellipsePts(0.02, my - 0.02, mw * 0.26, 0.075 * lipFull);
+        this.fill(lips, this.gradientFor(lips, shade(lip, 0.08), shade(lip, -0.22)));
+        this.fill(ellipsePts(0.02, my - 0.02, mw * 0.08, 0.02), rgba('#4a1018', 0.85));
+        for (const s of [-1, 1]) this.fill([...qb([0.02 + s * mw * 0.1, my + 0.04], [0.02 + s * mw * 0.2, my - 0.02], [0.02 + s * mw * 0.1, my - 0.08], 8), ...qb([0.02 + s * mw * 0.11, my - 0.08], [0.02 + s * mw * 0.21, my - 0.02], [0.02 + s * mw * 0.11, my + 0.04], 8)], rgba(shade(lip, -0.4), 0.35));
+        break;
+      }
+      case 'frown': {
+        const w = mw * 0.78;
+        const top = qb([-w, my - 0.07], [0, my + 0.03], [w, my - 0.07]);
+        const bottom = qb([w, my - 0.07], [0, my + 0.0], [-w, my - 0.07]);
+        this.fill([...top, ...bottom], rgba(shade(lip, -0.35), 0.95));
+        this.fill([...qb([-w * 0.8, my - 0.06], [0, my - 0.02], [w * 0.8, my - 0.06]), ...qb([w * 0.8, my - 0.06], [0, my - 0.07 - 0.03 * lipFull], [-w * 0.8, my - 0.06])], rgba(lip, 0.45));
+        break;
+      }
+      case 'wavy': {
+        const w = mw * 0.8;
+        const top: Pt[] = [];
+        const bottom: Pt[] = [];
+        for (let k = 0; k <= 24; k++) {
+          const x = -w + (2 * w * k) / 24;
+          const y = my - 0.01 + 0.022 * Math.sin((k / 24) * Math.PI * 4);
+          top.push([x, y + 0.012]);
+          bottom.push([x, y - 0.012]);
+        }
+        this.fill([...top, ...bottom.reverse()], rgba(shade(lip, -0.4), 0.95));
+        break;
+      }
+      case 'cat': {
+        const w = mw * 0.5;
+        const arcA = [...qb([-w, my + 0.02], [-w / 2, my - 0.07], [0, my + 0.01], 12), ...qb([0, my + 0.01 - 0.022], [-w / 2, my - 0.07 - 0.022], [-w, my + 0.02 - 0.022], 12)];
+        const arcB = [...qb([0, my + 0.01], [w / 2, my - 0.07], [w, my + 0.02], 12), ...qb([w, my + 0.02 - 0.022], [w / 2, my - 0.07 - 0.022], [0, my + 0.01 - 0.022], 12)];
+        this.fill(arcA, rgba(shade(lip, -0.4), 0.95));
+        this.fill(arcB, rgba(shade(lip, -0.4), 0.95));
+        break;
+      }
+      case 'yawn': {
+        const cy = my - 0.12;
+        const rx = mw * 0.48;
+        const ry = 0.2;
+        const upper = Array.from({ length: 25 }, (_, i) => {
+          const a = Math.PI - (i / 24) * Math.PI;
+          return [Math.cos(a) * rx, cy + Math.sin(a) * ry] as Pt;
+        });
+        const lower = Array.from({ length: 25 }, (_, i) => {
+          const a = -(i / 24) * Math.PI;
+          return [Math.cos(a) * rx, cy + Math.sin(a) * ry] as Pt;
+        });
+        openMouth(upper, lower, { teethTop: 0.03, tongue: [0, cy - 0.12, rx * 0.6, 0.07] });
+        break;
+      }
       case 'smile':
       default: {
         const upper = qb([-mw, my + 0.035], [0, my - 0.045], [mw, my + 0.035]);
@@ -521,7 +584,7 @@ export class FacePainter {
 /* ----------------------------- eyes ----------------------------- */
 
 /** Equirectangular eyeball texture: iris centred on +Z (u = 0.25, v = 0.5). */
-export function paintEyeTexture(irisHex: string, opts: { heart?: boolean; dots?: boolean; button?: boolean; irisScale?: number }): THREE.CanvasTexture {
+export function paintEyeTexture(irisHex: string, opts: { heart?: boolean; dots?: boolean; button?: boolean; irisScale?: number; kind?: string }): THREE.CanvasTexture {
   const W = 1024;
   const H = 512;
   const canvas = createCanvas(W, H);
@@ -539,10 +602,65 @@ export function paintEyeTexture(irisHex: string, opts: { heart?: boolean; dots?:
     ctx.fillStyle = sclera;
     ctx.fillRect(0, 0, W, H);
   }
-  const R = (0.5 / Math.PI) * H * (opts.irisScale ?? 1);
+  const kind = opts.kind ?? 'normal';
+  const R = (0.5 / Math.PI) * H * (opts.irisScale ?? 1) * (kind === 'puppy' ? 1.28 : 1);
   if (opts.dots) {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, W, H);
+  } else if (kind === 'star' || kind === 'dollar' || kind === 'spiral' || kind === 'x') {
+    ctx.save();
+    ctx.translate(cx, cy);
+    if (kind === 'star') {
+      ctx.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const r = i % 2 ? R * 0.45 : R * 1.05;
+        const a = (i / 10) * Math.PI * 2 - Math.PI / 2;
+        if (i === 0) ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+        else ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      }
+      ctx.closePath();
+      const g = ctx.createRadialGradient(0, -R * 0.2, 2, 0, 0, R);
+      g.addColorStop(0, '#fff6b0');
+      g.addColorStop(1, '#f5b301');
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#c47f00';
+      ctx.stroke();
+    } else if (kind === 'dollar') {
+      ctx.fillStyle = '#1f9d55';
+      ctx.beginPath();
+      ctx.arc(0, 0, R, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#eafff1';
+      ctx.font = `bold ${Math.round(R * 1.55)}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('$', 0, R * 0.06);
+    } else if (kind === 'spiral') {
+      ctx.strokeStyle = '#141414';
+      ctx.lineWidth = R * 0.13;
+      ctx.beginPath();
+      for (let a = 0; a < Math.PI * 7; a += 0.08) {
+        const r = (a / (Math.PI * 7)) * R * 1.05;
+        const x = Math.cos(a) * r;
+        const y = Math.sin(a) * r;
+        if (a === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    } else {
+      ctx.strokeStyle = '#141414';
+      ctx.lineCap = 'round';
+      ctx.lineWidth = R * 0.24;
+      ctx.beginPath();
+      ctx.moveTo(-R * 0.7, -R * 0.7);
+      ctx.lineTo(R * 0.7, R * 0.7);
+      ctx.moveTo(R * 0.7, -R * 0.7);
+      ctx.lineTo(-R * 0.7, R * 0.7);
+      ctx.stroke();
+    }
+    ctx.restore();
   } else if (opts.heart) {
     ctx.save();
     ctx.translate(cx, cy + R * 0.1);
@@ -579,8 +697,17 @@ export function paintEyeTexture(irisHex: string, opts: { heart?: boolean; dots?:
     }
     ctx.fillStyle = '#070505';
     ctx.beginPath();
-    ctx.arc(cx, cy, R * 0.42, 0, Math.PI * 2);
+    ctx.arc(cx, cy, R * (kind === 'puppy' ? 0.55 : 0.42), 0, Math.PI * 2);
     ctx.fill();
+    if (kind === 'puppy') {
+      // Glossy, welling-up eyes: extra catch-lights.
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      for (const [dx, dy, r] of [[-0.35, -0.38, 0.22], [0.3, 0.3, 0.12], [0.42, -0.1, 0.07]] as const) {
+        ctx.beginPath();
+        ctx.arc(cx + dx * R, cy + dy * R, r * R, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   }
   const tex = new THREE.CanvasTexture(canvas as HTMLCanvasElement);
   tex.colorSpace = THREE.SRGBColorSpace;

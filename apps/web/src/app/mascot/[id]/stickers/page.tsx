@@ -5,9 +5,9 @@ import { Loader2, Send, Sparkles } from 'lucide-react';
 import { useParams, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { CREDIT_COSTS, DEFAULT_STICKER_ORDER, type StickerEmotion, type StickerPackDto } from '@mascot/shared';
+import { CREDIT_COSTS, DEFAULT_PACK_SIZE, DEFAULT_STICKER_ORDER, EMOTION_CATALOG, type StickerEmotion, type StickerPackDto } from '@mascot/shared';
 import { AppShell } from '@/components/layout/app-shell';
-import { MascotShot } from '@/components/three/mascot-shot';
+import { LazyMascotShot } from '@/components/three/mascot-shot';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, ScreenTitle, SectionTitle } from '@/components/ui/card';
@@ -77,7 +77,7 @@ function StickersInner() {
 
   useEffect(() => {
     if (selected.size || !profile) return;
-    const count = remaining === null ? DEFAULT_STICKER_ORDER.length : Math.max(1, remaining);
+    const count = remaining === null ? DEFAULT_PACK_SIZE : Math.max(1, Math.min(DEFAULT_PACK_SIZE, remaining));
     setSelected(new Set(DEFAULT_STICKER_ORDER.slice(0, count)));
   }, [profile, remaining, selected.size]);
 
@@ -122,7 +122,20 @@ function StickersInner() {
         </section>
       )}
 
-      <SectionTitle title={t.stickers.emotions} action={<span className="text-[12px] text-muted">{f(t.common.selected, { count: selected.size })}</span>} />
+      <SectionTitle
+        title={f(t.stickers.emotionsCount, { count: DEFAULT_STICKER_ORDER.length })}
+        action={
+          <button
+            className="text-[12px] font-semibold text-muted"
+            onClick={() => {
+              haptic.select();
+              setSelected(selected.size === DEFAULT_STICKER_ORDER.length ? new Set() : new Set(DEFAULT_STICKER_ORDER));
+            }}
+          >
+            {f(t.common.selected, { count: selected.size })} · {selected.size === DEFAULT_STICKER_ORDER.length ? t.stickers.clearAll : t.stickers.selectAll}
+          </button>
+        }
+      />
       <div className="grid grid-cols-3 gap-2">
         {DEFAULT_STICKER_ORDER.map((emotion) => {
           const on = selected.has(emotion);
@@ -141,7 +154,18 @@ function StickersInner() {
               }}
               className={cn('relative overflow-hidden rounded-2xl border bg-surface-2 text-center transition-shadow', on ? 'selected' : 'border-white/10')}
             >
-              {avatar?.dna ? <MascotShot dna={avatar.dna} style={avatar.styleSlug} emotion={emotion} framing="sticker" className="aspect-square w-full" /> : <div className="skeleton aspect-square" />}
+              {avatar?.dna ? (
+                <LazyMascotShot
+                  dna={avatar.dna}
+                  style={avatar.styleSlug}
+                  emotion={emotion}
+                  framing="sticker"
+                  className="aspect-square w-full"
+                  placeholder={<span className="text-[34px] opacity-60">{EMOTION_CATALOG[emotion].emoji}</span>}
+                />
+              ) : (
+                <div className="skeleton aspect-square" />
+              )}
               <div className={cn('pb-2 text-[11.5px] font-semibold', on ? 'text-white' : 'text-ink-2')}>{(t.stickers.captions as Record<string, string>)[emotion]}</div>
               {on && <CheckDot className="absolute right-1.5 top-1.5" />}
             </motion.button>

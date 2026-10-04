@@ -7,7 +7,7 @@ import { polygonize, sdRoundBox, sdRoundCone, smin, type Vec3 } from './sdf';
  * fingers along +Y, palm facing +Z, thumb on +X. Left hands mirror X in the SDF itself so
  * triangle winding stays correct.
  */
-export type HandPose = 'open' | 'wave' | 'relaxed' | 'fist' | 'point' | 'thumbsUp' | 'cup' | 'flat' | 'heart' | 'grip';
+export type HandPose = 'open' | 'wave' | 'relaxed' | 'fist' | 'point' | 'thumbsUp' | 'cup' | 'flat' | 'heart' | 'grip' | 'peace' | 'ok';
 
 interface FingerSpec {
   /** Knuckle x. */
@@ -44,6 +44,8 @@ const POSES: Record<HandPose, PoseSpec> = {
   cup: { curl: [c3(0.22, 0.25, 0.15), c3(0.2, 0.25, 0.15), c3(0.24, 0.27, 0.16), c3(0.3, 0.3, 0.18)], spread: [0.07, 0.01, -0.04, -0.09], thumb: { dir: [0.75, 0.55, 0.35], curl: [0.15, 0.15] } },
   flat: { curl: [c3(0.06, 0.04, 0.02), c3(0.04, 0.04, 0.02), c3(0.06, 0.04, 0.02), c3(0.08, 0.05, 0.03)], spread: [0.04, 0.0, -0.03, -0.06], thumb: { dir: [0.7, 0.68, 0.2], curl: [0.05, 0.05] } },
   heart: { curl: [c3(0.75, 0.95, 0.7), c3(0.7, 0.95, 0.7), c3(0.7, 0.95, 0.7), c3(0.7, 0.95, 0.7)], spread: [0.0, 0.0, 0.0, 0.0], thumb: { dir: [0.35, -0.9, 0.25], curl: [0.15, 0.25] } },
+  peace: { curl: [c3(0.02, 0.02, 0), c3(0.02, 0.02, 0), c3(1.5, 1.65, 1.0), c3(1.45, 1.6, 1.0)], spread: [0.22, -0.12, -0.03, -0.06], thumb: { dir: [-0.3, 0.55, 0.78], curl: [0.3, 0.3] } },
+  ok: { curl: [c3(0.75, 0.95, 0.7), c3(0.1, 0.08, 0.04), c3(0.14, 0.1, 0.05), c3(0.2, 0.12, 0.06)], spread: [0.05, 0.04, -0.08, -0.2], thumb: { dir: [0.45, 0.75, 0.5], curl: [0.25, 0.35] } },
   grip: { curl: [c3(0.6, 0.7, 0.4), c3(0.62, 0.72, 0.4), c3(0.66, 0.74, 0.42), c3(0.7, 0.76, 0.44)], spread: [0.06, 0.01, -0.04, -0.08], thumb: { dir: [0.5, 0.6, 0.62], curl: [0.3, 0.25] } },
 };
 
