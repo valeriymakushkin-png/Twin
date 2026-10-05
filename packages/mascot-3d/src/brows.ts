@@ -17,9 +17,10 @@ export function buildBrows(dna: MascotDna, expr: Expression, look: StyleLook, ma
   const n = 24;
   const radial = 12;
   for (const [i, s] of [[0, -1], [1, 1]] as const) {
-    const xi = 0.09;
-    const xo = P.eyeX + 0.19 * eyeS;
-    const by = P.eyeY + 0.22 + 0.05 * (eyeS - 1) + expr.browLift[i];
+    // Emoji heads: big eyes, so brows sit higher and reach further out.
+    const xi = P.organic ? 0.1 : 0.09;
+    const xo = P.organic ? P.eyeX * P.width + 0.21 * eyeS : P.eyeX + 0.19 * eyeS;
+    const by = (P.organic ? P.eyeY * P.height + 0.36 : P.eyeY + 0.22) + 0.05 * (eyeS - 1) + expr.browLift[i] * (P.organic ? 1.3 : 1);
     const angle = expr.browAngle[i];
     const cx = (xi + xo) / 2;
     const c = Math.cos(angle);
@@ -40,7 +41,7 @@ export function buildBrows(dna: MascotDna, expr: Expression, look: StyleLook, ma
       centres.push(hit.position.clone());
       normals.push(hit.normal.clone());
       // Thick at the head, tapering to the tail; rounded start.
-      widths.push(thick * (1 - 0.55 * Math.pow(t, 1.6)) * (0.8 + 0.2 * Math.min(1, t * 6)));
+      widths.push(thick * (P.organic ? 0.82 : 1) * (1 - 0.55 * Math.pow(t, 1.6)) * (0.8 + 0.2 * Math.min(1, t * 6)));
     }
     if (centres.length < 4) continue;
     const m = centres.length;
@@ -54,7 +55,7 @@ export function buildBrows(dna: MascotDna, expr: Expression, look: StyleLook, ma
       T.subVectors(centres[Math.min(m - 1, k + 1)]!, centres[Math.max(0, k - 1)]!).normalize();
       B.crossVectors(N, T).normalize();
       const w = widths[k]! / 2;
-      const h = w * 0.42;
+      const h = w * (P.organic ? 0.3 : 0.42);
       const end = k === 0 || k === m - 1 ? 0.35 : 1;
       for (let j = 0; j <= radial; j++) {
         const a = (j / radial) * Math.PI * 2;

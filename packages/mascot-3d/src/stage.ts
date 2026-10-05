@@ -9,15 +9,16 @@ import type { StyleLook } from './styles';
 export type Framing = 'hero' | 'bust' | 'portrait' | 'head' | 'sticker' | 'hair';
 
 const FRAMES: Record<Framing, { y: number; dist: number; fov: number }> = {
+  // Emoji proportions: a big head on a small body, so every framing sits a little higher.
   // Waist-up: the whole character with arms and gestures.
-  hero: { y: -1.1, dist: 15.2, fov: 22 },
-  bust: { y: -1.0, dist: 14.6, fov: 22 },
+  hero: { y: -0.75, dist: 17, fov: 22 },
+  bust: { y: -0.6, dist: 16, fov: 22 },
   // Chest-up / sticker: head large, gestures at chest height still in frame.
-  portrait: { y: -0.6, dist: 10.6, fov: 22 },
-  sticker: { y: -0.85, dist: 12.4, fov: 22 },
-  head: { y: 0.05, dist: 7.4, fov: 22 },
+  portrait: { y: -0.2, dist: 12.2, fov: 22 },
+  sticker: { y: -0.35, dist: 13.2, fov: 22 },
+  head: { y: 0.28, dist: 9.6, fov: 22 },
   // Head and shoulders with headroom for buns, afros and long hair (hairstyle picker).
-  hair: { y: -0.15, dist: 10.2, fov: 22 },
+  hair: { y: 0.1, dist: 12, fov: 22 },
 };
 
 export interface StageOptions {
@@ -43,7 +44,7 @@ export class MascotStage {
   private rimA = new THREE.DirectionalLight('#ff2a3c', 4);
   private rimB = new THREE.DirectionalLight('#ff6a3d', 2.5);
   private key = new THREE.DirectionalLight('#fff4ea', 2.1);
-  private fill = new THREE.HemisphereLight('#e6ecff', '#3a1212', 0.42);
+  private fill = new THREE.HemisphereLight('#eef2ff', '#5a4038', 0.9);
   private bounce = new THREE.DirectionalLight('#ffd9cc', 0.55);
   private framing: Framing = 'bust';
   private envTexture: THREE.Texture;
@@ -114,7 +115,7 @@ export class MascotStage {
     this.key.color.setHSL(0.08, 0.6 * Math.max(0, look.keyWarmth), 0.96 - Math.max(0, -look.keyWarmth) * 0.1);
     if (look.keyWarmth < 0) this.key.color.set('#e8f0ff');
     this.key.intensity = look.shading === 'toon' ? 2.5 : 2.1;
-    this.scene.environmentIntensity = look.shading === 'plastic' || look.shading === 'vinyl' ? 0.8 : 0.45;
+    this.scene.environmentIntensity = look.shading === 'plastic' || look.shading === 'vinyl' ? 0.8 : 0.6;
   }
 
   setMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig {

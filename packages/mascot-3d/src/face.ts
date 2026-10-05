@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { HAIR_COLOR_HEX, type MascotDna } from '@mascot/shared';
 import type { Expression } from './expressions';
+import { mouthOutlines, type MouthSpec } from './mouth3d';
 import type { FrontMap, HeadParams } from './head';
 import { mix, rgba, rng, shade } from './math';
 import type { StyleLook } from './styles';
@@ -159,7 +160,7 @@ export class FacePainter {
     return g;
   }
 
-  paint(dna: MascotDna, skin: string, look: StyleLook, expr: Expression, seed: number): THREE.CanvasTexture {
+  paint(dna: MascotDna, skin: string, look: StyleLook, expr: Expression, seed: number, mouth?: MouthSpec): THREE.CanvasTexture {
     const { ctx, W, H, P } = this;
     const r = rng(seed);
     ctx.fillStyle = skin;
@@ -196,7 +197,8 @@ export class FacePainter {
           this.spot(x, y, 0.012 + r() * 0.01, shade(skin, -0.45), 0.6);
         }
       }
-      this.mouth(dna, skin, expr);
+      if (mouth) this.mouth3d(skin, mouth);
+      else this.mouth(dna, skin, expr);
     } else {
       this.simpleMouth(expr, look);
     }
@@ -269,6 +271,34 @@ export class FacePainter {
   }
 
   /* ----------------------------- mouth ----------------------------- */
+
+  /** Colours for the sculpted mouth: lip bands, dark interior, soft corners. */
+  private mouth3d(skin: string, m: MouthSpec) {
+    const { opening, upperLip, lowerLip } = mouthOutlines(m);
+    const lip = mix(skin, '#c4505f', 0.3);
+    this.fill(upperLip, this.gradientFor(upperLip, shade(lip, 0.02), shade(lip, -0.08)));
+    this.fill(lowerLip, this.gradientFor(lowerLip, shade(lip, -0.04), shade(lip, 0.08)));
+    if (m.open) this.fill(opening, this.gradientFor(opening, '#4d1219', '#22060a'));
+    else {
+      // Closed lips: darker parting line.
+      const ctx = this.ctx;
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = rgba(shade(lip, -0.55), 0.9);
+      ctx.beginPath();
+      let started = false;
+      for (let i = 0; i <= 28; i++) {
+        const t = -1 + i / 14;
+        const p = this.px(t * m.w, (m.upper(t) + m.lower(t)) / 2);
+        if (!p) continue;
+        if (!started) ctx.moveTo(p[0], p[1]);
+        else ctx.lineTo(p[0], p[1]);
+        started = true;
+      }
+      ctx.stroke();
+    }
+    // Soft shadow under the lower lip.
+    this.spot(0, m.lower(0) - m.lipL(0) - 0.04, 0.12, shade(skin, -0.25), 0.18, 0.04);
+  }
 
   private mouth(dna: MascotDna, skin: string, expr: Expression) {
     const P = this.P;
@@ -584,7 +614,7 @@ export class FacePainter {
 /* ----------------------------- eyes ----------------------------- */
 
 /** Equirectangular eyeball texture: iris centred on +Z (u = 0.25, v = 0.5). */
-export function paintEyeTexture(irisHex: string, opts: { heart?: boolean; dots?: boolean; button?: boolean; irisScale?: number; kind?: string }): THREE.CanvasTexture {
+export function paintEyeTexture(irisHex: string, opts: { heart?: boolean; dots?: boolean; button?: boolean; irisScale?: number; kind?: string; emoji?: boolean }): THREE.CanvasTexture {
   const W = 1024;
   const H = 512;
   const canvas = createCanvas(W, H);
@@ -675,6 +705,46 @@ export function paintEyeTexture(irisHex: string, opts: { heart?: boolean; dots?:
     ctx.fillStyle = g;
     ctx.fill();
     ctx.restore();
+  } else if (!opts.button && opts.emoji) {
+    // Emoji iris: big, smooth, lit from below (light passing through the cornea), dark rim.
+    ctx.fillStyle = shade(irisHex, -0.5);
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.fill();
+    const iris = ctx.createRadialGradient(cx, cy + R * 0.35, R * 0.1, cx, cy + R * 0.1, R * 0.95);
+    iris.addColorStop(0, shade(irisHex, 0.45));
+    iris.addColorStop(0.55, shade(irisHex, 0.08));
+    iris.addColorStop(0.85, shade(irisHex, -0.25));
+    iris.addColorStop(1, rgba(shade(irisHex, -0.55), 0));
+    ctx.fillStyle = iris;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * 0.92, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.lineWidth = 1.2;
+    for (let i = 0; i < 70; i++) {
+      const a = (i / 70) * Math.PI * 2;
+      ctx.strokeStyle = rgba(i % 2 ? shade(irisHex, 0.5) : shade(irisHex, -0.45), 0.14);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * R * 0.42, cy + Math.sin(a) * R * 0.42);
+      ctx.lineTo(cx + Math.cos(a) * R * 0.86, cy + Math.sin(a) * R * 0.86);
+      ctx.stroke();
+    }
+    const pupil = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.4);
+    pupil.addColorStop(0, '#050404');
+    pupil.addColorStop(0.85, '#0b0808');
+    pupil.addColorStop(1, rgba('#0b0808', 0));
+    ctx.fillStyle = pupil;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * (kind === 'puppy' ? 0.52 : 0.4), 0, Math.PI * 2);
+    ctx.fill();
+    if (kind === 'puppy') {
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      for (const [dx, dy, r] of [[-0.35, -0.38, 0.2], [0.3, 0.3, 0.1]] as const) {
+        ctx.beginPath();
+        ctx.arc(cx + dx * R, cy + dy * R, r * R, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   } else if (!opts.button) {
     const iris = ctx.createRadialGradient(cx, cy, R * 0.2, cx, cy, R);
     iris.addColorStop(0, shade(irisHex, 0.25));

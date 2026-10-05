@@ -40,40 +40,56 @@ export interface ClumpSpec {
   flip?: number;
   /** Height multiplier by position (soft hairlines). */
   edge?: (d: THREE.Vector3) => number;
+  /** Bangs: sculpted hair ends them at the fringe line instead of letting them dangle. */
+  fringe?: boolean;
+  /** Spikes stand off the scalp (sculpted hair keeps their own lift). */
+  spikes?: boolean;
 }
 
 const C = new THREE.Vector3();
 
-export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, baseColor: THREE.Color): THREE.BufferGeometry {
-  const positions: number[] = [];
-  const uvs: number[] = [];
-  const colors: number[] = [];
-  const indices: number[] = [];
-  const radial = 8;
-  const segs = spec.segments ?? 14;
+export interface LockPath {
+  /** Centre line from the root outwards. */
+  pts: THREE.Vector3[];
+  /** Root direction on the unit sphere. */
+  root: THREE.Vector3;
+  /** Per-lock random in [0, 1). */
+  r: number;
+}
 
-  // Fibonacci roots, oversampled then filtered by region.
-  const roots: THREE.Vector3[] = [];
-  const n = spec.count * 6;
+/** Roots evenly spread over the spec's region (Fibonacci sphere, thinned to `count`). */
+function rootsFor(spec: ClumpSpec, count: number, rand: () => number): THREE.Vector3[] {
+  const n = Math.max(400, count * 8);
   const golden = Math.PI * (3 - Math.sqrt(5));
-  for (let i = 0; i < n && roots.length < spec.count; i++) {
-    const k = (i + rand() * 0.5) / n;
+  const cand: THREE.Vector3[] = [];
+  for (let i = 0; i < n; i++) {
+    const k = (i + 0.5) / n;
     const y = 1 - k * 2;
     const rad = Math.sqrt(Math.max(0, 1 - y * y));
     const th = golden * i;
     const d = new THREE.Vector3(Math.cos(th) * rad, y, Math.sin(th) * rad);
-    if (spec.region(d)) roots.push(d);
+    if (spec.region(d)) cand.push(d);
   }
+  if (cand.length <= count) return cand;
+  // Even thinning keeps the whole region covered (not just its top).
+  const out: THREE.Vector3[] = [];
+  const stride = cand.length / count;
+  for (let i = 0; i < count; i++) out.push(cand[Math.min(cand.length - 1, Math.floor((i + rand() * 0.9) * stride))]!);
+  return out;
+}
 
+/** Centre lines of the clumps: along the scalp with the flow, then falling under gravity. */
+export function clumpPaths(P: HeadParams, spec: ClumpSpec, rand: () => number, count = spec.count): LockPath[] {
+  const segs = spec.segments ?? 14;
+  const roots = rootsFor(spec, count, rand);
   const dir = new THREE.Vector3();
   const t = new THREE.Vector3();
   const p = new THREE.Vector3();
-  const centers: THREE.Vector3[] = [];
-  const tmpColor = new THREE.Color();
+  const paths: LockPath[] = [];
 
   for (const root of roots) {
     const r = rand();
-    centers.length = 0;
+    const centers: THREE.Vector3[] = [];
     dir.copy(root);
     const len = spec.length(root, r);
     const fallLen = spec.fall ? spec.fall(root, r) : 0;
@@ -84,7 +100,6 @@ export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, 
     let fallen = 0;
     const steps = segs + (fallLen > 0 ? Math.ceil(segs * 0.9) : 0);
     for (let i = 0; i <= steps; i++) {
-      const u = i / steps;
       if (!falling) {
         sculpt(dir, P, p, 1 + (spec.base + spec.lift(dir, Math.min(1, i / segs))) * (spec.edge ? spec.edge(dir) : 1));
         centers.push(p.clone());
@@ -152,11 +167,22 @@ export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, 
         }
         centers.push(p.clone());
       }
-      void u;
       if (falling && fallen >= fallLen) break;
     }
-    if (centers.length < 3) continue;
+    if (centers.length >= 3) paths.push({ pts: centers, root: root.clone(), r });
+  }
+  return paths;
+}
 
+export function buildClumps(P: HeadParams, spec: ClumpSpec, rand: () => number, baseColor: THREE.Color): THREE.BufferGeometry {
+  const positions: number[] = [];
+  const uvs: number[] = [];
+  const colors: number[] = [];
+  const indices: number[] = [];
+  const radial = 8;
+  const tmpColor = new THREE.Color();
+
+  for (const { pts: centers } of clumpPaths(P, spec, rand)) {
     // Ribbon around the centre line: wide across the surface, thin along the head normal.
     const w0 = lerp(spec.width[0], spec.width[1], rand());
     const shade = 1 + (rand() - 0.5) * (spec.colorJitter ?? 0.25);

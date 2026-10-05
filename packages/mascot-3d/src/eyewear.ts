@@ -342,7 +342,7 @@ export function buildEyewear(def: EyewearDef, look: StyleLook, map: FrontMap, P:
   g.name = `eyewear-${def.key}`;
   const spec = def.spec;
   const size = spec.size ?? 1;
-  const R = eyeR * 1.42 * size;
+  const R = eyeR * 1.3 * size;
   const ey = P.eyeY + 0.01;
   const z = Math.max(map.surfaceZ(eyeX, P.eyeY), map.surfaceZ(0, P.eyeY)) + eyeR * 0.75 + Math.max(0, size - 1) * 0.22;
   const earX = map.halfWidth(P.eyeY) + 0.03;

@@ -33,9 +33,10 @@ const BASE: StyleLook = {
   boxy: 0,
   face: 'full',
   saturation: 1,
-  rim: ['#ff2a3c', '#ff6a3d'],
-  rimIntensity: 1,
-  keyWarmth: 0.15,
+  // Emoji look: soft, bright, evenly lit; rims only separate the silhouette.
+  rim: ['#fff1ea', '#ffe0d2'],
+  rimIntensity: 0.45,
+  keyWarmth: 0.1,
   hairDetail: 1,
   noseScale: 1,
 };

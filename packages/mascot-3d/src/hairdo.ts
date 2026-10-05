@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import type { HairLook, HairSides, HairTie } from '@mascot/shared';
-import { backFlow, buildClumps, crownFlow, fringeFlow, partFlow, tieFlow, type ClumpSpec } from './clumps';
+import { backFlow, buildClumps, clumpPaths, crownFlow, fringeFlow, partFlow, tieFlow, type ClumpSpec } from './clumps';
+import { buildDrape, type DrapeSpec } from './drape';
+import { buildHairSdf, type SdfBlob, type SdfLock } from './hairsdf';
 import { sculpt, type HeadParams } from './head';
 import { clamp, fbm3, gauss, lerp, noise3, rng, smoothstep } from './math';
 
@@ -120,6 +122,8 @@ interface Plan {
   /** Curls filling an arbitrary volume (high top, puffs). */
   fills: Array<{ test: (p: THREE.Vector3) => boolean; box: [THREE.Vector3, THREE.Vector3]; count: number; size: number }>;
   curtain?: { length: number; phiStart: number; flare: number };
+  /** Sculpted (emoji) mode: falling hair as parametric drapes instead of falling clumps. */
+  drapes?: Array<Omit<DrapeSpec, 'seed'>>;
   extras: Array<(c: Ctx) => void>;
   crown: number;
   /** 0..1 wet / pomade shine. */
@@ -817,7 +821,7 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
     case 'pompadour': {
       const pomp = look.cut === 'pompadour';
       const big = (pomp ? 1.4 : 1) * lerp(0.55, 1.35, vol);
-      plan.shell = s = shellSpec(SHORT, { base: 0.03, top: 0.1 + 0.02 * (len ?? 0.5), frontBoost: (pomp ? 0.36 : 0.26) * lerp(0.6, 1.3, vol), noiseAmp: 0.012 + 0.02 * mess, noiseFreq: pomp ? 5 : 7, sweep });
+      plan.shell = s = shellSpec(SHORT, { base: 0.03, top: 0.1 + 0.02 * (len ?? 0.5), frontBoost: (pomp ? 0.36 : 0.26) * lerp(0.6, 1.3, vol), noiseAmp: 0.012 + 0.02 * mess, noiseFreq: pomp ? 5 : 7, sweep, soft: 0.35 });
       plan.stubble = applySides(s, look.sides, sweep);
       plan.clumps.push(
         shortClump({ count: 300, region: (d) => above(0.03)(d) && frontK(d) < 0.3, length: (_d, r) => 0.3 + r * 0.12, lift: (d) => 0.02 + 0.05 * top(d), base: 0.014, width: [0.06, 0.085], thickness: 0.024, tip: 0.3, flow: messy(crownFlow, mess * 0.5) }),
@@ -868,6 +872,7 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
       plan.stubble = applySides(s, look.sides, sweep);
       plan.clumps.push({
         count: anime ? 70 : 150,
+        spikes: true,
         region: above(0.04),
         flow: messy((d, o) => crownFlow(d, o).multiplyScalar(-1).add(T2.set(0, 0.2, -0.3)), mess * 0.4),
         length: (_d, r) => (anime ? 0.22 : 0.14) + r * 0.06,
@@ -902,7 +907,7 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
       });
       if (fringeBangs) {
         const long = look.bangs === 'long';
-        plan.clumps.push({ count: long ? 140 : 160, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, flow: fringeFlow(sweep), length: (_d, r) => (long ? 0.5 : 0.36) + r * 0.1, lift: () => 0.04, base: 0.02, width: [0.06, 0.09], thickness: 0.026, tip: 0.2, fall: long ? (_d, r) => 0.2 + r * 0.15 : undefined, fallFrom: 0.25 });
+        plan.clumps.push({ count: long ? 140 : 160, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, fringe: true, flow: fringeFlow(sweep), length: (_d, r) => (long ? 0.5 : 0.36) + r * 0.1, lift: () => 0.04, base: 0.02, width: [0.06, 0.09], thickness: 0.026, tip: 0.2, fall: long ? (_d, r) => 0.2 + r * 0.15 : undefined, fallFrom: 0.25 });
       }
       plan.crown = 0.14 + 0.06 * l;
       return plan;
@@ -916,7 +921,7 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
         if (tex === 'coily') {
           plan.curls.push({ keep: (d) => Math.abs(d.x) < 0.2 && d.y > -0.25 && above(0.02)(d), vol: (d) => 0.06 + 0.3 * vol * smoothstep(-0.2, 0.9, d.y), count: 2200, size: 0.075, layers: 3 });
         } else {
-          plan.clumps.push({ count: 170, region: (d) => Math.abs(d.x) < 0.16 && above(0.02)(d) && d.y > -0.25, flow: (_d, o) => o.set(0, 0.3, -1), length: () => 0.2, lift: (_d, u) => 0.08 + (0.12 + 0.36 * vol) * u, base: 0.02, width: [0.05, 0.07], thickness: 0.035, tip: 0.05 });
+          plan.clumps.push({ count: 170, spikes: true, region: (d) => Math.abs(d.x) < 0.16 && above(0.02)(d) && d.y > -0.25, flow: (_d, o) => o.set(0, 0.3, -1), length: () => 0.2, lift: (_d, u) => 0.08 + (0.12 + 0.36 * vol) * u, base: 0.02, width: [0.05, 0.07], thickness: 0.035, tip: 0.05 });
         }
         plan.crown = 0.25 + 0.3 * vol;
       } else {
@@ -924,7 +929,7 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
         plan.stubble = applySides(s, look.sides ?? 'taper', sweep);
         plan.clumps.push(
           shortClump({ count: 260, region: (d) => above(0.03)(d) && Math.abs(d.x) > 0.3, flow: centreFlow(0.3), length: (_d, r) => 0.2 + r * 0.08 }),
-          { count: 180, region: (d) => above(0.02)(d) && Math.abs(d.x) <= 0.34, flow: (d, o) => o.set(-d.x * 2, 0.5, -0.2), length: (_d, r) => 0.18 + r * 0.08, lift: (d, u) => 0.04 + (0.1 + 0.18 * vol) * u * gauss(d.x * d.x, 0.18), base: 0.018, width: [0.06, 0.08], thickness: 0.03, tip: 0.08 },
+          { count: 180, spikes: true, region: (d) => above(0.02)(d) && Math.abs(d.x) <= 0.34, flow: (d, o) => o.set(-d.x * 2, 0.5, -0.2), length: (_d, r) => 0.18 + r * 0.08, lift: (d, u) => 0.04 + (0.1 + 0.18 * vol) * u * gauss(d.x * d.x, 0.18), base: 0.018, width: [0.06, 0.08], thickness: 0.03, tip: 0.08 },
         );
         plan.crown = 0.2 + 0.15 * vol;
       }
@@ -945,7 +950,7 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
       plan.stubble = applySides(s, look.sides, sweep);
       plan.clumps.push(
         { count: 460, region: (d) => above(0.02)(d) && frontK(d) < 0.25, flow: partFlow(0, -0.2), length: (_d, r) => 0.45 + 0.25 * l + r * 0.15, lift: (d) => 0.03 + 0.04 * top(d), base: 0.018, width: [0.07, 0.11], thickness: 0.024, tip: 0.5, fall: (_d, r) => 0.1 + 0.4 * l * (0.8 + r * 0.4), fallFrom: 0.2, splay: 0.04 },
-        { count: 180, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, flow: (d, o) => o.set(Math.sign(d.x || 1) * 1.6, -0.45, 0.2), length: (_d, r) => 0.5 + 0.15 * l + r * 0.08, lift: (d) => 0.045 + 0.03 * frontK(d), base: 0.02, width: [0.06, 0.09], thickness: 0.026, tip: 0.5, fall: (_d, r) => 0.08 + 0.25 * l * r, fallFrom: 0.1 },
+        { count: 180, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, fringe: true, flow: (d, o) => o.set(Math.sign(d.x || 1) * 1.6, -0.45, 0.2), length: (_d, r) => 0.5 + 0.15 * l + r * 0.08, lift: (d) => 0.045 + 0.03 * frontK(d), base: 0.02, width: [0.06, 0.09], thickness: 0.026, tip: 0.5, fall: (_d, r) => 0.08 + 0.25 * l * r, fallFrom: 0.1 },
       );
       plan.crown = 0.12;
       return plan;
@@ -997,7 +1002,7 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
       const straightBangs = look.bangs === 'straight';
       plan.clumps.push(
         { count: 260, region: (d) => above(0.03)(d) && frontK(d) < 0.25, flow: messy(crownFlow, mess), length: (_d, r) => 0.24 + 0.12 * l + r * 0.1, lift: (d) => 0.03 + (0.03 + 0.04 * vol) * top(d), base: 0.015, width: [0.06, 0.08], thickness: 0.024, tip: 0.25, floor, wave: tex === 'wavy' ? { amp: 0.03, freq: 6 } : undefined },
-        { count: 160, region: (d) => above(0.0)(d) && frontK(d) >= 0.25, flow: straightBangs ? (_d, o) => o.set(0, -0.6, 1) : fringeFlow(sweep), length: (_d, r) => 0.3 + 0.16 * l + r * 0.1, lift: () => 0.04, base: 0.02, width: [0.06, 0.09], thickness: 0.026, tip: straightBangs ? 0.6 : 0.2 },
+        { count: 160, region: (d) => above(0.0)(d) && frontK(d) >= 0.25, fringe: true, flow: straightBangs ? (_d, o) => o.set(0, -0.6, 1) : fringeFlow(sweep), length: (_d, r) => 0.3 + 0.16 * l + r * 0.1, lift: () => 0.04, base: 0.02, width: [0.06, 0.09], thickness: 0.026, tip: straightBangs ? 0.6 : 0.2 },
       );
       if (tex === 'curly' || tex === 'coily') curlTop(0.25, tex === 'coily');
       plan.crown = 0.12;
@@ -1079,9 +1084,23 @@ function compileLong(look: HairLook, P: HeadParams, plan: Plan): Plan {
       { count: 300, region: (d) => above(0.03)(d) && d.z > -0.3, flow: messy(crownFlow, mess), length: (_d, r) => 0.25 + r * 0.1, lift: (d) => 0.03 + 0.05 * top(d), base: 0.015, width: [0.06, 0.085], thickness: 0.026, tip: 0.25, floor },
       { count: 300, region: (d) => above(0.0)(d) && d.z <= -0.3, flow: (_d, o) => o.set(0, -1, -0.2), length: () => 0.3, lift: () => 0.04, base: 0.02, width: [0.07, 0.1], thickness: 0.03, tip: shape === 'shaggy' ? 0.3 : 0.35, fall: (d, r) => fall * (shape === 'shaggy' ? 0.6 + 0.6 * r : 0.88 + 0.24 * r), fallFrom: 0.3, splay: 0.05, wave },
     );
-    if (hasFringe) plan.clumps.push({ count: 140, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, flow: fringeFlow(0), length: (_d, r) => 0.32 + r * 0.08, lift: () => 0.045, base: 0.02, width: [0.05, 0.08], thickness: 0.022, tip: 0.3 });
+    if (hasFringe) plan.clumps.push({ count: 140, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, fringe: true, flow: fringeFlow(0), length: (_d, r) => 0.32 + r * 0.08, lift: () => 0.045, base: 0.02, width: [0.05, 0.08], thickness: 0.022, tip: 0.3 });
     if (tex === 'curly' || tex === 'coily') plan.curls.push({ keep: (d) => d.y > Math.max(hairline(d, s), 0.35) + 0.02 && d.z > -0.4, vol: (d) => 0.06 + 0.14 * smoothstep(0.35, 1, d.y), count: 1800, size: 0.08, layers: 2 });
     plan.curtain = { length: Math.max(0.2, (fall - 0.42) / 1.05), phiStart: 0.72 * Math.PI, flare: 0.12 };
+    plan.drapes = [
+      {
+        bottom: (phi) => 0.2 - fall * (shape === 'shaggy' ? 0.85 : 1) * (0.75 + 0.25 * smoothstep(0.62 * Math.PI, Math.PI, Math.abs(phi > Math.PI ? phi - 2 * Math.PI : phi))),
+        top: 0.05,
+        phi0: 0.62 * Math.PI,
+        locks: 22,
+        flare: 0.1,
+        groove: 0.055,
+        thick: 0.09,
+        wave: wave ? { amp: wave.amp, freq: 1.1 } : undefined,
+        curls: kinky ? 1 : 0,
+        volume: 0.3,
+      },
+    ];
     plan.crown = 0.12;
     return plan;
   }
@@ -1128,6 +1147,7 @@ function compileLong(look: HairLook, P: HeadParams, plan: Plan): Plan {
     plan.clumps.push({
       count: b === 'wispy' ? 240 : 200,
       region: (d) => above(-0.02)(d) && frontK(d) >= 0.25,
+      fringe: true,
       flow,
       length: (_d, r) => (b === 'micro' ? 0.22 : 0.36) + r * 0.08,
       lift: () => 0.045,
@@ -1145,6 +1165,33 @@ function compileLong(look: HairLook, P: HeadParams, plan: Plan): Plan {
   const phiStart = 0.58 * Math.PI;
   // The backing curtain stops a little above the clump ends so it never shows as a slab.
   plan.curtain = { length: Math.max(0.2, (fall * (shape === 'inverted' ? 0.6 : shape === 'a-line' ? 0.8 : 1) - 0.42) / 1.05), phiStart, flare: cut === 'bob' ? 0.08 : 0.12 + (tex === 'curly' ? 0.1 : 0) + (vol > 0.8 ? 0.06 : 0) };
+  {
+    // Emoji drapes: bottom edge from the same length rules as the falling clumps.
+    const bottomAt = (phi: number) => {
+      const d = new THREE.Vector3(Math.sin(phi), 0.2, Math.cos(phi)).normalize();
+      return 0.24 - lenAt(d, 0.5) * (cut === 'bob' ? 1.12 : 1);
+    };
+    const phi0 = cut === 'bob' || hasFringe ? 0.3 * Math.PI : 0.27 * Math.PI;
+    const base: Omit<DrapeSpec, 'seed'> = {
+      bottom: bottomAt,
+      top: 0.32,
+      phi0,
+      locks: cut === 'bob' ? 24 : tex === 'straight' ? 30 : 22,
+      flare: plan.curtain.flare,
+      groove: tex === 'straight' ? 0.045 : 0.06,
+      thick: cut === 'bob' ? 0.12 : 0.09,
+      wave: tex === 'wavy' ? { amp: 0.07, freq: 0.9 } : kinky ? { amp: 0.09, freq: 1.7 } : undefined,
+      curls: kinky ? 1 : 0,
+      flip: shape === 'flip' ? 0.8 : 0,
+      under: shape === 'blunt' || (cut === 'bob' && !shape) ? 0.5 : shape === 'flip' ? 0 : 0.2,
+      volume: vol,
+    };
+    plan.drapes = [base];
+    if (layered) {
+      // Shorter outer layer (shag, butterfly, layered cuts).
+      plan.drapes.push({ ...base, bottom: (phi) => 0.32 + (bottomAt(phi) - 0.32) * (cut === 'shag' ? 0.45 : 0.55), thick: 0.07, locks: base.locks - 6, volume: vol + 0.6, under: 0.35 });
+    }
+  }
   if (look.tie?.kind === 'half-up') halfUp(look, plan, s);
   if (look.tie?.kind === 'space-buns') {
     const t = look.tie;
@@ -1299,7 +1346,7 @@ function compileTied(look: HairLook, P: HeadParams, plan: Plan): Plan {
   }
   if (hasFringe) {
     const b = look.bangs;
-    plan.clumps.push({ count: 200, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, flow: b === 'curtain' ? curtainFlow : b === 'side' ? fringeFlow(sweep) : (_d, o) => o.set(0, -0.6, 1), length: (_d, r) => 0.36 + r * 0.08, lift: () => 0.045, base: 0.02, width: [0.06, 0.09], thickness: 0.024, tip: b === 'straight' ? 0.75 : 0.55 });
+    plan.clumps.push({ count: 200, region: (d) => above(-0.02)(d) && frontK(d) >= 0.25, fringe: true, flow: b === 'curtain' ? curtainFlow : b === 'side' ? fringeFlow(sweep) : (_d, o) => o.set(0, -0.6, 1), length: (_d, r) => 0.36 + r * 0.08, lift: () => 0.045, base: 0.02, width: [0.06, 0.09], thickness: 0.024, tip: b === 'straight' ? 0.75 : 0.55 });
   }
   if (curlyTail && tie.kind !== 'puff' && tie.kind !== 'twin-puffs') {
     plan.curls.push({ keep: (d) => d.y > hairline(d, s) + 0.03 && d.z > 0.1 && d.y < 0.75, vol: () => 0.03, count: 500, size: 0.06, layers: 1 });
@@ -1309,6 +1356,34 @@ function compileTied(look: HairLook, P: HeadParams, plan: Plan): Plan {
 
 /* --------------------------------- builder -------------------------------- */
 
+/** Hair thickness above the scalp along `d` (before the hairline taper). */
+export function shellThickness(s: ShellSpec, d: THREE.Vector3, m: number): number {
+  if (s.strip !== undefined) {
+    // Outside the strip the shell sinks under the scalp so the shaved sides show.
+    const strip = gauss(d.x * d.x, s.strip * 0.3) * smoothstep(-0.1, 0.5, d.y);
+    return lerp(-0.03, 0.34 * m, Math.min(1, strip * 1.6));
+  }
+  let t = s.base + s.top * smoothstep(s.side, 1, d.y);
+  t += s.frontBoost * gauss(d.x * d.x + (d.y - 0.72) ** 2, 0.16) * smoothstep(0.1, 0.6, d.z);
+  if (s.dome) t += s.dome * gauss(d.x * d.x * 1.3 + (d.y - 0.9) ** 2 + (d.z + 0.2) ** 2 * 0.8, 0.42);
+  if (s.backBoost) t += s.backBoost * gauss(d.x * d.x * 0.8 + (d.y - 0.4) ** 2 + (d.z + 0.8) ** 2, 0.3);
+  if (s.sideBoost) t += s.sideBoost * gauss((Math.abs(d.x) - 0.85) ** 2 + (d.y - 0.15) ** 2, 0.3);
+  if (s.part !== undefined) t *= 1 - (s.partDepth ?? 0.55) * gauss((d.x - s.part) ** 2, s.partWidth ?? 0.03) * smoothstep(0.35, 0.7, d.y) * smoothstep(-0.2, 0.3, d.z);
+  return t;
+}
+
+/** Coverage (0..1) and soft-hairline taper (0..1) along `dir`. */
+export function shellMask(s: ShellSpec, dir: THREE.Vector3): [number, number] {
+  const h = hairline(dir, s);
+  let m = smoothstep(h - 0.05, h + 0.05, dir.y);
+  // Soft hairline: thickness grows over a band instead of a helmet ledge (cut fringes stay blunt).
+  const a = Math.abs(Math.atan2(dir.x, dir.z)) / Math.PI;
+  const bluntK = s.fringe !== undefined ? 1 - smoothstep((s.fringeWidth ?? 0.4) * 0.85, (s.fringeWidth ?? 0.4) * 1.1, a) : 0;
+  const taper = lerp(smoothstep(h - 0.03, h + (a < 0.3 ? 0.17 : 0.09) * (s.soft ?? 1), dir.y), 1, bluntK);
+  if (s.topCut !== undefined) m *= smoothstep(s.topCut + 0.04, s.topCut - 0.04, dir.y);
+  return [m, taper];
+}
+
 function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number, number], color?: (d: THREE.Vector3, m: number) => [number, number, number]): THREE.BufferGeometry {
   const geo = new THREE.SphereGeometry(1, seg[0], seg[1]);
   const pos = geo.attributes.position as THREE.BufferAttribute;
@@ -1316,20 +1391,8 @@ function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number
   const out = new THREE.Vector3();
   const amp = s.noiseAmp * Math.max(0.25, detail);
   const colors = color ? new Float32Array(pos.count * 3) : null;
-  const thickness = (d: THREE.Vector3, m: number) => {
-    if (s.strip !== undefined) {
-      // Outside the strip the shell sinks under the scalp so the shaved sides show.
-      const strip = gauss(d.x * d.x, s.strip * 0.3) * smoothstep(-0.1, 0.5, d.y);
-      return lerp(-0.03, 0.34 * m, Math.min(1, strip * 1.6));
-    }
-    let t = s.base + s.top * smoothstep(s.side, 1, d.y);
-    t += s.frontBoost * gauss(d.x * d.x + (d.y - 0.72) ** 2, 0.16) * smoothstep(0.1, 0.6, d.z);
-    if (s.dome) t += s.dome * gauss(d.x * d.x * 1.3 + (d.y - 0.9) ** 2 + (d.z + 0.2) ** 2 * 0.8, 0.42);
-    if (s.backBoost) t += s.backBoost * gauss(d.x * d.x * 0.8 + (d.y - 0.4) ** 2 + (d.z + 0.8) ** 2, 0.3);
-    if (s.sideBoost) t += s.sideBoost * gauss((Math.abs(d.x) - 0.85) ** 2 + (d.y - 0.15) ** 2, 0.3);
-    if (s.part !== undefined) t *= 1 - (s.partDepth ?? 0.55) * gauss((d.x - s.part) ** 2, s.partWidth ?? 0.03) * smoothstep(0.35, 0.7, d.y) * smoothstep(-0.2, 0.3, d.z);
-    return t;
-  };
+  const mask = new Float32Array(pos.count);
+  const thickness = (d: THREE.Vector3, m: number) => shellThickness(s, d, m);
   for (let i = 0; i < pos.count; i++) {
     dir.fromBufferAttribute(pos, i).normalize();
     const h = hairline(dir, s);
@@ -1340,7 +1403,8 @@ function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number
     const taper = lerp(smoothstep(h - 0.03, h + (a < 0.3 ? 0.17 : 0.09) * (s.soft ?? 1), dir.y), 1, bluntK);
     if (s.topCut !== undefined) m *= smoothstep(s.topCut + 0.04, s.topCut - 0.04, dir.y);
     const n = fbm3(dir.x * s.noiseFreq, dir.y * s.noiseFreq, dir.z * s.noiseFreq, 3);
-    const scale = 1 + (thickness(dir, m) * lerp(0.25, 1, taper) + amp * n * taper) * m + (m - 1) * 0.05;
+    mask[i] = m;
+    const scale = 1 + (thickness(dir, m) * lerp(0.25, 1, taper) + amp * n * taper) * m + (m - 1) * 0.3;
     sculpt(dir, P, out, scale);
     if (s.flat && out.y > s.flat * P.height) out.y = s.flat * P.height + (out.y - s.flat * P.height) * 0.08;
     pos.setXYZ(i, out.x, out.y, out.z);
@@ -1352,6 +1416,16 @@ function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number
     }
   }
   if (colors) geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  // Drop the parts tucked under the skin: they would show through the mouth and eye sockets.
+  const src = geo.index!;
+  const keep: number[] = [];
+  for (let t = 0; t < src.count; t += 3) {
+    const a = src.getX(t);
+    const b = src.getX(t + 1);
+    const c = src.getX(t + 2);
+    if (mask[a]! > 0.02 || mask[b]! > 0.02 || mask[c]! > 0.02) keep.push(a, b, c);
+  }
+  geo.setIndex(keep);
   geo.computeVertexNormals();
   return geo;
 }
@@ -1454,6 +1528,8 @@ export function buildHairdo(look: HairLook, P: HeadParams, mat: THREE.Material, 
   }
 
   if (s.base < 0) return { group, crown: plan.crown };
+
+  if (P.organic) return sculptedHair(plan, look, P, hmat, opts, group, rand, baseColor);
 
   const shell = new THREE.Mesh(shellGeometry(P, s, opts.detail, [192, 144]), hmat);
   shell.castShadow = true;
@@ -1560,3 +1636,99 @@ export function buildHairdo(look: HairLook, P: HeadParams, mat: THREE.Material, 
 
 /** Clamp helper re-export for tests. */
 export const _internal = { clamp };
+
+/* ------------------------------ sculpted hair ----------------------------- */
+
+/** Outer surface of the sculpted scalp shell above the head (head units, ×radius). */
+function shellT(s: ShellSpec, d: THREE.Vector3): number {
+  const [m, taper] = shellMask(s, d);
+  return (shellThickness(s, d, m) * lerp(0.25, 1, taper)) * m + (m - 1) * 0.06;
+}
+
+/** Fewer, chunkier locks than ribbon clumps: they melt into one emoji-style mass. */
+const LOCK_FRACTION = 0.12;
+const LOCK_RADIUS = 1.35;
+
+function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.MeshPhysicalMaterial, opts: HairdoOptions, group: THREE.Group, rand: () => number, baseColor: THREE.Color): HairResult {
+  const s = plan.shell;
+  let crown = Math.max(plan.crown, s.base + s.top);
+  const locks: SdfLock[] = [];
+  for (const cs of plan.clumps) {
+    const wide = (cs.width[0] + cs.width[1]) / 2;
+    // Short cuts: a few big sculpted chunks; long hair: more locks for the falling mass.
+    const tune = (globalThis as { __hairTune?: { short?: number; long?: number; r?: number; rl?: number; k?: number } }).__hairTune ?? {};
+    const isLong = wide >= 0.095;
+    const count = Math.max(8, Math.round(cs.count * (isLong ? (tune.long ?? LOCK_FRACTION) : (tune.short ?? LOCK_FRACTION * 0.6))));
+    const r0 = wide * (isLong ? (tune.rl ?? LOCK_RADIUS) : (tune.r ?? LOCK_RADIUS));
+    const spec: ClumpSpec = { ...cs, collider: cs.collider ?? opts.collider };
+    if (cs.fringe && !cs.fall) spec.floor = (d) => hairline(d, s) + 0.03;
+    // Falling hair comes from the drapes; locks only groom the scalp (low relief).
+    let rk = cs.fringe ? 0.62 : 1;
+    if (plan.drapes && !cs.fringe) {
+      if (cs.fall) spec.fall = undefined;
+      rk = 0.65;
+    }
+    if (!cs.spikes) {
+      // Locks hug the sculpted volume: the shell gives the shape, locks only carve the flow.
+      const lockR = r0 * rk;
+      spec.base = 0;
+      spec.edge = undefined;
+      spec.lift = (d) => Math.max(0.005, shellT(s, d) - lockR * 0.4);
+      spec.length = (d, r) => cs.length(d, r) * (cs.fringe ? 1 : 1.5);
+    }
+    for (const path of clumpPaths(P, spec, rand, count)) {
+      locks.push({ pts: path.pts, r0: r0 * rk * (0.85 + 0.3 * path.r), tip: Math.max(0.25, cs.tip), shade: 1 + (path.r - 0.5) * 0.16 });
+    }
+  }
+  const blobs: SdfBlob[] = [];
+  for (const layer of plan.curls) {
+    const dirs = fib(Math.round(layer.count * 0.28), layer.keep);
+    for (const d of dirs) {
+      for (let l = 0; l < layer.layers; l++) {
+        const v = layer.vol(d);
+        const k = 1 + 0.01 + (v * (l + rand())) / layer.layers;
+        const c = sculpt(d, P, new THREE.Vector3(), k);
+        c.addScaledVector(d, (rand() - 0.5) * 0.03);
+        blobs.push({ c, r: (layer.size + rand() * 0.035) * 1.45 });
+        crown = Math.max(crown, k - 1);
+      }
+    }
+  }
+  for (const f of plan.fills) {
+    const [lo, hi] = f.box;
+    let n = 0;
+    for (let i = 0; i < f.count * 6 && n < f.count * 0.3; i++) {
+      const c = new THREE.Vector3(lerp(lo.x, hi.x, rand()), lerp(lo.y, hi.y, rand()), lerp(lo.z, hi.z, rand()));
+      if (!f.test(c)) continue;
+      blobs.push({ c, r: (f.size + rand() * 0.035) * 1.55 });
+      n++;
+    }
+  }
+  const kTune = (globalThis as { __hairTune?: { k?: number } }).__hairTune?.k;
+  const stepTune = (globalThis as { __hairTune?: { step?: number } }).__hairTune?.step;
+  const geo = buildHairSdf(P, { shell: s, locks, blobs, kLock: kTune ?? 0.065, kBlob: 0.035, step: stepTune ?? 0.026, color: baseColor, detail: opts.detail * 0.5 });
+  if (geo) {
+    const mat = hmat.clone();
+    mat.vertexColors = true;
+    mat.color = new THREE.Color('#ffffff');
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.name = 'hair-sculpt';
+    mesh.userData.outline = true;
+    group.add(mesh);
+  }
+  if (plan.drapes) {
+    const mat = hmat.clone();
+    mat.vertexColors = true;
+    mat.color = new THREE.Color('#ffffff');
+    plan.drapes.forEach((d, i) => group.add(buildDrape(P, { ...d, seed: opts.seed + i * 17 }, opts.collider, baseColor, mat)));
+  }
+  if (plan.extras.length) {
+    const tieMat = new THREE.MeshStandardMaterial({ color: '#16161a', roughness: 0.45 });
+    const ctx: Ctx = { P, group, mat: hmat, tieMat, rand, collider: opts.collider, look, shell: s };
+    for (const extra of plan.extras) extra(ctx);
+    if (group.userData.bunTop) crown = Math.max(crown, group.userData.bunTop - P.height);
+  }
+  return { group, crown: Math.max(crown, locks.length ? 0.12 : 0) };
+}

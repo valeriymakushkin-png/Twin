@@ -8,6 +8,7 @@ import { expressionFor, type Emotion, type Expression } from './expressions';
 import { FacePainter, paintEyeTexture } from './face';
 import { buildFacialHair, buildHair, strandTexture } from './hair';
 import { buildHeadGeometry, FrontMap, headParamsFromDna, type HeadParams } from './head';
+import { buildMouthParts, mouthSpec } from './mouth3d';
 import { headShape } from './skull';
 import { material, outlineMaterial } from './materials';
 import { hashString, lerp, mix, shade } from './math';
@@ -72,7 +73,10 @@ const RENDER_SKIN: Record<string, string> = {
 const SUNGLASSES_KEY = 'trapezoid-black-dark';
 
 const BODY_DROP = 0.16;
-const dropCollider = (f: (x: number, y: number, z: number) => number) => (x: number, y: number, z: number) => f(x, y + BODY_DROP, z);
+/** Emoji proportions: a big head on a small body (sculpted heads only). */
+const HEAD_SCALE = 1.3;
+/** Head-space → body-space collider (the head is scaled about the top of the neck). */
+const headCollider = (f: (x: number, y: number, z: number) => number, scale: number, centreY: number) => (x: number, y: number, z: number) => f(x * scale, y * scale + centreY + BODY_DROP, z * scale) / scale;
 
 const OUTFITS = new Set<OutfitKey>(['casual-hoodie', 'tshirt', 'denim-jacket', 'streetwear', 'business-suit', 'gamer', 'streamer', 'astronaut', 'superhero', 'samurai', 'wizard', 'techwear']);
 
@@ -93,9 +97,10 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     ...(look.face === 'dots' ? { jaw: 1, chin: 0, cheek: 0, forehead: 1, width: 0.92, height: 1.02 } : {}),
     ...(look.face === 'button' ? { width: 1, height: 0.98, jaw: 0.92, chin: 0.1 } : {}),
     // Sculpted heads: shorter lower face (cartoon proportions), mouth sits a little higher.
-    ...(look.face === 'full' ? { organic: true, mouthY: -0.46, eyeX: headParamsFromDna(dna).eyeX * 1.05 } : {}),
+    ...(look.face === 'full' ? { organic: true, mouthY: -0.56, eyeY: 0.04, eyeX: headParamsFromDna(dna).eyeX * 1.13 } : {}),
   });
-  const shape = P.organic ? headShape(P) : null;
+  const mouth = P.organic ? mouthSpec(expr.mouth, expr.mouthWidth, P, dna) : null;
+  const shape = P.organic ? headShape(P, mouth ?? undefined) : null;
 
   const root = new THREE.Group();
   root.name = 'mascot';
@@ -108,14 +113,18 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   root.add(headPivot);
   const head = new THREE.Group();
   head.name = 'head';
-  head.position.y = -NECK_PIVOT;
+  const S = P.organic ? HEAD_SCALE : 1;
+  head.scale.setScalar(S);
+  head.position.y = -NECK_PIVOT * S;
   headPivot.add(head);
+  /** Head centre in mascot space (it grows upwards from the neck). */
+  const headCentreY = NECK_PIVOT * (1 - S);
 
   // Head surface + painted face.
   const headGeo = shape ? shape.geometry : buildHeadGeometry(P);
   const map = new FrontMap(headGeo);
   const painter = new FacePainter(map, P);
-  const faceTex = painter.paint(dna, skin, look, expr, seed);
+  const faceTex = painter.paint(dna, skin, look, expr, seed, mouth ?? undefined);
   if (shape) faceTex.wrapS = THREE.RepeatWrapping;
   const skinMat = material(look, 'skin', { color: '#ffffff', map: faceTex });
   const headMesh = new THREE.Mesh(headGeo, skinMat);
@@ -124,6 +133,14 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   headMesh.name = 'head-skin';
   headMesh.userData.outline = true;
   head.add(headMesh);
+  if (mouth && shape?.mouthSurface) {
+    head.add(
+      buildMouthParts(mouth, shape.mouthSurface, {
+        teeth: material(look, 'gloss', { color: '#fbf7f2', roughness: 0.35 }),
+        tongue: material(look, 'skin', { color: '#e8707e', roughness: 0.45 }),
+      }),
+    );
+  }
 
   // Ears.
   const earY = P.eyeY - 0.14;
@@ -153,17 +170,18 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
 
   // Eyes.
   const eyeR = (shape ? shape.eye.r : 0.19) * look.eyeScale * (look.face === 'button' ? 1.05 : 1);
-  const eyeX = P.eyeX * (look.eyeScale > 1 ? 1 + (look.eyeScale - 1) * 0.3 : 1);
+  const eyeX = shape ? shape.eye.x : P.eyeX * (look.eyeScale > 1 ? 1 + (look.eyeScale - 1) * 0.3 : 1);
   const eyeTex = paintEyeTexture(EYE_COLOR_HEX[dna.eyeColor], {
     heart: expr.heartEyes || expr.eyes === 'heart',
     kind: expr.eyes,
     dots: look.face === 'dots',
     button: look.face === 'button',
-    irisScale: look.shading === 'toon' ? 1.12 : 1,
+    irisScale: shape ? 1.42 : look.shading === 'toon' ? 1.12 : 1,
+    emoji: Boolean(shape),
   });
   const eyeMat = look.face === 'dots' ? material(look, 'gloss', { color: '#111111', roughness: 0.2 }) : material(look, 'eye', { color: '#ffffff', map: eyeTex });
-  const lidMat = material(look, 'lid', { color: shade(skin, -0.05) });
-  const lashMat = material(look, 'gloss', { color: shade(hairHex, -0.6), roughness: 0.4 });
+  const lidMat = material(look, 'lid', { color: shape ? skin : shade(skin, -0.05) });
+  const lashMat = material(look, 'gloss', { color: shape ? '#16100e' : shade(hairHex, -0.6), roughness: 0.4 });
   const feminine = dna.presentation === 'feminine';
   const shapeLid =
     dna.eyeShape === 'hooded' ? 0.32 : dna.eyeShape === 'monolid' ? 0.36 : dna.eyeShape === 'almond' ? 0.12 : dna.eyeShape === 'round' ? 0.02 : dna.eyeShape === 'deep-set' ? 0.22 : 0.12;
@@ -174,13 +192,17 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     const sz = map.surfaceZ(ex, P.eyeY);
     const eye = new THREE.Group();
     // Organic heads: the eyeball sits in its socket; sphere heads: on the surface.
-    eye.position.set(ex, P.eyeY, shape ? shape.eye.z + (look.eyeScale - 1) * 0.08 : sz - eyeR * (look.face === 'dots' ? 0.8 : 0.42));
+    eye.position.set(ex, shape ? shape.eye.y : P.eyeY, shape ? shape.eye.z + (look.eyeScale - 1) * 0.08 : sz - eyeR * (look.face === 'dots' ? 0.8 : 0.42));
     head.add(eye);
 
     if (look.face === 'dots') {
       const dot = new THREE.Mesh(new THREE.SphereGeometry(eyeR * 0.62, 24, 16), eyeMat);
       dot.scale.set(0.8, 1.05, 0.45);
       eye.add(dot);
+      continue;
+    }
+    if (shape) {
+      eyes.push(emojiEye(eye, s, eyeR, eyeMat, lidMat, lashMat, look, feminine, expr));
       continue;
     }
     const ball = new THREE.Mesh(new THREE.SphereGeometry(eyeR, 48, 32), eyeMat);
@@ -233,9 +255,11 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   const applyLids = () => {
     for (const e of eyes) {
       const lid = expr.wink === e.side ? 1 : expr.upperLid;
-      const upperAmt = Math.min(1, Math.max(lid, shapeLid * (1 - lid * 0.5)) + blink * (1 - lid));
-      e.upper.rotation.x = lerp(-1.0, 1.62, upperAmt);
-      e.lower.rotation.x = lerp(0.95, -1.05, Math.min(1, expr.lowerLid + blink * 0.2));
+      // Emoji eyes stay bright: the eye shape only nudges the lids.
+      const shapeAmt = shape ? shapeLid * 0.55 : shapeLid;
+      const upperAmt = Math.min(1, Math.max(lid, shapeAmt * (1 - lid * 0.5)) + blink * (1 - lid));
+      e.upper.rotation.x = shape ? lerp(-1.1, 1.58, upperAmt) : lerp(-1.0, 1.62, upperAmt);
+      e.lower.rotation.x = shape ? lerp(0.95, -1.15, Math.min(1, expr.lowerLid * 0.8 + blink * 0.2)) : lerp(0.95, -1.05, Math.min(1, expr.lowerLid + blink * 0.2));
       e.lidTilt.rotation.z = e.side * (expr.lidTilt + shapeTilt);
     }
   };
@@ -252,8 +276,9 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   const strands = look.shading === 'pbr' ? strandTexture() : undefined;
   const hairMat = material(look, 'hair', { color: look.shading === 'plastic' ? shade(hairHex, 0.05) : hairHex, map: strands, bumpMap: strands });
   const hairDef = getHairstyle(opts.hair) ?? resolveHairstyle(dna);
-  const collider = shape ? dropCollider(bodyCollider(opts.outfit)) : bodyCollider(opts.outfit);
-  const hair = buildHair(hairDef.look, P, hairMat, seed, look.hairDetail, look.face === 'dots', collider, new THREE.Color(baseSkin));
+  const collider = shape ? headCollider(bodyCollider(opts.outfit), S, headCentreY) : bodyCollider(opts.outfit);
+  const hairKey = JSON.stringify([hairDef.key, P, seed, look.hairDetail, look.shading, look.face, opts.outfit ?? '', S, hairHex, baseSkin]);
+  const hair = buildHair(hairDef.look, P, hairMat, seed, look.hairDetail, look.face === 'dots', collider, new THREE.Color(baseSkin), hairKey);
   head.add(hair.group);
   if (look.face === 'full') {
     const browHex = hairDef.look.cut === 'bald' ? shade(hairHex, -0.2) : shade(hairHex, -0.3);
@@ -285,12 +310,12 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     head.add(visor);
   }
 
-  // Props & hands.
-  root.add(buildProps(expr, look, map, P, eyeR));
+  // Props (hearts, tears, sparkles…) live in head space so they scale and tilt with it.
+  head.add(buildProps(expr, look, map, P, eyeR));
 
   // Body.
   const outfit = (OUTFITS.has(opts.outfit as OutfitKey) ? opts.outfit : 'casual-hoodie') as OutfitKey;
-  const body = buildBody({ outfit, color: opts.outfitColor, skin, look, pose: opts.pose ?? expr.pose, neck: !shape, headOffset: shape ? BODY_DROP : 0 });
+  const body = buildBody({ outfit, color: opts.outfitColor, skin, look, pose: opts.pose ?? expr.pose, neck: !shape, headOffset: shape ? BODY_DROP + headCentreY : 0, headScale: S });
   // Sculpted heads show a neck: the body sits a little lower under the head.
   if (shape) body.group.position.y = -BODY_DROP;
   root.add(body.group);
@@ -364,10 +389,109 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
         if (!m.geometry.userData.shared) m.geometry.dispose();
         const mats = Array.isArray(m.material) ? m.material : [m.material];
         for (const mat of mats) {
+          if (mat.userData.shared) continue;
           for (const v of Object.values(mat)) if (v instanceof THREE.Texture) v.dispose();
           mat.dispose();
         }
       });
     },
   };
+}
+
+/** Lash line along the upper lid rim: hairline thin at the inner corner, bolder at the outer one. */
+function lashGeometry(r: number, side: 1 | -1, bold: number): THREE.BufferGeometry {
+  const pts: THREE.Vector3[] = [];
+  for (let i = 0; i <= 40; i++) {
+    const a = (i / 40) * Math.PI;
+    pts.push(new THREE.Vector3(Math.cos(a) * r, 0, Math.sin(a) * r));
+  }
+  const curve = new THREE.CatmullRomCurve3(pts);
+  const geo = new THREE.TubeGeometry(curve, 64, 1, 8, false);
+  const pos = geo.attributes.position as THREE.BufferAttribute;
+  const c = new THREE.Vector3();
+  const v = new THREE.Vector3();
+  for (let i = 0; i <= 64; i++) {
+    const t = i / 64;
+    curve.getPointAt(t, c);
+    // t = 0 at +x. The outer corner is +x for the +x eye.
+    const outer = side > 0 ? 1 - t : t;
+    const rad = r * (0.028 + bold * 0.05 * smoothstepN(0.25, 0.95, outer)) * (outer > 0.97 || outer < 0.03 ? 0.6 : 1);
+    for (let j = 0; j <= 8; j++) {
+      const k = i * 9 + j;
+      v.fromBufferAttribute(pos, k).sub(c).multiplyScalar(rad);
+      // Flatten against the lid, a little taller than deep.
+      v.z *= 0.7;
+      pos.setXYZ(k, c.x + v.x, c.y + v.y, c.z + v.z);
+    }
+  }
+  geo.computeVertexNormals();
+  return geo;
+}
+
+function smoothstepN(a: number, b: number, x: number): number {
+  const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+}
+
+/**
+ * Emoji-style eye: a glossy almond eyeball (big iris, two catch-lights) under skin lids whose
+ * rims meet in an almond opening, with a lash line that thickens to the outer corner.
+ */
+function emojiEye(eye: THREE.Group, s: 1 | -1, r: number, eyeMat: THREE.Material, lidMat: THREE.Material, lashMat: THREE.Material, look: StyleLook, feminine: boolean, expr: Expression): EyeRig {
+  // Almond: wider than tall; the whole eye (ball + lids) shares the squash.
+  eye.scale.set(1.12, 0.94, 0.92);
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(r, 64, 40), eyeMat);
+  ball.receiveShadow = true;
+  eye.add(ball);
+  const glint = new THREE.Mesh(new THREE.SphereGeometry(r * 0.15, 16, 12), material(look, 'emissive', { color: '#ffffff' }));
+  glint.position.set(-r * 0.3, r * 0.3, r * 0.94);
+  glint.scale.set(1, 1, 0.4);
+  eye.add(glint);
+  const glint2 = new THREE.Mesh(new THREE.SphereGeometry(r * 0.065, 12, 8), material(look, 'emissive', { color: '#ffffff', opacity: 0.85 }));
+  glint2.position.set(r * 0.26, -r * 0.2, r * 0.97);
+  eye.add(glint2);
+
+  const lidTilt = new THREE.Group();
+  eye.add(lidTilt);
+  const upper = new THREE.Group();
+  const upperShell = new THREE.Mesh(new THREE.SphereGeometry(r * 1.045, 64, 24, 0, Math.PI * 2, 0, Math.PI / 2), lidMat);
+  upperShell.castShadow = true;
+  upper.add(upperShell);
+  // Rounded lid rim (the lid's thickness) under the lash line.
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(r * 1.03, r * 0.05, 10, 48, Math.PI), lidMat);
+  rim.rotation.x = Math.PI / 2;
+  upper.add(rim);
+  const lash = new THREE.Mesh(lashGeometry(r * 1.07, s, feminine ? 1.4 : 0.8), lashMat);
+  lash.position.y = r * 0.01;
+  upper.add(lash);
+  if (feminine) {
+    // A few lashes flicking up at the outer corner.
+    for (let i = 0; i < 3; i++) {
+      const a = (s > 0 ? 0.12 + i * 0.16 : Math.PI - 0.12 - i * 0.16);
+      const flick = new THREE.Mesh(new THREE.ConeGeometry(r * 0.035, r * (0.3 - i * 0.05), 6), lashMat);
+      flick.position.set(Math.cos(a) * r * 1.1, r * 0.07, Math.sin(a) * r * 1.1);
+      flick.rotation.z = -Math.cos(a) * 0.9;
+      flick.rotation.x = Math.sin(a) * 0.5;
+      upper.add(flick);
+    }
+  }
+  lidTilt.add(upper);
+  const lower = new THREE.Group();
+  const lowerShell = new THREE.Mesh(new THREE.SphereGeometry(r * 1.04, 64, 20, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), lidMat);
+  lower.add(lowerShell);
+  const lowerRim = new THREE.Mesh(new THREE.TorusGeometry(r * 1.025, r * 0.035, 8, 48, Math.PI), lidMat);
+  lowerRim.rotation.x = Math.PI / 2;
+  lower.add(lowerRim);
+  lidTilt.add(lower);
+  if (expr.upperLid >= 0.85 || expr.wink === s) {
+    // Closed eyes read as lash arcs: ^ ^ when happy, ‿ when resigned or asleep.
+    const up = expr.closedHappy || expr.wink === s || expr.mouth === 'laugh' || expr.mouth === 'grin' ? 1 : -0.6;
+    const arc = new THREE.QuadraticBezierCurve3(
+      new THREE.Vector3(-r * 0.95, -r * 0.05, r * 0.78),
+      new THREE.Vector3(0, r * (0.05 + 0.45 * up), r * 1.3),
+      new THREE.Vector3(r * 0.95, -r * 0.05, r * 0.78),
+    );
+    lidTilt.add(new THREE.Mesh(new THREE.TubeGeometry(arc, 24, r * 0.06, 8, false), lashMat));
+  }
+  return { lidTilt, upper, lower, ball, side: s };
 }

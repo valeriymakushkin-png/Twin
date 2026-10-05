@@ -83,6 +83,8 @@ export interface PolygonizeOptions {
   occluder?: Sdf;
   /** Emit planar-projected UVs (scale = texture repeats per unit) for detail/bump maps. */
   uvScale?: number;
+  /** AO probe distances along the normal (default [0.08, 0.22]). */
+  aoSteps?: number[];
 }
 
 /**
@@ -228,7 +230,7 @@ export function polygonize(f: Sdf, min: Vec3, max: Vec3, step: number, opts: Pol
       if (opts.ao) {
         let sum = 0;
         let w = 0;
-        for (const s of [0.08, 0.22]) {
+        for (const s of opts.aoSteps ?? [0.08, 0.22]) {
           const qx = x + gx * s;
           const qy = y + gy * s;
           const qz = z + gz * s;

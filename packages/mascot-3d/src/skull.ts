@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import type { HeadParams } from './head';
+import { mouthKey, mouthSdf, surfaceSampler, type MouthSpec } from './mouth3d';
 import { polygonize, sdEllipsoid, sdRoundCone, smax, smin, type Sdf, type Vec3 } from './sdf';
 
 /**
@@ -18,6 +19,8 @@ export interface HeadShape {
   eye: { x: number; y: number; z: number; r: number };
   /** Surface radius along a unit direction (no ears / neck). */
   radius(dx: number, dy: number, dz: number): number;
+  /** Face depth around the mouth (before carving), for teeth and tongue. */
+  mouthSurface?: (x: number, y: number) => number;
 }
 
 const NU = 160;
@@ -25,78 +28,100 @@ const NV = 80;
 
 /** Face-shape dependent jaw-corner strength (square jaws). */
 function jawCorner(P: HeadParams): number {
-  return Math.max(0, Math.min(1, (P.jaw - 0.8) / 0.14));
+  return Math.max(0, Math.min(1, (P.jaw - 0.86) / 0.08));
 }
 
-export function headSdf(P: HeadParams, withExtras = true): Sdf {
+/** Eyeball radius (head units) and how far it sits in front of the socket centre. */
+export const EYE_R = 0.235;
+
+/**
+ * Emoji-style proportions: a big round cranium, full soft cheeks that carry the width down
+ * to a small rounded chin, big eyes set into shallow sockets at mid-height, a small button
+ * nose, a soft muzzle around the mouth, simple rounded ears and a slender neck.
+ */
+export function headSdf(P: HeadParams, withExtras = true, sockets = true): Sdf {
   const W = P.width;
   const H = P.height;
   const D = P.depth;
-  const tipY = -0.24 * P.noseLength;
+  const tipY = -0.27 * P.noseLength;
   const nw = P.noseWidth;
   const ex = P.eyeX;
   const ey = P.eyeY;
   const my = P.mouthY;
   const corner = jawCorner(P);
+  const cheek = P.cheek;
+  const jaw = P.jaw;
+  const chin = P.chin;
   const k = Math.min(W, H, D);
+  const er = EYE_R / k;
+  const eyeZ = sockets ? eyeCentreZ(P) / D : 0;
   return (x0, y0, z0) => {
     const x = x0 / W;
     const y = y0 / H;
     const z = z0 / D;
     const ax = Math.abs(x);
-    // Cranium (fuller at the back) + forehead.
-    let d = sdEllipsoid(x, y, z, 0, 0.22, -0.04, 1.06 * (0.94 + 0.06 * P.forehead), 1.02, 0.96);
-    // Face mass, jaw, jaw corners, chin.
-    d = smin(d, sdEllipsoid(x, y, z, 0, -0.24, 0.2, 0.68, 0.68, 0.72), 0.5);
-    d = smin(d, sdEllipsoid(x, y, z, 0, -0.55, 0.12, 0.48 * P.jaw, 0.31, 0.54), 0.42);
-    if (corner > 0) d = smin(d, sdEllipsoid(ax, y, z, 0.44 * P.jaw, -0.58, -0.02, 0.18, 0.2 * corner + 0.05, 0.28), 0.3);
-    d = smin(d, sdEllipsoid(x, y, z, 0, -0.83 + 0.04 * (1 - P.chin), 0.36 + 0.06 * P.chin, 0.21 - 0.05 * P.chin, 0.16, 0.19), 0.24);
-    // Features only where they can matter (each test bounds the feature plus its blend radius).
-    if (z > -0.05 && y < 0.4 && y > -0.85) {
-      // Cheekbones and apple cheeks.
-      d = smin(d, sdEllipsoid(ax, y, z, 0.54, -0.08, 0.46, 0.2, 0.14, 0.2), 0.28);
-      d = smin(d, sdEllipsoid(ax, y, z, 0.38, -0.32, 0.6, 0.2 * P.cheek, 0.18, 0.2), 0.3);
+    // Cranium (round, fuller at the back).
+    let d = sdEllipsoid(x, y, z, 0, 0.12, -0.06, 1.02 * (0.95 + 0.05 * P.forehead), 0.9, 0.97);
+    // Cheek mass: keeps the face wide and round down to the mouth.
+    d = smin(d, sdEllipsoid(x, y, z, 0, -0.3, 0.08, 0.96 * (0.9 + 0.1 * cheek), 0.7, 0.84), 0.42);
+    // Jaw → small rounded chin.
+    d = smin(d, sdEllipsoid(x, y, z, 0, -0.6, 0.2, 0.68 * jaw, 0.38, 0.64), 0.36);
+    if (corner > 0) d = smin(d, sdEllipsoid(ax, y, z, 0.46 * jaw, -0.62, 0.0, 0.18, 0.18 * corner + 0.06, 0.3), 0.3);
+    d = smin(d, sdEllipsoid(x, y, z, 0, -0.84, 0.34 + 0.08 * chin, 0.26 - 0.05 * chin, 0.15, 0.2), 0.26);
+    if (z > -0.1 && y < 0.3 && y > -0.95) {
+      // Apple cheeks under the eyes.
+      d = smin(d, sdEllipsoid(ax, y, z, 0.47, -0.26, 0.58, 0.25 * (0.85 + 0.15 * cheek), 0.2, 0.22), 0.26);
     }
-    // Brow ridge (slight arch) — gives the eyes a ledge and the face a profile.
-    if (z > 0.4 && y > 0.0 && y < 0.55) d = smin(d, sdRoundCone(ax, y, z, [0, 0.3, 0.8], [0.5, 0.26, 0.66], 0.075, 0.06), 0.16);
-    // Temples: slight hollows so the skull never reads as a ball.
-    if (ax > 0.6 && y > -0.3 && y < 0.65) d = smax(d, -sdEllipsoid(ax, y, z, 0.97, 0.16, 0.3, 0.12, 0.22, 0.26), 0.25);
-    // Eye sockets.
-    if (z > 0.55 && ax < 0.7 && Math.abs(y - ey) < 0.32) d = smax(d, -sdEllipsoid(ax, y, z, ex, ey + 0.01, 0.88, 0.225, 0.205, 0.16), 0.07);
-    if (z > 0.22 && ax < 0.6 && y < my + 0.5 && y > my - 0.46) {
-      // Muzzle, lips, philtrum.
-      d = smin(d, sdEllipsoid(x, y, z, 0, my + 0.03, 0.7, 0.36, 0.26, 0.26), 0.2);
-      d = smin(d, sdRoundCone(ax, y, z, [0, my + 0.04, 0.93], [0.16, my + 0.02, 0.87], 0.04, 0.026), 0.04);
-      d = smin(d, sdEllipsoid(x, y, z, 0, my - 0.05, 0.89, 0.15, 0.05, 0.055), 0.05);
-      d = smax(d, -sdEllipsoid(x, y, z, 0, my, 0.95, 0.19, 0.011, 0.06), 0.012);
-      d = smax(d, -sdRoundCone(x, y, z, [0, tipY - 0.12, 0.98], [0, my + 0.08, 0.94], 0.018, 0.022), 0.02);
+    // Soft brow ridge.
+    if (z > 0.45 && y > 0.05 && y < 0.6) d = smin(d, sdRoundCone(ax, y, z, [0, ey + 0.3, 0.86], [0.5, ey + 0.27, 0.7], 0.06, 0.05), 0.2);
+    // Eye sockets: shallow bowls the eyeballs sit in (lids are separate shells).
+    if (sockets && z > 0.5 && ax < 0.8 && Math.abs(y - ey) < 0.4) d = smax(d, -sdEllipsoid(ax, y, z, ex, ey, eyeZ, er * 1.2, er * 1.04, er * 1.0), 0.06);
+    if (z > 0.2 && ax < 0.62 && y < my + 0.42 && y > my - 0.4) {
+      // Muzzle around the mouth.
+      d = smin(d, sdEllipsoid(x, y, z, 0, my + 0.02, 0.66, 0.36, 0.24, 0.3), 0.22);
     }
-    if (z > 0.65 && ax < 0.38 && y < 0.36 && y > tipY - 0.25) {
-      // Nose: bridge, tip, wings; nostrils.
-      let nose = sdRoundCone(x, y, z, [0, 0.2, 0.86], [0, tipY + 0.07, 1.0 + 0.02 * P.noseBridge], 0.05 * P.noseBridge + 0.012, 0.07);
-      nose = smin(nose, sdEllipsoid(x, y, z, 0, tipY + 0.015 * P.noseUp, 1.04, 0.1 * P.noseTip * Math.max(0.85, nw * 0.85), 0.09 * P.noseTip, 0.09), 0.06);
-      nose = smin(nose, sdEllipsoid(ax, y, z, 0.095 * nw, tipY - 0.03, 0.95, 0.07, 0.06, 0.065), 0.05);
-      d = smin(d, nose, 0.07);
-      d = smax(d, -sdEllipsoid(ax, y, z, 0.048 * nw, tipY - 0.075, 1.0, 0.03, 0.017, 0.04), 0.015);
+    if (z > 0.6 && ax < 0.3 && y < ey && y > tipY - 0.2) {
+      // Button nose: faint bridge, round tip, small wings, nostrils.
+      let nose = sdRoundCone(x, y, z, [0, ey - 0.12, 0.9], [0, tipY + 0.06, 0.97 + 0.012 * P.noseBridge], 0.012 + 0.01 * P.noseBridge, 0.05);
+      nose = smin(nose, sdEllipsoid(x, y, z, 0, tipY + 0.012 * P.noseUp, 1.0, 0.085 * P.noseTip * Math.max(0.85, nw * 0.85), 0.075 * P.noseTip, 0.075), 0.05);
+      nose = smin(nose, sdEllipsoid(ax, y, z, 0.07 * nw, tipY - 0.025, 0.94, 0.05, 0.045, 0.05), 0.04);
+      d = smin(d, nose, 0.06);
+      d = smax(d, -sdEllipsoid(ax, y, z, 0.04 * nw, tipY - 0.062, 0.97, 0.024, 0.013, 0.03), 0.012);
     }
-    const ey2 = ey - 0.16;
-    if (withExtras && ax > 0.62 && Math.abs(y - ey2) < 0.52 && z > -0.5 && z < 0.4) {
-      // Ears: rim with a hollow, angled back; lobe.
-      const c = Math.cos(0.4);
-      const s = Math.sin(0.4);
-      const lx = ax - 0.93;
-      const lz = z + 0.06;
+    const ey2 = ey - 0.1;
+    if (withExtras && ax > 0.66 && Math.abs(y - ey2) < 0.4 && z > -0.45 && z < 0.35) {
+      // Ears: rounded rim with a soft hollow, angled back.
+      const c = Math.cos(0.35);
+      const s = Math.sin(0.35);
+      const lx = ax - 0.95;
+      const lz = z + 0.04;
       const rx = lx * c - lz * s;
       const rz = lx * s + lz * c;
-      let ear = sdEllipsoid(rx, y, rz, 0, ey2, 0, 0.07, 0.23, 0.15);
-      ear = smax(ear, -sdEllipsoid(rx, y, rz, 0.05, ey2 + 0.01, 0.01, 0.045, 0.15, 0.09), 0.03);
-      ear = smin(ear, sdEllipsoid(rx, y, rz, 0.01, ey2 - 0.2, 0.02, 0.05, 0.07, 0.07), 0.04);
-      d = smin(d, ear, 0.06);
+      let ear = sdEllipsoid(rx, y, rz, 0, ey2, 0, 0.075, 0.2, 0.15);
+      ear = smax(ear, -sdEllipsoid(rx, y, rz, 0.055, ey2 + 0.01, 0.01, 0.05, 0.13, 0.09), 0.035);
+      d = smin(d, ear, 0.07);
     }
-    // Neck from under the jaw / back of the head.
-    if (withExtras && y < 0) d = smin(d, sdRoundCone(x, y, z, [0, -0.5, -0.2], [0, -1.62, -0.12], 0.3, 0.35), 0.16);
+    // Slender neck from under the jaw / back of the head.
+    if (withExtras && y < 0) d = smin(d, sdRoundCone(x, y, z, [0, -0.5, -0.16], [0, -1.62, -0.1], 0.3, 0.33), 0.18);
     return d * k;
   };
+}
+
+const eyeZCache = new Map<string, number>();
+
+/** Eyeball centre depth: the face surface in front of the eye minus most of the eyeball. */
+export function eyeCentreZ(P: HeadParams): number {
+  const key = JSON.stringify(P);
+  const hit = eyeZCache.get(key);
+  if (hit !== undefined) return hit;
+  const f = headSdf(P, false, false);
+  const x = P.eyeX * P.width;
+  const y = P.eyeY * P.height;
+  let z = 1.6;
+  while (z > 0 && f(x, y, z) > 0) z -= 0.005;
+  const out = z - EYE_R * 0.84;
+  eyeZCache.set(key, out);
+  return out;
 }
 
 /** Rewraps triangles that straddle the cylindrical UV seam (back of the head). */
@@ -192,13 +217,26 @@ export function headRadius(P: HeadParams): (dx: number, dy: number, dz: number) 
   return radius;
 }
 
-export function headShape(P: HeadParams): HeadShape {
-  const key = JSON.stringify(P);
+export function headShape(P: HeadParams, mouth?: MouthSpec): HeadShape {
+  const key = JSON.stringify(P) + (mouth ? mouthKey(mouth) : '');
   const hit = cache.get(key);
   if (hit) return hit;
   const radius = headRadius(P);
 
-  const full = headSdf(P, true);
+  const base = headSdf(P, true);
+  let full = base;
+  let mouthSurface: ((x: number, y: number) => number) | undefined;
+  if (mouth) {
+    mouthSurface = surfaceSampler(base, mouth.y - 0.45, mouth.y + 0.32, 0.5);
+    const m = mouthSdf(mouth, mouthSurface);
+    const [x0, x1, y0, y1] = m.box;
+    full = (x, y, z) => {
+      let d = base(x, y, z);
+      if (x < x0 || x > x1 || y < y0 || y > y1 || z < 0.3) return d;
+      d = smin(d, m.lips(x, y, z), 0.022);
+      return smax(d, -m.cavity(x, y, z), 0.012);
+    };
+  }
   const W = P.width;
   const H = P.height;
   const D = P.depth;
@@ -216,8 +254,9 @@ export function headShape(P: HeadParams): HeadShape {
 
   const shape: HeadShape = {
     geometry,
-    eye: { x: P.eyeX * W, y: (P.eyeY + 0.01) * H, z: 0.78 * D, r: 0.215 },
+    eye: { x: P.eyeX * W, y: P.eyeY * H, z: eyeCentreZ(P), r: EYE_R },
     radius,
+    mouthSurface,
   };
   cache.set(key, shape);
   if (cache.size > 12) cache.delete(cache.keys().next().value!);

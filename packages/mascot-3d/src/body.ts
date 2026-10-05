@@ -177,6 +177,8 @@ export interface BodyOptions {
   neck?: boolean;
   /** How far the head sits above the body's default head position (sculpted heads + neck). */
   headOffset?: number;
+  /** Head scale (emoji proportions): face gestures scale with the head. */
+  headScale?: number;
 }
 
 export interface BodyResult {
@@ -431,7 +433,8 @@ export function buildBody(o: BodyOptions): BodyResult {
   const hasPocket = Boolean(garment.pocket);
   // Head-relative wrists (face gestures) follow the head when the body sits lower (neck).
   const headY = o.headOffset ?? 0;
-  const toBody = (a: ArmPose): ArmPose => (a.head && headY ? { ...a, wrist: [a.wrist[0], a.wrist[1] + headY, a.wrist[2]] } : a);
+  const hs = o.headScale ?? 1;
+  const toBody = (a: ArmPose): ArmPose => (a.head && (headY || hs !== 1) ? { ...a, wrist: [a.wrist[0] * hs, a.wrist[1] * hs + headY, a.wrist[2] * hs] } : a);
   const applyPose = (p: BodyPose) => {
     const fixed = hasPocket ? p : withoutPockets(p);
     poseRight(toBody(fixed.right), fixed.shrug ?? 0);

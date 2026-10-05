@@ -35,9 +35,28 @@ export function strandTexture(): THREE.CanvasTexture {
 }
 
 /** Builds a hairstyle (see hairdo.ts for the recipe compiler). */
-export function buildHair(look: HairLook, P: HeadParams, mat: THREE.Material, seed: number, detail: number, simple = false, collider?: (x: number, y: number, z: number) => number, skin?: THREE.Color): HairResult {
-  return buildHairdo(look, P, mat, { seed, detail, simple, collider, skin });
+export function buildHair(look: HairLook, P: HeadParams, mat: THREE.Material, seed: number, detail: number, simple = false, collider?: (x: number, y: number, z: number) => number, skin?: THREE.Color, cacheKey?: string): HairResult {
+  if (!cacheKey) return buildHairdo(look, P, mat, { seed, detail, simple, collider, skin });
+  // Sculpted hair costs ~1 s; a sticker pack renders the same hair 62 times.
+  let hit = hairCache.get(cacheKey);
+  if (!hit) {
+    hit = buildHairdo(look, P, mat, { seed, detail, simple, collider, skin });
+    hit.group.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (!m.isMesh) return;
+      m.geometry.userData.shared = true;
+      for (const mm of Array.isArray(m.material) ? m.material : [m.material]) mm.userData.shared = true;
+    });
+    hairCache.set(cacheKey, hit);
+    if (hairCache.size > 4) hairCache.delete(hairCache.keys().next().value!);
+  } else {
+    hairCache.delete(cacheKey);
+    hairCache.set(cacheKey, hit);
+  }
+  return { group: hit.group.clone(true), crown: hit.crown };
 }
+
+const hairCache = new Map<string, HairResult>();
 
 /** Tube with a radius that tapers from r0 to r1 along the curve. */
 export function taperedTube(curve: THREE.Curve<THREE.Vector3>, segments: number, r0: number, r1: number, radial = 12): THREE.BufferGeometry {
