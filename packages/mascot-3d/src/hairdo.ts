@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import type { HairLook, HairSides, HairTie } from '@mascot/shared';
 import { backFlow, buildClumps, clumpPaths, crownFlow, fringeFlow, partFlow, tieFlow, type ClumpSpec } from './clumps';
 import { buildDrape, type DrapeSpec } from './drape';
-import { buildHairSdf, type SdfBlob, type SdfLock } from './hairsdf';
+import { buildHairSdf, type SdfBlob, type SdfLock, type SdfRing } from './hairsdf';
 import { sculpt, type HeadParams } from './head';
 import { clamp, fbm3, gauss, lerp, noise3, rng, smoothstep } from './math';
 
@@ -112,6 +112,8 @@ interface Ctx {
   collider?: Collider;
   look: HairLook;
   shell: ShellSpec;
+  /** Sculpted mode: tails, buns and rolls become part of the hair sculpture. */
+  sdf?: { locks: SdfLock[]; blobs: SdfBlob[]; rings: SdfRing[] };
 }
 
 interface Plan {
@@ -399,6 +401,20 @@ function tail(c: Ctx, dir: THREE.Vector3, o: TailOpts) {
     g.col = [];
     g.tube(pts, braidRadius(o.r0 * 0.85, o.r1 * 1.3, len, 0.1 + o.r0 * 0.25), 16, undefined, braidShade(len, 0.1 + o.r0 * 0.25));
     addMesh(c, g.build(), vertexColorMat(c), 'hair-braid');
+  } else if (o.bubble && c.sdf) {
+    const nb = Math.max(3, Math.round(len / 0.32));
+    const curve = new THREE.CatmullRomCurve3(pts);
+    for (let i = 0; i <= nb * 8; i++) {
+      const u = i / (nb * 8);
+      const r = lerp(o.r0 * 1.15, o.r1 * 1.6, u) * (0.55 + 0.6 * Math.pow(Math.abs(Math.sin(u * nb * Math.PI)), 0.6)) * (u > 0.93 ? 1 - (u - 0.93) * 8 : 1);
+      if (r > 0.01) c.sdf.blobs.push({ c: curve.getPointAt(u), r });
+    }
+    for (let k = 1; k < nb; k++) {
+      const i = Math.round((k / nb) * (pts.length - 1));
+      const a = pts[i]!;
+      const b = pts[Math.min(pts.length - 1, i + 1)]!;
+      elastic(c, a, T2.subVectors(b, a), o.r0 * 0.6);
+    }
   } else if (o.bubble) {
     const nb = Math.max(3, Math.round(len / 0.32));
     g.tube(pts, (u) => lerp(o.r0 * 1.15, o.r1 * 1.6, u) * (0.55 + 0.6 * Math.pow(Math.abs(Math.sin(u * nb * Math.PI)), 0.6)) * (u > 0.93 ? 1 - (u - 0.93) * 8 : 1), 16);
@@ -431,9 +447,10 @@ function tail(c: Ctx, dir: THREE.Vector3, o: TailOpts) {
         const off = R(u) * 0.48 * (0.55 + 0.45 * u);
         sub.push(p.clone().addScaledVector(N, Math.cos(th) * off).addScaledVector(B, Math.sin(th) * off));
       }
-      g.tube(sub, (u) => R(u * cut) * 0.62 * (u > 0.85 ? 1 - (u - 0.85) * 5 : 1), 10);
+      if (c.sdf) c.sdf.locks.push({ pts: sub, r0: 1, tip: 1, shade: 0.92 + 0.16 * c.rand(), radius: (u) => R(u * cut) * 0.66 * (u > 0.85 ? 1 - (u - 0.85) * 4.5 : 1) });
+      else g.tube(sub, (u) => R(u * cut) * 0.62 * (u > 0.85 ? 1 - (u - 0.85) * 5 : 1), 10);
     }
-    addMesh(c, g.build(), c.mat, 'hair-tail');
+    if (!c.sdf) addMesh(c, g.build(), c.mat, 'hair-tail');
     if (o.texture === 'curly' || o.texture === 'coily') curlsAlong(c, pts, o.r0 * 1.1);
   }
   const a = pts[1]!;
@@ -442,6 +459,14 @@ function tail(c: Ctx, dir: THREE.Vector3, o: TailOpts) {
 
 /** Instanced curls hugging a path (curly ponytails / pigtails). */
 function curlsAlong(c: Ctx, pts: THREE.Vector3[], r: number) {
+  if (c.sdf) {
+    for (let i = 0; i < pts.length; i++) {
+      const u = i / (pts.length - 1);
+      const rr = r * (1 + 0.5 * Math.sin(Math.PI * Math.min(1, u * 1.4))) * (1 - 0.5 * u);
+      for (let j = 0; j < 3; j++) c.sdf.blobs.push({ c: new THREE.Vector3(c.rand() - 0.5, c.rand() - 0.5, c.rand() - 0.5).normalize().multiplyScalar(rr * (0.6 + 0.5 * c.rand())).add(pts[i]!), r: 0.07 + 0.04 * c.rand() });
+    }
+    return;
+  }
   const coil = new THREE.TorusGeometry(1, 0.55, 6, 10);
   const n = pts.length * 7;
   const im = new THREE.InstancedMesh(coil, c.mat, n);
@@ -480,7 +505,20 @@ function bun(c: Ctx, dir: THREE.Vector3, o: BunOpts): number {
   const base = onHead(c.P, dir, 0);
   const n = base.clone().normalize().lerp(dir, 0.5).normalize();
   const centre = base.clone().addScaledVector(n, R * (o.donut ? 0.45 : 0.72));
-  if (o.donut) {
+  if (c.sdf && !o.braided) {
+    if (o.donut) {
+      c.sdf.rings.push({ c: centre.clone(), axis: n.clone(), R: R * 0.72, r: R * 0.42 });
+      c.sdf.blobs.push({ c: centre.clone().addScaledVector(n, R * 0.12), r: R * 0.42 });
+    } else {
+      c.sdf.blobs.push({ c: centre.clone(), r: R * 0.95 });
+      if (o.messy) {
+        for (let k = 0; k < 6; k++) {
+          const axis = new THREE.Vector3(c.rand() - 0.5, c.rand() - 0.5, c.rand() - 0.5).normalize();
+          c.sdf.rings.push({ c: centre.clone().add(T1.set(c.rand() - 0.5, c.rand() - 0.5, c.rand() - 0.5).multiplyScalar(R * 0.55)), axis, R: R * (0.5 + 0.2 * c.rand()), r: R * 0.14 });
+        }
+      }
+    }
+  } else if (o.donut) {
     const geo = new THREE.TorusGeometry(R * 0.72, R * 0.42, 16, 36);
     const m = addMesh(c, geo, c.mat, 'hair-bun');
     m.position.copy(centre);
@@ -1204,6 +1242,13 @@ function compileLong(look: HairLook, P: HeadParams, plan: Plan): Plan {
     plan.extras.push((c) => {
       for (const sx of [-1, 1]) {
         const at = onHead(c.P, dirOf(0.42 * sx, 0.85, 0.32), 0.1);
+        if (c.sdf) {
+          const ax = new THREE.Vector3(0, 0, 1).applyEuler(new THREE.Euler(Math.PI / 2 - 0.5, 0, sx * 0.5)).normalize();
+          const a = at.clone().addScaledVector(ax, 0.16);
+          const b = at.clone().addScaledVector(ax, -0.16);
+          c.sdf.locks.push({ pts: [a, b], r0: 1, tip: 1, shade: 1, radius: () => 0.15 });
+          continue;
+        }
         const roll = addMesh(c, new THREE.CapsuleGeometry(0.15, 0.32, 8, 20), c.mat, 'hair-roll');
         roll.position.copy(at);
         roll.rotation.set(Math.PI / 2 - 0.5, 0, sx * 0.5);
@@ -1704,9 +1749,19 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
       n++;
     }
   }
+  // Tails, buns and rolls join the sculpture (elastics and braids stay separate meshes).
+  const sdf = { locks: [] as SdfLock[], blobs: [] as SdfBlob[], rings: [] as SdfRing[] };
+  if (plan.extras.length) {
+    const tieMat = new THREE.MeshStandardMaterial({ color: '#16161a', roughness: 0.45 });
+    const ctx: Ctx = { P, group, mat: hmat, tieMat, rand, collider: opts.collider, look, shell: s, sdf };
+    for (const extra of plan.extras) extra(ctx);
+    if (group.userData.bunTop) crown = Math.max(crown, group.userData.bunTop - P.height);
+  }
+  locks.push(...sdf.locks);
+  blobs.push(...sdf.blobs);
   const kTune = (globalThis as { __hairTune?: { k?: number } }).__hairTune?.k;
   const stepTune = (globalThis as { __hairTune?: { step?: number } }).__hairTune?.step;
-  const geo = buildHairSdf(P, { shell: s, locks, blobs, kLock: kTune ?? 0.065, kBlob: 0.035, step: stepTune ?? 0.026, color: baseColor, detail: opts.detail * 0.5 });
+  const geo = buildHairSdf(P, { shell: s, locks, blobs, rings: sdf.rings, kLock: kTune ?? 0.065, kBlob: 0.035, step: stepTune ?? 0.026, color: baseColor, detail: opts.detail * 0.5 });
   if (geo) {
     const mat = hmat.clone();
     mat.vertexColors = true;
@@ -1723,12 +1778,6 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
     mat.vertexColors = true;
     mat.color = new THREE.Color('#ffffff');
     plan.drapes.forEach((d, i) => group.add(buildDrape(P, { ...d, seed: opts.seed + i * 17 }, opts.collider, baseColor, mat)));
-  }
-  if (plan.extras.length) {
-    const tieMat = new THREE.MeshStandardMaterial({ color: '#16161a', roughness: 0.45 });
-    const ctx: Ctx = { P, group, mat: hmat, tieMat, rand, collider: opts.collider, look, shell: s };
-    for (const extra of plan.extras) extra(ctx);
-    if (group.userData.bunTop) crown = Math.max(crown, group.userData.bunTop - P.height);
   }
   return { group, crown: Math.max(crown, locks.length ? 0.12 : 0) };
 }

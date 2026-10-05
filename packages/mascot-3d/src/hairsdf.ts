@@ -19,6 +19,8 @@ export interface SdfLock {
   tip: number;
   /** Colour multiplier for this lock. */
   shade: number;
+  /** Custom radius profile along the lock (u = 0 root … 1 tip). */
+  radius?: (u: number) => number;
 }
 
 export interface SdfBlob {
@@ -193,7 +195,7 @@ export function buildHairSdf(P: HeadParams, o: HairSdfOptions): THREE.BufferGeom
     let len = 0;
     const lens = [0];
     for (let i = 1; i < pts.length; i++) lens.push((len += pts[i]!.distanceTo(pts[i - 1]!)));
-    const rad = (u: number) => lock.r0 * lerp(1, lock.tip, Math.pow(u, 1.3)) * (u < 0.04 ? 0.8 : 1);
+    const rad = lock.radius ?? ((u: number) => lock.r0 * lerp(1, lock.tip, Math.pow(u, 1.3)) * (u < 0.04 ? 0.8 : 1));
     for (let i = 0; i < pts.length - 1; i++) {
       const a = pts[i]!;
       const b = pts[i + 1]!;

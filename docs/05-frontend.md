@@ -83,18 +83,25 @@ honoured everywhere, including the 3D viewer (renders on demand instead of conti
 
 Every character image in the app is rendered live from the mascot DNA by a three.js renderer — no static art:
 
-- **Head** (`skull.ts`): an SDF-sculpted cartoon head — cranium, face mass, jaw and chin, cheeks, brow ridge, eye
-  sockets, muzzle and lips, nose, ears and neck blended with smooth unions and meshed with surface nets; a cached
-  radius map lets hair and beards sculpt shells over the exact surface. The head pivots at the top of the neck.
-  Painted face texture (lips per emotion, blush, freckles, stubble), sculpted 3D brows, eyeballs with iris textures
-  (plus star / dollar / spiral / X eyes) and animated lids.
+- **Head** (`skull.ts`): an SDF-sculpted emoji-style head (round cranium, full cheeks, small chin, button nose,
+  soft brow, ears and neck) blended with smooth unions and meshed with surface nets, scaled up on the body like a
+  phone emoji avatar. Big almond eyes sit in sculpted sockets under skin-coloured lid shells with a lash line; the
+  iris texture is a large glossy emoji iris lit from below. A cached radius map lets hair and beards sculpt shells
+  over the exact surface. The head pivots at the top of the neck.
+- **Mouth** (`mouth3d.ts`): each expression's mouth is sculpted into the head — a cavity cut into the face, rolled
+  lips, teeth strips and a tongue (inside or sticking out) — so grins, laughs, yawns, wails and "O" mouths are real
+  3D openings, not paint. Closed mouths (smile, smirk, frown, pout, kiss, cat) are sculpted lip lines.
 - **Hairstyles** (`hairdo.ts`, catalog in `@mascot/shared/hairstyles.ts`): **252 hairstyles** tagged female / male /
   unisex in 18 families. Each is a semantic recipe (cut, length, texture, sides, bangs, part, shape, ties, strands)
-  compiled into layers: a scalp shell with a soft hairline, a stubble shell with a real fade gradient (taper, low /
-  mid / high / skin fade, undercut, side shave), flow-field clumps (waves, flips, layers, a-line / inverted / hime
-  lengths), instanced curls and filled volumes (afro, high top, puffs), tails made of locks (ponytails, pigtails,
-  bubble and braided tails), buns (messy, ballerina, donut, braided, space buns), scalp braids (French, Dutch, crown),
-  box braids, twists, locs and cornrows. Long hair and tails drape over the hood and shoulders.
+  compiled into a plan: a scalp shell with a soft hairline, a stubble shell with a real fade gradient (taper, low /
+  mid / high / skin fade, undercut, side shave), flow-field locks, curls and filled volumes, tails, buns, braids,
+  twists, locs and cornrows. In the default emoji look the plan is **sculpted** (`hairsdf.ts`): shell, chunky locks,
+  curl blobs, tails, buns and rolls become one signed-distance field (a segment grid with chamfer bounds keeps it
+  around a second) meshed with surface nets, so the hair reads as one soft sculpture with grooves between locks;
+  strand UVs follow the locks and roots / crevices are darkened in vertex colours. Falling hair (bobs, lobs, long,
+  layered, mullets) is a **drape** (`drape.ts`): a parametric sheet that hangs from the widest point of the head,
+  is split into rounded locks with scalloped tips, flips or curls under, and rests on the hood and shoulders.
+  Braids, elastics and toon styles keep their dedicated meshes. Built hair is cached per look.
 - **Eyewear** (`eyewear.ts`, catalog in `@mascot/shared/eyewear.ts`): **104 pairs** — 40 frame families from real
   optics and sunglasses (round wire, panto, browline, pilot, navigator, cat-eye, butterfly, hexagon, D-frame,
   trapezoid, shield, sport wrap, ski goggles, monocle…) in real finishes. Parametric rims (full, thick acetate, wire,
@@ -114,8 +121,8 @@ Every character image in the app is rendered live from the mascot DNA by a three
   poses) played by the live viewer.
 - **Styles**: 11 looks map to shading models (PBR skin with sheen, vinyl, plastic, toon with ink outlines), saturation and
   rim-light colours, so "Pixar", "Anime", "Lego", "Cyberpunk"… are the same identity in different materials.
-- **Stage**: neutral tone mapping, room environment reflections, warm key light, red rim lights that separate the
-  character from black backgrounds, soft shadows.
+- **Stage**: neutral tone mapping, soft room environment reflections, a bright hemisphere fill and gentle warm rims
+  (the evenly lit emoji look; neon styles keep coloured rims), soft shadows.
 - **Web integration** (`components/three`): `Mascot3D` — interactive viewer (drag, spin, idle breathing/blinking,
   30 fps cap, pauses off-screen); `MascotShot` — cached PNG snapshots used for tiles, style grids, pose examples and
   sticker previews. Snapshots render in a Web Worker on an `OffscreenCanvas` (`src/workers/mascot3d.worker.ts`,

@@ -102,7 +102,7 @@ export function headSdf(P: HeadParams, withExtras = true, sockets = true): Sdf {
       d = smin(d, ear, 0.07);
     }
     // Slender neck from under the jaw / back of the head.
-    if (withExtras && y < 0) d = smin(d, sdRoundCone(x, y, z, [0, -0.5, -0.16], [0, -1.62, -0.1], 0.3, 0.33), 0.18);
+    if (withExtras && y < 0) d = smin(d, sdRoundCone(x, y, z, [0, -0.5, -0.14], [0, -1.62, -0.08], 0.34, 0.37), 0.2);
     return d * k;
   };
 }
