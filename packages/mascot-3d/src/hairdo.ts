@@ -57,7 +57,8 @@ export interface ShellSpec {
 export function hairline(dir: THREE.Vector3, s: ShellSpec): number {
   const phi = Math.atan2(dir.x, dir.z);
   const a = Math.abs(phi) / Math.PI;
-  let h = a < 0.5 ? lerp(s.front, s.side, smoothstep(0, 0.5, a)) : lerp(s.side, s.back, smoothstep(0.5, 1, a));
+  // Behind the ears the hairline drops to the nape and runs across it (not a V down the back).
+  let h = a < 0.5 ? lerp(s.front, s.side, smoothstep(0, 0.5, a)) : lerp(s.side, s.back, smoothstep(0.5, 0.82, a));
   h -= s.sideburn * gauss((a - 0.42) ** 2, 0.03);
   const recede = s.recede ?? 0;
   // Temple recession gives a natural "M" hairline instead of a bowl cut.
@@ -427,7 +428,7 @@ function tail(c: Ctx, dir: THREE.Vector3, o: TailOpts) {
     }
   } else {
     // A bundle of locks: tight at the elastic, fuller in the middle, separate soft tips.
-    const R = (u: number) => lerp(o.r0 * 0.7, o.r1 * 1.4, Math.pow(u, 1.3)) * (1 + 0.6 * Math.sin(Math.PI * Math.min(1, u * 1.15)));
+    const R = (u: number) => lerp(o.r0 * 0.7, o.r1 * 1.4, Math.pow(u, 1.3)) * (1 + (c.sdf ? 0.85 : 0.6) * Math.sin(Math.PI * Math.min(1, u * 1.15)));
     const T = new THREE.Vector3();
     const N = new THREE.Vector3();
     const B = new THREE.Vector3();
@@ -444,10 +445,10 @@ function tail(c: Ctx, dir: THREE.Vector3, o: TailOpts) {
         N.copy(p).normalize().addScaledVector(T, -N.copy(p).normalize().dot(T)).normalize();
         B.crossVectors(T, N);
         const th = th0 + u * 1.2;
-        const off = R(u) * 0.48 * (0.55 + 0.45 * u);
+        const off = R(u) * (c.sdf ? 0.56 * (0.6 + 0.4 * u) : 0.48 * (0.55 + 0.45 * u));
         sub.push(p.clone().addScaledVector(N, Math.cos(th) * off).addScaledVector(B, Math.sin(th) * off));
       }
-      if (c.sdf) c.sdf.locks.push({ pts: sub, r0: 1, tip: 1, shade: 0.92 + 0.16 * c.rand(), radius: (u) => R(u * cut) * 0.66 * (u > 0.85 ? 1 - (u - 0.85) * 4.5 : 1) });
+      if (c.sdf) c.sdf.locks.push({ pts: sub, r0: 1, tip: 1, shade: 0.92 + 0.16 * c.rand(), radius: (u) => R(u * cut) * 0.6 * (u > 0.8 ? 1 - (u - 0.8) * 3.5 : 1) });
       else g.tube(sub, (u) => R(u * cut) * 0.62 * (u > 0.85 ? 1 - (u - 0.85) * 5 : 1), 10);
     }
     if (!c.sdf) addMesh(c, g.build(), c.mat, 'hair-tail');
@@ -779,6 +780,19 @@ function fringeOf(bangs: HairLook['bangs'], cut: HairLook['cut']): Partial<Shell
 }
 
 export function compileHair(look: HairLook, P: HeadParams): Plan {
+  const plan = compileLook(look, P);
+  if (P.organic) {
+    // The emoji head has a full, rounded back: the nape hairline sits lower, just above the neck.
+    const lower = (sp: ShellSpec) => {
+      if (sp.back <= -0.45) sp.back -= 0.14;
+    };
+    lower(plan.shell);
+    if (plan.stubble) lower(plan.stubble.spec);
+  }
+  return plan;
+}
+
+function compileLook(look: HairLook, P: HeadParams): Plan {
   const len = look.length;
   const vol = look.volume ?? 0.5;
   const tex = look.texture ?? 'straight';
@@ -814,7 +828,9 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
       plan.crown = 0.01;
       return plan;
     case 'horseshoe':
-      plan.shell = s = shellSpec(SHORT, { side: -0.02, back: -0.56, sideburn: 0.1, base: 0.03, top: 0, noiseAmp: 0.01, noiseFreq: 14, topCut: 0.5 });
+      plan.shell = s = shellSpec(SHORT, { side: -0.02, back: -0.56, sideburn: 0.1, base: P.organic ? 0.018 : 0.026, top: 0, noiseAmp: 0.006, noiseFreq: 14, topCut: P.organic ? 0.3 : 0.42 });
+      // Thinning hair above the band fades into the bald crown.
+      if (P.organic) plan.stubble = { spec: shellSpec(SHORT, { side: -0.02, back: -0.56, sideburn: 0.1, base: 0.017, top: 0, noiseAmp: 0, topCut: 0.62 }), gradient: false, skinMix: 0.15 };
       plan.crown = 0;
       return plan;
     case 'buzz': {
@@ -827,10 +843,10 @@ export function compileHair(look: HairLook, P: HeadParams): Plan {
     case 'crew': {
       const l = len ?? 0.5;
       const flat = look.shape === 'blunt';
-      plan.shell = s = shellSpec(SHORT, { base: 0.03, top: (0.05 + 0.05 * l) * (flat ? 2.4 : 1), noiseAmp: 0.012, noiseFreq: 14, frontBoost: 0.03, recede: look.recede, flat: flat ? 1.2 : undefined, part: partX, partDepth: 0.4 });
+      plan.shell = s = shellSpec(SHORT, { base: 0.03, top: flat ? 0.34 : 0.05 + 0.05 * l, noiseAmp: 0.012, noiseFreq: 14, frontBoost: 0.03, recede: look.recede, flat: flat ? 1.15 : undefined, part: partX, partDepth: 0.4 });
       plan.stubble = applySides(s, look.sides, sweep);
       if (!flat) plan.clumps.push(shortClump({ flow: messy(partX !== undefined ? partFlow(partX, 0.55) : crownFlow, mess), length: (_d, r) => 0.17 + 0.1 * l + r * 0.1 }));
-      plan.crown = flat ? 0.22 : 0.08;
+      plan.crown = flat ? 0.28 : 0.08;
       return plan;
     }
     case 'crop':
@@ -1351,10 +1367,11 @@ function compileTied(look: HairLook, P: HeadParams, plan: Plan): Plan {
         const dirs: THREE.Vector3[] = [];
         for (let i = 0; i <= 64; i++) {
           const th = (i / 64) * Math.PI * 2;
-          const y = 0.5 + 0.12 * Math.cos(th);
-          dirs.push(dirOf(Math.sin(th) * 0.86, y, Math.cos(th) * 0.86));
+          // A halo: just behind the hairline in front, above the nape at the back.
+          const y = 0.4 + 0.3 * Math.cos(th);
+          dirs.push(dirOf(Math.sin(th) * 0.9, y, Math.cos(th) * 0.8));
         }
-        const g = scalpBraid(c, dirs, 0.12, 0);
+        const g = scalpBraid(c, dirs, 0.15, 0);
         addMesh(c, g.build(), vertexColorMat(c), 'hair-braid');
       });
       plan.crown = 0.15;
@@ -1380,9 +1397,9 @@ function compileTied(look: HairLook, P: HeadParams, plan: Plan): Plan {
       break;
     }
     case 'beehive': {
-      s.dome = 0.55;
+      s.dome = 0.42;
       s.top += 0.05;
-      plan.clumps.push(rootClumps({ flow: (d, o) => o.set(-d.x * 0.6, 1, -0.2 * d.z), length: (_d, r) => 0.5 + r * 0.2, lift: (d, u) => 0.03 + 0.45 * smoothstep(0.1, 0.9, d.y) * u * gauss(d.x * d.x, 0.5), thickness: 0.026 }));
+      plan.clumps.push(rootClumps({ flow: (d, o) => o.set(-d.x * 0.6, 1, -0.2 * d.z), length: (_d, r) => (P.organic ? 0.3 : 0.5) + r * 0.2, lift: (d, u) => 0.03 + 0.45 * smoothstep(0.1, 0.9, d.y) * u * gauss(d.x * d.x, 0.5), thickness: 0.026 }));
       plan.crown = 0.6;
       break;
     }
@@ -1409,8 +1426,11 @@ export function shellThickness(s: ShellSpec, d: THREE.Vector3, m: number): numbe
     return lerp(-0.03, 0.34 * m, Math.min(1, strip * 1.6));
   }
   let t = s.base + s.top * smoothstep(s.side, 1, d.y);
+  // Flat top: vertical walls just outside the widest part of the head (clipped flat on top),
+  // a box of hair instead of a dome or a beret.
+  if (s.flat) t = s.base + Math.max(0, Math.min(s.top * 3, 1.04 / Math.sqrt(Math.max(0.04, 1 - d.y * d.y)) - 1)) * smoothstep(s.side, s.side + 0.3, d.y);
   t += s.frontBoost * gauss(d.x * d.x + (d.y - 0.72) ** 2, 0.16) * smoothstep(0.1, 0.6, d.z);
-  if (s.dome) t += s.dome * gauss(d.x * d.x * 1.3 + (d.y - 0.9) ** 2 + (d.z + 0.2) ** 2 * 0.8, 0.42);
+  if (s.dome) t += s.dome * gauss(d.x * d.x * 1.1 + (d.y - 0.95) ** 2 + (d.z + 0.15) ** 2 * 0.7, 0.62);
   if (s.backBoost) t += s.backBoost * gauss(d.x * d.x * 0.8 + (d.y - 0.4) ** 2 + (d.z + 0.8) ** 2, 0.3);
   if (s.sideBoost) t += s.sideBoost * gauss((Math.abs(d.x) - 0.85) ** 2 + (d.y - 0.15) ** 2, 0.3);
   if (s.part !== undefined) t *= 1 - (s.partDepth ?? 0.55) * gauss((d.x - s.part) ** 2, s.partWidth ?? 0.03) * smoothstep(0.35, 0.7, d.y) * smoothstep(-0.2, 0.3, d.z);
@@ -1425,17 +1445,27 @@ export function shellMask(s: ShellSpec, dir: THREE.Vector3): [number, number] {
   const a = Math.abs(Math.atan2(dir.x, dir.z)) / Math.PI;
   const bluntK = s.fringe !== undefined ? 1 - smoothstep((s.fringeWidth ?? 0.4) * 0.85, (s.fringeWidth ?? 0.4) * 1.1, a) : 0;
   const taper = lerp(smoothstep(h - 0.03, h + (a < 0.3 ? 0.17 : 0.09) * (s.soft ?? 1), dir.y), 1, bluntK);
-  if (s.topCut !== undefined) m *= smoothstep(s.topCut + 0.04, s.topCut - 0.04, dir.y);
+  if (s.topCut !== undefined) {
+    m *= smoothstep(s.topCut + 0.04, s.topCut - 0.04, dir.y);
+    // Thinning towards the bald crown.
+    return [m, taper * smoothstep(s.topCut + 0.02, s.topCut - 0.18, dir.y)];
+  }
   return [m, taper];
 }
 
-function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number, number], color?: (d: THREE.Vector3, m: number) => [number, number, number]): THREE.BufferGeometry {
+/**
+ * Scalp shell mesh. With `fade` the shell keeps a constant offset and its edge fades out through
+ * vertex alpha (the colour callback returns RGBA) — a painted-on layer with no ledge or stair-stepped
+ * border, used for stubble and fades on the emoji head.
+ */
+function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number, number], color?: (d: THREE.Vector3, m: number) => number[], fade = false): THREE.BufferGeometry {
   const geo = new THREE.SphereGeometry(1, seg[0], seg[1]);
   const pos = geo.attributes.position as THREE.BufferAttribute;
   const dir = new THREE.Vector3();
   const out = new THREE.Vector3();
   const amp = s.noiseAmp * Math.max(0.25, detail);
-  const colors = color ? new Float32Array(pos.count * 3) : null;
+  const ch = fade ? 4 : 3;
+  const colors = color ? new Float32Array(pos.count * ch) : null;
   const mask = new Float32Array(pos.count);
   const thickness = (d: THREE.Vector3, m: number) => shellThickness(s, d, m);
   for (let i = 0; i < pos.count; i++) {
@@ -1449,18 +1479,17 @@ function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number
     if (s.topCut !== undefined) m *= smoothstep(s.topCut + 0.04, s.topCut - 0.04, dir.y);
     const n = fbm3(dir.x * s.noiseFreq, dir.y * s.noiseFreq, dir.z * s.noiseFreq, 3);
     mask[i] = m;
-    const scale = 1 + (thickness(dir, m) * lerp(0.25, 1, taper) + amp * n * taper) * m + (m - 1) * 0.3;
+    const scale = fade ? 1 + thickness(dir, 1) : 1 + (thickness(dir, m) * lerp(0.25, 1, taper) + amp * n * taper) * m + (m - 1) * 0.3;
     sculpt(dir, P, out, scale);
     if (s.flat && out.y > s.flat * P.height) out.y = s.flat * P.height + (out.y - s.flat * P.height) * 0.08;
     pos.setXYZ(i, out.x, out.y, out.z);
     if (colors && color) {
-      const [r, g, b] = color(dir, m);
-      colors[i * 3] = r;
-      colors[i * 3 + 1] = g;
-      colors[i * 3 + 2] = b;
+      const c = color(dir, m);
+      for (let k = 0; k < ch; k++) colors[i * ch + k] = c[k] ?? 1;
+      if (fade) mask[i] = c[3] ?? 1;
     }
   }
-  if (colors) geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  if (colors) geo.setAttribute('color', new THREE.BufferAttribute(colors, ch));
   // Drop the parts tucked under the skin: they would show through the mouth and eye sockets.
   const src = geo.index!;
   const keep: number[] = [];
@@ -1468,7 +1497,8 @@ function shellGeometry(P: HeadParams, s: ShellSpec, detail: number, seg: [number
     const a = src.getX(t);
     const b = src.getX(t + 1);
     const c = src.getX(t + 2);
-    if (mask[a]! > 0.02 || mask[b]! > 0.02 || mask[c]! > 0.02) keep.push(a, b, c);
+    const lim = fade ? 0.004 : 0.02;
+    if (mask[a]! > lim || mask[b]! > lim || mask[c]! > lim) keep.push(a, b, c);
   }
   geo.setIndex(keep);
   geo.computeVertexNormals();
@@ -1551,14 +1581,31 @@ export function buildHairdo(look: HairLook, P: HeadParams, mat: THREE.Material, 
     const dark = baseColor.clone().multiplyScalar(0.6);
     const low = dark.clone().lerp(skin, st.skinMix);
     const c = new THREE.Color();
-    const geo = shellGeometry(P, st.spec, 0, [120, 90], (d) => {
-      if (!st.gradient) return [low.r, low.g, low.b];
-      const h0 = hairline(d, st.spec);
-      const h1 = s.base < 0 ? h0 + 0.3 : hairline(d, s);
-      const t = smoothstep(h0, h1 + 0.02, d.y);
-      c.copy(low).lerp(dark, Math.pow(t, 0.6));
-      return [c.r, c.g, c.b];
-    });
+    // Emoji head: stubble is a thin translucent layer (hair colour over the skin) whose edge and
+    // fade gradient live in vertex alpha — no ledge, no stair-stepped border.
+    const fade = Boolean(P.organic);
+    const spec = fade ? { ...st.spec, base: 0.007 } : st.spec;
+    const tint = baseColor.clone().multiplyScalar(0.72);
+    const geo = shellGeometry(
+      P,
+      spec,
+      0,
+      fade ? [180, 135] : [120, 90],
+      (d) => {
+        const h0 = hairline(d, spec);
+        const t = st.gradient ? smoothstep(h0, (s.base < 0 ? h0 + 0.3 : hairline(d, s)) + 0.02, d.y) : 0;
+        if (fade) {
+          let edge = smoothstep(h0 - 0.03, h0 + 0.1, d.y);
+          if (spec.topCut !== undefined) edge *= smoothstep(spec.topCut, spec.topCut - 0.3, d.y);
+          const a = lerp(1 - st.skinMix, 0.95, Math.pow(t, 0.6)) * edge;
+          return [tint.r, tint.g, tint.b, a];
+        }
+        if (!st.gradient) return [low.r, low.g, low.b];
+        c.copy(low).lerp(dark, Math.pow(t, 0.6));
+        return [c.r, c.g, c.b];
+      },
+      fade,
+    );
     const smat = hmat.clone();
     smat.vertexColors = true;
     smat.color = new THREE.Color('#ffffff');
@@ -1566,8 +1613,17 @@ export function buildHairdo(look: HairLook, P: HeadParams, mat: THREE.Material, 
     smat.bumpMap = null;
     smat.roughness = 0.85;
     smat.sheen = 0;
+    if (fade) {
+      smat.transparent = true;
+      smat.depthWrite = false;
+      smat.polygonOffset = true;
+      smat.polygonOffsetFactor = -1;
+      smat.polygonOffsetUnits = -2;
+      if ('clearcoat' in smat) smat.clearcoat = 0;
+    }
     const stubble = new THREE.Mesh(geo, smat);
     stubble.receiveShadow = true;
+    stubble.renderOrder = 1;
     stubble.name = 'hair-stubble';
     group.add(stubble);
   }
@@ -1695,7 +1751,8 @@ const LOCK_FRACTION = 0.12;
 const LOCK_RADIUS = 1.35;
 
 function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.MeshPhysicalMaterial, opts: HairdoOptions, group: THREE.Group, rand: () => number, baseColor: THREE.Color): HairResult {
-  const s = plan.shell;
+  // Sculpted fringes are cut in soft scallops, not fine zig-zags (those mesh into drips).
+  const s: ShellSpec = { ...plan.shell, fringeJag: (plan.shell.fringeJag ?? 1) * 0.3 };
   let crown = Math.max(plan.crown, s.base + s.top);
   const locks: SdfLock[] = [];
   for (const cs of plan.clumps) {
@@ -1703,10 +1760,18 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
     // Short cuts: a few big sculpted chunks; long hair: more locks for the falling mass.
     const tune = (globalThis as { __hairTune?: { short?: number; long?: number; r?: number; rl?: number; k?: number } }).__hairTune ?? {};
     const isLong = wide >= 0.095;
-    const count = Math.max(8, Math.round(cs.count * (isLong ? (tune.long ?? LOCK_FRACTION) : (tune.short ?? LOCK_FRACTION * 0.6))));
-    const r0 = wide * (isLong ? (tune.rl ?? LOCK_RADIUS) : (tune.r ?? LOCK_RADIUS));
+    // Spikes: many sharp cones over the top (a few big horns read as a costume).
+    const count = cs.spikes ? Math.max(8, Math.round(cs.count * 0.13)) : Math.max(8, Math.round(cs.count * (isLong ? (tune.long ?? LOCK_FRACTION) : (tune.short ?? LOCK_FRACTION * 0.6))));
+    const r0 = wide * (cs.spikes ? 1.6 : isLong ? (tune.rl ?? LOCK_RADIUS) : (tune.r ?? LOCK_RADIUS));
     const spec: ClumpSpec = { ...cs, collider: cs.collider ?? opts.collider };
+    if (cs.spikes) {
+      // Spikes grow from the top, long and pointed enough to read as spikes, not studs.
+      spec.region = (d) => cs.region(d) && d.y > 0.2;
+      spec.lift = (d, u) => cs.lift(d, u) * 1.25 + shellT(s, d) * 0.3;
+    }
     if (cs.fringe && !cs.fall) spec.floor = (d) => hairline(d, s) + 0.03;
+    // Groomed locks stop short of the hairline: the shell alone makes the clean edge.
+    else if (!cs.fringe && !cs.fall && !cs.spikes) spec.floor = (d) => hairline(d, s) + 0.06;
     // Falling hair comes from the drapes; locks only groom the scalp (low relief).
     let rk = cs.fringe ? 0.62 : 1;
     if (plan.drapes && !cs.fringe) {
@@ -1715,14 +1780,38 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
     }
     if (!cs.spikes) {
       // Locks hug the sculpted volume: the shell gives the shape, locks only carve the flow.
+      // Tied hair is pulled tight: lower relief.
       const lockR = r0 * rk;
+      const sink = look.cut === 'tied' ? 0.6 : 0.4;
       spec.base = 0;
       spec.edge = undefined;
-      spec.lift = (d) => Math.max(0.005, shellT(s, d) - lockR * 0.4);
+      spec.lift = (d) => Math.max(0.005, shellT(s, d) - lockR * sink);
       spec.length = (d, r) => cs.length(d, r) * (cs.fringe ? 1 : 1.5);
     }
+    const free = Boolean(spec.fall);
     for (const path of clumpPaths(P, spec, rand, count)) {
-      locks.push({ pts: path.pts, r0: r0 * rk * (0.85 + 0.3 * path.r), tip: Math.max(0.25, cs.tip), shade: 1 + (path.r - 0.5) * 0.16 });
+      const rl = r0 * rk * (0.85 + 0.3 * path.r);
+      const tip = cs.spikes ? 0.08 : Math.max(0.25, cs.tip);
+      if (free || cs.spikes) {
+        locks.push({ pts: path.pts, r0: rl, tip, shade: 1 + (path.r - 0.5) * 0.16, free });
+        continue;
+      }
+      // Locks thin out towards the hairline like the shell does (soft edge, no helmet ledge).
+      const tk = path.pts.map((q) => lerp(0.35, 1, shellMask(s, T1.copy(q).normalize())[1]));
+      const n = tk.length - 1;
+      locks.push({
+        pts: path.pts,
+        r0: rl,
+        tip,
+        shade: 1 + (path.r - 0.5) * 0.16,
+        radius: (u) => {
+          const f = u * n;
+          const i = Math.min(n - 1, Math.floor(f));
+          const k = n > 0 ? lerp(tk[i]!, tk[i + 1]!, f - i) : tk[0]!;
+          // Spindle-shaped: thin root and tip, so locks melt into the mass like brush strokes.
+          return rl * lerp(0.4, 1, smoothstep(0, 0.22, u)) * lerp(1, tip, Math.pow(u, 1.3)) * k;
+        },
+      });
     }
   }
   const blobs: SdfBlob[] = [];
@@ -1757,8 +1846,8 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
     for (const extra of plan.extras) extra(ctx);
     if (group.userData.bunTop) crown = Math.max(crown, group.userData.bunTop - P.height);
   }
-  locks.push(...sdf.locks);
-  blobs.push(...sdf.blobs);
+  for (const l of sdf.locks) locks.push({ ...l, free: true });
+  for (const b of sdf.blobs) blobs.push({ ...b, free: true });
   const kTune = (globalThis as { __hairTune?: { k?: number } }).__hairTune?.k;
   const stepTune = (globalThis as { __hairTune?: { step?: number } }).__hairTune?.step;
   const geo = buildHairSdf(P, { shell: s, locks, blobs, rings: sdf.rings, kLock: kTune ?? 0.065, kBlob: 0.035, step: stepTune ?? 0.026, color: baseColor, detail: opts.detail * 0.5 });

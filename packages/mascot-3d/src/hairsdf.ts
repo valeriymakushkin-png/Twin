@@ -21,11 +21,14 @@ export interface SdfLock {
   shade: number;
   /** Custom radius profile along the lock (u = 0 root … 1 tip). */
   radius?: (u: number) => number;
+  /** Free locks (tails, falling bangs) are not trimmed at the hairline. */
+  free?: boolean;
 }
 
 export interface SdfBlob {
   c: THREE.Vector3;
   r: number;
+  free?: boolean;
 }
 
 /** Torus primitives (donut buns, rolls): centre, axis, major / minor radius. */
@@ -61,7 +64,7 @@ export interface HairSdfOptions {
   detail: number;
 }
 
-const STRIDE = 12; // ax ay az bx by bz ra rb v0 v1 lock shade
+const STRIDE = 13; // ax ay az bx by bz ra rb v0 v1 lock shade free
 
 class SegGrid {
   readonly C = 0.12;
@@ -199,11 +202,11 @@ export function buildHairSdf(P: HeadParams, o: HairSdfOptions): THREE.BufferGeom
     for (let i = 0; i < pts.length - 1; i++) {
       const a = pts[i]!;
       const b = pts[i + 1]!;
-      packed.push(a.x, a.y, a.z, b.x, b.y, b.z, rad(lens[i]! / len), rad(lens[i + 1]! / len), lens[i]!, lens[i + 1]!, li, lock.shade);
+      packed.push(a.x, a.y, a.z, b.x, b.y, b.z, rad(lens[i]! / len), rad(lens[i + 1]! / len), lens[i]!, lens[i + 1]!, li, lock.shade, lock.free ? 1 : 0);
     }
   });
   const nLockSegs = packed.length / STRIDE;
-  for (const b of o.blobs) packed.push(b.c.x, b.c.y, b.c.z, b.c.x, b.c.y, b.c.z, b.r, b.r, -1, -1, -1, 1);
+  for (const b of o.blobs) packed.push(b.c.x, b.c.y, b.c.z, b.c.x, b.c.y, b.c.z, b.r, b.r, -1, -1, -1, 1, b.free ? 1 : 0);
   const segs = new Float32Array(packed);
   const count = segs.length / STRIDE;
   const grid = new SegGrid(segs, count, Math.max(o.kLock, o.kBlob) + 0.025);
@@ -211,10 +214,17 @@ export function buildHairSdf(P: HeadParams, o: HairSdfOptions): THREE.BufferGeom
 
   const dir = new THREE.Vector3();
   const amp = s ? s.noiseAmp * Math.max(0.25, o.detail) : 0;
+  // Hairline cut shared by the shell and the groomed locks: nothing grows below the hairline,
+  // so lock tips end in a clean soft edge instead of dripping over the forehead and fades.
+  let cut = -1;
   const shellD = (x: number, y: number, z: number): number => {
+    cut = -1;
     if (!s || s.base < 0) return 1;
     const l = Math.hypot(x, y, z) || 1e-6;
     dir.set(x / l, y / l, z / l);
+    const h = hairline(dir, s);
+    const mc = smoothstep(h - 0.09, h + 0.09, dir.y) * (s.topCut !== undefined ? smoothstep(s.topCut + 0.1, s.topCut - 0.1, dir.y) : 1);
+    cut = (0.3 - mc) * 0.25;
     const [m, taper] = shellMask(s, dir);
     if (m < 0.02) return Math.max(0.05, l - R(x, y, z) * 0.9);
     const rr = R(x, y, z);
@@ -225,10 +235,7 @@ export function buildHairSdf(P: HeadParams, o: HairSdfOptions): THREE.BufferGeom
     if (s.flat && y > s.flat * P.height) outer = Math.max(outer, y - s.flat * P.height - 0.02);
     // Hair only exists in a layer just above the scalp (nothing to show through the face).
     const inner = rr * 0.9 - l;
-    // A softer coverage ramp for the cut keeps the hairline edge smooth after meshing.
-    const h = hairline(dir, s);
-    const mc = smoothstep(h - 0.09, h + 0.09, dir.y) * (s.topCut !== undefined ? smoothstep(s.topCut + 0.06, s.topCut - 0.06, dir.y) : 1);
-    return smax(smax(outer, inner, 0.02), (0.3 - mc) * 0.25, 0.03);
+    return smax(outer, inner, 0.02);
   };
 
   const dr = o.drape;
@@ -250,13 +257,16 @@ export function buildHairSdf(P: HeadParams, o: HairSdfOptions): THREE.BufferGeom
 
   const field: Sdf = (x, y, z) => {
     let d = shellD(x, y, z);
+    const cutV = cut;
     if (dr) d = smin(d, drapeD(x, y, z), o.kLock);
+    let free = 1e9;
     if (count) {
       const c = grid.cell(x, y, z);
-      if (c < 0) d = Math.min(d, grid.outside(x, y, z));
-      else if (grid.starts[c] === grid.starts[c + 1]) d = Math.min(d, grid.far[c]!);
+      if (c < 0) free = grid.outside(x, y, z);
+      else if (grid.starts[c] === grid.starts[c + 1]) free = grid.far[c]!;
       else {
-        let best = grid.pad;
+        let bestS = grid.pad;
+        let bestF = grid.pad;
         for (let q = grid.starts[c]!; q < grid.starts[c + 1]!; q++) {
           const i = grid.items[q]!;
           const off = i * STRIDE;
@@ -277,12 +287,21 @@ export function buildHairSdf(P: HeadParams, o: HairSdfOptions): THREE.BufferGeom
             sd = Math.hypot(pax - bax * h, pay - bay * h, paz - baz * h) - (segs[off + 6]! + (segs[off + 7]! - segs[off + 6]!) * h);
           }
           if (sd >= grid.pad) continue;
-          if (sd < best) best = sd;
-          d = smin(d, sd, i < nLockSegs ? o.kLock : o.kBlob);
+          if (segs[off + 12]! > 0) {
+            if (sd < bestF) bestF = sd;
+            free = smin(free, sd, i < nLockSegs ? o.kLock : o.kBlob);
+          } else {
+            if (sd < bestS) bestS = sd;
+            d = smin(d, sd, i < nLockSegs ? o.kLock : o.kBlob);
+          }
         }
-        d = Math.min(d, best);
+        d = Math.min(d, bestS);
+        free = Math.min(free, bestF);
       }
     }
+    if (cutV > -1) d = smax(d, cutV, 0.03);
+    if (free < grid.pad) d = smin(d, free, o.kLock);
+    else d = Math.min(d, free);
     for (const ring of rings) d = smin(d, sdTorusAxis(x, y, z, ring), o.kLock);
     return d;
   };
