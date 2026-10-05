@@ -575,7 +575,9 @@ function bun(c: Ctx, dir: THREE.Vector3, o: BunOpts): number {
 
 /** Braid lying on the scalp along `dirs`, optionally continuing as a hanging braid. */
 function scalpBraid(c: Ctx, dirs: THREE.Vector3[], r: number, hang: number, hangOut?: THREE.Vector3) {
-  const pts = dirs.map((d) => onHead(c.P, d, 0.03 + r * 0.5));
+  // Sculpted hair: the braid rides on top of the hair mass (it is the feature of the style),
+  // instead of being buried in the scalp shell.
+  const pts = dirs.map((d) => onHead(c.P, d, Math.max(0.03 + r * 0.5, c.sdf && c.shell ? shellT(c.shell, d) + r * 0.62 : 0)));
   if (hang > 0) {
     const last = pts[pts.length - 1]!;
     const out = hangOut ?? T1.subVectors(last, pts[pts.length - 2]!).normalize().clone();
@@ -1354,7 +1356,7 @@ function compileTied(look: HairLook, P: HeadParams, plan: Plan): Plan {
       plan.extras.push((c) => {
         const xs = two ? [-0.3, 0.3] : [0];
         for (const x of xs) {
-          const r = two ? 0.075 : 0.095;
+          const r = (two ? 0.075 : 0.095) * (c.sdf ? 1.2 : 1);
           const g = scalpBraid(c, arc3(dirOf(x * 0.9, 0.62, 0.72), dirOf(x * 1.1, 0.92, -0.25), dirOf(x * 1.5, -0.1, -0.95), 16), r, tailLen * (two ? 0.75 : 0.8), new THREE.Vector3(x * 1.4, -1, two ? 0.3 : -0.2));
           addMesh(c, g.build(), vertexColorMat(c), 'hair-braid');
         }
@@ -1764,6 +1766,9 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
     const count = cs.spikes ? Math.max(8, Math.round(cs.count * 0.13)) : Math.max(8, Math.round(cs.count * (isLong ? (tune.long ?? LOCK_FRACTION) : (tune.short ?? LOCK_FRACTION * 0.6))));
     const r0 = wide * (cs.spikes ? 1.6 : isLong ? (tune.rl ?? LOCK_RADIUS) : (tune.r ?? LOCK_RADIUS));
     const spec: ClumpSpec = { ...cs, collider: cs.collider ?? opts.collider };
+    // Tied hair is pulled tight: lower relief (braided ties almost flush, the braid is the feature).
+    const braidTie = look.tie?.kind === 'french-braid' || look.tie?.kind === 'two-braids' || look.tie?.kind === 'crown-braid';
+    const sink = look.cut === 'tied' ? (braidTie ? 0.85 : 0.6) : 0.4;
     if (cs.spikes) {
       // Spikes grow from the top, long and pointed enough to read as spikes, not studs.
       spec.region = (d) => cs.region(d) && d.y > 0.2;
@@ -1780,13 +1785,13 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
     }
     if (!cs.spikes) {
       // Locks hug the sculpted volume: the shell gives the shape, locks only carve the flow.
-      // Tied hair is pulled tight: lower relief.
       const lockR = r0 * rk;
-      const sink = look.cut === 'tied' ? 0.6 : 0.4;
       spec.base = 0;
       spec.edge = undefined;
       spec.lift = (d) => Math.max(0.005, shellT(s, d) - lockR * sink);
-      spec.length = (d, r) => cs.length(d, r) * (cs.fringe ? 1 : 1.5);
+      // Longer strokes for loose cuts; tied hair stops at the tie (overshooting locks pile up
+      // into fat rolls where they meet).
+      spec.length = (d, r) => cs.length(d, r) * (cs.fringe || look.cut === 'tied' ? 1 : 1.5);
     }
     const free = Boolean(spec.fall);
     for (const path of clumpPaths(P, spec, rand, count)) {
@@ -1796,8 +1801,10 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
         locks.push({ pts: path.pts, r0: rl, tip, shade: 1 + (path.r - 0.5) * 0.16, free });
         continue;
       }
-      // Locks thin out towards the hairline like the shell does (soft edge, no helmet ledge).
+      // Locks thin out towards the hairline like the shell does (soft edge, no helmet ledge),
+      // and never stand further proud of a thin shell than their relief allows (tied hair).
       const tk = path.pts.map((q) => lerp(0.35, 1, shellMask(s, T1.copy(q).normalize())[1]));
+      const cap = path.pts.map((q) => Math.max(0.025, shellT(s, T1.copy(q).normalize()) + rl * (1 - sink)));
       const n = tk.length - 1;
       locks.push({
         pts: path.pts,
@@ -1808,8 +1815,9 @@ function sculptedHair(plan: Plan, look: HairLook, P: HeadParams, hmat: THREE.Mes
           const f = u * n;
           const i = Math.min(n - 1, Math.floor(f));
           const k = n > 0 ? lerp(tk[i]!, tk[i + 1]!, f - i) : tk[0]!;
+          const c = n > 0 ? lerp(cap[i]!, cap[i + 1]!, f - i) : cap[0]!;
           // Spindle-shaped: thin root and tip, so locks melt into the mass like brush strokes.
-          return rl * lerp(0.4, 1, smoothstep(0, 0.22, u)) * lerp(1, tip, Math.pow(u, 1.3)) * k;
+          return Math.min(c, rl * lerp(0.4, 1, smoothstep(0, 0.22, u)) * lerp(1, tip, Math.pow(u, 1.3)) * k);
         },
       });
     }

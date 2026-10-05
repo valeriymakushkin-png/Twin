@@ -182,7 +182,9 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
     emoji: Boolean(shape),
   });
   const eyeMat = look.face === 'dots' ? material(look, 'gloss', { color: '#111111', roughness: 0.2 }) : material(look, 'eye', { color: '#ffffff', map: eyeTex });
-  const lidMat = material(look, 'lid', { color: shape ? skin : shade(skin, -0.05) });
+  // Emoji lids face down and away from the key light: a touch lighter than the skin so they
+  // don't read as dark circles around the eyes.
+  const lidMat = material(look, 'lid', { color: shape ? shade(skin, 0.07) : shade(skin, -0.05) });
   const lashMat = material(look, 'gloss', { color: shape ? '#16100e' : shade(hairHex, -0.6), roughness: 0.4 });
   const feminine = dna.presentation === 'feminine';
   const shapeLid =
