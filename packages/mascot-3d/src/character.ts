@@ -38,6 +38,8 @@ interface EyeRig {
   lower: THREE.Object3D;
   ball: THREE.Object3D;
   side: 1 | -1;
+  /** Catch-lights: hidden once the lids cover the eye (they would float on the lid). */
+  glints?: THREE.Object3D[];
 }
 
 export interface MascotRig {
@@ -254,11 +256,13 @@ export function buildMascot(dna: MascotDna, opts: MascotOptions = {}): MascotRig
   let blink = 0;
   const applyLids = () => {
     for (const e of eyes) {
-      const lid = expr.wink === e.side ? 1 : expr.upperLid;
-      // Emoji eyes stay bright: the eye shape only nudges the lids.
+      // Emoji eyes stay bright: half-lidded looks keep the pupil visible (eased lid), the eye
+      // shape only nudges the lids.
+      const lid = expr.wink === e.side ? 1 : shape && expr.upperLid < 0.85 ? Math.pow(expr.upperLid, 1.6) : expr.upperLid;
       const shapeAmt = shape ? shapeLid * 0.55 : shapeLid;
       const upperAmt = Math.min(1, Math.max(lid, shapeAmt * (1 - lid * 0.5)) + blink * (1 - lid));
       e.upper.rotation.x = shape ? lerp(-1.1, 1.58, upperAmt) : lerp(-1.0, 1.62, upperAmt);
+      if (e.glints) for (const g of e.glints) g.visible = upperAmt < 0.62 && expr.wink !== e.side && expr.upperLid < 0.85;
       e.lower.rotation.x = shape ? lerp(0.95, -1.15, Math.min(1, expr.lowerLid * 0.8 + blink * 0.2)) : lerp(0.95, -1.05, Math.min(1, expr.lowerLid + blink * 0.2));
       e.lidTilt.rotation.z = e.side * (expr.lidTilt + shapeTilt);
     }
@@ -484,14 +488,24 @@ function emojiEye(eye: THREE.Group, s: 1 | -1, r: number, eyeMat: THREE.Material
   lower.add(lowerRim);
   lidTilt.add(lower);
   if (expr.upperLid >= 0.85 || expr.wink === s) {
-    // Closed eyes read as lash arcs: ^ ^ when happy, ‿ when resigned or asleep.
+    // Closed eyes sink into their sockets (no bulging skin balls) and read as one lash arc:
+    // ^ when happy, ‿ when resigned or asleep. Lid rims and the open-eye lash line are hidden
+    // so they don't draw a ring around the closed eye.
+    eye.scale.set(1.12, 0.86, 0.8);
+    // Slightly larger lids tuck under the socket rim: no dark crease ring, no catch-lights.
+    lidTilt.scale.setScalar(1.13);
+    glint.visible = false;
+    glint2.visible = false;
+    lash.visible = false;
+    rim.visible = false;
+    lowerRim.visible = false;
     const up = expr.closedHappy || expr.wink === s || expr.mouth === 'laugh' || expr.mouth === 'grin' ? 1 : -0.6;
     const arc = new THREE.QuadraticBezierCurve3(
-      new THREE.Vector3(-r * 0.95, -r * 0.05, r * 0.78),
-      new THREE.Vector3(0, r * (0.05 + 0.45 * up), r * 1.3),
-      new THREE.Vector3(r * 0.95, -r * 0.05, r * 0.78),
+      new THREE.Vector3(-r * 0.92, -r * 0.08, r * 0.62),
+      new THREE.Vector3(0, r * (0.02 + 0.5 * up), r * 1.42),
+      new THREE.Vector3(r * 0.92, -r * 0.08, r * 0.62),
     );
-    lidTilt.add(new THREE.Mesh(new THREE.TubeGeometry(arc, 24, r * 0.06, 8, false), lashMat));
+    lidTilt.add(new THREE.Mesh(new THREE.TubeGeometry(arc, 32, r * 0.065, 8, false), lashMat));
   }
-  return { lidTilt, upper, lower, ball, side: s };
+  return { lidTilt, upper, lower, ball, side: s, glints: [glint, glint2] };
 }

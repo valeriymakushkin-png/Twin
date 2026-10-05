@@ -189,9 +189,18 @@ export function buildFacialHair(kind: string, P: HeadParams, mat: THREE.Material
   if (kind === 'short-beard' || kind === 'full-beard') {
     const full = kind === 'full-beard';
     // Beard line: sideburn → jaw → just under the mouth corners; cheeks stay clean.
-    const line = (ax: number) => (ax < 0.36 ? my - 0.1 : lerp(my - 0.02, -0.06, smoothstep(0.36, 0.9 * P.width, ax)));
+    // Emoji head: the beard follows the jaw and climbs to the sideburn only near the ear, so the
+    // cheeks stay clear (a line across the cheekbones reads as a ski mask).
+    const line = (ax: number, d: THREE.Vector3) =>
+      P.organic
+        ? ax < 0.3
+          ? my - 0.1
+          : lerp(my - 0.02, -0.34, smoothstep(0.3, 0.78 * P.width, ax)) + 0.3 * smoothstep(0.5, 0.05, d.z)
+        : ax < 0.36
+          ? my - 0.1
+          : lerp(my - 0.02, -0.06, smoothstep(0.36, 0.9 * P.width, ax));
     const mask = (d: THREE.Vector3, q: THREE.Vector3) =>
-      smoothstep(0, 0.09, line(Math.abs(q.x)) - q.y) * mouthClear(q) * smoothstep(-0.42, -0.12, d.z);
+      smoothstep(0, 0.09, line(Math.abs(q.x), d) - q.y) * mouthClear(q) * smoothstep(-0.42, -0.12, d.z);
     const thick = (q: THREE.Vector3) => (full ? 0.06 + 0.11 * chinK(q) : 0.032 + 0.03 * chinK(q));
     const mesh = new THREE.Mesh(facialShell(P, mask, thick, base), shellMat);
     mesh.castShadow = true;

@@ -33,6 +33,8 @@ export interface DrapeSpec {
   under?: number;
   /** Extra volume around the head (0..1). */
   volume?: number;
+  /** Side shave on the −1 / +1 x side: no sheet there (the hair is swept to the other side). */
+  shave?: number;
   seed: number;
 }
 
@@ -99,7 +101,9 @@ export function buildDrape(P: HeadParams, d: DrapeSpec, collider: Collider | und
   const N = d.locks;
   const lockPhase = Array.from({ length: N }, () => rand());
   const lockLen = Array.from({ length: N }, () => (rand() - 0.5) * 0.08);
-  const span = Math.PI * 2 - 2 * d.phi0;
+  const phiA = d.shave === 1 ? 0.86 * Math.PI : d.phi0;
+  const phiB = d.shave === -1 ? 1.14 * Math.PI : Math.PI * 2 - d.phi0;
+  const span = phiB - phiA;
   // Columns: several per lock so each lock is rounded.
   const PER = 6;
   const cols = Math.max(8, Math.round((span / (Math.PI * 2)) * N * PER));
@@ -116,8 +120,9 @@ export function buildDrape(P: HeadParams, d: DrapeSpec, collider: Collider | und
   for (let c = 0; c <= cols; c++) {
     const a = c / cols;
     // φ runs from the left front edge round the back to the right front edge.
-    const phiBase = d.phi0 + a * span;
-    const lockF = (phiBase / (Math.PI * 2)) * N;
+    const phiBase = phiA + a * span;
+    // Uneven lock widths: a regular comb of equal locks reads as a pleated curtain.
+    const lockF = (phiBase / (Math.PI * 2)) * N + 0.32 * Math.sin(phiBase * 2.3 + d.seed) + 0.22 * Math.sin(phiBase * 5.3 + d.seed * 1.7);
     const k = Math.floor(lockF);
     const g = lockF - k - 0.5; // −0.5 … 0.5 across a lock
     const li = ((k % N) + N) % N;

@@ -71,7 +71,8 @@ export function hairline(dir: THREE.Vector3, s: ShellSpec): number {
     h = lerp(h, s.fringe + jag, k);
   }
   if (s.shave && Math.sign(dir.x) === s.shave) h = lerp(h, 0.66, smoothstep(0.14, 0.26, a) * smoothstep(0.86, 0.7, a));
-  if (s.topCut !== undefined) h = a < 0.3 ? lerp(1.4, h, smoothstep(0.2, 0.3, a)) : h;
+  // Horseshoe: the band starts above the ears, temples stay bald.
+  if (s.topCut !== undefined) h = a < 0.45 ? lerp(1.4, h, smoothstep(0.3, 0.45, a)) : h;
   return h;
 }
 
@@ -642,15 +643,11 @@ function strands(c: Ctx, look: HairLook) {
   const tied = s.tied ?? 'none';
   const tieDir = tied === 'bun' ? TIE_DIRS.top : TIE_DIRS.high;
   const tiePt = onHead(P, tieDir, 0.06);
-  const roots: THREE.Vector3[] = [];
-  const golden = Math.PI * (3 - Math.sqrt(5));
-  const N = count * 5;
-  for (let i = 0; i < N && roots.length < count; i++) {
-    const y = 1 - ((i + 0.5) / N) * 2;
-    const rad = Math.sqrt(1 - y * y);
-    const d = new THREE.Vector3(Math.cos(golden * i) * rad, y, Math.sin(golden * i) * rad);
-    if (d.y > hairline(d, c.shell) + 0.06) roots.push(d);
-  }
+  // Roots spread evenly over the whole hair region (not just the crown), so braids and locs
+  // cover the back and sides of the head too.
+  const inHair = (d: THREE.Vector3) => d.y > hairline(d, c.shell) + 0.06;
+  const share = fib(400, inHair).length / 400;
+  const roots = fib(Math.max(count, Math.round(count / Math.max(0.05, share))), inHair);
   const flow = partFlow(0, -0.5);
   roots.forEach((root, k) => {
     const rr = r * (0.85 + 0.3 * c.rand());
@@ -660,8 +657,9 @@ function strands(c: Ctx, look: HairLook) {
     if (tied === 'up') {
       // Fountain: locs spring up from the crown and arc over.
       const start = onHead(P, d, lift * 0.5);
-      const out = d.clone().lerp(UP, 0.6).normalize();
-      pts.push(...hangPath(P, start, out, 0.35 + hang * 0.3, { margin: rr, stiff: 0.8, collider: c.collider }));
+      // Mostly upwards (a high top of locs), tips flopping over a little.
+      const out = d.clone().lerp(UP, 0.82).normalize();
+      pts.push(...hangPath(P, start, out, 0.3 + hang * 0.25 + 0.08 * c.rand(), { margin: rr, stiff: 0.93, collider: c.collider }));
     } else if (tied === 'bun' || tied === 'ponytail') {
       // Along the scalp to the tie point.
       for (let i = 0; i < 30; i++) {
@@ -843,8 +841,9 @@ function compileLook(look: HairLook, P: HeadParams): Plan {
     case 'crew': {
       const l = len ?? 0.5;
       const flat = look.shape === 'blunt';
-      plan.shell = s = shellSpec(SHORT, { base: 0.03, top: flat ? 0.34 : 0.05 + 0.05 * l, noiseAmp: 0.012, noiseFreq: 14, frontBoost: 0.03, recede: look.recede, flat: flat ? 1.15 : undefined, part: partX, partDepth: 0.4 });
-      plan.stubble = applySides(s, look.sides, sweep);
+      plan.shell = s = shellSpec(SHORT, { base: 0.03, top: flat ? 0.34 : 0.05 + 0.05 * l, noiseAmp: 0.012, noiseFreq: 14, frontBoost: 0.03, recede: look.recede, flat: flat ? 1.12 : undefined, part: partX, partDepth: 0.4 });
+      // A flat top is always cut short on the sides.
+      plan.stubble = applySides(s, look.sides ?? (flat ? 'mid-fade' : undefined), sweep);
       if (!flat) plan.clumps.push(shortClump({ flow: messy(partX !== undefined ? partFlow(partX, 0.55) : crownFlow, mess), length: (_d, r) => 0.17 + 0.1 * l + r * 0.1 }));
       plan.crown = flat ? 0.28 : 0.08;
       return plan;
@@ -1230,15 +1229,16 @@ function compileLong(look: HairLook, P: HeadParams, plan: Plan): Plan {
       bottom: bottomAt,
       top: 0.32,
       phi0,
-      locks: cut === 'bob' ? 24 : tex === 'straight' ? 30 : 22,
+      locks: cut === 'bob' ? 20 : tex === 'straight' ? 22 : 18,
       flare: plan.curtain.flare,
-      groove: tex === 'straight' ? 0.045 : 0.06,
+      groove: tex === 'straight' ? 0.038 : 0.055,
       thick: cut === 'bob' ? 0.12 : 0.09,
       wave: tex === 'wavy' ? { amp: 0.07, freq: 0.9 } : kinky ? { amp: 0.09, freq: 1.7 } : undefined,
       curls: kinky ? 1 : 0,
       flip: shape === 'flip' ? 0.8 : 0,
       under: shape === 'blunt' || (cut === 'bob' && !shape) ? 0.5 : shape === 'flip' ? 0 : 0.2,
       volume: vol,
+      shave: s.shave,
     };
     plan.drapes = [base];
     if (layered) {
@@ -1428,7 +1428,7 @@ export function shellThickness(s: ShellSpec, d: THREE.Vector3, m: number): numbe
   let t = s.base + s.top * smoothstep(s.side, 1, d.y);
   // Flat top: vertical walls just outside the widest part of the head (clipped flat on top),
   // a box of hair instead of a dome or a beret.
-  if (s.flat) t = s.base + Math.max(0, Math.min(s.top * 3, 1.04 / Math.sqrt(Math.max(0.04, 1 - d.y * d.y)) - 1)) * smoothstep(s.side, s.side + 0.3, d.y);
+  if (s.flat) t = s.base + Math.max(0, Math.min(s.top * 3, 1.0 / Math.sqrt(Math.max(0.04, 1 - d.y * d.y)) - 1)) * smoothstep(s.side, s.side + 0.3, d.y);
   t += s.frontBoost * gauss(d.x * d.x + (d.y - 0.72) ** 2, 0.16) * smoothstep(0.1, 0.6, d.z);
   if (s.dome) t += s.dome * gauss(d.x * d.x * 1.1 + (d.y - 0.95) ** 2 + (d.z + 0.15) ** 2 * 0.7, 0.62);
   if (s.backBoost) t += s.backBoost * gauss(d.x * d.x * 0.8 + (d.y - 0.4) ** 2 + (d.z + 0.8) ** 2, 0.3);
