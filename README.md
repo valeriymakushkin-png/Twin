@@ -101,3 +101,12 @@ docs/              Architecture & operations documentation
 - **Measured likeness**: an evaluation harness scores identity per style and gates prompt/model changes.
 - **Privacy by design**: explicit biometric consent, private bucket + signed URLs, 30-day photo retention, GDPR erasure.
 - **Built for 100k users**: stateless API, queue-depth autoscaling (KEDA), cluster-wide provider rate limiting, priority queue for Premium, CDN-served media.
+
+## Vylo — travel app
+
+[`apps/vylo`](apps/vylo) is a separate, fully static travel app (3D globe of places, visas for Russian passport
+holders, meetups with chat, trip planner, streaks/quests/achievements). See [apps/vylo/README.md](apps/vylo/README.md).
+
+```bash
+pnpm --filter @vylo/app dev      # http://localhost:3100
+```

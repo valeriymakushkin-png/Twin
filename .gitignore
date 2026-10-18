@@ -34,3 +34,4 @@ models/
 .vscode/*
 !.vscode/extensions.json
 apps/web/public/mascot3d-worker.js
+apps/vylo/public/maplibre-gl-csp-worker.js
