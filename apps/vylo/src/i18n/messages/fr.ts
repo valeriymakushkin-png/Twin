@@ -72,7 +72,7 @@ const fr: Messages = {
     styles: { solo: 'En solo', couple: 'En couple', friends: 'Entre amis', nomad: 'Nomade', backpacker: 'Sac au dos', family: 'En famille' },
     step2Title: 'Quels pays avez-vous visités ?',
     step2Subtitle: 'Créons votre passeport de voyage : chaque pays vous rapporte un tampon et des miles.',
-    worldExplored: '{pct} % du monde exploré',
+    worldExplored: '{pct} du monde exploré',
     openMap: 'Ouvrir la carte du monde',
     defaultName: 'Nomade',
   },

@@ -36,6 +36,8 @@ function walk(ref: Node, b: Node | undefined, en: Node | undefined, path: string
     if (typeof b !== 'string') return void problems.push(`${at} missing`);
     if (ref.trim() && !b.trim()) problems.push(`${at} is empty`);
     if (placeholders(ref) !== placeholders(b)) problems.push(`${at} placeholders {${placeholders(b)}} ≠ {${placeholders(ref)}}`);
+    // Percentages come pre-formatted by Intl ("3,6 %"), so a translation must not add its own sign.
+    if ((b.match(/%/g)?.length ?? 0) !== (ref.match(/%/g)?.length ?? 0)) problems.push(`${at} has a different number of % signs than the reference`);
     if (locale !== 'ru' && /[А-Яа-яЁё]/.test(b)) problems.push(`${at} still contains Cyrillic: ${b}`);
     // Proper names (people, places) are expected to match English, so only prose is compared.
     if (locale !== 'en' && locale !== 'ru' && typeof en === 'string' && !/^content\..*\.(name|home|placeName)$/.test(path)) {
