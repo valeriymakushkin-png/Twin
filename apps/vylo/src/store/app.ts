@@ -1,17 +1,22 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { destinationById } from '@/data/destinations';
-import { placeById } from '@/data/places';
+import { placeById, placesIn } from '@/data/places';
 import { meetups as seedMeetups, userById } from '@/data/social';
-import type { Meetup, Review } from '@/data/types';
+import type { Meetup, Review, VisaDoc, VisaRegime } from '@/data/types';
 import { visaByCode } from '@/data/visa';
-import { achievements, levelFor, questsFor, unlockedAchievements, XP, type Progress, type QuestKey } from '@/lib/gamification';
-import { todayKey, uid } from '@/lib/utils';
+import { detectLocale, type Locale } from '@/i18n/config';
+import { translate } from '@/i18n';
+import { avatarFromSeed, type AvatarConfig } from '@/lib/avatar';
+import { earnedPatches, MILES, patches, questsFor, statusFor, type Progress, type QuestKey } from '@/lib/gamification';
+import { daysBetween, distanceKm, todayKey, uid } from '@/lib/utils';
 import { useUI } from './ui';
 
 export interface Collection {
   id: string;
   name: string;
+  /** Built-in collections keep a key so their name follows the app language */
+  nameKey?: 'wishlist' | 'foodies';
   emoji: string;
   itemIds: string[];
   createdAt: number;
@@ -23,10 +28,16 @@ export interface TripItem {
   day: number;
 }
 
+export type ChecklistKey = 'passport' | 'insurance' | 'tickets' | 'booking' | 'chargers' | 'firstAid';
+
 export interface ChecklistItem {
   id: string;
-  text: string;
   done: boolean;
+  /** Custom item typed by the user */
+  text?: string;
+  key?: ChecklistKey;
+  doc?: VisaDoc;
+  apply?: VisaRegime;
 }
 
 export interface Trip {
@@ -50,12 +61,14 @@ export interface ChatMessage {
 export interface Profile {
   name: string;
   handle: string;
-  avatar: string;
+  avatar: AvatarConfig;
   home: string;
   bio: string;
   citizenship: string;
   interests: string[];
 }
+
+export type PassportCover = 'classic' | 'night' | 'sunset' | 'forest' | 'arctic';
 
 interface Daily {
   date: string;
@@ -64,6 +77,7 @@ interface Daily {
 }
 
 interface State {
+  locale: Locale;
   onboarded: boolean;
   profile: Profile;
   savedIds: string[];
@@ -81,13 +95,18 @@ interface State {
   guidesRead: string[];
   viewed: string[];
   recentSearches: string[];
-  xp: number;
+  miles: number;
   streak: { count: number; best: number; last: string };
+  vacation: { month: string; used: number };
   daily: Daily;
   unlocked: string[];
   mapStyle: 'satellite' | 'light';
   notificationsSeenAt: number;
+  plus: { active: boolean; plan: 'monthly' | 'yearly' | null; since: number };
+  passportCover: PassportCover;
+  offline: string[];
 
+  setLocale: (l: Locale) => void;
   completeOnboarding: (p: Partial<Profile>, visited: string[]) => void;
   updateProfile: (p: Partial<Profile>) => void;
   checkIn: () => void;
@@ -103,6 +122,7 @@ interface State {
   addToTrip: (tripId: string, placeId: string, day?: number) => void;
   removeFromTrip: (tripId: string, itemId: string) => void;
   moveTripItem: (tripId: string, itemId: string, day: number) => void;
+  autoPlanTrip: (tripId: string) => number;
   toggleChecklist: (tripId: string, itemId: string) => void;
   addChecklist: (tripId: string, text: string) => void;
   deleteTrip: (id: string) => void;
@@ -119,22 +139,25 @@ interface State {
   claimQuest: (questId: string) => void;
   setMapStyle: (s: State['mapStyle']) => void;
   markNotificationsSeen: () => void;
+  startPlus: (plan: 'monthly' | 'yearly') => void;
+  stopPlus: () => void;
+  setPassportCover: (c: PassportCover) => void;
+  markOffline: (destinationId: string) => void;
   reset: () => void;
 }
 
-const defaultProfile: Profile = {
-  name: 'Путешественник',
-  handle: 'traveler',
-  avatar: '',
-  home: 'Москва, Россия',
-  bio: 'Коллекционирую закаты и штампы в паспорте.',
-  citizenship: 'RU',
-  interests: [],
-};
-
-const initial = {
+const initial = () => ({
+  locale: detectLocale(),
   onboarded: false,
-  profile: defaultProfile,
+  profile: {
+    name: '',
+    handle: 'traveler',
+    avatar: avatarFromSeed(uid()),
+    home: '',
+    bio: '',
+    citizenship: 'RU',
+    interests: [] as string[],
+  } as Profile,
   savedIds: [] as string[],
   collections: [] as Collection[],
   beenHere: [] as string[],
@@ -150,13 +173,17 @@ const initial = {
   guidesRead: [] as string[],
   viewed: [] as string[],
   recentSearches: [] as string[],
-  xp: 0,
+  miles: 0,
   streak: { count: 0, best: 0, last: '' },
+  vacation: { month: '', used: 0 },
   daily: { date: '', counts: {}, claimed: [] } as Daily,
   unlocked: [] as string[],
   mapStyle: 'satellite' as const,
   notificationsSeenAt: 0,
-};
+  plus: { active: false, plan: null, since: 0 } as State['plus'],
+  passportCover: 'classic' as PassportCover,
+  offline: [] as string[],
+});
 
 export function progressOf(s: Pick<State, 'savedIds' | 'collections' | 'visited' | 'beenHere' | 'joined' | 'myMeetups' | 'myReviews' | 'trips' | 'streak' | 'visaChecked' | 'guidesRead' | 'following'>): Progress {
   return {
@@ -180,33 +207,58 @@ const freshDaily = (d: Daily): Daily => (d.date === todayKey() ? d : { date: tod
 function defaultChecklist(destinationId: string): ChecklistItem[] {
   const d = destinationById(destinationId);
   const visa = d ? visaByCode(d.countryCode) : undefined;
-  const items = ['Загранпаспорт', 'Страховка', 'Билеты', 'Бронь жилья', 'Зарядки и адаптер', 'Аптечка'];
-  if (visa) {
-    for (const doc of visa.docs) if (!items.includes(doc)) items.push(doc);
-    if (visa.regime === 'required' || visa.regime === 'evisa' || visa.regime === 'eta') items.unshift(`Оформить: ${visa.title.toLowerCase()}`);
+  const items: ChecklistItem[] = [];
+  if (visa && (visa.regime === 'required' || visa.regime === 'schengen' || visa.regime === 'evisa' || visa.regime === 'eta'))
+    items.push({ id: uid(), done: false, apply: visa.regime });
+  const keys: ChecklistKey[] = visa?.regime === 'domestic' ? ['tickets', 'booking', 'chargers', 'firstAid'] : ['passport', 'insurance', 'tickets', 'booking', 'chargers', 'firstAid'];
+  for (const key of keys) items.push({ id: uid(), done: false, key });
+  const covered: VisaDoc[] = ['passport', 'returnTicket', 'booking', 'insurance'];
+  for (const doc of visa?.docs ?? []) if (!covered.includes(doc)) items.push({ id: uid(), done: false, doc });
+  return items;
+}
+
+/** Spread a destination's places over the trip's days, nearest-neighbour by day, max four a day. */
+function planRoute(destinationId: string, days: number): string[][] {
+  const pool = placesIn(destinationId).filter((p) => p.category !== 'hotel');
+  const plan: string[][] = Array.from({ length: days }, () => []);
+  const remaining = [...pool];
+  let day = 0;
+  let cursor = destinationById(destinationId)!;
+  let from: { lat: number; lng: number } = cursor;
+  while (remaining.length && day < days) {
+    remaining.sort((a, b) => distanceKm(from, a) - distanceKm(from, b));
+    const next = remaining.shift()!;
+    plan[day]!.push(next.id);
+    from = next;
+    if (plan[day]!.length >= Math.max(2, Math.ceil(pool.length / days)) || plan[day]!.length >= 4) {
+      day++;
+      from = cursor;
+    }
   }
-  return items.map((text) => ({ id: uid(), text, done: false }));
+  return plan;
 }
 
 export const useApp = create<State>()(
   persist(
     (set, get) => {
-      /** Grant XP, then surface any level-up and newly unlocked achievements. */
-      const gain = (xp: number, label: string) => {
-        const before = levelFor(get().xp);
-        set((s) => ({ xp: s.xp + xp }));
-        if (xp > 0) useUI.getState().pushReward(xp, label);
-        const fresh = unlockedAchievements(progressOf(get())).filter((id) => !get().unlocked.includes(id));
+      const t = (key: Parameters<typeof translate>[1], vars?: Record<string, string | number>) => translate(get().locale, key, vars);
+
+      /** Grant miles, then surface any new status and newly earned patches. */
+      const gain = (miles: number, labelKey: string, vars?: Record<string, string | number>) => {
+        const before = statusFor(get().miles);
+        set((s) => ({ miles: s.miles + miles }));
+        if (miles > 0) useUI.getState().pushReward(miles, labelKey, vars);
+        const fresh = earnedPatches(progressOf(get())).filter((id) => !get().unlocked.includes(id));
         if (fresh.length) {
-          const bonus = fresh.reduce((sum, id) => sum + (achievements.find((a) => a.id === id)?.xp ?? 0), 0);
-          set((s) => ({ unlocked: [...s.unlocked, ...fresh], xp: s.xp + bonus }));
+          const bonus = fresh.reduce((sum, id) => sum + (patches.find((a) => a.id === id)?.miles ?? 0), 0);
+          set((s) => ({ unlocked: [...s.unlocked, ...fresh], miles: s.miles + bonus }));
           for (const id of fresh) {
-            const achievement = achievements.find((a) => a.id === id);
-            if (achievement) useUI.getState().celebrate({ kind: 'achievement', achievement });
+            const patch = patches.find((a) => a.id === id);
+            if (patch) useUI.getState().celebrate({ kind: 'patch', patch });
           }
         }
-        const after = levelFor(get().xp);
-        if (after.index > before.index) useUI.getState().celebrate({ kind: 'level', level: after.level, name: after.name });
+        const after = statusFor(get().miles);
+        if (after.index > before.index) useUI.getState().celebrate({ kind: 'status', level: after.level, key: after.key });
       };
 
       const bump = (key: QuestKey, by = 1) =>
@@ -216,7 +268,9 @@ export const useApp = create<State>()(
         });
 
       return {
-        ...initial,
+        ...initial(),
+
+        setLocale: (locale) => set({ locale }),
 
         completeOnboarding: (p, visited) => {
           set((s) => ({
@@ -226,32 +280,40 @@ export const useApp = create<State>()(
             collections: s.collections.length
               ? s.collections
               : [
-                  { id: 'wishlist', name: 'Хочу поехать', emoji: '✨', itemIds: [], createdAt: Date.now() },
-                  { id: 'food', name: 'Гастро-места', emoji: '🍜', itemIds: [], createdAt: Date.now() },
+                  { id: 'wishlist', name: '', nameKey: 'wishlist', emoji: '✨', itemIds: [], createdAt: Date.now() },
+                  { id: 'foodies', name: '', nameKey: 'foodies', emoji: '🍜', itemIds: [], createdAt: Date.now() },
                 ],
           }));
-          gain(50 + visited.length * 10, 'Добро пожаловать в Vylo');
+          gain(50 + visited.length * 10, 'gamify.reward.welcome');
         },
 
         updateProfile: (p) => set((s) => ({ profile: { ...s.profile, ...p } })),
 
         checkIn: () => {
           const today = todayKey();
-          const { streak } = get();
+          const { streak, plus, vacation } = get();
           if (streak.last === today) return;
-          const yesterday = todayKey(new Date(Date.now() - 86_400_000));
-          const count = streak.last === yesterday ? streak.count + 1 : 1;
+          const gap = streak.last ? daysBetween(streak.last, today) : 99;
+          const month = today.slice(0, 7);
+          const usedThisMonth = vacation.month === month ? vacation.used : 0;
+          const missed = gap - 1;
+          let count = 1;
+          if (gap === 1) count = streak.count + 1;
+          else if (plus.active && missed > 0 && missed <= 2 - usedThisMonth) {
+            // Vacation mode (Plus): up to two skipped days a month don't break the journey.
+            count = streak.count + 1;
+            set({ vacation: { month, used: usedThisMonth + missed } });
+          }
           const best = Math.max(streak.best, count);
           set({ streak: { count, best, last: today }, daily: freshDaily(get().daily) });
           if (get().onboarded) {
-            if (count > 1) useUI.getState().celebrate({ kind: 'streak', count, best });
-            gain(XP.checkIn * Math.min(count, 7), `Серия ${count} 🔥`);
+            if (count > 1) useUI.getState().celebrate({ kind: 'day', count, best });
+            gain(MILES.day * Math.min(count, 7), 'gamify.reward.day', { count });
           }
         },
 
         toggleSave: (id) => {
-          const saved = get().savedIds.includes(id);
-          if (saved) {
+          if (get().savedIds.includes(id)) {
             set((s) => ({
               savedIds: s.savedIds.filter((x) => x !== id),
               collections: s.collections.map((c) => ({ ...c, itemIds: c.itemIds.filter((x) => x !== id) })),
@@ -260,7 +322,7 @@ export const useApp = create<State>()(
           }
           set((s) => ({ savedIds: [id, ...s.savedIds] }));
           bump('save');
-          gain(XP.save, 'Сохранено');
+          gain(MILES.save, 'gamify.reward.saved');
           return true;
         },
 
@@ -270,54 +332,53 @@ export const useApp = create<State>()(
             collections: [...s.collections, { id, name, emoji, itemIds: itemId ? [itemId] : [], createdAt: Date.now() }],
             savedIds: itemId && !s.savedIds.includes(itemId) ? [itemId, ...s.savedIds] : s.savedIds,
           }));
-          gain(XP.collection, 'Новая коллекция');
+          gain(MILES.collection, 'gamify.reward.collection');
           return id;
         },
 
-        toggleInCollection: (collectionId, itemId) => {
+        toggleInCollection: (collectionId, itemId) =>
           set((s) => ({
             collections: s.collections.map((c) =>
               c.id !== collectionId ? c : { ...c, itemIds: c.itemIds.includes(itemId) ? c.itemIds.filter((x) => x !== itemId) : [itemId, ...c.itemIds] },
             ),
             savedIds: s.savedIds.includes(itemId) ? s.savedIds : [itemId, ...s.savedIds],
-          }));
-        },
+          })),
 
         deleteCollection: (id) => set((s) => ({ collections: s.collections.filter((c) => c.id !== id) })),
 
         toggleBeenHere: (id) => {
-          const been = get().beenHere.includes(id);
-          if (been) return set((s) => ({ beenHere: s.beenHere.filter((x) => x !== id) }));
+          if (get().beenHere.includes(id)) return set((s) => ({ beenHere: s.beenHere.filter((x) => x !== id) }));
           set((s) => ({ beenHere: [id, ...s.beenHere] }));
           const code = destinationById(id)?.countryCode ?? destinationById(placeById(id)?.destinationId ?? '')?.countryCode;
           if (code && !get().visited.includes(code)) {
             set((s) => ({ visited: [...s.visited, code] }));
-            gain(XP.beenHere + XP.visitCountry, 'Новая страна в паспорте');
-          } else gain(XP.beenHere, 'Отмечено');
+            gain(MILES.been + MILES.visitCountry, 'gamify.reward.newCountry');
+          } else gain(MILES.been, 'gamify.reward.been');
         },
 
         toggleVisited: (code) => {
           if (get().visited.includes(code)) return set((s) => ({ visited: s.visited.filter((c) => c !== code) }));
           set((s) => ({ visited: [...s.visited, code] }));
-          gain(XP.visitCountry, 'Штамп в паспорт');
+          gain(MILES.visitCountry, 'gamify.reward.stamp');
         },
 
         toggleJoin: (meetupId) => {
           if (get().joined.includes(meetupId)) return set((s) => ({ joined: s.joined.filter((x) => x !== meetupId) }));
           set((s) => ({ joined: [...s.joined, meetupId] }));
           bump('join');
-          gain(XP.join, 'Вы в деле!');
+          gain(MILES.join, 'gamify.reward.join');
           const m = [...seedMeetups, ...get().myMeetups].find((x) => x.id === meetupId);
           const host = m && userById(m.hostId);
           if (m && host) {
-            setTimeout(() => get().sendMessage(meetupId, `Привет, ${get().profile.name.split(' ')[0]}! Круто, что ты с нами 🙌 Если будут вопросы — пиши сюда.`, host.id), 1600);
+            const first = (get().profile.name || t('onboarding.defaultName')).split(' ')[0]!;
+            setTimeout(() => get().sendMessage(meetupId, t('meetups.hostGreeting', { name: first }), host.id), 1600);
           }
         },
 
         createMeetup: (m) => {
           const id = `my-${uid()}`;
           set((s) => ({ myMeetups: [{ ...m, id, hostId: 'me', attendeeIds: [], createdByMe: true }, ...s.myMeetups], joined: [...s.joined, id] }));
-          gain(XP.hostMeetup, 'Встреча создана');
+          gain(MILES.host, 'gamify.reward.host');
           return id;
         },
 
@@ -334,34 +395,44 @@ export const useApp = create<State>()(
             createdAt: Date.now(),
           };
           set((s) => ({ trips: [trip, ...s.trips] }));
-          gain(XP.trip, 'Поездка создана');
+          gain(MILES.trip, 'gamify.reward.trip');
           return id;
         },
 
         addToTrip: (tripId, placeId, day = 0) =>
           set((s) => ({
-            trips: s.trips.map((t) => (t.id !== tripId || t.items.some((i) => i.placeId === placeId) ? t : { ...t, items: [...t.items, { id: uid(), placeId, day }] })),
+            trips: s.trips.map((tr) => (tr.id !== tripId || tr.items.some((i) => i.placeId === placeId) ? tr : { ...tr, items: [...tr.items, { id: uid(), placeId, day }] })),
           })),
 
         removeFromTrip: (tripId, itemId) =>
-          set((s) => ({ trips: s.trips.map((t) => (t.id !== tripId ? t : { ...t, items: t.items.filter((i) => i.id !== itemId) })) })),
+          set((s) => ({ trips: s.trips.map((tr) => (tr.id !== tripId ? tr : { ...tr, items: tr.items.filter((i) => i.id !== itemId) })) })),
 
         moveTripItem: (tripId, itemId, day) =>
-          set((s) => ({ trips: s.trips.map((t) => (t.id !== tripId ? t : { ...t, items: t.items.map((i) => (i.id === itemId ? { ...i, day } : i)) })) })),
+          set((s) => ({ trips: s.trips.map((tr) => (tr.id !== tripId ? tr : { ...tr, items: tr.items.map((i) => (i.id === itemId ? { ...i, day } : i)) })) })),
+
+        autoPlanTrip: (tripId) => {
+          const trip = get().trips.find((x) => x.id === tripId);
+          if (!trip) return 0;
+          const days = Math.max(1, daysBetween(trip.start, trip.end) + 1);
+          const plan = planRoute(trip.destinationId, days);
+          const items = plan.flatMap((ids, day) => ids.map((placeId) => ({ id: uid(), placeId, day })));
+          set((s) => ({ trips: s.trips.map((x) => (x.id === tripId ? { ...x, items } : x)) }));
+          return items.length;
+        },
 
         toggleChecklist: (tripId, itemId) =>
           set((s) => ({
-            trips: s.trips.map((t) => (t.id !== tripId ? t : { ...t, checklist: t.checklist.map((c) => (c.id === itemId ? { ...c, done: !c.done } : c)) })),
+            trips: s.trips.map((tr) => (tr.id !== tripId ? tr : { ...tr, checklist: tr.checklist.map((c) => (c.id === itemId ? { ...c, done: !c.done } : c)) })),
           })),
 
         addChecklist: (tripId, text) =>
-          set((s) => ({ trips: s.trips.map((t) => (t.id !== tripId ? t : { ...t, checklist: [...t.checklist, { id: uid(), text, done: false }] })) })),
+          set((s) => ({ trips: s.trips.map((tr) => (tr.id !== tripId ? tr : { ...tr, checklist: [...tr.checklist, { id: uid(), text, done: false }] })) })),
 
-        deleteTrip: (id) => set((s) => ({ trips: s.trips.filter((t) => t.id !== id) })),
+        deleteTrip: (id) => set((s) => ({ trips: s.trips.filter((tr) => tr.id !== id) })),
 
         addReview: (targetId, rating, text) => {
           set((s) => ({ myReviews: [{ id: uid(), targetId, authorId: 'me', rating, text, daysAgo: 0, likes: 0 }, ...s.myReviews] }));
-          gain(XP.review, 'Спасибо за отзыв');
+          gain(MILES.review, 'gamify.reward.review');
         },
 
         toggleLike: (id) => {
@@ -374,12 +445,11 @@ export const useApp = create<State>()(
           if (get().following.includes(userId)) return set((s) => ({ following: s.following.filter((x) => x !== userId) }));
           set((s) => ({ following: [...s.following, userId] }));
           bump('follow');
-          gain(XP.follow, 'Подписка');
+          gain(MILES.follow, 'gamify.reward.follow');
         },
 
-        sendMessage: (meetupId, text, userId = 'me') => {
-          set((s) => ({ chats: { ...s.chats, [meetupId]: [...(s.chats[meetupId] ?? []), { id: uid(), userId, text, at: Date.now() }] } }));
-        },
+        sendMessage: (meetupId, text, userId = 'me') =>
+          set((s) => ({ chats: { ...s.chats, [meetupId]: [...(s.chats[meetupId] ?? []), { id: uid(), userId, text, at: Date.now() }] } })),
 
         markVisaChecked: (code) => {
           bump('visa');
@@ -392,7 +462,7 @@ export const useApp = create<State>()(
           bump('guide');
           if (get().guidesRead.includes(id)) return;
           set((s) => ({ guidesRead: [...s.guidesRead, id] }));
-          gain(5, 'Гид прочитан');
+          gain(MILES.guide, 'gamify.reward.guide');
         },
 
         markViewed: (id) => {
@@ -410,18 +480,27 @@ export const useApp = create<State>()(
           const daily = freshDaily(get().daily);
           if (!quest || daily.claimed.includes(questId) || (daily.counts[quest.key] ?? 0) < quest.target) return;
           set({ daily: { ...daily, claimed: [...daily.claimed, questId] } });
-          gain(quest.xp, 'Задание выполнено');
+          gain(quest.miles, 'gamify.reward.quest');
         },
 
         setMapStyle: (mapStyle) => set({ mapStyle }),
         markNotificationsSeen: () => set({ notificationsSeenAt: Date.now() }),
-        reset: () => set({ ...initial }),
+
+        startPlus: (plan) => {
+          set({ plus: { active: true, plan, since: Date.now() } });
+          useUI.getState().celebrate({ kind: 'plus' });
+        },
+        stopPlus: () => set((s) => ({ plus: { active: false, plan: null, since: 0 }, passportCover: 'classic', profile: { ...s.profile, avatar: { ...s.profile.avatar, accessory: Math.min(s.profile.avatar.accessory, 5) } } })),
+        setPassportCover: (passportCover) => set({ passportCover }),
+        markOffline: (id) => set((s) => ({ offline: s.offline.includes(id) ? s.offline : [...s.offline, id] })),
+
+        reset: () => set({ ...initial(), locale: get().locale }),
       };
     },
     {
-      name: 'vylo-state-v1',
+      name: 'vylo-state-v2',
       storage: createJSONStorage(() => localStorage),
-      version: 1,
+      version: 2,
     },
   ),
 );

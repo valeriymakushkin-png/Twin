@@ -3,22 +3,49 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Clock, Search, TrendingUp, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { searchItems } from '@/data';
+import { packs } from '@/content';
+import { allItemIds, resolveItem } from '@/data';
 import { destinations } from '@/data/destinations';
 import { visaCountries } from '@/data/visa';
+import { LOCALES } from '@/i18n/config';
+import { useI18n } from '@/i18n/use';
 import { countryName, flag } from '@/lib/countries';
 import { useApp } from '@/store/app';
 import { Photo } from '../photo';
 import { Rating } from '../ui';
+import { useVisaTitle } from '../visa-badge';
+
+const norm = (s: string) => s.toLocaleLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
+
+/** Names in every language, so "Петра", "Petra" and "Pétra" all find the same place. */
+function searchIndex() {
+  return allItemIds().map((id) => {
+    const names = LOCALES.flatMap((l) => {
+      const p = packs[l];
+      const d = (p.destinations as Record<string, { name: string }>)[id];
+      const pl = (p.places as Record<string, { name: string }>)[id];
+      return [d?.name, pl?.name].filter(Boolean) as string[];
+    });
+    return { id, haystack: norm(names.join(' | ')) };
+  });
+}
 
 export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick: (id: string, kind: 'item' | 'country') => void }) {
   const [q, setQ] = useState('');
   const { recentSearches, addSearch, clearSearches } = useApp();
-  const results = useMemo(() => searchItems(q), [q]);
-  const countries = useMemo(() => {
-    const s = q.trim().toLowerCase();
+  const { t, tk, locale, item, dest, country } = useI18n();
+  const visaTitle = useVisaTitle();
+  const index = useMemo(searchIndex, []);
+  const results = useMemo(() => {
+    const s = norm(q.trim());
     if (!s) return [];
-    return visaCountries.filter((v) => countryName(v.code).toLowerCase().includes(s)).slice(0, 4);
+    const tagHits = (id: string) => resolveItem(id)?.tags.some((tag) => norm(tk(`tags.${tag}`)).includes(s));
+    return index.filter((e) => e.haystack.includes(s) || tagHits(e.id)).slice(0, 20).map((e) => e.id);
+  }, [q, index, tk]);
+  const countries = useMemo(() => {
+    const s = norm(q.trim());
+    if (!s) return [];
+    return visaCountries.filter((v) => LOCALES.some((l) => norm(countryName(v.code, l)).includes(s))).slice(0, 4);
   }, [q]);
 
   const pick = (id: string, kind: 'item' | 'country', label: string) => {
@@ -27,31 +54,19 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
   };
 
   return (
-    <motion.div
-      className="pt-safe absolute inset-0 z-50 flex flex-col bg-white"
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 24 }}
-      transition={{ type: 'spring', stiffness: 420, damping: 36 }}
-    >
+    <motion.div className="pt-safe absolute inset-0 z-50 flex flex-col bg-white" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 24 }} transition={{ type: 'spring', stiffness: 420, damping: 36 }}>
       <div className="flex items-center gap-2 px-4 pb-3 pt-2">
         <div className="flex h-12 flex-1 items-center gap-2.5 rounded-full bg-surface-2 px-4">
           <Search className="size-[18px] text-muted" strokeWidth={2.4} />
-          <input
-            autoFocus
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Места, города, страны"
-            className="min-w-0 flex-1 bg-transparent text-[16px] outline-none placeholder:text-faint"
-          />
+          <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('map.searchPlaceholder')} className="min-w-0 flex-1 bg-transparent text-[16px] outline-none placeholder:text-faint" />
           {q && (
-            <button aria-label="Очистить" onClick={() => setQ('')} className="grid size-6 place-items-center rounded-full bg-faint/30">
+            <button aria-label={t('common.clear')} onClick={() => setQ('')} className="grid size-6 place-items-center rounded-full bg-faint/30">
               <X className="size-3.5" />
             </button>
           )}
         </div>
         <button onClick={onClose} className="px-1 text-[15px] font-semibold text-brand-600">
-          Отмена
+          {t('common.cancel')}
         </button>
       </div>
 
@@ -61,9 +76,9 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
             {recentSearches.length > 0 && (
               <section className="mb-6">
                 <div className="mb-2 flex items-center justify-between">
-                  <h3 className="text-[13px] font-bold uppercase tracking-[0.08em] text-faint">Недавние</h3>
+                  <h3 className="text-[13px] font-bold uppercase tracking-[0.08em] text-faint">{t('search.recent')}</h3>
                   <button onClick={clearSearches} className="text-[13px] font-medium text-muted">
-                    Очистить
+                    {t('common.clear')}
                   </button>
                 </div>
                 {recentSearches.map((r) => (
@@ -74,25 +89,18 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
                 ))}
               </section>
             )}
-            <h3 className="mb-3 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">Сейчас популярно</h3>
+            <h3 className="mb-3 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">{t('search.trending')}</h3>
             <div className="grid grid-cols-2 gap-2.5">
-              {destinations.slice(0, 8).map((d, i) => (
-                <motion.button
-                  key={d.id}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: i * 0.03 }}
-                  onClick={() => pick(d.id, 'item', d.name)}
-                  className="press relative h-28 overflow-hidden rounded-3xl text-left"
-                >
-                  <Photo id={d.image} alt={d.name} width={360} className="absolute inset-0" />
+              {destinations.slice(0, 10).map((d, i) => (
+                <motion.button key={d.id} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.03 }} onClick={() => pick(d.id, 'item', dest(d.id).name)} className="press relative h-28 overflow-hidden rounded-3xl text-left">
+                  <Photo id={d.image} alt={dest(d.id).name} width={360} className="absolute inset-0" tint={d.theme.accent} />
                   <span className="photo-scrim absolute inset-0" />
                   <span className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-ink">
                     <TrendingUp className="size-3 text-mint" /> #{i + 1}
                   </span>
-                  <span className="absolute bottom-2.5 left-3 text-white">
-                    <span className="block text-[15px] font-bold">{d.name}</span>
-                    <span className="block text-[11px] text-white/80">{d.country}</span>
+                  <span className="absolute inset-x-3 bottom-2.5 text-white">
+                    <span className="block truncate text-[15px] font-bold">{dest(d.id).name}</span>
+                    <span className="block truncate text-[11px] text-white/80">{country(d.countryCode)}</span>
                   </span>
                 </motion.button>
               ))}
@@ -103,20 +111,20 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
         {q && countries.length === 0 && results.length === 0 && (
           <div className="py-16 text-center">
             <p className="text-[40px]">🧭</p>
-            <p className="mt-2 text-[16px] font-semibold">Ничего не нашли</p>
-            <p className="mt-1 text-[14px] text-muted">Попробуйте «Бали», «храм» или «Япония»</p>
+            <p className="mt-2 text-[16px] font-semibold">{t('search.emptyTitle')}</p>
+            <p className="mt-1 text-[14px] text-muted">{t('search.emptyHint')}</p>
           </div>
         )}
 
         {countries.length > 0 && (
           <section className="mb-4">
-            <h3 className="mb-1 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">Страны</h3>
+            <h3 className="mb-1 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">{t('search.countries')}</h3>
             {countries.map((c) => (
-              <button key={c.code} onClick={() => pick(c.code, 'country', countryName(c.code))} className="flex w-full items-center gap-3 rounded-2xl py-2.5 text-left">
+              <button key={c.code} onClick={() => pick(c.code, 'country', countryName(c.code, locale))} className="flex w-full items-center gap-3 rounded-2xl py-2.5 text-left">
                 <span className="grid size-12 place-items-center rounded-2xl bg-surface-2 text-[26px]">{flag(c.code)}</span>
-                <span className="flex-1">
-                  <span className="block text-[15px] font-semibold">{countryName(c.code)}</span>
-                  <span className="block text-[12px] text-muted">{c.title}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[15px] font-semibold">{countryName(c.code, locale)}</span>
+                  <span className="block truncate text-[12px] text-muted">{visaTitle(c)}</span>
                 </span>
                 <ArrowUpRight className="size-4 text-faint" />
               </button>
@@ -126,17 +134,21 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
 
         {results.length > 0 && (
           <section>
-            <h3 className="mb-1 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">Места</h3>
-            {results.map((r) => (
-              <button key={r.id} onClick={() => pick(r.id, 'item', r.name)} className="flex w-full items-center gap-3 rounded-2xl py-2 text-left">
-                <Photo id={r.image} alt={r.name} width={120} className="size-12" rounded="rounded-2xl" />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[15px] font-semibold">{r.name}</span>
-                  <span className="block truncate text-[12px] text-muted">{r.subtitle}</span>
-                </span>
-                <Rating value={r.rating} />
-              </button>
-            ))}
+            <h3 className="mb-1 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">{t('search.places')}</h3>
+            {results.map((id) => {
+              const ref = resolveItem(id)!;
+              const text = item(id);
+              return (
+                <button key={id} onClick={() => pick(id, 'item', text.name)} className="flex w-full items-center gap-3 rounded-2xl py-2 text-left">
+                  <Photo id={ref.image} alt={text.name} width={120} className="size-12 shrink-0" rounded="rounded-2xl" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[15px] font-semibold">{text.name}</span>
+                    <span className="block truncate text-[12px] text-muted">{text.subtitle}</span>
+                  </span>
+                  <Rating value={ref.rating} />
+                </button>
+              );
+            })}
           </section>
         )}
       </div>

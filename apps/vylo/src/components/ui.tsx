@@ -1,14 +1,16 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { BadgeCheck, ChevronLeft, ChevronRight, Sparkles, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { userById } from '@/data/social';
+import { useI18n } from '@/i18n/use';
+import { avatarFromSeed } from '@/lib/avatar';
+import { cn } from '@/lib/utils';
 import { useApp } from '@/store/app';
-import { cn, compact, hash } from '@/lib/utils';
-import { Photo } from './photo';
+import { AvatarArt } from './avatar-art';
 
 export function Button({
   variant = 'primary',
@@ -16,7 +18,7 @@ export function Button({
   className,
   children,
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'ghost' | 'dark' | 'soft'; size?: 'sm' | 'md' | 'lg' }) {
+}: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'ghost' | 'dark' | 'soft' | 'gold'; size?: 'sm' | 'md' | 'lg' }) {
   return (
     <button
       {...props}
@@ -30,6 +32,7 @@ export function Button({
         variant === 'ghost' && 'text-ink-2 hover:bg-surface-2',
         variant === 'dark' && 'bg-ink text-white shadow-float',
         variant === 'soft' && 'bg-brand-50 text-brand-600',
+        variant === 'gold' && 'bg-gradient-to-b from-[#fcd34d] to-[#f59e0b] text-[#451a03] shadow-[0_10px_28px_-8px_rgba(245,158,11,0.7)]',
         className,
       )}
     >
@@ -64,25 +67,15 @@ export function IconButton({
 
 export function BackButton({ tone = 'light', className }: { tone?: 'light' | 'glass'; className?: string }) {
   const router = useRouter();
+  const { t } = useI18n();
   return (
-    <IconButton
-      label="Назад"
-      tone={tone}
-      className={className}
-      onClick={() => (window.history.length > 1 ? router.back() : router.push('/map/'))}
-    >
+    <IconButton label={t('common.back')} tone={tone} className={className} onClick={() => (window.history.length > 1 ? router.back() : router.push('/map/'))}>
       <ChevronLeft className="size-5" strokeWidth={2.4} />
     </IconButton>
   );
 }
 
-export function Chip({
-  active,
-  children,
-  icon,
-  className,
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean; icon?: ReactNode }) {
+export function Chip({ active, children, icon, className, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean; icon?: ReactNode }) {
   return (
     <button
       {...props}
@@ -98,45 +91,40 @@ export function Chip({
   );
 }
 
-export function Tag({ children, className }: { children: ReactNode; className?: string }) {
-  return <span className={cn('inline-flex h-6 shrink-0 items-center whitespace-nowrap rounded-full bg-surface-2 px-2.5 text-[11px] font-medium text-ink-2', className)}>{children}</span>;
-}
-
-export function Rating({ value, count, className, light }: { value: number; count?: number; className?: string; light?: boolean }) {
+export function Tag({ children, className, style }: { children: ReactNode; className?: string; style?: React.CSSProperties }) {
   return (
-    <span className={cn('inline-flex items-center gap-1 text-[13px] font-semibold', light ? 'text-white' : 'text-ink', className)}>
-      <Star className="size-3.5 fill-star text-star" />
-      {value.toFixed(1)}
-      {count !== undefined && <span className={cn('font-normal', light ? 'text-white/75' : 'text-muted')}>({compact(count)})</span>}
+    <span style={style} className={cn('inline-flex h-6 shrink-0 items-center whitespace-nowrap rounded-full bg-surface-2 px-2.5 text-[11px] font-medium text-ink-2', className)}>
+      {children}
     </span>
   );
 }
 
-export function SectionHeader({
-  title,
-  href,
-  onAction,
-  action = 'Все',
-  className,
-}: {
-  title: string;
-  href?: string;
-  onAction?: () => void;
-  action?: string;
-  className?: string;
-}) {
+export function Rating({ value, count, className, light }: { value: number; count?: number; className?: string; light?: boolean }) {
+  const { f } = useI18n();
   return (
-    <div className={cn('flex items-end justify-between px-5', className)}>
+    <span className={cn('inline-flex items-center gap-1 text-[13px] font-semibold', light ? 'text-white' : 'text-ink', className)}>
+      <Star className="size-3.5 fill-star text-star" />
+      {value.toFixed(1)}
+      {count !== undefined && <span className={cn('font-normal', light ? 'text-white/75' : 'text-muted')}>({f.compact(count)})</span>}
+    </span>
+  );
+}
+
+export function SectionHeader({ title, href, onAction, action, className }: { title: string; href?: string; onAction?: () => void; action?: string; className?: string }) {
+  const { t } = useI18n();
+  const label = action ?? t('common.seeAll');
+  return (
+    <div className={cn('flex items-end justify-between gap-3 px-5', className)}>
       <h2 className="text-[19px] font-bold tracking-[-0.02em]">{title}</h2>
       {onAction && (
-        <button onClick={onAction} className="flex items-center text-[13px] font-medium text-muted">
-          {action}
+        <button onClick={onAction} className="flex shrink-0 items-center text-[13px] font-medium text-muted">
+          {label}
           <ChevronRight className="size-4" />
         </button>
       )}
       {href && (
-        <Link href={href} className="flex items-center text-[13px] font-medium text-muted">
-          {action}
+        <Link href={href} className="flex shrink-0 items-center text-[13px] font-medium text-muted">
+          {label}
           <ChevronRight className="size-4" />
         </Link>
       )}
@@ -144,30 +132,38 @@ export function SectionHeader({
   );
 }
 
-/** Avatar for a user id; "me" resolves to the local profile. */
+/** Avatar for a user id; "me" resolves to the local profile's own illustrated avatar. */
 export function Avatar({ userId, size = 36, ring, className }: { userId: string; size?: number; ring?: boolean; className?: string }) {
-  const profile = useApp((s) => s.profile);
+  const mine = useApp((s) => s.profile.avatar);
   const user = userId === 'me' ? null : userById(userId);
-  const name = user?.name ?? profile.name;
-  const image = user?.avatar ?? profile.avatar;
+  const config = user ? avatarFromSeed(user.avatar) : mine;
   return (
-    <div className={cn('relative shrink-0 rounded-full', ring && 'ring-2 ring-white', className)} style={{ width: size, height: size }}>
-      <Photo
-        id={image}
-        alt={name}
-        width={size * 2}
-        className="size-full"
-        rounded="rounded-full"
-        fallback={
-          <div
-            className="grid size-full place-items-center rounded-full font-bold text-white"
-            style={{ fontSize: size * 0.4, background: `linear-gradient(135deg, hsl(${hash(name) % 360} 80% 66%), hsl(${(hash(name) + 50) % 360} 72% 52%))` }}
-          >
-            {name.slice(0, 1).toUpperCase()}
-          </div>
-        }
-      />
+    <div className={cn('relative shrink-0 overflow-hidden rounded-full', ring && 'ring-2 ring-white', className)} style={{ width: size, height: size }}>
+      <AvatarArt config={config} size={size} />
     </div>
+  );
+}
+
+export function UserName({ userId, className }: { userId: string; className?: string }) {
+  const { c } = useI18n();
+  const profileName = useApp((s) => s.profile.name);
+  const plus = useApp((s) => s.plus.active);
+  const user = userId === 'me' ? null : userById(userId);
+  return (
+    <span className={cn('inline-flex items-center gap-1', className)}>
+      {user ? c.users[user.id].name : profileName}
+      {user?.verified && <BadgeCheck className="size-4 shrink-0 fill-brand text-white" />}
+      {!user && plus && <PlusBadge />}
+    </span>
+  );
+}
+
+export function PlusBadge({ className }: { className?: string }) {
+  return (
+    <span className={cn('inline-flex h-[18px] items-center gap-0.5 rounded-full bg-gradient-to-r from-[#fcd34d] to-[#f59e0b] px-1.5 text-[10px] font-black text-[#451a03]', className)}>
+      <Sparkles className="size-2.5" strokeWidth={3} />
+      PLUS
+    </span>
   );
 }
 
@@ -204,11 +200,9 @@ export function Segmented<T extends string>({
   return (
     <div className={cn('flex gap-1 rounded-full bg-surface-2 p-1', className)}>
       {options.map((o) => (
-        <button key={o.value} onClick={() => onChange(o.value)} className="relative flex-1 rounded-full py-2 text-[13px] font-semibold">
-          {value === o.value && (
-            <motion.span layoutId={layoutId} className="absolute inset-0 rounded-full bg-white shadow-soft" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />
-          )}
-          <span className={cn('relative transition-colors', value === o.value ? 'text-brand-600' : 'text-muted')}>{o.label}</span>
+        <button key={o.value} onClick={() => onChange(o.value)} className="relative flex-1 rounded-full px-1 py-2 text-[13px] font-semibold">
+          {value === o.value && <motion.span layoutId={layoutId} className="absolute inset-0 rounded-full bg-white shadow-soft" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
+          <span className={cn('relative block truncate transition-colors', value === o.value ? 'text-brand-600' : 'text-muted')}>{o.label}</span>
         </button>
       ))}
     </div>
@@ -221,19 +215,23 @@ export function UnderlineTabs<T extends string>({
   onChange,
   layoutId,
   className,
+  accent,
 }: {
   options: { value: T; label: string }[];
   value: T;
   onChange: (v: T) => void;
   layoutId: string;
   className?: string;
+  accent?: string;
 }) {
   return (
     <div className={cn('no-scrollbar flex gap-6 overflow-x-auto border-b border-line-soft px-5', className)}>
       {options.map((o) => (
         <button key={o.value} onClick={() => onChange(o.value)} className="relative shrink-0 pb-3 pt-1 text-[14px] font-semibold">
-          <span className={value === o.value ? 'text-brand-600' : 'text-muted'}>{o.label}</span>
-          {value === o.value && <motion.span layoutId={layoutId} className="absolute inset-x-0 -bottom-px h-[2.5px] rounded-full bg-brand" />}
+          <span className={value === o.value ? (accent ? '' : 'text-brand-600') : 'text-muted'} style={value === o.value && accent ? { color: accent } : undefined}>
+            {o.label}
+          </span>
+          {value === o.value && <motion.span layoutId={layoutId} className={cn('absolute inset-x-0 -bottom-px h-[2.5px] rounded-full', !accent && 'bg-brand')} style={accent ? { background: accent } : undefined} />}
         </button>
       ))}
     </div>
@@ -277,15 +275,21 @@ export function Empty({ icon, title, text, action }: { icon: ReactNode; title: s
   );
 }
 
-export function ProgressBar({ value, className, color = 'bg-brand' }: { value: number; className?: string; color?: string }) {
+export function ProgressBar({ value, className, color = 'bg-brand', style }: { value: number; className?: string; color?: string; style?: React.CSSProperties }) {
   return (
     <div className={cn('h-2 overflow-hidden rounded-full bg-surface-2', className)}>
       <motion.div
         className={cn('h-full rounded-full', color)}
+        style={style}
         initial={{ width: 0 }}
         animate={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }}
         transition={{ type: 'spring', stiffness: 120, damping: 22 }}
       />
     </div>
   );
+}
+
+export function DemoBadge({ className }: { className?: string }) {
+  const { t } = useI18n();
+  return <span className={cn('rounded-full bg-surface-2 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-faint', className)}>{t('licenses.demoBadge')}</span>;
 }

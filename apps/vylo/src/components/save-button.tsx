@@ -3,28 +3,29 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Bookmark } from 'lucide-react';
 import { toast } from 'sonner';
+import { useI18n } from '@/i18n/use';
+import { cn } from '@/lib/utils';
 import { useApp } from '@/store/app';
 import { useUI } from '@/store/ui';
-import { cn } from '@/lib/utils';
 
 /** Bookmark toggle with a pop + burst; offers "add to collection" right after saving. */
 export function SaveButton({ id, tone = 'plain', className, size = 20 }: { id: string; tone?: 'plain' | 'glass' | 'light'; className?: string; size?: number }) {
   const saved = useApp((s) => s.savedIds.includes(id));
   const toggle = useApp((s) => s.toggleSave);
   const openSheet = useUI((s) => s.openSheet);
+  const { t } = useI18n();
 
   return (
     <button
-      aria-label={saved ? 'Убрать из сохранённого' : 'Сохранить'}
+      aria-label={saved ? t('common.saved') : t('common.save')}
       aria-pressed={saved}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        const now = toggle(id);
-        if (now)
-          toast('Сохранено', {
-            description: 'Добавьте в коллекцию, чтобы не потерять',
-            action: { label: 'В коллекцию', onClick: () => openSheet({ type: 'collect', itemId: id }) },
+        if (toggle(id))
+          toast(t('sheets.savedToast'), {
+            description: t('sheets.savedToastText'),
+            action: { label: t('sheets.toCollection'), onClick: () => openSheet({ type: 'collect', itemId: id }) },
           });
       }}
       className={cn(
@@ -37,22 +38,11 @@ export function SaveButton({ id, tone = 'plain', className, size = 20 }: { id: s
     >
       <AnimatePresence>
         {saved && (
-          <motion.span
-            key="burst"
-            className="absolute inset-0 rounded-full border-2 border-brand"
-            initial={{ scale: 0.6, opacity: 0.9 }}
-            animate={{ scale: 1.6, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          />
+          <motion.span key="burst" className="absolute inset-0 rounded-full border-2 border-brand" initial={{ scale: 0.6, opacity: 0.9 }} animate={{ scale: 1.6, opacity: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} />
         )}
       </AnimatePresence>
       <motion.span key={String(saved)} initial={{ scale: 0.6 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 600, damping: 15 }}>
-        <Bookmark
-          style={{ width: size, height: size }}
-          className={cn(saved && (tone === 'glass' ? 'fill-white' : 'fill-brand text-brand'))}
-          strokeWidth={2.2}
-        />
+        <Bookmark style={{ width: size, height: size }} className={cn(saved && (tone === 'glass' ? 'fill-white' : 'fill-brand text-brand'))} strokeWidth={2.2} />
       </motion.span>
     </button>
   );

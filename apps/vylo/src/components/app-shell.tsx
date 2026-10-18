@@ -4,25 +4,30 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Toaster } from 'sonner';
+import { LOCALE_META } from '@/i18n/config';
+import { useI18n } from '@/i18n/use';
+import { registerServiceWorker } from '@/lib/offline';
 import { useApp } from '@/store/app';
 import { Celebrations, RewardToasts } from './celebrations';
 import { GlobalSheets } from './global-sheets';
+import { LanguageMenu } from './language-menu';
 import { Logo } from './logo';
 import { normalizePath, TabBar } from './tab-bar';
 
 // Screens whose top edge is a dark photo or the globe get light status-bar glyphs.
-const DARK_TOP = [/^\/map/, /^\/d\//, /^\/p\//, /^\/guide\//, /^\/meetup$/, /^\/trip/, /^\/collection/, /^\/u\//];
+const DARK_TOP = [/^\/map/, /^\/d\//, /^\/p\//, /^\/guide\//, /^\/meetup$/, /^\/trip/, /^\/collection/, /^\/u\//, /^\/wrapped/];
 
 function StatusBar() {
   const pathname = normalizePath(usePathname());
   const light = DARK_TOP.some((r) => r.test(pathname));
+  const locale = useApp((s) => s.locale);
   const [time, setTime] = useState('9:41');
   useEffect(() => {
-    const tick = () => setTime(new Date().toLocaleTimeString('ru-RU', { hour: 'numeric', minute: '2-digit' }));
+    const tick = () => setTime(new Date().toLocaleTimeString(LOCALE_META[locale].bcp47, { hour: 'numeric', minute: '2-digit' }));
     tick();
-    const t = setInterval(tick, 20_000);
-    return () => clearInterval(t);
-  }, []);
+    const timer = setInterval(tick, 20_000);
+    return () => clearInterval(timer);
+  }, [locale]);
   return (
     <div className={`device-only pointer-events-none absolute inset-x-0 top-0 z-[100] h-[50px] items-center justify-between px-8 pt-1 transition-colors ${light ? 'text-white' : 'text-ink'}`}>
       <span className="w-16 text-[16px] font-semibold">{time}</span>
@@ -58,51 +63,59 @@ function Splash() {
 }
 
 function DevicePanel() {
+  const { t } = useI18n();
+  const features: [string, string][] = [
+    ['🌍', t('shell.f1')],
+    ['🛂', t('shell.f2')],
+    ['👋', t('shell.f3')],
+    ['🧭', t('shell.f4')],
+    ['🗺️', t('shell.f5')],
+    ['📔', t('shell.f6')],
+  ];
   return (
-    <aside className="device-only hidden max-w-[420px] flex-col">
-      <Logo size={52} />
+    <aside className="device-only hidden max-w-[440px] flex-col">
+      <div className="flex items-center justify-between">
+        <Logo size={52} />
+        <LanguageMenu />
+      </div>
       <h1 className="mt-8 text-[40px] font-bold leading-[1.05] tracking-[-0.04em] text-ink">
-        Исследуй. Сохраняй.
+        {t('shell.headline1')}
         <br />
-        Встречайся. Делись.
+        {t('shell.headline2')}
       </h1>
-      <p className="mt-4 text-[17px] leading-relaxed text-muted">
-        Глобальная карта путешествий: реальные места от реальных людей, визы за секунду, встречи с путешественниками рядом и паспорт, который
-        хочется заполнять.
-      </p>
+      <p className="mt-4 text-[17px] leading-relaxed text-muted">{t('shell.description')}</p>
       <div className="mt-8 grid grid-cols-2 gap-3 text-[14px]">
-        {[
-          ['🌍', '3D-глобус с местами'],
-          ['🛂', 'Визы для граждан РФ'],
-          ['👋', 'Встречи и чаты'],
-          ['🔥', 'Серии, уровни и награды'],
-          ['🗺️', 'Планировщик поездок'],
-          ['📔', 'Паспорт путешественника'],
-        ].map(([e, t]) => (
-          <div key={t} className="flex items-center gap-2.5 rounded-2xl bg-white/70 px-3.5 py-3 font-medium text-ink-2 shadow-soft ring-1 ring-black/[0.03]">
+        {features.map(([e, label]) => (
+          <div key={label} className="flex items-center gap-2.5 rounded-2xl bg-white/70 px-3.5 py-3 font-medium text-ink-2 shadow-soft ring-1 ring-black/[0.03]">
             <span className="text-[18px]">{e}</span>
-            {t}
+            {label}
           </div>
         ))}
       </div>
-      <p className="mt-8 text-[13px] text-faint">Откройте эту страницу на телефоне и добавьте на экран «Домой» — Vylo работает как приложение.</p>
+      <p className="mt-8 text-[13px] text-faint">{t('shell.openOnPhone')}</p>
     </aside>
   );
 }
 
-const ONBOARDING_FREE = ['/', '/onboarding'];
+const ONBOARDING_FREE = ['/', '/licenses'];
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [mounted, setMounted] = useState(false);
   const onboarded = useApp((s) => s.onboarded);
   const checkIn = useApp((s) => s.checkIn);
+  const locale = useApp((s) => s.locale);
   const pathname = normalizePath(usePathname());
   const router = useRouter();
 
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 450);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setMounted(true), 450);
+    registerServiceWorker();
+    return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -117,7 +130,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [mounted, onboarded, pathname, router, checkIn]);
 
   return (
-    <div className="flex min-h-dvh items-center justify-center gap-20 bg-canvas min-[900px]:bg-[radial-gradient(1200px_700px_at_80%_10%,#e0e7ff_0%,transparent_60%),radial-gradient(900px_600px_at_0%_100%,#dcfce7_0%,transparent_55%),#f6f7fb]">
+    <div className="flex min-h-dvh items-center justify-center gap-20 bg-canvas min-[900px]:bg-[radial-gradient(1200px_700px_at_80%_10%,#e0e7ff_0%,transparent_60%),radial-gradient(900px_600px_at_0%_100%,#ccfbf1_0%,transparent_55%),#f6f7fb]">
       <DevicePanel />
       <div className="app-shell">
         <StatusBar />
@@ -129,12 +142,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Toaster
           position="top-center"
           offset={60}
-          toastOptions={{
-            classNames: {
-              toast: '!rounded-2xl !border-0 !shadow-float !font-sans',
-              actionButton: '!bg-brand !rounded-full !font-semibold',
-            },
-          }}
+          toastOptions={{ classNames: { toast: '!rounded-2xl !border-0 !shadow-float !font-sans', actionButton: '!bg-brand !rounded-full !font-semibold' } }}
         />
         <AnimatePresence>{!mounted && <Splash />}</AnimatePresence>
       </div>

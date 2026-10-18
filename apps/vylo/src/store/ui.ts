@@ -1,11 +1,12 @@
 import { create } from 'zustand';
-import type { Achievement } from '@/lib/gamification';
+import type { Patch, StatusKey } from '@/lib/gamification';
 import { uid } from '@/lib/utils';
 
 export type Celebration =
-  | { kind: 'achievement'; achievement: Achievement }
-  | { kind: 'level'; level: number; name: string }
-  | { kind: 'streak'; count: number; best: number };
+  | { kind: 'patch'; patch: Patch }
+  | { kind: 'status'; level: number; key: StatusKey }
+  | { kind: 'day'; count: number; best: number }
+  | { kind: 'plus' };
 
 export type Sheet =
   | { type: 'create' }
@@ -14,19 +15,21 @@ export type Sheet =
   | { type: 'trip'; itemId?: string }
   | { type: 'review'; targetId: string }
   | { type: 'country'; code: string }
-  | { type: 'story'; index: number };
+  | { type: 'story'; index: number }
+  | { type: 'paywall'; feature?: string };
 
 interface Reward {
   id: string;
-  xp: number;
-  label: string;
+  miles: number;
+  labelKey: string;
+  vars?: Record<string, string | number>;
 }
 
 interface UIState {
   rewards: Reward[];
   celebrations: Celebration[];
   sheet: Sheet | null;
-  pushReward: (xp: number, label: string) => void;
+  pushReward: (miles: number, labelKey: string, vars?: Record<string, string | number>) => void;
   dropReward: (id: string) => void;
   celebrate: (c: Celebration) => void;
   nextCelebration: () => void;
@@ -38,7 +41,7 @@ export const useUI = create<UIState>((set) => ({
   rewards: [],
   celebrations: [],
   sheet: null,
-  pushReward: (xp, label) => set((s) => ({ rewards: [...s.rewards.slice(-2), { id: uid(), xp, label }] })),
+  pushReward: (miles, labelKey, vars) => set((s) => ({ rewards: [...s.rewards.slice(-2), { id: uid(), miles, labelKey, vars }] })),
   dropReward: (id) => set((s) => ({ rewards: s.rewards.filter((r) => r.id !== id) })),
   // A short beat first, so the action that earned it (a save, a join) visibly lands.
   celebrate: (c) => setTimeout(() => set((s) => ({ celebrations: [...s.celebrations, c] })), 700),

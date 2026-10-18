@@ -6,7 +6,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { feature } from 'topojson-client';
 import type { GeometryCollection, Topology } from 'topojson-specification';
 import { numericToAlpha2 } from '@/lib/countries';
-import { photoUrl } from '@/lib/utils';
+import { photoUrl } from '@/lib/photos';
 
 export interface MapMarker {
   id: string;
@@ -265,7 +265,13 @@ export const WorldMap = forwardRef<WorldMapHandle, Props>(function WorldMap(
         }
       });
       for (const mk of markers) {
-        if (markerRefs.current.has(mk.id)) continue;
+        const existing = markerRefs.current.get(mk.id);
+        if (existing) {
+          // Labels follow the UI language.
+          const label = existing.el.querySelector('.vy-pin__label');
+          if (label && label.textContent !== mk.label) label.textContent = mk.label;
+          continue;
+        }
         const root = document.createElement('div');
         const pin = document.createElement('div');
         pin.className = `vy-pin vy-pin--${mk.kind}`;

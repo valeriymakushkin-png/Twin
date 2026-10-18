@@ -8,7 +8,8 @@ import { PlaceRow } from '@/components/cards';
 import { Photo } from '@/components/photo';
 import { BackButton, Button, Empty, IconButton } from '@/components/ui';
 import { resolveItem } from '@/data';
-import { plural } from '@/lib/utils';
+import { useCollectionName } from '@/components/global-sheets';
+import { useI18n } from '@/i18n/use';
 import { useApp } from '@/store/app';
 
 function CollectionInner() {
@@ -16,22 +17,25 @@ function CollectionInner() {
   const router = useRouter();
   const c = useApp((s) => s.collections.find((x) => x.id === id));
   const { toggleInCollection, deleteCollection } = useApp();
-  if (!c) return <div className="grid h-full place-items-center text-muted">Коллекция не найдена</div>;
+  const { t } = useI18n();
+  const collectionName = useCollectionName();
+  if (!c) return <div className="grid h-full place-items-center text-muted">{t('collection.notFound')}</div>;
+  const name = collectionName(c);
   const cover = c.itemIds[0] ? resolveItem(c.itemIds[0])?.image : undefined;
 
   return (
     <div className="scroll-area absolute inset-0 bg-canvas pb-16">
       <div className="relative h-[240px] overflow-hidden bg-gradient-to-br from-brand to-violet">
-        {cover && <Photo id={cover} alt={c.name} width={900} className="absolute inset-0" />}
+        {cover && <Photo id={cover} alt={name} width={900} className="absolute inset-0" />}
         <div className="photo-scrim-top absolute inset-0" />
         <div className="pt-safe absolute inset-x-0 top-0 flex h-14 items-center justify-between px-4">
           <BackButton tone="glass" />
-          {!['wishlist'].includes(c.id) && (
+          {c.nameKey !== 'wishlist' && (
             <IconButton
-              label="Удалить коллекцию"
+              label={t('collection.delete')}
               tone="glass"
               onClick={() => {
-                if (window.confirm(`Удалить «${c.name}»?`)) {
+                if (window.confirm(t('collection.deleteConfirm', { name }))) {
                   deleteCollection(c.id);
                   router.replace('/saved/');
                 }
@@ -43,9 +47,9 @@ function CollectionInner() {
         </div>
         <div className="absolute bottom-5 left-5 text-white">
           <p className="text-[40px] leading-none">{c.emoji}</p>
-          <h1 className="mt-2 text-[28px] font-bold tracking-[-0.035em]">{c.name}</h1>
+          <h1 className="mt-2 text-[28px] font-bold tracking-[-0.035em]">{name}</h1>
           <p className="text-[14px] text-white/85">
-            {c.itemIds.length} {plural(c.itemIds.length, ['место', 'места', 'мест'])}
+            {t('common.places', { count: c.itemIds.length })}
           </p>
         </div>
       </div>
@@ -56,7 +60,7 @@ function CollectionInner() {
             id={itemId}
             right={
               <button
-                aria-label="Убрать из коллекции"
+                aria-label={t('collection.remove')}
                 onClick={(e) => {
                   e.preventDefault();
                   toggleInCollection(c.id, itemId);
@@ -71,11 +75,11 @@ function CollectionInner() {
         {c.itemIds.length === 0 && (
           <Empty
             icon={<span className="text-[28px]">{c.emoji}</span>}
-            title="Коллекция пуста"
-            text="Сохраняйте места с карты или из подборок и добавляйте их сюда."
+            title={t('collection.emptyTitle')}
+            text={t('collection.emptyText')}
             action={
               <Link href="/discover/">
-                <Button>Найти места</Button>
+                <Button>{t('collection.findPlaces')}</Button>
               </Link>
             }
           />

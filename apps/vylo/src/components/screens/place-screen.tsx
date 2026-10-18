@@ -8,8 +8,9 @@ import { HeroPage } from '@/components/hero';
 import { Photo } from '@/components/photo';
 import { Rating, Tag } from '@/components/ui';
 import { destinationById } from '@/data/destinations';
-import { categoryMeta, placeById, placesIn } from '@/data/places';
+import { categoryColor, placeById, placesIn } from '@/data/places';
 import { reviews } from '@/data/social';
+import { useI18n } from '@/i18n/use';
 import { distanceKm } from '@/lib/utils';
 import { useApp } from '@/store/app';
 import { useUI } from '@/store/ui';
@@ -21,7 +22,9 @@ export function PlaceScreen({ id }: { id: string }) {
   const myReviews = useApp((s) => s.myReviews);
   const markViewed = useApp((s) => s.markViewed);
   const openSheet = useUI((s) => s.openSheet);
-  const meta = categoryMeta[p.category];
+  const { t, tk, f, place, dest, country } = useI18n();
+  const text = place(id);
+  const accent = d.theme.accent;
   const list = [...myReviews.filter((r) => r.targetId === id), ...reviews.filter((r) => r.targetId === id)];
   const nearby = placesIn(p.destinationId)
     .filter((x) => x.id !== id)
@@ -30,110 +33,111 @@ export function PlaceScreen({ id }: { id: string }) {
 
   useEffect(() => {
     markViewed(id);
-    document.title = `${p.name} — Vylo`;
-  }, [id, p.name, markViewed]);
+  }, [id, markViewed]);
+
+  useEffect(() => {
+    document.title = `${text.name} — Vylo`;
+  }, [text.name]);
 
   return (
     <HeroPage
       image={p.image}
-      title={p.name}
+      title={text.name}
       saveId={p.id}
       heroHeight={380}
+      theme={d.theme}
       overlay={
         <>
-          <span className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold text-white" style={{ background: meta.color }}>
-            {meta.label}
+          <span className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold text-white" style={{ background: categoryColor[p.category] }}>
+            {tk(`categories.${p.category}`)}
           </span>
-          <h1 className="mt-2 text-[32px] font-bold leading-[1.05] tracking-[-0.035em]">{p.name}</h1>
+          <h1 className="mt-2 text-[32px] font-bold leading-[1.05] tracking-[-0.035em]">{text.name}</h1>
           <p className="mt-1 text-[15px] text-white/90">
-            {d.name}, {d.country}
+            {dest(d.id).name}, {country(d.countryCode)}
           </p>
           <Rating value={p.rating} count={p.reviews} light className="mt-2 text-[14px]" />
         </>
       }
     >
-      <div className="grid gap-6 px-5 pt-6">
-        <div className="grid grid-cols-2 gap-2.5">
-          {p.hours && (
-            <div className="flex items-center gap-2.5 rounded-[18px] bg-surface-2/70 p-3">
-              <Clock className="size-5 text-brand" />
-              <div>
-                <p className="text-[11px] font-semibold text-faint">Часы работы</p>
-                <p className="text-[13px] font-semibold">{p.hours}</p>
+      <div className="grid gap-6 px-5 pt-7">
+        {(p.hours || p.price) && (
+          <div className="grid grid-cols-2 gap-2.5">
+            {p.hours && (
+              <div className="flex items-center gap-2.5 rounded-[18px] p-3" style={{ background: `${accent}0d` }}>
+                <Clock className="size-5 shrink-0" style={{ color: accent }} />
+                <div className="min-w-0">
+                  <p className="text-[11px] font-semibold text-faint">{t('place.hours')}</p>
+                  <p className="truncate text-[13px] font-semibold">{f.hours(p.hours)}</p>
+                </div>
               </div>
-            </div>
-          )}
-          {p.price && (
-            <div className="flex items-center gap-2.5 rounded-[18px] bg-surface-2/70 p-3">
-              <Ticket className="size-5 text-brand" />
-              <div>
-                <p className="text-[11px] font-semibold text-faint">Цена</p>
-                <p className="text-[13px] font-semibold">{p.price}</p>
+            )}
+            {p.price && (
+              <div className="flex items-center gap-2.5 rounded-[18px] p-3" style={{ background: `${accent}0d` }}>
+                <Ticket className="size-5 shrink-0" style={{ color: accent }} />
+                <div className="min-w-0">
+                  <p className="text-[11px] font-semibold text-faint">{t('place.price')}</p>
+                  <p className="truncate text-[13px] font-semibold">{f.price(p.price)}</p>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         <div>
-          <p className="text-[15px] leading-relaxed text-ink-2">{p.description}</p>
+          <p className="text-[15px] leading-relaxed text-ink-2">{text.description}</p>
           <div className="mt-3 flex flex-wrap gap-1.5">
-            {p.tags.map((t) => (
-              <Tag key={t}>{t}</Tag>
+            {p.tags.map((tag) => (
+              <Tag key={tag} style={{ background: `${accent}14`, color: accent }}>
+                {tk(`tags.${tag}`)}
+              </Tag>
             ))}
           </div>
         </div>
 
-        <ActionRow id={p.id} />
+        <ActionRow id={p.id} theme={d.theme} />
 
         <div className="grid grid-cols-2 gap-2.5">
           <Link href={`/map/?focus=${p.id}`} className="press flex h-12 items-center justify-center gap-2 rounded-full bg-ink text-[14px] font-semibold text-white">
-            <MapIcon className="size-4" /> На карте
+            <MapIcon className="size-4" /> {t('place.onMap')}
           </Link>
-          <a
-            href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`}
-            target="_blank"
-            rel="noreferrer"
-            className="press flex h-12 items-center justify-center gap-2 rounded-full bg-brand-50 text-[14px] font-semibold text-brand-600"
-          >
-            <Navigation className="size-4" /> Маршрут
+          <a href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`} target="_blank" rel="noreferrer" className="press flex h-12 items-center justify-center gap-2 rounded-full text-[14px] font-semibold" style={{ background: `${accent}14`, color: accent }}>
+            <Navigation className="size-4" /> {t('place.route')}
           </a>
         </div>
 
-        {p.tips.length > 0 && (
+        {text.tip && (
           <section>
-            <h2 className="text-[19px] font-bold tracking-[-0.02em]">Советы путешественников</h2>
-            <div className="mt-3 grid gap-2.5">
-              {p.tips.map((t) => (
-                <div key={t} className="flex gap-3 rounded-[20px] bg-amber-50/70 p-4">
-                  <Lightbulb className="mt-0.5 size-5 shrink-0 text-amber" />
-                  <p className="text-[14px] leading-relaxed text-ink-2">{t}</p>
-                </div>
-              ))}
+            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{t('place.tips')}</h2>
+            <div className="mt-3 flex gap-3 rounded-[20px] p-4" style={{ background: `${accent}10` }}>
+              <Lightbulb className="mt-0.5 size-5 shrink-0" style={{ color: accent }} />
+              <p className="text-[14px] leading-relaxed text-ink-2">{text.tip}</p>
             </div>
           </section>
         )}
 
         <Link href={`/d/${d.id}/`} className="press relative block h-28 overflow-hidden rounded-[24px]">
-          <Photo id={d.image} alt={d.name} width={800} className="absolute inset-0" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
-          <div className="absolute inset-y-0 left-5 flex flex-col justify-center text-white">
-            <p className="text-[12px] text-white/75">Направление</p>
-            <p className="text-[22px] font-bold tracking-[-0.03em]">{d.name}</p>
-            <p className="text-[12px] text-white/85">{d.tagline}</p>
+          <Photo id={d.image} alt={dest(d.id).name} width={800} className="absolute inset-0" tint={accent} />
+          <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${accent}ee, transparent)` }} />
+          <div className="absolute inset-y-0 left-5 right-16 flex flex-col justify-center text-white">
+            <p className="text-[12px] text-white/80">{t('place.destination')}</p>
+            <p className="text-[22px] font-bold tracking-[-0.03em]">{dest(d.id).name}</p>
+            <p className="truncate text-[12px] text-white/90">{dest(d.id).tagline}</p>
           </div>
         </Link>
 
         <section>
           <div className="flex items-center justify-between">
-            <h2 className="text-[19px] font-bold tracking-[-0.02em]">Отзывы</h2>
-            <button onClick={() => openSheet({ type: 'review', targetId: p.id })} className="flex items-center gap-1 text-[13px] font-semibold text-brand-600">
-              <PenLine className="size-4" /> Написать
+            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{t('destination.reviews')}</h2>
+            <button onClick={() => openSheet({ type: 'review', targetId: p.id })} className="flex items-center gap-1 text-[13px] font-semibold" style={{ color: accent }}>
+              <PenLine className="size-4" /> {t('destination.write')}
             </button>
           </div>
           <div className="mt-3 grid gap-3">
-            {list.length ? list.map((r) => <ReviewCard key={r.id} r={r} showTarget={false} />) : (
+            {list.length ? (
+              list.map((r) => <ReviewCard key={r.id} r={r} showTarget={false} />)
+            ) : (
               <button onClick={() => openSheet({ type: 'review', targetId: p.id })} className="rounded-[22px] border-2 border-dashed border-line p-5 text-center text-[14px] text-muted">
-                Пока нет отзывов. Будьте первым — <span className="font-semibold text-brand-600">+40 XP</span>
+                {t('place.noReviews', { count: 40 })}
               </button>
             )}
           </div>
@@ -141,7 +145,7 @@ export function PlaceScreen({ id }: { id: string }) {
 
         {nearby.length > 0 && (
           <section>
-            <h2 className="text-[19px] font-bold tracking-[-0.02em]">Рядом</h2>
+            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{t('place.nearby')}</h2>
             <div className="mt-3 grid gap-2.5">
               {nearby.map((x) => (
                 <PlaceRow key={x.id} id={x.id} />

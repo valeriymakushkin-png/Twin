@@ -6,8 +6,8 @@ import { AppShell } from '@/components/app-shell';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Vylo — карта путешествий',
-  description: 'Исследуй, сохраняй, встречайся и делись. Глобальная карта путешествий: места, визы, встречи и сообщество путешественников.',
+  title: 'Vylo — explore, save, meet, share',
+  description: 'A global travel map: real places, visa rules, meetups with travellers and a passport worth filling. In Russian, English, Spanish, German, French and Italian.',
   applicationName: 'Vylo',
   manifest: '/manifest.webmanifest',
   icons: { icon: '/icon.svg', apple: '/icon.svg' },
@@ -26,7 +26,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru">
+    <html lang="en" suppressHydrationWarning>
       <body className="font-sans">
         <AppShell>{children}</AppShell>
       </body>
