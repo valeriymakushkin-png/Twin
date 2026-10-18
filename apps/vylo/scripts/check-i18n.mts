@@ -38,7 +38,7 @@ function walk(ref: Node, b: Node | undefined, en: Node | undefined, path: string
     if (placeholders(ref) !== placeholders(b)) problems.push(`${at} placeholders {${placeholders(b)}} ≠ {${placeholders(ref)}}`);
     if (locale !== 'ru' && /[А-Яа-яЁё]/.test(b)) problems.push(`${at} still contains Cyrillic: ${b}`);
     // Proper names (people, places) are expected to match English, so only prose is compared.
-    if (locale !== 'en' && locale !== 'ru' && typeof en === 'string' && !/^content\..*\.name$/.test(path)) {
+    if (locale !== 'en' && locale !== 'ru' && typeof en === 'string' && !/^content\..*\.(name|home|placeName)$/.test(path)) {
       compared++;
       if (b === en && !SAME_EVERYWHERE.test(b)) copies.push(`${at} = "${b}"`);
     }
@@ -76,4 +76,4 @@ if (problems.length) {
   process.exit(1);
 }
 console.log(`i18n OK: 6 languages, ${compared} translated strings checked, ${copies.length} kept as in English`);
-if (copies.length) console.log(`  ${copies.join('\n  ')}`);
+if (copies.length && process.env.VERBOSE) console.log(`  ${copies.join('\n  ')}`);
