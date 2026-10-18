@@ -15,7 +15,8 @@ export function formatters(locale: Locale) {
   return {
     number: (n: number) => new Intl.NumberFormat(l).format(n),
     compact: (n: number) => new Intl.NumberFormat(l, { notation: 'compact', maximumFractionDigits: 1 }).format(n),
-    percent: (n: number, digits = 1) => new Intl.NumberFormat(l, { maximumFractionDigits: digits, minimumFractionDigits: digits }).format(n),
+    /** Takes a fraction: 0.036 → "3.6%" ("3,6 %" in ru/fr/de) */
+    percent: (n: number, digits = 1) => new Intl.NumberFormat(l, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: digits }).format(n),
     money,
     price: (p: Price): string => {
       switch (p.kind) {

@@ -49,7 +49,7 @@ export function ActionRow({ id, theme }: { id: string; theme?: Theme }) {
           style={a.on ? { background: `${accent}14`, color: accent, boxShadow: `inset 0 0 0 1.5px ${accent}55` } : undefined}
         >
           <a.icon className="size-5" style={a.on && a.icon === Bookmark ? { fill: accent } : undefined} strokeWidth={2.2} />
-          <span className="w-full truncate text-center">{a.label}</span>
+          <span className="line-clamp-2 w-full text-center leading-tight">{a.label}</span>
         </motion.button>
       ))}
     </div>

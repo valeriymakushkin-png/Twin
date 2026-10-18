@@ -105,7 +105,8 @@ docs/              Architecture & operations documentation
 ## Vylo — travel app
 
 [`apps/vylo`](apps/vylo) is a separate, fully static travel app (3D globe of places, visas for Russian passport
-holders, meetups with chat, trip planner, streaks/quests/achievements). See [apps/vylo/README.md](apps/vylo/README.md).
+holders, meetups with chat, trip planner, miles/statuses/patches, Vylo Plus subscription) in six languages
+(ru, en, es, de, fr, it). See [apps/vylo/README.md](apps/vylo/README.md).
 
 ```bash
 pnpm --filter @vylo/app dev      # http://localhost:3100

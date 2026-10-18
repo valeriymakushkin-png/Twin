@@ -53,6 +53,8 @@ jobs:
         run: pnpm -r --filter "./apps/*" --filter "./packages/*" typecheck
       - name: Translations
         run: pnpm --filter @mascot/web i18n:check
+      - name: Translations (Vylo)
+        run: pnpm --filter @vylo/app i18n:check
       - name: Unit tests
         run: pnpm --filter @mascot/api test -- --ci
       - name: Build

@@ -213,7 +213,7 @@ export default function MapPage() {
         <span className="text-[12px] font-semibold leading-tight">
           {t('map.worldOpened')}
           <br />
-          <span className="text-brand-600">{f.percent((visited.length / WORLD_COUNTRIES) * 100)}%</span>
+          <span className="text-brand-600">{f.percent(visited.length / WORLD_COUNTRIES)}</span>
         </span>
       </Link>
 

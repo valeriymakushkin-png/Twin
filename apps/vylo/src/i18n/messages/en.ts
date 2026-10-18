@@ -72,7 +72,7 @@ const en: Messages = {
     styles: { solo: 'Solo', couple: 'As a couple', friends: 'With friends', nomad: 'Nomad', backpacker: 'Backpacker', family: 'With family' },
     step2Title: 'Where have you been?',
     step2Subtitle: 'Let’s build your travel passport — every country is a stamp and miles.',
-    worldExplored: '{pct}% of the world explored',
+    worldExplored: '{pct} of the world explored',
     openMap: 'Open the world map',
     defaultName: 'Traveller',
   },

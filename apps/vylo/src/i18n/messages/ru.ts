@@ -74,7 +74,7 @@ const ru = {
     styles: { solo: 'Соло', couple: 'Вдвоём', friends: 'С друзьями', nomad: 'Номад', backpacker: 'Бэкпекер', family: 'С семьёй' },
     step2Title: 'Где вы уже были?',
     step2Subtitle: 'Соберём ваш паспорт путешественника — каждая страна это штамп и мили.',
-    worldExplored: 'Мир открыт на {pct}%',
+    worldExplored: 'Мир открыт на {pct}',
     openMap: 'Открыть карту мира',
     defaultName: 'Путешественник',
   },

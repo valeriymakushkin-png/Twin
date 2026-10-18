@@ -177,7 +177,7 @@ export default function OnboardingPage() {
                 <div className="mt-5 flex items-center gap-4 rounded-3xl bg-gradient-to-br from-brand to-violet p-4 text-white shadow-brand">
                   <div className="grid size-14 place-items-center rounded-2xl bg-white/15 text-[24px] font-black">{visited.length}</div>
                   <div className="flex-1">
-                    <p className="text-[15px] font-semibold">{t('onboarding.worldExplored', { pct: f.percent((visited.length / WORLD_COUNTRIES) * 100) })}</p>
+                    <p className="text-[15px] font-semibold">{t('onboarding.worldExplored', { pct: f.percent(visited.length / WORLD_COUNTRIES) })}</p>
                     <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/20">
                       <motion.div className="h-full rounded-full bg-white" animate={{ width: `${Math.max(2, (visited.length / WORLD_COUNTRIES) * 100 * 4)}%` }} />
                     </div>
