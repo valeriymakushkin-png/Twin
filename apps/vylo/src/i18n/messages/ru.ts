@@ -674,7 +674,7 @@ const ru = {
     photos: 'Фотографии',
     photosText: 'Фотографии мест — с Unsplash по лицензии Unsplash License: бесплатное коммерческое использование без обязательной атрибуции. Мы всё равно указываем источник. Изображения Unsplash+ не используются.',
     map: 'Карта',
-    mapText: 'Границы стран — Natural Earth (общественное достояние) через пакет world-atlas. Спутниковые снимки — Esri World Imagery; для коммерческого запуска нужен ключ ArcGIS или другой лицензированный провайдер.',
+    mapText: 'Границы стран — Natural Earth (общественное достояние). Спутник и подписи — Esri World Imagery, улицы — © OpenStreetMap, © CARTO, маршруты — OSRM на данных OpenStreetMap, поиск адресов — Nominatim. Для коммерческого запуска нужны платные ключи провайдеров карт.',
     libs: 'Открытые библиотеки',
     libsText: 'Next.js, React (MIT), MapLibre GL (BSD-3), Framer Motion (MIT), Zustand (MIT), Lucide (ISC), Tailwind CSS (MIT), Inter (SIL OFL), i18n-iso-countries (MIT), topojson-client (ISC).',
     avatars: 'Аватары',

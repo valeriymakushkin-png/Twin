@@ -672,7 +672,7 @@ const fr: Messages = {
     photos: 'Photos',
     photosText: 'Les photos des lieux proviennent d’Unsplash sous l’Unsplash License : utilisation commerciale gratuite, sans attribution obligatoire. Nous citons tout de même la source. Aucune image Unsplash+ n’est utilisée.',
     map: 'Carte',
-    mapText: 'Frontières des pays : Natural Earth (domaine public), via le paquet world-atlas. Images satellite : Esri World Imagery ; un lancement commercial nécessite une clé ArcGIS ou un autre fournisseur sous licence.',
+    mapText: 'Frontières : Natural Earth (domaine public). Satellite et libellés : Esri World Imagery ; rues : © OpenStreetMap, © CARTO ; itinéraires : OSRM sur les données OpenStreetMap ; recherche d’adresses : Nominatim. Un lancement commercial nécessite des clés payantes de fournisseurs de cartes.',
     libs: 'Bibliothèques open source',
     libsText: 'Next.js, React (MIT), MapLibre GL (BSD-3), Framer Motion (MIT), Zustand (MIT), Lucide (ISC), Tailwind CSS (MIT), Inter (SIL OFL), i18n-iso-countries (MIT), topojson-client (ISC).',
     avatars: 'Avatars',

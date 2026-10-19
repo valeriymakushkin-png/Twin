@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Bell, Lightbulb, Search } from 'lucide-react';
+import { Bell, Lightbulb, Megaphone, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
@@ -31,7 +31,8 @@ export default function DiscoverPage() {
   const openSheet = useUI((s) => s.openSheet);
   const meetups = useAllMeetups();
   const { unread } = useNotifications();
-  const { t, f, dest, user } = useI18n();
+  const { t, f, dest, user, locale } = useI18n();
+  const announcement = overrides().settings.announcement?.[locale]?.text?.trim();
 
   const recommended = useMemo(() => {
     const wanted = new Set(profile.interests);
@@ -75,6 +76,13 @@ export default function DiscoverPage() {
           <span className="truncate text-[15px] text-faint">{t('discover.searchPlaceholder')}</span>
         </button>
       </header>
+
+      {announcement && (
+        <div className="mx-5 mt-4 flex items-start gap-3 rounded-[20px] bg-gradient-to-r from-brand-50 to-[#fdf2f8] p-4 ring-1 ring-brand/10">
+          <Megaphone className="mt-0.5 size-5 shrink-0 text-brand" />
+          <p className="text-[14px] leading-snug text-ink-2">{announcement}</p>
+        </div>
+      )}
 
       <div className="no-scrollbar mt-5 flex gap-3.5 overflow-x-auto px-5 pb-1">
         {stories.map((s, i) => (
