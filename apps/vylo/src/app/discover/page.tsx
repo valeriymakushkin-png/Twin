@@ -9,6 +9,7 @@ import { DestinationCard, GuideCard, MeetupRow, PlaceRow, ReviewCard } from '@/c
 import { DailyPickCard, QuestStrip } from '@/components/daily';
 import { SearchOverlay } from '@/components/map/search-overlay';
 import { Photo } from '@/components/photo';
+import { RegionExplorer } from '@/components/region-explorer';
 import { Avatar, Chip, SectionHeader, UserName } from '@/components/ui';
 import { countryHref, destinationById, destinationHref, destinations, placeHref, places } from '@/data/catalog';
 import { guides, reviews, stories, users } from '@/data/social';
@@ -111,6 +112,8 @@ export default function DiscoverPage() {
                   ))}
                 </div>
               </section>
+
+              <RegionExplorer />
 
               <section className="relative mx-5 overflow-hidden rounded-[28px] bg-[#0b1220] p-5 text-white shadow-float">
                 <Photo id="TilO4-6h3VA" alt="" width={800} className="absolute inset-0 opacity-60" />

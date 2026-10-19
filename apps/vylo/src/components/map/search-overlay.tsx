@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Clock, Search, TrendingUp, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { packs } from '@/content';
+import { useWorldText } from '@/content/world';
 import { allItemIds, resolveItem } from '@/data';
-import { destinations, visaCountries } from '@/data/catalog';
+import { countries as allCountries, destinations, visaByCode } from '@/data/catalog';
 import { LOCALES } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
 import { countryName, flag } from '@/lib/countries';
@@ -16,16 +17,16 @@ import { useVisaTitle } from '../visa-badge';
 
 const norm = (s: string) => s.toLocaleLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '');
 
-/** Names in every language, so "Петра", "Petra" and "Pétra" all find the same place. */
-function searchIndex() {
+/** Names in every loaded language, so "Петра", "Petra" and "Pétra" all find the same place. */
+function searchIndex(world: ReturnType<typeof useWorldText.getState>['texts'], extra: (id: string) => string) {
   return allItemIds().map((id) => {
     const names = LOCALES.flatMap((l) => {
       const p = packs[l];
-      const d = (p.destinations as Record<string, { name: string }>)[id];
-      const pl = (p.places as Record<string, { name: string }>)[id];
+      const d = (p.destinations as Record<string, { name: string }>)[id] ?? world[l]?.cities[id];
+      const pl = (p.places as Record<string, { name: string }>)[id] ?? world[l]?.places[id];
       return [d?.name, pl?.name].filter(Boolean) as string[];
     });
-    return { id, haystack: norm(names.join(' | ')) };
+    return { id, haystack: norm([...names, extra(id)].join(' | ')) };
   });
 }
 
@@ -34,7 +35,9 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
   const { recentSearches, addSearch, clearSearches } = useApp();
   const { t, tk, locale, item, dest, country } = useI18n();
   const visaTitle = useVisaTitle();
-  const index = useMemo(searchIndex, []);
+  const world = useWorldText((s) => s.texts);
+  // Names edited in the admin panel are searchable too.
+  const index = useMemo(() => searchIndex(world, (id) => item(id).name), [world, item]);
   const results = useMemo(() => {
     const s = norm(q.trim());
     if (!s) return [];
@@ -44,7 +47,7 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
   const countries = useMemo(() => {
     const s = norm(q.trim());
     if (!s) return [];
-    return visaCountries.filter((v) => LOCALES.some((l) => norm(countryName(v.code, l)).includes(s))).slice(0, 4);
+    return allCountries.filter((v) => LOCALES.some((l) => norm(countryName(v.code, l)).includes(s))).slice(0, 4);
   }, [q]);
 
   const pick = (id: string, kind: 'item' | 'country', label: string) => {
@@ -123,7 +126,7 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
                 <span className="grid size-12 place-items-center rounded-2xl bg-surface-2 text-[26px]">{flag(c.code)}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[15px] font-semibold">{countryName(c.code, locale)}</span>
-                  <span className="block truncate text-[12px] text-muted">{visaTitle(c)}</span>
+                  <span className="block truncate text-[12px] text-muted">{visaByCode(c.code) ? visaTitle(visaByCode(c.code)!) : tk(`country.region.${c.region}`)}</span>
                 </span>
                 <ArrowUpRight className="size-4 text-faint" />
               </button>

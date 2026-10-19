@@ -1,0 +1,370 @@
+import type { CountryPack } from '../types';
+
+const pack: CountryPack = {
+  country: {
+    code: 'PH',
+    region: 'sea',
+    image: '3T9dDY0WqDI',
+    theme: { accent: '#0369a1', accent2: '#facc15', motif: 'waves' },
+    fromMoscow: { hours: 16, direct: false },
+    text: {
+      ru: {
+        tagline: 'Семь тысяч островов, лагуны Палавана и белый песок Боракая',
+        description: 'Филиппины — это более семи тысяч островов, где известняковые скалы обрываются в бирюзовые лагуны, а китовые акулы и сардиновые косяки встречаются в паре метров от берега. Здесь говорят по-английски, обожают караоке и встречают гостей с улыбкой, которую невозможно забыть.',
+        howToGet: 'Прямых рейсов из Москвы нет: обычно летят с пересадкой в Дубае, Дохе, Стамбуле, Бангкоке, Гонконге или Гуанчжоу в Манилу или Себу — в пути 15–19 часов. Между островами летают Cebu Pacific, Philippine Airlines и AirSWIFT (на Эль-Нидо), ходят паромы 2GO и OceanJet, а на местах ездят на трициклах и джипни.',
+        tips: [
+          'Российские Visa и Mastercard не работают: везите доллары или евро и меняйте их в обменниках торговых центров — курс лучше, чем в банках, а UnionPay принимают далеко не везде.',
+          'Внутренние рейсы и паромы часто переносят из-за погоды, поэтому закладывайте день запаса перед международным вылетом.',
+          'На Боракае запрещено курить и распивать алкоголь прямо на пляже — штрафы реальные и взимаются на месте.',
+        ],
+        guide: {
+          title: 'Филиппины за 10 дней',
+          sections: [
+            { title: 'Когда ехать', body: 'Лучшее время — сухой сезон с декабря по май: море спокойное, рейсы и лодочные туры выходят по расписанию. Март–май — самые жаркие месяцы, до +34 °C, зато вода идеально прозрачна. С июня по октябрь идут дожди и тайфуны, туры на Палаване и паромы могут отменять на несколько дней. Рождество здесь празднуют с сентября, а в январе на Себу проходит яркий фестиваль Синулог.' },
+            { title: 'Маршрут на 10 дней', body: 'Начните с Себу: два дня на испанский старый город, каньонинг к водопадам Кавасан и сардиновый косяк в Моалбоале. Затем перелёт на Палаван — четыре дня в Эль-Нидо, где каждый день можно выбирать новый островной тур по лагунам и пляжам архипелага Бакуит. Финал — три дня на Боракае: белый пляж, закаты с парусников и кайтсёрфинг на восточном берегу.' },
+            { title: 'Что попробовать', body: 'Главное блюдо Себу — лечон, молочный поросёнок с хрустящей кожей, запечённый на углях с лемонграссом. Попробуйте адобо — мясо, томлённое в уксусе и соевом соусе, кислый суп синиганг с тамариндом и кинилау — местное севиче из свежего тунца. На десерт — хало-хало из колотого льда, фиолетового ямса убе, фруктов и сгущёнки, а также сушёное манго, которое везут домой все.' },
+            { title: 'Деньги, связь и транспорт', body: 'Валюта — филиппинское песо (PHP). Карты российских банков не работают, поэтому берите наличные доллары или евро; на островах банкоматов мало, так что меняйте деньги заранее в Маниле или Себу. Сим-карты Globe и Smart продают в аэропортах по паспорту. В Маниле и Себу работает Grab, на островах — трициклы с фиксированной ценой. Рейсы между островами покупайте заранее: лоукосты дешевеют за месяц.' },
+          ],
+        },
+      },
+      en: {
+        tagline: 'Seven thousand islands, Palawan lagoons and Boracay’s white sand',
+        description: 'The Philippines is a scatter of more than seven thousand islands where limestone cliffs plunge into turquoise lagoons and whale sharks and sardine shoals swim a few metres from the shore. English is widely spoken, karaoke is a national passion and the welcome comes with an unforgettable smile.',
+        howToGet: 'There are no direct flights from Moscow: the usual route connects in Dubai, Doha, Istanbul, Bangkok, Hong Kong or Guangzhou to Manila or Cebu, 15–19 hours in total. Between islands, Cebu Pacific, Philippine Airlines and AirSWIFT (to El Nido) fly frequently, 2GO and OceanJet run ferries, and locally you ride tricycles and jeepneys.',
+        tips: [
+          'Russian-issued Visa and Mastercard cards don’t work, so bring dollars or euros and change them at shopping-mall money changers, which beat bank rates; UnionPay is accepted only in some places.',
+          'Domestic flights and ferries are often rescheduled because of weather, so leave a spare day before your international departure.',
+          'Smoking and drinking alcohol on the beach are banned on Boracay, and fines are real and collected on the spot.',
+        ],
+        guide: {
+          title: 'The Philippines in 10 days',
+          sections: [
+            { title: 'When to go', body: 'The best time is the dry season from December to May, when the sea is calm and flights and boat tours run to schedule. March to May is the hottest stretch, up to 34 °C, but the water is crystal clear. From June to October rain and typhoons arrive, and Palawan tours and ferries can be cancelled for days. Christmas celebrations start in September, and in January Cebu hosts the vibrant Sinulog festival.' },
+            { title: 'A 10-day route', body: 'Start in Cebu: two days for the Spanish old town, canyoneering to Kawasan Falls and the sardine run in Moalboal. Then fly to Palawan for four days in El Nido, choosing a different island-hopping tour each day through the lagoons and beaches of the Bacuit archipelago. Finish with three days on Boracay: White Beach, sunset sails on paraw boats and kitesurfing on the east coast.' },
+            { title: 'What to eat', body: 'Cebu’s signature dish is lechon, a crisp-skinned suckling pig roasted over charcoal with lemongrass. Try adobo, meat braised in vinegar and soy sauce, sour tamarind soup sinigang and kinilaw, the local ceviche of fresh tuna. For dessert there is halo-halo, a heap of shaved ice, purple ube yam, fruit and condensed milk, plus the dried mango that everyone takes home.' },
+            { title: 'Money, SIM cards and transport', body: 'The currency is the Philippine peso (PHP). Russian bank cards don’t work, so bring cash in dollars or euros; ATMs are scarce on the islands, so change money in Manila or Cebu beforehand. Globe and Smart SIM cards are sold at airports on presentation of your passport. Grab works in Manila and Cebu, while on the islands tricycles charge fixed fares. Book inter-island flights early: budget fares drop about a month ahead.' },
+          ],
+        },
+      },
+      es: {
+        tagline: 'Siete mil islas, lagunas de Palawan y la arena blanca de Boracay',
+        description: 'Filipinas es un archipiélago de más de siete mil islas donde los acantilados de caliza caen sobre lagunas turquesa y los tiburones ballena y los bancos de sardinas nadan a pocos metros de la orilla. Se habla inglés, el karaoke es pasión nacional y la bienvenida llega con una sonrisa inolvidable.',
+        howToGet: 'No hay vuelos directos desde Moscú: lo habitual es hacer escala en Dubái, Doha, Estambul, Bangkok, Hong Kong o Cantón rumbo a Manila o Cebú, con 15–19 horas de viaje. Entre islas vuelan Cebu Pacific, Philippine Airlines y AirSWIFT (a El Nido), navegan los ferris de 2GO y OceanJet y, en cada isla, te mueves en triciclo y jeepney.',
+        tips: [
+          'Las Visa y Mastercard emitidas en Rusia no funcionan: lleva dólares o euros y cámbialos en las casas de cambio de los centros comerciales, con mejor tipo que los bancos; UnionPay solo se acepta en algunos sitios.',
+          'Los vuelos internos y los ferris se reprograman a menudo por el tiempo, así que deja un día de margen antes del vuelo internacional.',
+          'En Boracay está prohibido fumar y beber alcohol en la playa, y las multas son reales y se cobran en el acto.',
+        ],
+        guide: {
+          title: 'Filipinas en 10 días',
+          sections: [
+            { title: 'Cuándo ir', body: 'La mejor época es la estación seca, de diciembre a mayo: el mar está en calma y vuelos y excursiones en barco salen según lo previsto. De marzo a mayo hace más calor, hasta 34 °C, pero el agua está transparente. De junio a octubre llegan las lluvias y los tifones, y los tours de Palawan y los ferris pueden cancelarse varios días. La Navidad se celebra desde septiembre y en enero Cebú vive el colorido festival Sinulog.' },
+            { title: 'Ruta de 10 días', body: 'Empieza en Cebú: dos días para el casco antiguo español, el barranquismo hasta las cascadas de Kawasan y el banco de sardinas de Moalboal. Después, vuelo a Palawan y cuatro días en El Nido, eligiendo cada jornada un tour distinto por las lagunas y playas del archipiélago de Bacuit. Termina con tres días en Boracay: White Beach, atardeceres a bordo de un paraw y kitesurf en la costa este.' },
+            { title: 'Qué probar', body: 'El plato estrella de Cebú es el lechón, cochinillo de piel crujiente asado al carbón con hierba limón. Prueba el adobo, carne guisada en vinagre y soja, la sopa ácida de tamarindo sinigang y el kinilaw, el ceviche local de atún fresco. De postre, halo-halo, una montaña de hielo picado con ñame morado ube, fruta y leche condensada, y el mango deshidratado que todos se llevan a casa.' },
+            { title: 'Dinero, móvil y transporte', body: 'La moneda es el peso filipino (PHP). Las tarjetas de bancos rusos no funcionan, así que lleva efectivo en dólares o euros; en las islas hay pocos cajeros, por lo que conviene cambiar antes en Manila o Cebú. Las SIM de Globe y Smart se venden en los aeropuertos con el pasaporte. En Manila y Cebú funciona Grab; en las islas, los triciclos cobran tarifas fijas. Compra pronto los vuelos entre islas: las low cost bajan un mes antes.' },
+          ],
+        },
+      },
+      de: {
+        tagline: 'Siebentausend Inseln, Palawans Lagunen und Boracays weißer Sand',
+        description: 'Die Philippinen sind ein Archipel aus über siebentausend Inseln, auf denen Kalksteinklippen in türkisfarbene Lagunen stürzen und Walhaie und Sardinenschwärme nur wenige Meter vor dem Ufer schwimmen. Englisch spricht fast jeder, Karaoke ist Nationalsport, und der Empfang kommt mit einem unvergesslichen Lächeln.',
+        howToGet: 'Direktflüge ab Moskau gibt es nicht: Üblich ist ein Umstieg in Dubai, Doha, Istanbul, Bangkok, Hongkong oder Guangzhou nach Manila oder Cebu, insgesamt 15–19 Stunden. Zwischen den Inseln fliegen Cebu Pacific, Philippine Airlines und AirSWIFT (nach El Nido), 2GO und OceanJet betreiben Fähren, und vor Ort fährst du Tricycle und Jeepney.',
+        tips: [
+          'In Russland ausgegebene Visa- und Mastercard-Karten funktionieren nicht – nimm Dollar oder Euro mit und tausche in Wechselstuben in Einkaufszentren, die bessere Kurse als Banken bieten; UnionPay wird nur vereinzelt akzeptiert.',
+          'Inlandsflüge und Fähren werden wetterbedingt oft verschoben, plane also vor dem internationalen Rückflug einen Puffertag ein.',
+          'Auf Boracay sind Rauchen und Alkohol am Strand verboten, und die Bußgelder werden tatsächlich sofort kassiert.',
+        ],
+        guide: {
+          title: 'Die Philippinen in 10 Tagen',
+          sections: [
+            { title: 'Reisezeit', body: 'Am besten reist du in der Trockenzeit von Dezember bis Mai: Das Meer ist ruhig, Flüge und Bootstouren laufen planmäßig. März bis Mai ist am heißesten, bis 34 °C, dafür ist das Wasser glasklar. Von Juni bis Oktober kommen Regen und Taifune, Touren auf Palawan und Fähren fallen dann mitunter tagelang aus. Weihnachten wird ab September gefeiert, und im Januar feiert Cebu das farbenprächtige Sinulog-Festival.' },
+            { title: 'Route für 10 Tage', body: 'Starte in Cebu: zwei Tage für die spanische Altstadt, Canyoning zu den Kawasan-Fällen und den Sardinenschwarm von Moalboal. Dann fliegst du nach Palawan und verbringst vier Tage in El Nido, jeden Tag mit einer anderen Inseltour durch die Lagunen und Strände des Bacuit-Archipels. Zum Schluss drei Tage Boracay: White Beach, Sonnenuntergangsfahrten im Paraw-Segelboot und Kitesurfen an der Ostküste.' },
+            { title: 'Was du probieren solltest', body: 'Cebus Spezialität ist Lechon, ein Spanferkel mit knuspriger Haut, über Holzkohle mit Zitronengras gegart. Probier Adobo, in Essig und Sojasoße geschmortes Fleisch, die saure Tamarindensuppe Sinigang und Kinilaw, die lokale Ceviche aus frischem Thunfisch. Zum Nachtisch gibt es Halo-Halo aus gestoßenem Eis, violettem Ube-Yams, Früchten und Kondensmilch – und getrocknete Mango, die alle mit nach Hause nehmen.' },
+            { title: 'Geld, Handy und Verkehr', body: 'Die Währung ist der philippinische Peso (PHP). Russische Bankkarten funktionieren nicht, also nimm Bargeld in Dollar oder Euro mit; auf den Inseln gibt es wenige Geldautomaten, tausche daher vorab in Manila oder Cebu. SIM-Karten von Globe und Smart gibt es an Flughäfen gegen Vorlage des Passes. In Manila und Cebu fährt Grab, auf den Inseln verlangen Tricycles Festpreise. Inlandsflüge buchst du am besten früh, etwa einen Monat vorher.' },
+          ],
+        },
+      },
+      fr: {
+        tagline: 'Sept mille îles, lagons de Palawan et sable blanc de Boracay',
+        description: 'Les Philippines égrènent plus de sept mille îles où les falaises calcaires plongent dans des lagons turquoise et où requins-baleines et bancs de sardines nagent à quelques mètres du rivage. On y parle anglais, le karaoké est une passion nationale et l’accueil s’accompagne d’un sourire inoubliable.',
+        howToGet: 'Il n’y a pas de vol direct depuis Moscou : on passe généralement par Dubaï, Doha, Istanbul, Bangkok, Hong Kong ou Canton pour rejoindre Manille ou Cebu, soit 15 à 19 heures de trajet. Entre les îles, Cebu Pacific, Philippine Airlines et AirSWIFT (vers El Nido) multiplient les vols, 2GO et OceanJet assurent les ferries, et sur place on circule en tricycle et en jeepney.',
+        tips: [
+          'Les cartes Visa et Mastercard émises en Russie ne fonctionnent pas : emportez des dollars ou des euros et changez-les dans les bureaux de change des centres commerciaux, plus avantageux que les banques ; UnionPay n’est accepté que ponctuellement.',
+          'Vols intérieurs et ferries sont souvent reportés à cause de la météo : gardez une journée de marge avant votre vol international.',
+          'À Boracay, il est interdit de fumer et de boire de l’alcool sur la plage, et les amendes sont bien réelles et perçues sur-le-champ.',
+        ],
+        guide: {
+          title: 'Les Philippines en 10 jours',
+          sections: [
+            { title: 'Quand partir', body: 'La meilleure période est la saison sèche, de décembre à mai : la mer est calme, vols et excursions en bateau partent à l’heure. De mars à mai, la chaleur grimpe jusqu’à 34 °C, mais l’eau est d’une limpidité parfaite. De juin à octobre arrivent pluies et typhons, et les tours de Palawan comme les ferries peuvent être annulés plusieurs jours. Noël se fête dès septembre et, en janvier, Cebu vibre au rythme du festival Sinulog.' },
+            { title: 'Itinéraire de 10 jours', body: 'Commencez par Cebu : deux jours pour la vieille ville espagnole, le canyoning jusqu’aux chutes de Kawasan et le banc de sardines de Moalboal. Envolez-vous ensuite pour Palawan et passez quatre jours à El Nido, en choisissant chaque jour une nouvelle excursion parmi les lagons et plages de l’archipel de Bacuit. Terminez par trois jours à Boracay : White Beach, couchers de soleil à bord d’un paraw et kitesurf sur la côte est.' },
+            { title: 'Que goûter', body: 'Le plat emblématique de Cebu est le lechon, un cochon de lait à la peau croustillante rôti au charbon avec de la citronnelle. Goûtez l’adobo, viande mijotée dans le vinaigre et la sauce soja, la soupe acidulée au tamarin sinigang et le kinilaw, le ceviche local de thon frais. En dessert, le halo-halo mêle glace pilée, igname violette ube, fruits et lait concentré, sans oublier la mangue séchée que tout le monde rapporte.' },
+            { title: 'Argent, téléphone et transports', body: 'La monnaie est le peso philippin (PHP). Les cartes des banques russes ne fonctionnent pas : prévoyez des dollars ou des euros en espèces ; les distributeurs se font rares sur les îles, alors changez à Manille ou à Cebu avant de partir. Les cartes SIM Globe et Smart se vendent dans les aéroports sur présentation du passeport. Grab fonctionne à Manille et à Cebu, et sur les îles les tricycles pratiquent des tarifs fixes. Réservez tôt les vols inter-îles.' },
+          ],
+        },
+      },
+      it: {
+        tagline: 'Settemila isole, lagune di Palawan e la sabbia bianca di Boracay',
+        description: 'Le Filippine sono un arcipelago di oltre settemila isole dove le falesie calcaree si tuffano in lagune turchesi e squali balena e banchi di sardine nuotano a pochi metri dalla riva. L’inglese è diffusissimo, il karaoke è una passione nazionale e l’accoglienza arriva con un sorriso indimenticabile.',
+        howToGet: 'Non ci sono voli diretti da Mosca: di solito si fa scalo a Dubai, Doha, Istanbul, Bangkok, Hong Kong o Canton per Manila o Cebu, per 15–19 ore complessive. Tra le isole volano Cebu Pacific, Philippine Airlines e AirSWIFT (per El Nido), navigano i traghetti 2GO e OceanJet e sul posto ci si sposta in tricycle e jeepney.',
+        tips: [
+          'Le carte Visa e Mastercard emesse in Russia non funzionano: porta dollari o euro e cambiali nei cambiavalute dei centri commerciali, più convenienti delle banche; UnionPay è accettata solo in alcuni posti.',
+          'Voli interni e traghetti vengono spesso rinviati per il meteo, quindi tieni un giorno di margine prima del volo internazionale.',
+          'A Boracay è vietato fumare e bere alcolici in spiaggia, e le multe sono reali e riscosse sul posto.',
+        ],
+        guide: {
+          title: 'Le Filippine in 10 giorni',
+          sections: [
+            { title: 'Quando andare', body: 'Il periodo migliore è la stagione secca, da dicembre a maggio: il mare è calmo e voli ed escursioni in barca rispettano gli orari. Da marzo a maggio fa più caldo, fino a 34 °C, ma l’acqua è cristallina. Da giugno a ottobre arrivano piogge e tifoni, e i tour di Palawan e i traghetti possono saltare per giorni. Il Natale si festeggia già da settembre e a gennaio Cebu ospita il coloratissimo festival Sinulog.' },
+            { title: 'Itinerario di 10 giorni', body: 'Parti da Cebu: due giorni per il centro storico spagnolo, il canyoning fino alle cascate di Kawasan e il banco di sardine di Moalboal. Poi volo per Palawan e quattro giorni a El Nido, scegliendo ogni giorno un tour diverso tra le lagune e le spiagge dell’arcipelago di Bacuit. Chiudi con tre giorni a Boracay: White Beach, tramonti a bordo di un paraw e kitesurf sulla costa orientale.' },
+            { title: 'Cosa assaggiare', body: 'Il piatto simbolo di Cebu è il lechon, maialino da latte dalla cotenna croccante arrostito sulla brace con la citronella. Prova l’adobo, carne stufata in aceto e salsa di soia, la zuppa acidula al tamarindo sinigang e il kinilaw, il ceviche locale di tonno fresco. Per dessert c’è l’halo-halo, una montagna di ghiaccio tritato con igname viola ube, frutta e latte condensato, e il mango essiccato che tutti portano a casa.' },
+            { title: 'Soldi, telefono e trasporti', body: 'La valuta è il peso filippino (PHP). Le carte delle banche russe non funzionano, quindi porta contanti in dollari o euro; sulle isole i bancomat sono pochi, perciò cambia prima a Manila o a Cebu. Le SIM di Globe e Smart si comprano in aeroporto con il passaporto. A Manila e Cebu funziona Grab, sulle isole i tricycle applicano tariffe fisse. Prenota presto i voli tra le isole: le tariffe low cost scendono circa un mese prima.' },
+          ],
+        },
+      },
+    },
+  },
+  cities: [
+    {
+      id: 'el-nido', lat: 11.1808, lng: 119.3916, image: '3T9dDY0WqDI', gallery: ['C9W8fr6rzfg'],
+      rating: 4.8, reviews: 8940, tags: ['islands', 'beaches', 'kayak', 'diving'], months: [12, 1, 2, 3, 4, 5], budgetPerDay: 60, currency: 'PHP',
+      language: 'tl', timezone: 'UTC+8', zoom: 11, theme: { accent: '#0f766e', accent2: '#22d3ee', motif: 'waves' },
+      text: {
+        ru: { name: 'Эль-Нидо', tagline: 'Известняковые скалы, тайные лагуны и острова Бакуита', description: 'Посёлок на северной оконечности Палавана — ворота в архипелаг Бакуит, где из изумрудной воды поднимаются чёрные известняковые стены. Каждый день здесь начинается с выбора островного тура: лагуны, пещеры и пустые пляжи.', tips: ['Туры A, B, C и D покрывают разные острова; если времени мало, начните с тура A с Большой и Малой лагунами.', 'При входе в зону нужно оплатить экосбор — квитанция действует десять дней, храните её.'], gettingThere: 'AirSWIFT летает из Манилы и Себу прямо в аэропорт Лио в 10 минутах от посёлка; дешевле — рейс в Пуэрто-Принсесу и 5–6 часов на микроавтобусе.' },
+        en: { name: 'El Nido', tagline: 'Limestone cliffs, secret lagoons and the Bacuit islands', description: 'This town on Palawan’s northern tip is the gateway to the Bacuit archipelago, where black limestone walls rise from emerald water. Every day starts with choosing an island-hopping tour: lagoons, caves and empty beaches.', tips: ['Tours A, B, C and D cover different islands; if time is short, start with Tour A and the Big and Small Lagoons.', 'You pay an eco-fee on arrival; the receipt is valid for ten days, so keep it.'], gettingThere: 'AirSWIFT flies from Manila and Cebu straight to Lio airport, 10 minutes from town; a cheaper option is a flight to Puerto Princesa and a 5–6-hour van ride.' },
+        es: { name: 'El Nido', tagline: 'Acantilados de caliza, lagunas secretas y las islas de Bacuit', description: 'Este pueblo del extremo norte de Palawan es la puerta al archipiélago de Bacuit, donde paredes negras de caliza se alzan sobre un agua esmeralda. Cada día empieza eligiendo una excursión entre islas: lagunas, cuevas y playas vacías.', tips: ['Los tours A, B, C y D recorren islas distintas; si vas justo de tiempo, empieza por el A con la Big y la Small Lagoon.', 'Al llegar se paga una ecotasa cuyo recibo vale diez días: guárdalo.'], gettingThere: 'AirSWIFT vuela desde Manila y Cebú directamente al aeropuerto de Lio, a 10 minutos del pueblo; más barato es volar a Puerto Princesa y seguir 5–6 horas en furgoneta.' },
+        de: { name: 'El Nido', tagline: 'Kalksteinklippen, geheime Lagunen und die Bacuit-Inseln', description: 'Der Ort an der Nordspitze Palawans ist das Tor zum Bacuit-Archipel, wo schwarze Kalksteinwände aus smaragdgrünem Wasser ragen. Jeder Tag beginnt mit der Wahl einer Inseltour: Lagunen, Höhlen und leere Strände.', tips: ['Die Touren A, B, C und D führen zu unterschiedlichen Inseln; bei wenig Zeit startest du mit Tour A und den Big und Small Lagoons.', 'Bei der Ankunft zahlst du eine Ökogebühr, deren Quittung zehn Tage gilt – heb sie auf.'], gettingThere: 'AirSWIFT fliegt von Manila und Cebu direkt zum Flughafen Lio, 10 Minuten vom Ort; günstiger ist ein Flug nach Puerto Princesa und 5–6 Stunden im Minibus.' },
+        fr: { name: 'El Nido', tagline: 'Falaises calcaires, lagons secrets et îles de Bacuit', description: 'Ce bourg à la pointe nord de Palawan ouvre sur l’archipel de Bacuit, où des murailles de calcaire noir jaillissent d’une eau émeraude. Chaque journée commence par le choix d’une excursion en bateau : lagons, grottes et plages désertes.', tips: ['Les tours A, B, C et D desservent des îles différentes ; si le temps presse, commencez par le tour A avec le Big et le Small Lagoon.', 'Une écotaxe se paie à l’arrivée et son reçu vaut dix jours : conservez-le.'], gettingThere: 'AirSWIFT relie Manille et Cebu directement à l’aéroport de Lio, à 10 minutes du bourg ; moins cher, un vol jusqu’à Puerto Princesa puis 5 à 6 heures de minibus.' },
+        it: { name: 'El Nido', tagline: 'Falesie calcaree, lagune segrete e le isole di Bacuit', description: 'Questo paese all’estremità nord di Palawan è la porta dell’arcipelago di Bacuit, dove pareti di calcare nero si alzano da un’acqua color smeraldo. Ogni giornata comincia scegliendo un tour in barca tra le isole: lagune, grotte e spiagge deserte.', tips: ['I tour A, B, C e D toccano isole diverse; se hai poco tempo, comincia dal tour A con la Big e la Small Lagoon.', 'All’arrivo si paga una tassa ecologica la cui ricevuta vale dieci giorni: conservala.'], gettingThere: 'AirSWIFT vola da Manila e Cebu direttamente all’aeroporto di Lio, a 10 minuti dal paese; più economico è volare a Puerto Princesa e proseguire 5–6 ore in minibus.' },
+      },
+    },
+    {
+      id: 'boracay', lat: 11.9674, lng: 121.9248, image: 'TO2V71mOWhM', gallery: ['kaAcCMBrmJ8', 'sIhVwrDOtgg', 'nJpk7nXEGSs', '6L2tm7BzFKs', 'rey_NuUnj44'],
+      rating: 4.7, reviews: 12650, tags: ['beaches', 'sunset', 'nightlife', 'islands'], months: [11, 12, 1, 2, 3, 4, 5], budgetPerDay: 75, currency: 'PHP',
+      language: 'tl', timezone: 'UTC+8', zoom: 13, theme: { accent: '#0284c7', accent2: '#fb923c', motif: 'palms' },
+      text: {
+        ru: { name: 'Боракай', tagline: 'Пудровый песок, парусники на закате и вечеринки у моря', description: 'Семикилометровый остров с одним из самых известных пляжей мира: мягкий белый песок, мелкая бирюзовая вода и закаты, ради которых весь берег замирает. После масштабной реабилитации 2018 года остров стал чище и спокойнее.', tips: ['Закат встречайте на парусной лодке-парау: прогулки продают прямо на пляже у станций 1–3.', 'С июня по октябрь купайтесь на восточном пляже Булабог — на западе в это время дует сильный хабагат.'], gettingThere: 'Ближайший аэропорт — Катиклан: 15 минут на трицикле до пристани, 15 минут на пароме и снова трицикл до отеля. Из аэропорта Калибо добираться около двух часов.' },
+        en: { name: 'Boracay', tagline: 'Powder-soft sand, sunset sails and beachside parties', description: 'A seven-kilometre island with one of the world’s most famous beaches: soft white sand, shallow turquoise water and sunsets that bring the whole shore to a standstill. Since its major 2018 rehabilitation, the island is cleaner and calmer.', tips: ['Watch the sunset from a paraw sailboat; trips are sold right on the beach around Stations 1–3.', 'From June to October swim on Bulabog Beach in the east, as the strong habagat wind hits the west side.'], gettingThere: 'The nearest airport is Caticlan: 15 minutes by tricycle to the jetty, a 15-minute ferry and another tricycle to your hotel. From Kalibo airport it takes about two hours.' },
+        es: { name: 'Boracay', tagline: 'Arena de talco, veleros al atardecer y fiestas junto al mar', description: 'Una isla de siete kilómetros con una de las playas más famosas del mundo: arena blanca y fina, agua turquesa poco profunda y atardeceres que paralizan toda la orilla. Tras su gran rehabilitación de 2018, la isla está más limpia y tranquila.', tips: ['Mira la puesta de sol desde un velero paraw: los paseos se venden en la misma playa, entre las estaciones 1 y 3.', 'De junio a octubre báñate en Bulabog, al este, porque el fuerte viento habagat azota el oeste.'], gettingThere: 'El aeropuerto más cercano es Caticlan: 15 minutos en triciclo hasta el muelle, 15 de ferri y otro triciclo hasta el hotel. Desde el aeropuerto de Kalibo se tarda unas dos horas.' },
+        de: { name: 'Boracay', tagline: 'Puderzucker-Sand, Segeltörns bei Sonnenuntergang und Strandpartys', description: 'Eine sieben Kilometer lange Insel mit einem der berühmtesten Strände der Welt: weicher weißer Sand, flaches türkisfarbenes Wasser und Sonnenuntergänge, bei denen der ganze Strand innehält. Seit der großen Sanierung 2018 ist die Insel sauberer und ruhiger.', tips: ['Erlebe den Sonnenuntergang auf einem Paraw-Segelboot – Fahrten werden direkt am Strand an den Stations 1–3 verkauft.', 'Von Juni bis Oktober badest du besser am Bulabog Beach im Osten, denn dann trifft der starke Habagat-Wind die Westseite.'], gettingThere: 'Der nächste Flughafen ist Caticlan: 15 Minuten per Tricycle zum Anleger, 15 Minuten Fähre und wieder Tricycle zum Hotel. Vom Flughafen Kalibo dauert es etwa zwei Stunden.' },
+        fr: { name: 'Boracay', tagline: 'Sable poudreux, voiliers au couchant et fêtes en bord de mer', description: 'Une île de sept kilomètres dotée de l’une des plages les plus célèbres du monde : sable blanc et doux, eau turquoise peu profonde et couchers de soleil qui figent tout le rivage. Depuis sa grande réhabilitation de 2018, l’île est plus propre et plus paisible.', tips: ['Admirez le coucher du soleil à bord d’un voilier paraw : les sorties se vendent directement sur la plage, entre les stations 1 et 3.', 'De juin à octobre, baignez-vous à Bulabog, sur la côte est, car le puissant vent habagat frappe l’ouest.'], gettingThere: 'L’aéroport le plus proche est Caticlan : 15 minutes de tricycle jusqu’à la jetée, 15 minutes de ferry puis un autre tricycle jusqu’à l’hôtel. Depuis l’aéroport de Kalibo, comptez environ deux heures.' },
+        it: { name: 'Boracay', tagline: 'Sabbia come cipria, vele al tramonto e feste sul mare', description: 'Un’isola di sette chilometri con una delle spiagge più famose al mondo: sabbia bianca e morbida, acqua turchese e bassa e tramonti che fermano l’intera riva. Dopo la grande riqualificazione del 2018 l’isola è più pulita e tranquilla.', tips: ['Guarda il tramonto da una barca a vela paraw: le uscite si vendono direttamente in spiaggia, tra le Station 1 e 3.', 'Da giugno a ottobre fai il bagno a Bulabog, sulla costa est, perché il forte vento habagat batte il lato ovest.'], gettingThere: 'L’aeroporto più vicino è Caticlan: 15 minuti in tricycle fino al molo, 15 minuti di traghetto e un altro tricycle fino all’hotel. Dall’aeroporto di Kalibo ci vogliono circa due ore.' },
+      },
+    },
+    {
+      id: 'cebu', lat: 10.3157, lng: 123.8854, image: 'fulyk6dVFSQ', gallery: ['C0CyYICJ264', 'dMlZ_n2ArFI', 'Etn90xJGt1Q', 'FzJUwgK3tOU'],
+      rating: 4.5, reviews: 9430, tags: ['history', 'diving', 'waterfalls', 'food'], months: [12, 1, 2, 3, 4, 5], budgetPerDay: 50, currency: 'PHP',
+      language: 'tl', timezone: 'UTC+8', zoom: 10, theme: { accent: '#b91c1c', accent2: '#0ea5e9', motif: 'sun' },
+      text: {
+        ru: { name: 'Себу', tagline: 'Старейший город страны, лечон и водопады юга острова', description: 'Себу — самый старый город Филиппин, где в 1521 году высадился Магеллан, а сегодня — второй мегаполис страны и главный хаб Висайских островов. Днём здесь испанские церкви и рынки, а за пару часов езды на юг — бирюзовые каньоны, водопады и рифы.', tips: ['Для юга острова наймите машину с водителем на день: Кавасан и Моалбоал легко совместить.', 'Пробки в городе тяжёлые — между районами передвигайтесь в Grab вне часа пик.'], gettingThere: 'Международный аэропорт Мактан-Себу в 30–60 минутах от центра на Grab или такси; из Манилы лететь 1 ч 20 мин.' },
+        en: { name: 'Cebu', tagline: 'The oldest city, lechon and waterfalls in the south', description: 'Cebu is the oldest city in the Philippines, where Magellan landed in 1521, and today it is the country’s second metropolis and the main hub of the Visayas. By day there are Spanish churches and markets, and a couple of hours south lie turquoise canyons, waterfalls and reefs.', tips: ['For the south of the island hire a car with a driver for the day: Kawasan and Moalboal combine easily.', 'City traffic is heavy, so get around by Grab outside rush hour.'], gettingThere: 'Mactan-Cebu International Airport is 30–60 minutes from the centre by Grab or taxi; the flight from Manila takes 1 hour 20 minutes.' },
+        es: { name: 'Cebú', tagline: 'La ciudad más antigua, el lechón y las cascadas del sur', description: 'Cebú es la ciudad más antigua de Filipinas, donde Magallanes desembarcó en 1521, y hoy es la segunda metrópolis del país y el gran nudo de las Bisayas. De día hay iglesias españolas y mercados, y a un par de horas al sur esperan cañones turquesa, cascadas y arrecifes.', tips: ['Para el sur de la isla contrata un coche con conductor por un día: Kawasan y Moalboal se combinan sin problema.', 'El tráfico es denso: muévete en Grab fuera de la hora punta.'], gettingThere: 'El aeropuerto internacional de Mactán-Cebú está a 30–60 minutos del centro en Grab o taxi; el vuelo desde Manila dura 1 h 20 min.' },
+        de: { name: 'Cebu', tagline: 'Die älteste Stadt, Lechon und Wasserfälle im Süden', description: 'Cebu ist die älteste Stadt der Philippinen, wo Magellan 1521 landete, und heute die zweitgrößte Metropole des Landes und das Drehkreuz der Visayas. Tagsüber locken spanische Kirchen und Märkte, ein paar Stunden südlich türkisfarbene Canyons, Wasserfälle und Riffe.', tips: ['Für den Süden der Insel mietest du am besten ein Auto mit Fahrer für einen Tag – Kawasan und Moalboal lassen sich gut verbinden.', 'Der Stadtverkehr ist zäh, fahr deshalb außerhalb der Stoßzeiten mit Grab.'], gettingThere: 'Der internationale Flughafen Mactan-Cebu liegt 30–60 Minuten per Grab oder Taxi vom Zentrum entfernt; der Flug ab Manila dauert 1 Stunde 20 Minuten.' },
+        fr: { name: 'Cebu', tagline: 'La plus vieille ville, le lechon et les cascades du sud', description: 'Cebu est la plus ancienne ville des Philippines, où Magellan accosta en 1521, et aujourd’hui la deuxième métropole du pays et la plaque tournante des Visayas. Le jour, églises espagnoles et marchés ; à deux heures au sud, canyons turquoise, cascades et récifs.', tips: ['Pour le sud de l’île, louez une voiture avec chauffeur à la journée : Kawasan et Moalboal se combinent facilement.', 'La circulation est dense : déplacez-vous en Grab en dehors des heures de pointe.'], gettingThere: 'L’aéroport international de Mactan-Cebu est à 30–60 minutes du centre en Grab ou en taxi ; le vol depuis Manille dure 1 h 20.' },
+        it: { name: 'Cebu', tagline: 'La città più antica, il lechon e le cascate del sud', description: 'Cebu è la città più antica delle Filippine, dove Magellano sbarcò nel 1521, e oggi la seconda metropoli del Paese e lo snodo delle Visayas. Di giorno chiese spagnole e mercati, a un paio d’ore verso sud canyon turchesi, cascate e barriere coralline.', tips: ['Per il sud dell’isola noleggia un’auto con autista per la giornata: Kawasan e Moalboal si abbinano facilmente.', 'Il traffico è pesante, quindi muoviti in Grab fuori dalle ore di punta.'], gettingThere: 'L’aeroporto internazionale di Mactan-Cebu dista 30–60 minuti dal centro in Grab o taxi; il volo da Manila dura 1 ora e 20 minuti.' },
+      },
+    },
+  ],
+  places: [
+    // El Nido
+    {
+      id: 'el-nido-big-lagoon', city: 'el-nido', category: 'nature', lat: 11.149, lng: 119.326, image: '3T9dDY0WqDI',
+      rating: 4.8, reviews: 15800, tags: ['kayak', 'islands', 'nature'],
+      address: 'Miniloc Island, El Nido, Palawan',
+      text: {
+        ru: { name: 'Большая лагуна', description: 'Изумрудная лагуна на острове Минилок, окружённая отвесными известняковыми стенами: в отлив внутрь заходят только на каяках. Главная звезда тура A.', tip: 'Плывите на каяке в самую глубь лагуны — там вода становится бирюзовой, а лодок с туристами нет.' },
+        en: { name: 'Big Lagoon', description: 'An emerald lagoon on Miniloc Island enclosed by sheer limestone walls; at low tide you can only paddle in by kayak. It is the star of Tour A.', tip: 'Kayak right to the far end, where the water turns turquoise and the tour boats can’t follow.' },
+        es: { name: 'Big Lagoon', description: 'Una laguna esmeralda en la isla de Miniloc rodeada de paredes verticales de caliza; con marea baja solo se entra en kayak. Es la estrella del tour A.', tip: 'Rema hasta el fondo de la laguna, donde el agua se vuelve turquesa y no llegan las barcas.' },
+        de: { name: 'Big Lagoon', description: 'Eine smaragdgrüne Lagune auf der Insel Miniloc, umschlossen von senkrechten Kalksteinwänden; bei Ebbe kommt man nur per Kajak hinein. Sie ist der Star von Tour A.', tip: 'Paddle bis ganz nach hinten: Dort wird das Wasser türkis, und die Ausflugsboote kommen nicht hin.' },
+        fr: { name: 'Big Lagoon', description: 'Un lagon émeraude sur l’île de Miniloc, cerné de parois calcaires verticales ; à marée basse, on n’y entre qu’en kayak. C’est la vedette du tour A.', tip: 'Pagayez jusqu’au fond du lagon, là où l’eau vire au turquoise et où les bateaux ne passent pas.' },
+        it: { name: 'Big Lagoon', description: 'Una laguna smeraldo sull’isola di Miniloc chiusa da pareti calcaree a picco; con la bassa marea si entra solo in kayak. È la star del tour A.', tip: 'Pagaia fino in fondo alla laguna, dove l’acqua diventa turchese e le barche non arrivano.' },
+      },
+    },
+    {
+      id: 'el-nido-nacpan-beach', city: 'el-nido', category: 'nature', lat: 11.324, lng: 119.418, image: 'C9W8fr6rzfg',
+      rating: 4.7, reviews: 7200, tags: ['beaches', 'sunset', 'nature'], price: { kind: 'free' }, hours: 'always',
+      address: 'Barangay Bucana, El Nido, Palawan',
+      text: {
+        ru: { name: 'Пляж Накпан', description: 'Четыре километра золотого песка и кокосовых пальм в 40 минутах к северу от посёлка — даже в сезон здесь хватает места всем. Рядом лежит пляж-близнец Калитанг, отделённый мысом.', tip: 'Поднимитесь на холм у северного края пляжа: оттуда видны оба пляжа-близнеца разом.' },
+        en: { name: 'Nacpan Beach', description: 'Four kilometres of golden sand and coconut palms 40 minutes north of town; even in high season there is room for everyone. Its twin, Calitang Beach, lies just beyond a headland.', tip: 'Climb the hill at the northern end of the beach to see both twin beaches at once.' },
+        es: { name: 'Playa de Nacpan', description: 'Cuatro kilómetros de arena dorada y cocoteros a 40 minutos al norte del pueblo: incluso en temporada alta hay sitio para todos. Su gemela, Calitang, está tras un pequeño cabo.', tip: 'Sube a la colina del extremo norte para ver las dos playas gemelas a la vez.' },
+        de: { name: 'Nacpan Beach', description: 'Vier Kilometer goldener Sand und Kokospalmen, 40 Minuten nördlich des Orts – selbst in der Hochsaison ist Platz für alle. Hinter einer Landzunge liegt der Zwillingsstrand Calitang.', tip: 'Steig auf den Hügel am Nordende, dann siehst du beide Zwillingsstrände auf einmal.' },
+        fr: { name: 'Plage de Nacpan', description: 'Quatre kilomètres de sable doré et de cocotiers à 40 minutes au nord du bourg : même en haute saison, il y a de la place pour tous. Sa jumelle, Calitang, se cache derrière un promontoire.', tip: 'Grimpez sur la colline à l’extrémité nord pour voir les deux plages jumelles d’un seul coup d’œil.' },
+        it: { name: 'Spiaggia di Nacpan', description: 'Quattro chilometri di sabbia dorata e palme da cocco a 40 minuti a nord del paese: anche in alta stagione c’è posto per tutti. La gemella Calitang si trova oltre un promontorio.', tip: 'Sali sulla collina all’estremità nord per vedere entrambe le spiagge gemelle insieme.' },
+      },
+    },
+    {
+      id: 'el-nido-las-cabanas', city: 'el-nido', category: 'nature', spot: 'insta', lat: 11.1648, lng: 119.3851, image: 'C9W8fr6rzfg',
+      rating: 4.6, reviews: 6100, tags: ['sunset', 'beaches', 'photo'], price: { kind: 'free' }, hours: 'always',
+      address: 'Barangay Corong-Corong, El Nido, Palawan',
+      text: {
+        ru: { name: 'Пляж Лас-Кабанас', description: 'Лучшее место в Эль-Нидо для заката: солнце садится за островами Бакуита, а над водой проходит зиплайн на остров Депелдет.', tip: 'Встаньте на южном краю пляжа у скал за 40 минут до заката — в кадр попадут силуэты островов и лодки-банка.' },
+        en: { name: 'Las Cabanas Beach', description: 'El Nido’s best sunset spot: the sun sinks behind the Bacuit islands and a zipline runs over the water to Depeldet Island.', tip: 'Stand by the rocks at the southern end 40 minutes before sunset to frame the island silhouettes and the bangka boats.' },
+        es: { name: 'Playa de Las Cabanas', description: 'El mejor lugar de El Nido para el atardecer: el sol se esconde tras las islas de Bacuit y una tirolina cruza el agua hasta la isla de Depeldet.', tip: 'Colócate junto a las rocas del extremo sur 40 minutos antes de la puesta para encuadrar las siluetas de las islas y las bangkas.' },
+        de: { name: 'Las Cabanas Beach', description: 'El Nidos bester Ort für den Sonnenuntergang: Die Sonne versinkt hinter den Bacuit-Inseln, und eine Seilrutsche führt über das Wasser zur Insel Depeldet.', tip: 'Stell dich 40 Minuten vor Sonnenuntergang zu den Felsen am Südende – so hast du Inselsilhouetten und Bangka-Boote im Bild.' },
+        fr: { name: 'Plage de Las Cabanas', description: 'Le meilleur spot d’El Nido au coucher du soleil : l’astre disparaît derrière les îles de Bacuit et une tyrolienne file au-dessus de l’eau jusqu’à l’île de Depeldet.', tip: 'Placez-vous près des rochers à l’extrémité sud 40 minutes avant le coucher du soleil pour cadrer les silhouettes des îles et les bangkas.' },
+        it: { name: 'Spiaggia di Las Cabanas', description: 'Il posto migliore di El Nido per il tramonto: il sole scende dietro le isole di Bacuit e una zipline corre sull’acqua fino all’isola di Depeldet.', tip: 'Mettiti vicino agli scogli all’estremità sud 40 minuti prima del tramonto per inquadrare le sagome delle isole e le bangka.' },
+      },
+    },
+    {
+      id: 'el-nido-taraw-cliff', city: 'el-nido', category: 'nature', spot: 'hidden', lat: 11.183, lng: 119.3955, image: '3T9dDY0WqDI',
+      rating: 4.6, reviews: 1900, tags: ['views', 'adventure', 'hiking'],
+      address: 'Rizal Street, El Nido, Palawan',
+      text: {
+        ru: { name: 'Скала Тарау', description: 'Чёрная известняковая стена прямо за посёлком, на вершину которой ведёт маршрут с канатными мостами и перилами. Сверху открывается вид на крыши Эль-Нидо и весь залив Бакуит.', tip: 'Вход — с улицы Рисаль за центром посёлка; идите с гидом рано утром, пока камни не раскалились на солнце.' },
+        en: { name: 'Taraw Cliff', description: 'A black limestone wall right behind town, climbed via a route with rope bridges and handrails. From the top you look over El Nido’s rooftops and the whole of Bacuit Bay.', tip: 'The entrance is off Rizal Street behind the town centre; go with a guide early in the morning, before the rock heats up.' },
+        es: { name: 'Acantilado de Taraw', description: 'Una pared de caliza negra justo detrás del pueblo a la que se sube por una ruta con puentes de cuerda y pasamanos. Desde arriba se ven los tejados de El Nido y toda la bahía de Bacuit.', tip: 'La entrada está en Rizal Street, detrás del centro; ve con guía temprano, antes de que la roca se caliente.' },
+        de: { name: 'Taraw Cliff', description: 'Eine schwarze Kalksteinwand direkt hinter dem Ort, die man über eine Route mit Seilbrücken und Handläufen erklimmt. Oben blickst du über die Dächer von El Nido und die ganze Bacuit-Bucht.', tip: 'Der Einstieg liegt an der Rizal Street hinter dem Zentrum; geh mit Guide früh am Morgen, bevor sich der Fels aufheizt.' },
+        fr: { name: 'Falaise de Taraw', description: 'Une muraille de calcaire noir juste derrière le bourg, gravie par un parcours de ponts de corde et de mains courantes. Du sommet, la vue embrasse les toits d’El Nido et toute la baie de Bacuit.', tip: 'L’accès se trouve sur Rizal Street, derrière le centre ; partez avec un guide tôt le matin, avant que la roche ne chauffe.' },
+        it: { name: 'Taraw Cliff', description: 'Una parete di calcare nero proprio dietro il paese, che si scala lungo un percorso con ponti di corda e corrimano. Dalla cima si vedono i tetti di El Nido e tutta la baia di Bacuit.', tip: 'L’accesso è da Rizal Street, dietro il centro; vai con una guida al mattino presto, prima che la roccia si scaldi.' },
+      },
+    },
+    {
+      id: 'el-nido-art-cafe', city: 'el-nido', category: 'food', lat: 11.1795, lng: 119.3905, image: 'C9W8fr6rzfg',
+      rating: 4.4, reviews: 4300, tags: ['food', 'views'], price: { kind: 'level', level: 2 },
+      address: 'Serena Street, Barangay Buena Suerte, El Nido, Palawan',
+      text: {
+        ru: { name: 'Art Café', description: 'Старейшее кафе посёлка на втором этаже с видом на бухту: с 1990-х здесь завтракают перед островными турами и ужинают свежей рыбой на гриле. Внизу — турбюро и магазинчик местных ремёсел.', tip: 'Займите столик у перил на закате и закажите филиппинский завтрак с лонганисой или рыбу дня на гриле.' },
+        en: { name: 'Art Café', description: 'The town’s oldest café, on a first floor overlooking the bay: since the 1990s people have breakfasted here before island tours and come back for grilled fresh fish at dinner. Downstairs there is a travel desk and a local crafts shop.', tip: 'Grab a table by the railing at sunset and order the Filipino breakfast with longganisa or the grilled catch of the day.' },
+        es: { name: 'Art Café', description: 'El café más antiguo del pueblo, en un primer piso con vistas a la bahía: desde los noventa se desayuna aquí antes de los tours y se vuelve a cenar pescado fresco a la parrilla. Abajo hay agencia de excursiones y una tienda de artesanía local.', tip: 'Busca mesa junto a la barandilla al atardecer y pide el desayuno filipino con longaniza o el pescado del día a la parrilla.' },
+        de: { name: 'Art Café', description: 'Das älteste Café des Orts im ersten Stock mit Blick auf die Bucht: Seit den 1990ern frühstückt man hier vor den Inseltouren und kommt abends für frisch gegrillten Fisch zurück. Unten gibt es ein Reisebüro und einen Laden mit lokalem Kunsthandwerk.', tip: 'Sichere dir zum Sonnenuntergang einen Tisch am Geländer und bestell das philippinische Frühstück mit Longganisa oder den gegrillten Fang des Tages.' },
+        fr: { name: 'Art Café', description: 'Le plus ancien café du bourg, à l’étage avec vue sur la baie : depuis les années 1990, on y prend le petit-déjeuner avant les excursions et on y revient dîner de poisson grillé. Au rez-de-chaussée, une agence et une boutique d’artisanat local.', tip: 'Prenez une table près de la rambarde au coucher du soleil et commandez le petit-déjeuner philippin au longganisa ou le poisson du jour grillé.' },
+        it: { name: 'Art Café', description: 'Il caffè più antico del paese, al primo piano con vista sulla baia: dagli anni Novanta qui si fa colazione prima dei tour e si torna a cena per il pesce fresco alla griglia. Al piano terra c’è un’agenzia e un negozio di artigianato locale.', tip: 'Prendi un tavolo vicino alla ringhiera al tramonto e ordina la colazione filippina con longganisa o il pescato del giorno alla griglia.' },
+      },
+    },
+    // Boracay
+    {
+      id: 'boracay-white-beach', city: 'boracay', category: 'nature', lat: 11.958, lng: 121.928, image: 'kaAcCMBrmJ8',
+      rating: 4.8, reviews: 31200, tags: ['beaches', 'sunset', 'nightlife'], price: { kind: 'free' }, hours: 'always',
+      address: 'White Beach, Balabag, Malay, Aklan',
+      text: {
+        ru: { name: 'Уайт-Бич', description: 'Четыре километра мягчайшего белого песка вдоль западного берега, разделённые на станции 1, 2 и 3. Днём — пологий вход в бирюзовую воду, вечером — рестораны и бары прямо на песке.', tip: 'Станция 1 — самая широкая и спокойная часть пляжа, станция 2 — центр вечерней жизни.' },
+        en: { name: 'White Beach', description: 'Four kilometres of the softest white sand along the west coast, divided into Stations 1, 2 and 3. By day the turquoise water shelves gently; by night restaurants and bars spill onto the sand.', tip: 'Station 1 is the widest and calmest stretch, while Station 2 is the hub of the evening scene.' },
+        es: { name: 'White Beach', description: 'Cuatro kilómetros de arena blanquísima en la costa oeste, divididos en las estaciones 1, 2 y 3. De día, agua turquesa de entrada suave; de noche, restaurantes y bares sobre la arena.', tip: 'La estación 1 es el tramo más ancho y tranquilo; la 2, el centro de la vida nocturna.' },
+        de: { name: 'White Beach', description: 'Vier Kilometer feinster weißer Sand an der Westküste, unterteilt in die Stations 1, 2 und 3. Tagsüber flaches türkisfarbenes Wasser, abends Restaurants und Bars direkt im Sand.', tip: 'Station 1 ist der breiteste und ruhigste Abschnitt, Station 2 das Zentrum des Abendlebens.' },
+        fr: { name: 'White Beach', description: 'Quatre kilomètres du sable blanc le plus doux sur la côte ouest, divisés en stations 1, 2 et 3. Le jour, une eau turquoise en pente douce ; le soir, restaurants et bars les pieds dans le sable.', tip: 'La station 1 est la portion la plus large et la plus calme, la station 2 le cœur de la vie nocturne.' },
+        it: { name: 'White Beach', description: 'Quattro chilometri di sabbia bianchissima lungo la costa ovest, divisi nelle Station 1, 2 e 3. Di giorno acqua turchese che digrada dolcemente, di sera ristoranti e bar sulla sabbia.', tip: 'La Station 1 è il tratto più ampio e tranquillo, la Station 2 il centro della vita serale.' },
+      },
+    },
+    {
+      id: 'boracay-puka-beach', city: 'boracay', category: 'nature', lat: 12.0, lng: 121.918, image: 'sIhVwrDOtgg',
+      rating: 4.6, reviews: 9800, tags: ['beaches', 'nature'], price: { kind: 'free' }, hours: 'always',
+      address: 'Puka Shell Beach, Yapak, Malay, Aklan',
+      text: {
+        ru: { name: 'Пляж Пука', description: 'Дикий пляж на северной оконечности острова, усыпанный осколками ракушек пука, из которых делают знаменитые бусы. Здесь меньше людей и больше волн, чем на Уайт-Бич.', tip: 'Приезжайте на трицикле до полудня и возьмите воду и тень с собой — инфраструктура здесь минимальная.' },
+        en: { name: 'Puka Shell Beach', description: 'A wild beach on the island’s northern tip, strewn with fragments of the puka shells used for the famous necklaces. Fewer people and more waves than on White Beach.', tip: 'Take a tricycle before noon and bring water and shade, as facilities are minimal.' },
+        es: { name: 'Playa Puka', description: 'Una playa salvaje en el extremo norte de la isla, sembrada de fragmentos de conchas puka con las que se hacen los famosos collares. Menos gente y más olas que en White Beach.', tip: 'Ve en triciclo antes del mediodía y lleva agua y sombra: apenas hay servicios.' },
+        de: { name: 'Puka Shell Beach', description: 'Ein wilder Strand an der Nordspitze der Insel, übersät mit Bruchstücken von Puka-Muscheln, aus denen die berühmten Ketten entstehen. Weniger Menschen und mehr Wellen als am White Beach.', tip: 'Fahr vor Mittag mit dem Tricycle hin und nimm Wasser und Sonnenschutz mit – Infrastruktur gibt es kaum.' },
+        fr: { name: 'Puka Shell Beach', description: 'Une plage sauvage à la pointe nord de l’île, parsemée d’éclats de coquillages puka dont on fait les fameux colliers. Moins de monde et plus de vagues qu’à White Beach.', tip: 'Venez en tricycle avant midi avec de l’eau et de quoi vous abriter : les équipements sont minimes.' },
+        it: { name: 'Puka Shell Beach', description: 'Una spiaggia selvaggia all’estremità nord dell’isola, cosparsa di frammenti delle conchiglie puka con cui si fanno le famose collane. Meno gente e più onde che a White Beach.', tip: 'Arriva in tricycle prima di mezzogiorno e porta acqua e ombra: i servizi sono minimi.' },
+      },
+    },
+    {
+      id: 'boracay-willys-rock', city: 'boracay', category: 'attraction', spot: 'insta', lat: 11.964, lng: 121.9255, image: 'TO2V71mOWhM',
+      rating: 4.5, reviews: 8700, tags: ['photo', 'sunset', 'beaches'], price: { kind: 'free' }, hours: 'always',
+      address: 'Station 1, White Beach, Balabag, Malay, Aklan',
+      text: {
+        ru: { name: 'Скала Уилли', description: 'Вулканическая скала в воде у станции 1 со статуей Девы Марии наверху — самый узнаваемый силуэт Боракая.', tip: 'Приходите в отлив на закате: можно дойти до скалы по колено в воде и снять её на фоне оранжевого неба.' },
+        en: { name: 'Willy’s Rock', description: 'A volcanic rock in the water off Station 1, topped by a statue of the Virgin Mary — Boracay’s most recognisable silhouette.', tip: 'Come at low tide around sunset, wade out knee-deep and shoot the rock against the orange sky.' },
+        es: { name: 'Willy’s Rock', description: 'Una roca volcánica en el agua frente a la estación 1, coronada por una imagen de la Virgen: la silueta más reconocible de Boracay.', tip: 'Ven con marea baja al atardecer: llegas con el agua por las rodillas y la fotografías contra el cielo naranja.' },
+        de: { name: 'Willy’s Rock', description: 'Ein Vulkanfelsen im Wasser vor Station 1 mit einer Marienstatue obenauf – Boracays bekannteste Silhouette.', tip: 'Komm bei Ebbe zum Sonnenuntergang, wate knietief hinaus und fotografiere den Felsen vor orangem Himmel.' },
+        fr: { name: 'Willy’s Rock', description: 'Un rocher volcanique dans l’eau face à la station 1, coiffé d’une statue de la Vierge : la silhouette la plus reconnaissable de Boracay.', tip: 'Venez à marée basse au coucher du soleil : avancez avec de l’eau jusqu’aux genoux et photographiez le rocher sur fond de ciel orangé.' },
+        it: { name: 'Willy’s Rock', description: 'Uno scoglio vulcanico in acqua davanti alla Station 1, sormontato da una statua della Madonna: la sagoma più riconoscibile di Boracay.', tip: 'Vieni con la bassa marea al tramonto: arrivi con l’acqua alle ginocchia e lo fotografi contro il cielo arancione.' },
+      },
+    },
+    {
+      id: 'boracay-mount-luho', city: 'boracay', category: 'nature', spot: 'hidden', lat: 11.985, lng: 121.939, image: 'nJpk7nXEGSs',
+      rating: 4.3, reviews: 2100, tags: ['views', 'hiking'],
+      address: 'Mount Luho, Barangay Balabag, Malay, Aklan',
+      text: {
+        ru: { name: 'Гора Лухо', description: 'Высшая точка Боракая — всего около ста метров, но со смотровой вышки остров виден целиком: белый запад, ветреный восток с кайтами и соседние острова.', tip: 'Скажите водителю трицикла «Mount Luho Viewpoint» — дорога идёт от восточного побережья вверх через деревню; лучше всего утром.' },
+        en: { name: 'Mount Luho', description: 'Boracay’s highest point is barely a hundred metres high, but its viewing tower shows the whole island: the white west, the windy east dotted with kites and the neighbouring islands.', tip: 'Ask your tricycle driver for “Mount Luho Viewpoint”; the road climbs from the east coast through a village, and mornings are best.' },
+        es: { name: 'Monte Luho', description: 'El punto más alto de Boracay apenas alcanza los cien metros, pero su torre mirador muestra la isla entera: el oeste blanco, el este ventoso lleno de kites y las islas vecinas.', tip: 'Pide al conductor del triciclo «Mount Luho Viewpoint»: la carretera sube desde la costa este atravesando un pueblo; mejor por la mañana.' },
+        de: { name: 'Mount Luho', description: 'Boracays höchster Punkt ist kaum hundert Meter hoch, doch vom Aussichtsturm siehst du die ganze Insel: den weißen Westen, den windigen Osten voller Kites und die Nachbarinseln.', tip: 'Sag dem Tricycle-Fahrer „Mount Luho Viewpoint“ – die Straße führt von der Ostküste durch ein Dorf hinauf; morgens ist es am schönsten.' },
+        fr: { name: 'Mont Luho', description: 'Le point culminant de Boracay dépasse à peine cent mètres, mais sa tour d’observation dévoile l’île entière : l’ouest immaculé, l’est venté constellé de kites et les îles voisines.', tip: 'Demandez « Mount Luho Viewpoint » au chauffeur de tricycle : la route grimpe depuis la côte est à travers un village ; idéal le matin.' },
+        it: { name: 'Monte Luho', description: 'Il punto più alto di Boracay supera appena i cento metri, ma dalla torre panoramica si vede tutta l’isola: l’ovest candido, l’est ventoso pieno di kite e le isole vicine.', tip: 'Chiedi al conducente del tricycle «Mount Luho Viewpoint»: la strada sale dalla costa est attraverso un villaggio; meglio al mattino.' },
+      },
+    },
+    {
+      id: 'boracay-d-talipapa', city: 'boracay', category: 'food', lat: 11.956, lng: 121.93, image: '6L2tm7BzFKs',
+      rating: 4.3, reviews: 6900, tags: ['market', 'food', 'streetfood'], price: { kind: 'level', level: 2 },
+      address: 'D’Talipapa, Station 2, Balabag, Malay, Aklan',
+      text: {
+        ru: { name: 'Рынок Ди-Талипапа', description: 'Рыбный рынок за станцией 2: покупаете на прилавке креветок, крабов или групера, а соседние кафе-палуто готовят их по вашему выбору — на гриле, в чесночном масле или в кокосовом молоке.', tip: 'Торгуйтесь на рынке, а цену готовки за килограмм уточните в кафе заранее.' },
+        en: { name: 'D’Talipapa Market', description: 'A seafood market behind Station 2: buy prawns, crabs or grouper at the stalls, and the neighbouring paluto restaurants cook them as you like — grilled, in garlic butter or in coconut milk.', tip: 'Haggle at the market and agree the per-kilo cooking price with the restaurant before you hand over your catch.' },
+        es: { name: 'Mercado D’Talipapa', description: 'Un mercado de marisco detrás de la estación 2: compras langostinos, cangrejos o mero en los puestos y los restaurantes paluto de al lado te los cocinan a tu gusto, a la parrilla, al ajillo o con leche de coco.', tip: 'Regatea en el mercado y acuerda antes con el restaurante el precio de cocinado por kilo.' },
+        de: { name: 'D’Talipapa Market', description: 'Ein Fischmarkt hinter Station 2: Du kaufst Garnelen, Krabben oder Zackenbarsch an den Ständen, und die Paluto-Lokale nebenan bereiten sie nach Wunsch zu – gegrillt, in Knoblauchbutter oder in Kokosmilch.', tip: 'Handle auf dem Markt und vereinbare den Zubereitungspreis pro Kilo vorher mit dem Lokal.' },
+        fr: { name: 'Marché D’Talipapa', description: 'Un marché aux fruits de mer derrière la station 2 : on achète crevettes, crabes ou mérou aux étals, et les restaurants paluto voisins les cuisinent à votre goût, grillés, au beurre d’ail ou au lait de coco.', tip: 'Marchandez au marché et convenez à l’avance avec le restaurant du prix de cuisson au kilo.' },
+        it: { name: 'Mercato D’Talipapa', description: 'Un mercato del pesce dietro la Station 2: compri gamberi, granchi o cernia ai banchi e i ristoranti paluto accanto li cucinano come preferisci, alla griglia, al burro all’aglio o nel latte di cocco.', tip: 'Contratta al mercato e concorda prima con il ristorante il prezzo di cottura al chilo.' },
+      },
+    },
+    // Cebu
+    {
+      id: 'cebu-magellans-cross', city: 'cebu', category: 'attraction', lat: 10.2935, lng: 123.902, image: 'C0CyYICJ264',
+      rating: 4.5, reviews: 14600, tags: ['history', 'oldtown', 'culture'], price: { kind: 'free' },
+      address: 'Magallanes Street, Cebu City',
+      text: {
+        ru: { name: 'Крест Магеллана и базилика Санто-Ниньо', description: 'Деревянный крест в восьмиугольной часовне отмечает место первого крещения на Филиппинах в 1521 году. Рядом — базилика с фигуркой Младенца Иисуса, старейшей христианской реликвией страны.', tip: 'По пятницам у базилики проходят многолюдные службы — приходите в будний день утром, чтобы спокойно рассмотреть фрески часовни.' },
+        en: { name: 'Magellan’s Cross and Santo Niño Basilica', description: 'A wooden cross in an octagonal chapel marks the site of the first Christian baptism in the Philippines in 1521. Next door, the basilica holds the Santo Niño statue, the country’s oldest Christian relic.', tip: 'Friday services at the basilica draw huge crowds, so come on a weekday morning to study the chapel’s ceiling paintings in peace.' },
+        es: { name: 'Cruz de Magallanes y basílica del Santo Niño', description: 'Una cruz de madera en una capilla octogonal marca el lugar del primer bautismo cristiano de Filipinas, en 1521. Al lado, la basílica guarda la imagen del Santo Niño, la reliquia cristiana más antigua del país.', tip: 'Los viernes las misas de la basílica se llenan: ven una mañana entre semana para contemplar con calma las pinturas de la capilla.' },
+        de: { name: 'Magellan-Kreuz und Basilika Santo Niño', description: 'Ein Holzkreuz in einer achteckigen Kapelle markiert den Ort der ersten christlichen Taufe auf den Philippinen 1521. Nebenan bewahrt die Basilika die Santo-Niño-Figur, das älteste christliche Relikt des Landes.', tip: 'Freitags sind die Messen in der Basilika überfüllt – komm an einem Werktagmorgen, um die Deckenmalereien der Kapelle in Ruhe zu sehen.' },
+        fr: { name: 'Croix de Magellan et basilique du Santo Niño', description: 'Une croix de bois abritée dans une chapelle octogonale marque le lieu du premier baptême chrétien aux Philippines, en 1521. À côté, la basilique conserve la statue du Santo Niño, la plus ancienne relique chrétienne du pays.', tip: 'Le vendredi, les offices de la basilique attirent les foules : venez un matin de semaine pour admirer tranquillement le plafond peint de la chapelle.' },
+        it: { name: 'Croce di Magellano e basilica del Santo Niño', description: 'Una croce di legno in una cappella ottagonale segna il luogo del primo battesimo cristiano delle Filippine, nel 1521. Accanto, la basilica custodisce la statua del Santo Niño, la reliquia cristiana più antica del Paese.', tip: 'Il venerdì le funzioni della basilica sono affollatissime: vieni un mattino feriale per osservare con calma il soffitto dipinto della cappella.' },
+      },
+    },
+    {
+      id: 'cebu-kawasan-falls', city: 'cebu', category: 'nature', lat: 9.8031, lng: 123.3738, image: 'FzJUwgK3tOU',
+      rating: 4.7, reviews: 12900, tags: ['waterfalls', 'adventure', 'canyon'], hours: '06:00–17:00',
+      address: 'Barangay Matutinao, Badian, Cebu',
+      text: {
+        ru: { name: 'Водопады Кавасан', description: 'Каскад бирюзовых водопадов в джунглях юго-запада острова. Самый яркий способ попасть сюда — каньонинг: несколько часов прыжков в заводи и сплава по ущелью.', tip: 'Выезжайте из Себу в 5–6 утра: к девяти у нижнего водопада собираются толпы, а вода лучше всего светится в утреннем солнце.' },
+        en: { name: 'Kawasan Falls', description: 'A cascade of turquoise waterfalls in the jungle of the island’s south-west. The most thrilling way in is canyoneering: several hours of jumping into pools and floating down the gorge.', tip: 'Leave Cebu at 5–6 a.m.: by nine the lower falls are crowded, and the water glows best in the morning sun.' },
+        es: { name: 'Cascadas de Kawasan', description: 'Una sucesión de cascadas turquesa en la selva del suroeste de la isla. La forma más emocionante de llegar es el barranquismo: varias horas de saltos a pozas y descenso por el cañón.', tip: 'Sal de Cebú a las 5–6 de la mañana: a las nueve la cascada inferior ya está llena y el agua brilla más con el sol matinal.' },
+        de: { name: 'Kawasan-Wasserfälle', description: 'Eine Kaskade türkisfarbener Wasserfälle im Dschungel im Südwesten der Insel. Am aufregendsten erreichst du sie beim Canyoning: Stundenlang springst du in Becken und treibst durch die Schlucht.', tip: 'Fahr um 5–6 Uhr in Cebu los: Ab neun ist der untere Fall überlaufen, und im Morgenlicht leuchtet das Wasser am schönsten.' },
+        fr: { name: 'Chutes de Kawasan', description: 'Une cascade de bassins turquoise dans la jungle du sud-ouest de l’île. Le moyen le plus grisant d’y arriver est le canyoning : plusieurs heures de sauts dans les vasques et de descente des gorges.', tip: 'Quittez Cebu à 5 ou 6 heures : dès 9 heures la chute inférieure est bondée, et l’eau brille davantage sous le soleil du matin.' },
+        it: { name: 'Cascate di Kawasan', description: 'Una cascata di vasche turchesi nella giungla del sud-ovest dell’isola. Il modo più emozionante per arrivarci è il canyoning: ore di tuffi nelle pozze e discesa lungo la gola.', tip: 'Parti da Cebu alle 5–6 del mattino: alle nove la cascata inferiore è già affollata e l’acqua brilla di più con il sole del mattino.' },
+      },
+    },
+    {
+      id: 'cebu-temple-of-leah', city: 'cebu', category: 'attraction', spot: 'insta', lat: 10.372, lng: 123.874, image: 'dMlZ_n2ArFI',
+      rating: 4.4, reviews: 9100, tags: ['architecture', 'views', 'photo'], hours: '06:00–23:00',
+      address: 'Cebu Transcentral Highway, Busay, Cebu City',
+      text: {
+        ru: { name: 'Храм Леи', description: 'Неоримский «храм любви» с колоннадами и бронзовыми статуями, который местный бизнесмен построил в память о жене, на холмах Бусай над городом.', tip: 'Снимайте с верхней террасы на закате: колонны в тёплом свете, а внизу загораются огни Себу.' },
+        en: { name: 'Temple of Leah', description: 'A neo-Roman “temple of love” with colonnades and bronze statues, built by a local businessman in memory of his wife on the Busay hills above the city.', tip: 'Shoot from the upper terrace at sunset, with the columns in warm light and the lights of Cebu coming on below.' },
+        es: { name: 'Templo de Leah', description: 'Un «templo del amor» neorromano con columnatas y estatuas de bronce que un empresario local construyó en memoria de su esposa en las colinas de Busay, sobre la ciudad.', tip: 'Fotografía desde la terraza superior al atardecer: columnas con luz cálida y, abajo, Cebú encendiéndose.' },
+        de: { name: 'Temple of Leah', description: 'Ein neorömischer „Tempel der Liebe“ mit Kolonnaden und Bronzestatuen, den ein Geschäftsmann zum Gedenken an seine Frau in den Busay-Hügeln über der Stadt errichten ließ.', tip: 'Fotografiere bei Sonnenuntergang von der oberen Terrasse: Säulen im warmen Licht, darunter gehen die Lichter von Cebu an.' },
+        fr: { name: 'Temple of Leah', description: 'Un « temple de l’amour » néo-romain, avec colonnades et statues de bronze, qu’un homme d’affaires local a fait bâtir en mémoire de son épouse sur les collines de Busay, au-dessus de la ville.', tip: 'Photographiez depuis la terrasse supérieure au coucher du soleil : colonnes dans une lumière chaude et lumières de Cebu qui s’allument en contrebas.' },
+        it: { name: 'Temple of Leah', description: 'Un «tempio dell’amore» neoromano con colonnati e statue di bronzo, costruito da un imprenditore locale in memoria della moglie sulle colline di Busay sopra la città.', tip: 'Scatta dalla terrazza superiore al tramonto: colonne nella luce calda e, sotto, le luci di Cebu che si accendono.' },
+      },
+    },
+    {
+      id: 'cebu-moalboal-sardine-run', city: 'cebu', category: 'nature', spot: 'hidden', lat: 9.9435, lng: 123.377, image: 'Etn90xJGt1Q',
+      rating: 4.8, reviews: 5400, tags: ['diving', 'wildlife', 'beaches'], price: { kind: 'free' }, hours: 'always',
+      address: 'Panagsama Beach, Moalboal, Cebu',
+      text: {
+        ru: { name: 'Сардиновый косяк Моалбоала', description: 'В нескольких метрах от пляжа Панагсама живёт многомиллионный косяк сардин, который закручивается в серебряные воронки. Здесь же часто встречаются морские черепахи.', tip: 'Достаточно маски и трубки: заходите в воду с пляжа Панагсама и плывите метров 20–30 к краю рифа, где дно обрывается в синеву.' },
+        en: { name: 'Moalboal Sardine Run', description: 'A few metres off Panagsama Beach lives a shoal of millions of sardines that twists into silver tornadoes. Sea turtles are frequent visitors too.', tip: 'A mask and snorkel are enough: wade in from Panagsama Beach and swim 20–30 metres to the reef edge, where the bottom drops into the blue.' },
+        es: { name: 'Banco de sardinas de Moalboal', description: 'A pocos metros de la playa de Panagsama vive un banco de millones de sardinas que gira en remolinos plateados. También es habitual ver tortugas marinas.', tip: 'Basta con gafas y tubo: entra desde la playa de Panagsama y nada 20–30 metros hasta el borde del arrecife, donde el fondo cae al azul.' },
+        de: { name: 'Sardinenschwarm von Moalboal', description: 'Wenige Meter vor dem Panagsama Beach lebt ein Schwarm aus Millionen Sardinen, der sich zu silbernen Wirbeln formt. Auch Meeresschildkröten sind häufig zu sehen.', tip: 'Maske und Schnorchel reichen: Geh am Panagsama Beach ins Wasser und schwimm 20–30 Meter bis zur Riffkante, wo der Grund ins Blau abfällt.' },
+        fr: { name: 'Banc de sardines de Moalboal', description: 'À quelques mètres de la plage de Panagsama vit un banc de millions de sardines qui tourbillonne en tornades argentées. Les tortues marines y sont aussi fréquentes.', tip: 'Masque et tuba suffisent : entrez dans l’eau depuis la plage de Panagsama et nagez 20 à 30 mètres jusqu’au tombant, là où le fond plonge dans le bleu.' },
+        it: { name: 'Banco di sardine di Moalboal', description: 'A pochi metri dalla spiaggia di Panagsama vive un banco di milioni di sardine che si avvita in tornado d’argento. Anche le tartarughe marine sono di casa.', tip: 'Bastano maschera e boccaglio: entra in acqua da Panagsama Beach e nuota 20–30 metri fino al bordo del reef, dove il fondale precipita nel blu.' },
+      },
+    },
+    {
+      id: 'cebu-larsian-bbq', city: 'cebu', category: 'food', lat: 10.311, lng: 123.8935, image: 'fulyk6dVFSQ',
+      rating: 4.3, reviews: 6200, tags: ['streetfood', 'food', 'nightlife'], price: { kind: 'level', level: 1 },
+      address: 'Fuente Osmeña Circle, Cebu City',
+      text: {
+        ru: { name: 'Ларсиан', description: 'Легендарный уличный гриль-квартал у круга Фуэнте-Осменья: выбираете шашлычки из свинины, курицы и кальмаров, их жарят на углях и подают с пусо — рисом, сваренным в плетёном пальмовом листе.', tip: 'Ешьте руками, как местные, и макайте мясо в уксус с чили и соевым соусом.' },
+        en: { name: 'Larsian', description: 'A legendary open-air barbecue strip by Fuente Osmeña Circle: pick pork, chicken and squid skewers, have them grilled over charcoal and eat them with puso, rice cooked in a woven palm-leaf pouch.', tip: 'Eat with your hands like the locals, dipping the meat in vinegar with chilli and soy sauce.' },
+        es: { name: 'Larsian', description: 'Una legendaria zona de parrillas al aire libre junto a la rotonda de Fuente Osmeña: eliges brochetas de cerdo, pollo y calamar, te las asan al carbón y se comen con puso, arroz cocido en una bolsita de hoja de palma trenzada.', tip: 'Come con las manos como los cebuanos y moja la carne en vinagre con chile y soja.' },
+        de: { name: 'Larsian', description: 'Eine legendäre Open-Air-Grillmeile am Fuente Osmeña Circle: Du wählst Spieße mit Schwein, Huhn und Tintenfisch, lässt sie über Holzkohle grillen und isst sie mit Puso, in geflochtenen Palmblättern gegartem Reis.', tip: 'Iss wie die Einheimischen mit den Händen und tunk das Fleisch in Essig mit Chili und Sojasoße.' },
+        fr: { name: 'Larsian', description: 'Un légendaire quartier de grillades en plein air près du rond-point Fuente Osmeña : on choisit des brochettes de porc, de poulet et de calmar, grillées au charbon et servies avec du puso, riz cuit dans une pochette de feuilles de palmier tressées.', tip: 'Mangez avec les doigts comme les habitants, en trempant la viande dans du vinaigre au piment et à la sauce soja.' },
+        it: { name: 'Larsian', description: 'Una leggendaria zona di griglie all’aperto vicino a Fuente Osmeña Circle: scegli spiedini di maiale, pollo e calamari, li fai arrostire sulla brace e li mangi con il puso, riso cotto in un sacchetto di foglie di palma intrecciate.', tip: 'Mangia con le mani come la gente del posto, intingendo la carne nell’aceto con peperoncino e salsa di soia.' },
+      },
+    },
+  ],
+};
+
+export default pack;

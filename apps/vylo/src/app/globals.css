@@ -303,6 +303,44 @@
   pointer-events: none;
   transform: scale(0.4);
 }
+.vy-pin--insta .vy-pin__photo {
+  border-color: #db2777;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #f97316, var(--shadow-pin);
+}
+.vy-pin--hidden .vy-pin__photo {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #14b8a6, var(--shadow-pin);
+}
+/* Numbered route stops */
+.vy-stop {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #fff;
+  font: 800 12px/1 var(--font-sans, system-ui);
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgb(37 99 235 / 0.45);
+}
+.vy-stop--start {
+  background: #16a34a;
+  box-shadow: 0 4px 12px rgb(22 163 74 / 0.45);
+}
+.vy-stop--end {
+  background: #e11d48;
+  box-shadow: 0 4px 12px rgb(225 29 72 / 0.45);
+}
+.maplibregl-ctrl-bottom-left {
+  bottom: calc(var(--map-bottom-inset, 0px)) !important;
+}
+.maplibregl-ctrl-scale {
+  border-color: rgb(15 23 42 / 0.55) !important;
+  background: rgb(255 255 255 / 0.75) !important;
+  font: 600 10px/1.4 var(--font-sans, system-ui) !important;
+  border-radius: 0 0 4px 4px;
+}
 .vy-user-dot {
   width: 18px;
   height: 18px;

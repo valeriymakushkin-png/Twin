@@ -812,6 +812,24 @@ const en: Messages = {
       uturn: 'and make a U-turn',
     },
   },
+  mapx: {
+    cities: 'Cities',
+    sights: 'Sights',
+    insta: 'Photo spots',
+    hidden: 'Hidden gems',
+    food: 'Food',
+    nature: 'Nature',
+    hotels: 'Hotels',
+    meetups: 'Meetups',
+    north: 'Face north',
+    tilt: '3D view',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    route: 'Route',
+    labels: 'Labels and roads over the satellite view',
+    streets: 'Streets appear as you zoom in',
+    attribution: 'Map sources',
+  },
 };
 
 export default en;

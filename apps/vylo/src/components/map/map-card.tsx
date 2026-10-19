@@ -1,12 +1,15 @@
 'use client';
 
-import { Clock, MapPin } from 'lucide-react';
+import { Clock, MapPin, Navigation, Plus, Route } from 'lucide-react';
 import Link from 'next/link';
 import { resolveItem } from '@/data';
+import { placeById } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { cn } from '@/lib/utils';
 import { meetupStart, useAllMeetups, useApp } from '@/store/app';
 import { Photo } from '../photo';
+import { useRouteActions } from '../route-actions';
+import { SpotBadge } from '../spot-badge';
 import { SaveButton } from '../save-button';
 import { AvatarStack, Rating, Tag } from '../ui';
 
@@ -16,6 +19,7 @@ export function MapCard({ id, active, onFocus }: { id: string; active: boolean; 
   const toggleJoin = useApp((s) => s.toggleJoin);
   const { t, tk, f, item, meetupText } = useI18n();
   const meetup = meetups.find((m) => m.id === id);
+  const { routeHere, addToRoute, inRoute } = useRouteActions();
   const shell = cn('flex gap-3 rounded-[26px] bg-white p-2.5 shadow-float transition-shadow', active && 'ring-2 ring-brand/60');
 
   if (meetup) {
@@ -72,11 +76,37 @@ export function MapCard({ id, active, onFocus }: { id: string; active: boolean; 
           <SaveButton id={ref.id} className="-mr-1 -mt-1" />
         </div>
         <p className="mt-0.5 truncate text-[12px] text-muted">{text.subtitle}</p>
-        <div className="mt-auto flex gap-1.5 overflow-hidden">
-          {ref.tags.slice(0, 2).map((tag) => (
-            <Tag key={tag}>{tk(`tags.${tag}`)}</Tag>
-          ))}
-        </div>
+        {ref.kind === 'place' ? (
+          <div className="mt-auto flex items-center gap-1.5">
+            {placeById(id)?.spot ? <SpotBadge spot={placeById(id)!.spot!} /> : <Tag>{tk(`tags.${ref.tags[0] ?? 'photo'}`)}</Tag>}
+            <span className="flex-1" />
+            <button
+              aria-label={t('spots.addToRoute')}
+              onClick={(e) => {
+                e.stopPropagation();
+                addToRoute(id);
+              }}
+              className="press grid size-8 place-items-center rounded-full bg-surface-2 text-ink-2"
+            >
+              {inRoute(id) ? <Route className="size-4 text-[#2563eb]" /> : <Plus className="size-4" />}
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                void routeHere(id);
+              }}
+              className="press flex h-8 items-center gap-1 rounded-full bg-[#2563eb] px-3 text-[12px] font-semibold text-white"
+            >
+              <Navigation className="size-3.5" /> {t('mapx.route')}
+            </button>
+          </div>
+        ) : (
+          <div className="mt-auto flex gap-1.5 overflow-hidden">
+            {ref.tags.slice(0, 2).map((tag) => (
+              <Tag key={tag}>{tk(`tags.${tag}`)}</Tag>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

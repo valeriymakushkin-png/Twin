@@ -1,12 +1,13 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, ChevronLeft, ChevronRight, Moon, Plus, Sparkles, Trash2, Wallet, X } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Map as MapIcon, Moon, Plus, Sparkles, Trash2, Wallet, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { usePlus } from '@/components/paywall';
+import { useRouteActions } from '@/components/route-actions';
 import { Photo } from '@/components/photo';
 import { BackButton, IconButton, PlusBadge, Segmented } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
@@ -36,6 +37,7 @@ function TripInner() {
   const { addToTrip, removeFromTrip, moveTripItem, toggleChecklist, addChecklist, deleteTrip, autoPlanTrip } = useApp();
   const { t, tk, f, place, dest } = useI18n();
   const plus = usePlus();
+  const { routeThrough } = useRouteActions();
   const [tab, setTab] = useState<'plan' | 'check'>('plan');
   const [day, setDay] = useState(0);
   const [newItem, setNewItem] = useState('');
@@ -194,6 +196,11 @@ function TripInner() {
                 })}
               </AnimatePresence>
               {dayItems.length === 0 && <p className="rounded-[20px] border-2 border-dashed border-line p-5 text-center text-[14px] text-muted">{t('trip.dayFree', { n: day + 1 })}</p>}
+              {dayItems.length > 1 && (
+                <button onClick={() => routeThrough(dayItems.map((i) => i.placeId))} className="press flex h-11 items-center justify-center gap-2 rounded-full text-[14px] font-semibold" style={{ background: `${accent}14`, color: accent }}>
+                  <MapIcon className="size-4" /> {t('spots.showOnMap')}
+                </button>
+              )}
             </div>
 
             {suggestions.length > 0 && (

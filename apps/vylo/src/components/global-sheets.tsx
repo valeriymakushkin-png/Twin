@@ -1,13 +1,13 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { CalendarPlus, Check, ChevronRight, Flag, Megaphone, PenLine, Plus, Stamp, Star, X } from 'lucide-react';
+import { CalendarPlus, Check, ChevronRight, Flag, Globe2, Megaphone, PenLine, Plus, Stamp, Star, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { resolveItem } from '@/data';
-import { destinationById, destinationHref, destinations, placeById, visaByCode } from '@/data/catalog';
+import { citiesIn, countryByCode, countryHref, destinationById, destinationHref, destinations, placeById, visaByCode } from '@/data/catalog';
 import { stories, userById } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
@@ -357,7 +357,7 @@ function CountrySheet({ code }: { code: string }) {
   const { t, country, dest } = useI18n();
   const visaTitle = useVisaTitle();
   const visa = visaByCode(code);
-  const dests = destinations.filter((d) => d.countryCode === code);
+  const dests = citiesIn(code);
   return (
     <div className="px-5 pb-6">
       <div className="flex items-center gap-4">
@@ -384,6 +384,11 @@ function CountrySheet({ code }: { code: string }) {
           </Button>
         )}
       </div>
+      {countryByCode(code) && (
+        <Link href={countryHref(code)} onClick={close} className="press mt-2.5 flex h-11 items-center justify-center gap-2 rounded-full bg-ink text-[15px] font-semibold text-white">
+          <Globe2 className="size-4" /> {t('country.open')}
+        </Link>
+      )}
       {dests.length > 0 && (
         <>
           <p className="mb-2 mt-5 text-[13px] font-semibold text-muted">{t('sheets.destinations')}</p>

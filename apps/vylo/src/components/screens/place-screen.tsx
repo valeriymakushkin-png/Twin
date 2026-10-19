@@ -1,13 +1,16 @@
 'use client';
 
-import { Clock, Lightbulb, Map as MapIcon, Navigation, PenLine, Ticket } from 'lucide-react';
+import { Clock, Copy, Lightbulb, Map as MapIcon, MapPin, Navigation, PenLine, Plus, Route, Ticket } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 import { PlaceRow, ReviewCard } from '@/components/cards';
 import { HeroPage } from '@/components/hero';
 import { Photo } from '@/components/photo';
+import { useRouteActions } from '@/components/route-actions';
+import { SpotBadge } from '@/components/spot-badge';
 import { Rating, Tag } from '@/components/ui';
-import { categoryColor, destinationById, destinationHref, placeById, placesIn } from '@/data/catalog';
+import { categoryColor, countryHref, destinationById, destinationHref, placeById, placesIn } from '@/data/catalog';
 import { reviews } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { distanceKm } from '@/lib/utils';
@@ -23,6 +26,7 @@ export function PlaceScreen({ id }: { id: string }) {
   const openSheet = useUI((s) => s.openSheet);
   const { t, tk, f, place, dest, country } = useI18n();
   const text = place(id);
+  const { addToRoute, routeHere, inRoute } = useRouteActions();
   const accent = d.theme.accent;
   const list = [...myReviews.filter((r) => r.targetId === id), ...reviews.filter((r) => r.targetId === id)];
   const nearby = placesIn(p.destinationId)
@@ -47,12 +51,15 @@ export function PlaceScreen({ id }: { id: string }) {
       theme={d.theme}
       overlay={
         <>
-          <span className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold text-white" style={{ background: categoryColor[p.category] }}>
-            {tk(`categories.${p.category}`)}
-          </span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold text-white" style={{ background: categoryColor[p.category] }}>
+              {tk(`categories.${p.category}`)}
+            </span>
+            {p.spot && <SpotBadge spot={p.spot} className="py-1" />}
+          </div>
           <h1 className="mt-2 text-[32px] font-bold leading-[1.05] tracking-[-0.035em]">{text.name}</h1>
           <p className="mt-1 text-[15px] text-white/90">
-            {dest(d.id).name}, {country(d.countryCode)}
+            <Link href={destinationHref(d.id)}>{dest(d.id).name}</Link>, <Link href={countryHref(d.countryCode)}>{country(d.countryCode)}</Link>
           </p>
           <Rating value={p.rating} count={p.reviews} light className="mt-2 text-[14px]" />
         </>
@@ -95,18 +102,54 @@ export function PlaceScreen({ id }: { id: string }) {
 
         <ActionRow id={p.id} theme={d.theme} />
 
-        <div className="grid grid-cols-2 gap-2.5">
-          <Link href={`/map/?focus=${p.id}`} className="press flex h-12 items-center justify-center gap-2 rounded-full bg-ink text-[14px] font-semibold text-white">
-            <MapIcon className="size-4" /> {t('place.onMap')}
+        <div className="grid grid-cols-[1fr_1fr_auto] gap-2.5">
+          <button onClick={() => routeHere(p.id)} className="press flex h-12 items-center justify-center gap-2 rounded-full text-[14px] font-semibold text-white" style={{ background: accent }}>
+            <Navigation className="size-4" /> {t('spots.routeHere')}
+          </button>
+          <button
+            onClick={() => addToRoute(p.id)}
+            disabled={inRoute(p.id)}
+            className="press flex h-12 items-center justify-center gap-2 rounded-full text-[14px] font-semibold disabled:opacity-60"
+            style={{ background: `${accent}14`, color: accent }}
+          >
+            {inRoute(p.id) ? <Route className="size-4" /> : <Plus className="size-4" />} {inRoute(p.id) ? t('spots.inRoute') : t('spots.addToRoute')}
+          </button>
+          <Link href={`/map/?focus=${p.id}`} aria-label={t('place.onMap')} className="press grid size-12 place-items-center rounded-full bg-ink text-white">
+            <MapIcon className="size-[18px]" />
           </Link>
-          <a href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`} target="_blank" rel="noreferrer" className="press flex h-12 items-center justify-center gap-2 rounded-full text-[14px] font-semibold" style={{ background: `${accent}14`, color: accent }}>
-            <Navigation className="size-4" /> {t('place.route')}
-          </a>
+        </div>
+
+        <div className="overflow-hidden rounded-[20px] bg-surface-2/70">
+          {p.address && (
+            <div className="flex items-start gap-3 border-b border-line-soft px-4 py-3">
+              <MapPin className="mt-0.5 size-[18px] shrink-0 text-muted" />
+              <div className="min-w-0 flex-1">
+                <p className="text-[11px] font-semibold text-faint">{t('spots.address')}</p>
+                <p className="text-[14px] font-medium">{p.address}</p>
+              </div>
+            </div>
+          )}
+          <button
+            onClick={() => {
+              void navigator.clipboard?.writeText(`${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}`);
+              toast.success(t('spots.copied'));
+            }}
+            className="flex w-full items-center gap-3 px-4 py-3 text-left"
+          >
+            <Navigation className="size-[18px] shrink-0 text-muted" />
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-semibold text-faint">{t('spots.coords')}</p>
+              <p className="font-mono text-[13px] font-medium">
+                {p.lat.toFixed(5)}, {p.lng.toFixed(5)}
+              </p>
+            </div>
+            <Copy className="size-4 text-faint" />
+          </button>
         </div>
 
         {text.tip && (
           <section>
-            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{t('place.tips')}</h2>
+            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{p.spot === 'insta' ? t('spots.photoTip') : p.spot === 'hidden' ? t('spots.findTip') : t('place.tips')}</h2>
             <div className="mt-3 flex gap-3 rounded-[20px] p-4" style={{ background: `${accent}10` }}>
               <Lightbulb className="mt-0.5 size-5 shrink-0" style={{ color: accent }} />
               <p className="text-[14px] leading-relaxed text-ink-2">{text.tip}</p>

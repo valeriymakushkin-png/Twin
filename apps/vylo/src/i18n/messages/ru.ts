@@ -814,6 +814,24 @@ const ru = {
       uturn: 'с разворотом',
     },
   },
+  mapx: {
+    cities: 'Города',
+    sights: 'Места',
+    insta: 'Инстаместа',
+    hidden: 'Скрытые',
+    food: 'Еда',
+    nature: 'Природа',
+    hotels: 'Отели',
+    meetups: 'Встречи',
+    north: 'На север',
+    tilt: '3D-вид',
+    zoomIn: 'Приблизить',
+    zoomOut: 'Отдалить',
+    route: 'Маршрут',
+    labels: 'Подписи и дороги поверх спутника',
+    streets: 'Улицы появляются при приближении',
+    attribution: 'Источники карты',
+  },
 };
 
 export default ru;
