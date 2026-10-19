@@ -10,8 +10,7 @@ import { DailyPickCard, QuestStrip } from '@/components/daily';
 import { SearchOverlay } from '@/components/map/search-overlay';
 import { Photo } from '@/components/photo';
 import { Avatar, Chip, SectionHeader, UserName } from '@/components/ui';
-import { destinationById, destinations } from '@/data/destinations';
-import { places } from '@/data/places';
+import { countryHref, destinationById, destinationHref, destinations, placeHref, places } from '@/data/catalog';
 import { guides, reviews, stories, users } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { useNotifications } from '@/lib/notifications';
@@ -121,7 +120,7 @@ export default function DiscoverPage() {
                   <p className="mt-1.5 max-w-[270px] text-[13px] text-white/80">{t('discover.russiaText')}</p>
                   <div className="no-scrollbar -mx-5 mt-4 flex gap-2 overflow-x-auto px-5">
                     {RUSSIA.map((id) => (
-                      <Link key={id} href={`/d/${id}/`} className="press glass-dark shrink-0 rounded-full px-3.5 py-2 text-[13px] font-semibold ring-1 ring-white/20">
+                      <Link key={id} href={destinationHref(id)} className="press glass-dark shrink-0 rounded-full px-3.5 py-2 text-[13px] font-semibold ring-1 ring-white/20">
                         {dest(id).name}
                       </Link>
                     ))}
@@ -222,7 +221,7 @@ export default function DiscoverPage() {
           {tab === 'tips' && (
             <div className="mt-3 grid gap-3 px-5">
               {destinations.map((d) => (
-                <Link key={d.id} href={`/d/${d.id}/`} className="press flex gap-3 rounded-[22px] bg-white p-4 shadow-soft">
+                <Link key={d.id} href={destinationHref(d.id)} className="press flex gap-3 rounded-[22px] bg-white p-4 shadow-soft">
                   <span className="grid size-10 shrink-0 place-items-center rounded-2xl text-white" style={{ background: `linear-gradient(135deg, ${d.theme.accent}, ${d.theme.accent2})` }}>
                     <Lightbulb className="size-5" />
                   </span>
@@ -243,7 +242,7 @@ export default function DiscoverPage() {
             onClose={() => setSearchOpen(false)}
             onPick={(id, kind) => {
               setSearchOpen(false);
-              router.push(kind === 'country' ? `/visa/${id.toLowerCase()}/` : destinations.some((d) => d.id === id) ? `/d/${id}/` : `/p/${id}/`);
+              router.push(kind === 'country' ? countryHref(id) : destinationById(id) ? destinationHref(id) : placeHref(id));
             }}
           />
         )}

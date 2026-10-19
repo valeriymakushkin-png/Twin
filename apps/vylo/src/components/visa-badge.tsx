@@ -3,7 +3,7 @@
 import { CheckCircle2, ChevronRight, FileText, Plane, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import type { VisaInfo } from '@/data/types';
-import { regimeTone, visaByCode } from '@/data/visa';
+import { regimeTone, visaByCode } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { cn } from '@/lib/utils';
 

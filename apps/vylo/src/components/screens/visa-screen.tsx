@@ -7,8 +7,7 @@ import { useEffect, useState } from 'react';
 import { Photo } from '@/components/photo';
 import { Button, TopBar } from '@/components/ui';
 import { useVisaTitle } from '@/components/visa-badge';
-import { destinations } from '@/data/destinations';
-import { regimeTone, visaByCode } from '@/data/visa';
+import { destinationHref, destinations, regimeTone, visaByCode } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
 import { cn } from '@/lib/utils';
@@ -140,7 +139,7 @@ export function VisaScreen({ code }: { code: string }) {
             <h2 className="text-[17px] font-bold">{t('visa.whereToGo')}</h2>
             <div className="mt-3 grid grid-cols-2 gap-2.5">
               {dests.map((d) => (
-                <Link key={d.id} href={`/d/${d.id}/`} className="press relative h-32 overflow-hidden rounded-[22px]">
+                <Link key={d.id} href={destinationHref(d.id)} className="press relative h-32 overflow-hidden rounded-[22px]">
                   <Photo id={d.image} alt={dest(d.id).name} width={400} className="absolute inset-0" tint={d.theme.accent} />
                   <div className="photo-scrim absolute inset-0" />
                   <p className="absolute bottom-3 left-3 right-3 truncate text-[16px] font-bold text-white">{dest(d.id).name}</p>

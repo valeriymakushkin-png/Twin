@@ -4,10 +4,11 @@
   "private": true,
   "description": "Vylo — a global travel map: explore, save, meet, share",
   "scripts": {
-    "dev": "node scripts/copy-map-worker.mjs && next dev --port 3100",
-    "build": "node scripts/copy-map-worker.mjs && next build",
+    "dev": "node scripts/copy-map-worker.mjs && pnpm world && next dev --port 3100",
+    "build": "node scripts/copy-map-worker.mjs && pnpm world && next build",
     "start": "npx serve out -l 3100",
-    "typecheck": "tsc --noEmit",
+    "world": "node --experimental-strip-types --no-warnings scripts/build-world.mts",
+    "typecheck": "pnpm world && tsc --noEmit",
     "i18n:check": "node --experimental-strip-types --no-warnings scripts/check-i18n.mts",
     "lint": "tsc --noEmit"
   },

@@ -1,10 +1,8 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { destinationById } from '@/data/destinations';
-import { placeById, placesIn } from '@/data/places';
+import { destinationById, placeById, placesIn, visaByCode } from '@/data/catalog';
 import { meetups as seedMeetups, userById } from '@/data/social';
 import type { Meetup, Review, VisaDoc, VisaRegime } from '@/data/types';
-import { visaByCode } from '@/data/visa';
 import { detectLocale, type Locale } from '@/i18n/config';
 import { translate } from '@/i18n';
 import { avatarFromSeed, type AvatarConfig } from '@/lib/avatar';

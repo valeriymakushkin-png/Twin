@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Chip, TopBar } from '@/components/ui';
 import type { VisaRegime } from '@/data/types';
-import { isEasyRegime, regimeTone, visaCountries } from '@/data/visa';
+import { isEasyRegime, regimeTone, visaCountries } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
 import { cn } from '@/lib/utils';

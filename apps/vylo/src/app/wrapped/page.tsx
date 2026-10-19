@@ -7,7 +7,7 @@ import { useMemo } from 'react';
 import { usePlus } from '@/components/paywall';
 import { BackButton, Button, PlusBadge } from '@/components/ui';
 import { resolveItem } from '@/data';
-import { destinations } from '@/data/destinations';
+import { destinations } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { continentOf, flag } from '@/lib/countries';
 import { distanceKm } from '@/lib/utils';

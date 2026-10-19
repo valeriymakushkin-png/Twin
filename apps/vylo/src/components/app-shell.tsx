@@ -3,11 +3,13 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
+import { useWorldText } from '@/content/world';
 import { Toaster } from 'sonner';
 import { LOCALE_META } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
 import { registerServiceWorker } from '@/lib/offline';
 import { useApp } from '@/store/app';
+import { useCatalog } from '@/store/catalog';
 import { Celebrations, RewardToasts } from './celebrations';
 import { GlobalSheets } from './global-sheets';
 import { LanguageMenu } from './language-menu';
@@ -100,25 +102,37 @@ function DevicePanel() {
 const ONBOARDING_FREE = ['/', '/licenses'];
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const [mounted, setMounted] = useState(false);
+  const [ready, setReady] = useState(false);
   const onboarded = useApp((s) => s.onboarded);
   const checkIn = useApp((s) => s.checkIn);
   const locale = useApp((s) => s.locale);
   const pathname = normalizePath(usePathname());
   const router = useRouter();
 
+  const loadText = useWorldText((s) => s.load);
+  const textReady = useWorldText((s) => !!s.texts[locale] && !!s.texts.en);
+  const mounted = ready && textReady;
+  const isAdmin = pathname.startsWith('/admin');
+
   useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 450);
+    const timer = setTimeout(() => setReady(true), 450);
     registerServiceWorker();
+    void useCatalog.getState().sync();
     return () => clearTimeout(timer);
   }, []);
+
+  // English is the fallback for anything not yet written in the reader's language.
+  useEffect(() => {
+    void loadText('en');
+    void loadText(locale);
+  }, [locale, loadText]);
 
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isAdmin) return;
     if (!onboarded && !ONBOARDING_FREE.includes(pathname)) {
       // Remember a shared deep link so onboarding can hand the newcomer straight to it.
       try {
@@ -127,7 +141,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       router.replace('/');
     }
     if (onboarded) checkIn();
-  }, [mounted, onboarded, pathname, router, checkIn]);
+  }, [mounted, isAdmin, onboarded, pathname, router, checkIn]);
+
+  // The admin console is a desktop tool: it gets the whole window instead of the phone frame.
+  if (isAdmin) return <div className="min-h-dvh bg-[#f5f5f7]">{mounted ? children : null}</div>;
 
   return (
     <div className="flex min-h-dvh items-center justify-center gap-20 bg-canvas min-[900px]:bg-[radial-gradient(1200px_700px_at_80%_10%,#e0e7ff_0%,transparent_60%),radial-gradient(900px_600px_at_0%_100%,#ccfbf1_0%,transparent_55%),#f6f7fb]">

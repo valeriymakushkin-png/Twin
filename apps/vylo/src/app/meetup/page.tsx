@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { HeroPage } from '@/components/hero';
 import { Avatar, Button, DemoBadge } from '@/components/ui';
-import { destinationById } from '@/data/destinations';
+import { destinationById } from '@/data/catalog';
 import { userById } from '@/data/social';
 import type { MessageKey } from '@/i18n';
 import { useI18n } from '@/i18n/use';

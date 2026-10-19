@@ -1,5 +1,5 @@
 import { PlaceScreen } from '@/components/screens/place-screen';
-import { places } from '@/data/places';
+import { places } from '@/data/catalog';
 
 export const dynamicParams = false;
 

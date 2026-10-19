@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Check, ChevronRight, MapPin, Plane, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { destinations } from '@/data/destinations';
+import { destinationHref, destinations } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { questsFor } from '@/lib/gamification';
 import { cn, hash, todayKey } from '@/lib/utils';
@@ -43,7 +43,7 @@ export function DailyPickCard() {
   const { t, dest, country } = useI18n();
   const text = dest(d.id);
   return (
-    <Link href={`/d/${d.id}/`} className="press relative mx-5 block h-[230px] overflow-hidden rounded-[30px] shadow-float">
+    <Link href={destinationHref(d.id)} className="press relative mx-5 block h-[230px] overflow-hidden rounded-[30px] shadow-float">
       <Photo id={d.image} alt={text.name} width={900} priority className="absolute inset-0" tint={d.theme.accent} />
       <div className="photo-scrim-top absolute inset-0" />
       <div className="absolute inset-x-4 top-4 flex items-center justify-between">

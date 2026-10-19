@@ -66,8 +66,7 @@ const rows: VisaInfo[] = [
   { code: 'RU', regime: 'domestic', days: 0, cost: free, validity: 'none', docs: ['internalPassport'], notes: ['domestic'] },
 ];
 
-export const visaByCode = (code: string) => rows.find((v) => v.code === code);
-export const visaCountries = rows;
+export const baseVisa = rows;
 
 export const regimeTone: Record<VisaRegime, 'mint' | 'sky' | 'amber' | 'rose'> = {
   free: 'mint',

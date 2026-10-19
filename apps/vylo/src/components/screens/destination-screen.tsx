@@ -11,11 +11,9 @@ import { usePlus } from '@/components/paywall';
 import { Photo } from '@/components/photo';
 import { Button, Rating, SectionHeader, Tag, UnderlineTabs } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
-import { destinationById } from '@/data/destinations';
-import { categoryColor, placesIn } from '@/data/places';
+import { categoryColor, destinationById, placeHref, placesIn, visaByCode } from '@/data/catalog';
 import { reviews } from '@/data/social';
 import type { Theme } from '@/data/types';
-import { visaByCode } from '@/data/visa';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
 import { downloadDestination, offlineSupported } from '@/lib/offline';
@@ -186,7 +184,7 @@ export function DestinationScreen({ id }: { id: string }) {
               <SectionHeader title={t('destination.topPlaces')} onAction={() => setTab('places')} />
               <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-5 pb-2">
                 {placeList.map((p) => (
-                  <Link key={p.id} href={`/p/${p.id}/`} className="press w-[150px] shrink-0">
+                  <Link key={p.id} href={placeHref(p.id)} className="press w-[150px] shrink-0">
                     <Photo id={p.image} alt={place(p.id).name} width={360} className="h-[120px] w-full" rounded="rounded-[20px]" tint={accent} />
                     <p className="mt-2 truncate text-[14px] font-semibold">{place(p.id).name}</p>
                     <Rating value={p.rating} className="text-[12px]" />
@@ -233,7 +231,7 @@ export function DestinationScreen({ id }: { id: string }) {
         {tab === 'places' && (
           <div className="grid gap-3 px-5 pt-5">
             {placeList.map((p) => (
-              <Link key={p.id} href={`/p/${p.id}/`} className="press overflow-hidden rounded-[24px] bg-white shadow-card ring-1 ring-line-soft">
+              <Link key={p.id} href={placeHref(p.id)} className="press overflow-hidden rounded-[24px] bg-white shadow-card ring-1 ring-line-soft">
                 <Photo id={p.image} alt={place(p.id).name} width={800} className="h-40 w-full" tint={accent} />
                 <div className="p-4">
                   <div className="flex items-center justify-between gap-2">

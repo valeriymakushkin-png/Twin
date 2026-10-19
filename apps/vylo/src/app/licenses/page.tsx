@@ -2,7 +2,7 @@
 
 import { Camera, Code2, ExternalLink, Map as MapIcon, Smile, Sparkles } from 'lucide-react';
 import { TopBar } from '@/components/ui';
-import { destinations } from '@/data/destinations';
+import { destinations } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 
 export default function LicensesPage() {

@@ -1,5 +1,5 @@
 import { DestinationScreen } from '@/components/screens/destination-screen';
-import { destinations } from '@/data/destinations';
+import { destinations } from '@/data/catalog';
 
 export const dynamicParams = false;
 

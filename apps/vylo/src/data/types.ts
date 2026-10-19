@@ -12,7 +12,7 @@ export type TagKey =
   | 'temples' | 'views' | 'sunset' | 'hiking' | 'photo' | 'romance' | 'cruise' | 'kayak' | 'architecture' | 'art'
   | 'shopping' | 'desert' | 'wine' | 'mountains' | 'trekking' | 'roadtrip' | 'aurora' | 'safari' | 'wildlife'
   | 'adventure' | 'spa' | 'winter' | 'ski' | 'lakes' | 'volcanoes' | 'market' | 'streetfood' | 'luxury' | 'unesco'
-  | 'islands' | 'gardens' | 'museums' | 'waterfalls' | 'canyon';
+  | 'islands' | 'gardens' | 'museums' | 'waterfalls' | 'canyon' | 'castles' | 'oldtown' | 'jungle' | 'fjords';
 
 /** Decorative motif drawn behind a destination's content in its accent colour. */
 export type Motif = 'waves' | 'palms' | 'peaks' | 'grid' | 'torii' | 'dunes' | 'tiles' | 'aurora' | 'sun' | 'domes' | 'balloons' | 'mosaic' | 'snow' | 'lanterns';
@@ -65,6 +65,10 @@ export interface Place {
   price?: Price;
   /** "HH:MM–HH:MM" or "always" */
   hours?: string;
+  /** Photo spot or a lesser-known gem */
+  spot?: 'insta' | 'hidden';
+  /** Street address in the local Latin spelling */
+  address?: string;
 }
 
 export type MeetupKind = 'sunset' | 'coffee' | 'hike' | 'food' | 'party' | 'cowork' | 'tour';

@@ -10,8 +10,7 @@ import { usePlus } from '@/components/paywall';
 import { Photo } from '@/components/photo';
 import { BackButton, IconButton, PlusBadge, Segmented } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
-import { destinationById } from '@/data/destinations';
-import { categoryColor, placeById, placesIn } from '@/data/places';
+import { categoryColor, destinationById, placeById, placeHref, placesIn } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { cn, daysBetween } from '@/lib/utils';
 import { useApp, type ChecklistItem } from '@/store/app';
@@ -168,7 +167,7 @@ function TripInner() {
                         {idx < dayItems.length - 1 && <span className="w-0.5 flex-1" style={{ background: `${accent}33` }} />}
                       </div>
                       <div className="flex min-w-0 flex-1 items-center gap-3 rounded-[20px] bg-white p-2.5 shadow-soft">
-                        <Link href={`/p/${p.id}/`} className="flex min-w-0 flex-1 items-center gap-3">
+                        <Link href={placeHref(p.id)} className="flex min-w-0 flex-1 items-center gap-3">
                           <Photo id={p.image} alt={place(p.id).name} width={140} className="size-14 shrink-0" rounded="rounded-[14px]" />
                           <div className="min-w-0">
                             <p className="truncate text-[14px] font-semibold">{place(p.id).name}</p>

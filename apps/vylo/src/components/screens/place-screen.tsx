@@ -7,8 +7,7 @@ import { PlaceRow, ReviewCard } from '@/components/cards';
 import { HeroPage } from '@/components/hero';
 import { Photo } from '@/components/photo';
 import { Rating, Tag } from '@/components/ui';
-import { destinationById } from '@/data/destinations';
-import { categoryColor, placeById, placesIn } from '@/data/places';
+import { categoryColor, destinationById, destinationHref, placeById, placesIn } from '@/data/catalog';
 import { reviews } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { distanceKm } from '@/lib/utils';
@@ -115,7 +114,7 @@ export function PlaceScreen({ id }: { id: string }) {
           </section>
         )}
 
-        <Link href={`/d/${d.id}/`} className="press relative block h-28 overflow-hidden rounded-[24px]">
+        <Link href={destinationHref(d.id)} className="press relative block h-28 overflow-hidden rounded-[24px]">
           <Photo id={d.image} alt={dest(d.id).name} width={800} className="absolute inset-0" tint={accent} />
           <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${accent}ee, transparent)` }} />
           <div className="absolute inset-y-0 left-5 right-16 flex flex-col justify-center text-white">

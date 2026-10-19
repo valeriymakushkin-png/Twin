@@ -1,5 +1,5 @@
 import { VisaScreen } from '@/components/screens/visa-screen';
-import { visaCountries } from '@/data/visa';
+import { visaCountries } from '@/data/catalog';
 
 export const dynamicParams = false;
 

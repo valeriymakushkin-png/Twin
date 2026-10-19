@@ -11,7 +11,7 @@ export const DESTINATION_IDS = [
 
 export type DestinationId = (typeof DESTINATION_IDS)[number];
 
-export const destinations: (Destination & { id: DestinationId })[] = [
+export const baseDestinations: (Destination & { id: DestinationId })[] = [
   { id: 'bali', countryCode: 'ID', lat: -8.4095, lng: 115.1889, image: 'FlQeHeTPClU', gallery: ['UXhECwQEHQA', 'a19bFxDyeVI', '9PakI9j885k', 'jN9JnZ-SyVc'], rating: 4.8, reviews: 12480, tags: ['beaches', 'culture', 'surf', 'nomads'], months: [4, 5, 6, 7, 8, 9, 10], budgetPerDay: 45, currency: 'IDR', language: 'id', timezone: 'UTC+8', zoom: 9, theme: T('#0f9f6e', '#22c55e', 'palms') },
   { id: 'phiphi', countryCode: 'TH', lat: 7.7407, lng: 98.7784, image: 'AcZKzxHzVe4', gallery: ['fzEOvcazEtI', '1QUUFuOsRk4', 'HXcEnJ5mgBY', 'ZhhWKwgiFqU'], rating: 4.8, reviews: 9120, tags: ['beaches', 'islands', 'diving'], months: [11, 12, 1, 2, 3, 4], budgetPerDay: 55, currency: 'THB', language: 'th', timezone: 'UTC+7', zoom: 11, theme: T('#0891b2', '#2dd4bf', 'waves') },
   { id: 'bangkok', countryCode: 'TH', lat: 13.7563, lng: 100.5018, image: '66yS6ZmJals', gallery: ['Ar0Bfnx_UYI', 'k8dwH-poJ2c', '1sG6QJubO9Q', 'H9ZhJTDNyKE'], rating: 4.6, reviews: 15230, tags: ['city', 'streetfood', 'nightlife', 'temples'], months: [11, 12, 1, 2], budgetPerDay: 40, currency: 'THB', language: 'th', timezone: 'UTC+7', zoom: 10, theme: T('#c2410c', '#f59e0b', 'sun') },
@@ -49,4 +49,3 @@ export const destinations: (Destination & { id: DestinationId })[] = [
   { id: 'dagestan', countryCode: 'RU', lat: 43.0186, lng: 46.8303, image: 'F3Ma7KseiZ4', gallery: ['BNwjMOa-g_A', 'NtKZCt8Qr2o'], rating: 4.8, reviews: 3940, tags: ['nature', 'mountains', 'canyon', 'roadtrip'], months: [5, 6, 9, 10], budgetPerDay: 40, currency: 'RUB', language: 'ru', timezone: 'UTC+3', zoom: 9, theme: T('#0e7490', '#a16207', 'peaks') },
 ];
 
-export const destinationById = (id: string) => destinations.find((d) => d.id === id);

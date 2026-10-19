@@ -1,0 +1,291 @@
+import type { CountryPack } from '../types';
+
+const pack: CountryPack = {
+  country: {
+    code: 'DK',
+    region: 'europe',
+    image: 'yNNa5rEIcF8',
+    theme: { accent: '#c8102e', accent2: '#f59e0b', motif: 'waves' },
+    fromMoscow: { hours: 7.5, direct: false },
+    visa: { regime: 'schengen', days: 90, cost: { kind: 'fixed', amount: 90, currency: 'EUR' }, plusFee: true,
+            validity: 'threeMonthsSchengen', docs: ['form', 'photo', 'insurance30k', 'booking', 'returnTicket', 'finance'], notes: ['schengenTime'] },
+    text: {
+      ru: {
+        tagline: 'Хюгге, велосипеды и лучшие рестораны Севера',
+        description: 'Дания — страна, где королевские дворцы соседствуют с безупречным дизайном, а в гавани столицы купаются прямо в центре города. Здесь придумали «Лего» и хюгге, ездят на велосипедах в любую погоду и умеют превращать даже серый день в уютный.',
+        howToGet: 'Прямых рейсов из Москвы нет: удобнее всего лететь через Стамбул, Белград или Ереван — 7–9 часов в пути с пересадкой. Внутри страны выручают поезда DSB: из аэропорта Каструп в центр Копенгагена 15 минут на метро, до Орхуса около трёх часов; по островам удобно ездить на машине через мосты, а по столице — на велосипеде.',
+        tips: [
+          'Российские Visa и Mastercard здесь не работают, а наличные кроны берут всё реже: заранее оформите карту зарубежного банка — платят почти везде картой или телефоном.',
+          'Билеты на транспорт Копенгагена покупайте в приложении DOT Billetter, на поезда по стране — в приложении DSB; Copenhagen Card включает проезд и десятки музеев.',
+          'Велодорожки — святое: не стойте на них и смотрите по сторонам, прежде чем переходить, — велосипедисты едут быстро и плотным потоком.',
+        ],
+        guide: {
+          title: 'Дания за неделю',
+          sections: [
+            { title: 'Когда ехать', body: 'Лучшее время — с мая по сентябрь: длинные светлые вечера, купание в гаванских бассейнах и фестивали, от Роскилле в начале лета до джазового фестиваля в Копенгагене в июле. Весна и ранняя осень тише и дешевле, а в декабре страну спасает хюгге: рождественские ярмарки, глёгг и огни Тиволи. Зимой темнеет около четырёх, зато очередей в музеях почти нет.' },
+            { title: 'Маршрут на 7 дней', body: 'Четыре дня отдайте Копенгагену: Нюхавн и Кристиансборг, Тиволи, вольный город Христиания и поездка в замок Кронборг в Хельсингёре с остановкой в музее Louisiana по дороге. Затем три часа на поезде до Орхуса: радужная панорама ARoS, музей под открытым небом Den Gamle By и Моесгор. Если остаётся день, съездите в Скаген, где встречаются два моря, или в Леголенд в Биллунне.' },
+            { title: 'Что попробовать', body: 'Начните со смёрребрёда — открытого бутерброда на ржаном хлебе с селёдкой, ростбифом или креветками. На завтрак — слоёная сдоба wienerbrød и булочка с корицей kanelsnegl. Копенгаген — столица новой северной кухни: если не Noma, то бистро попроще с местными продуктами. На улице берите хот-дог из фургончика pølsevogn, а вечером — крафтовое пиво или ледяной аквавит.' },
+            { title: 'Деньги, связь и транспорт', body: 'Дания — одна из самых дорогих стран Европы: обед в кафе обходится в 150–250 крон, ужин в ресторане — от 400. Наличные почти не нужны, но карта должна быть зарубежной. Для связи подойдёт местная SIM-карта Lebara или Telia либо eSIM. По стране ездят поездами DSB, по Копенгагену — на круглосуточном метро и на велосипеде из проката Donkey Republic.' },
+          ],
+        },
+      },
+      en: {
+        tagline: 'Hygge, bicycles and the best restaurants in the North',
+        description: 'Denmark is where royal palaces sit beside flawless design and people swim in the harbour right in the middle of the capital. This is the home of Lego and hygge, of cycling in any weather and of turning even a grey day into a cosy one.',
+        howToGet: 'There are no direct flights from Moscow: the easiest routes run via Istanbul, Belgrade or Yerevan, 7–9 hours including the connection. Inside the country DSB trains do the work: the metro takes 15 minutes from Kastrup airport to central Copenhagen and Aarhus is about three hours away; the islands are best explored by car across the bridges, and the capital by bike.',
+        tips: [
+          'Russian-issued Visa and Mastercard cards don’t work here and cash is accepted less and less, so get a card from a foreign bank before you go — almost everything is paid by card or phone.',
+          'Buy Copenhagen transit tickets in the DOT Billetter app and intercity train tickets in the DSB app; the Copenhagen Card covers transport and dozens of museums.',
+          'Bike lanes are sacred: never stand in them and look both ways before crossing — cyclists ride fast and in dense streams.',
+        ],
+        guide: {
+          title: 'Denmark in a week',
+          sections: [
+            { title: 'When to go', body: 'The best time is May to September: long bright evenings, swimming in the harbour baths and festivals, from Roskilde in early summer to the Copenhagen Jazz Festival in July. Spring and early autumn are quieter and cheaper, while December is saved by hygge: Christmas markets, gløgg and the lights of Tivoli. In winter it gets dark around four, but museum queues all but disappear.' },
+            { title: 'A 7-day route', body: 'Give Copenhagen four days: Nyhavn and Christiansborg, Tivoli, the free town of Christiania and a trip to Kronborg Castle in Helsingør, stopping at the Louisiana museum on the way. Then take the three-hour train to Aarhus for the ARoS rainbow panorama, the Den Gamle By open-air museum and Moesgaard. With a spare day, head to Skagen, where two seas meet, or to Legoland in Billund.' },
+            { title: 'What to eat', body: 'Start with smørrebrød, the open sandwich on rye bread topped with herring, roast beef or shrimp. For breakfast have flaky wienerbrød pastries and a kanelsnegl cinnamon swirl. Copenhagen is the capital of New Nordic cuisine: if not Noma, then a simpler bistro cooking local produce. On the street grab a hot dog from a pølsevogn van, and in the evening try craft beer or ice-cold aquavit.' },
+            { title: 'Money, connectivity and transport', body: 'Denmark is one of Europe’s most expensive countries: lunch in a café costs 150–250 kroner, dinner in a restaurant from 400. You will hardly need cash, but your card has to be from a foreign bank. For data, a local Lebara or Telia SIM or an eSIM works well. Travel around the country on DSB trains, and around Copenhagen on the 24-hour metro and Donkey Republic rental bikes.' },
+          ],
+        },
+      },
+      es: {
+        tagline: 'Hygge, bicicletas y los mejores restaurantes del Norte',
+        description: 'Dinamarca es el país donde los palacios reales conviven con un diseño impecable y la gente se baña en el puerto en pleno centro de la capital. Aquí nacieron Lego y el hygge, se pedalea con cualquier tiempo y hasta un día gris se vuelve acogedor.',
+        howToGet: 'No hay vuelos directos desde Moscú: lo más cómodo es volar vía Estambul, Belgrado o Ereván, de 7 a 9 horas con la escala. Dentro del país mandan los trenes de DSB: el metro tarda 15 minutos del aeropuerto de Kastrup al centro de Copenhague y Aarhus queda a unas tres horas; las islas se recorren mejor en coche cruzando los puentes, y la capital, en bicicleta.',
+        tips: [
+          'Las tarjetas Visa y Mastercard emitidas en Rusia no funcionan y el efectivo se acepta cada vez menos: consigue antes una tarjeta de un banco extranjero, porque casi todo se paga con tarjeta o móvil.',
+          'Compra los billetes de transporte de Copenhague en la app DOT Billetter y los de tren en la app de DSB; la Copenhagen Card incluye transporte y decenas de museos.',
+          'Los carriles bici son sagrados: no te pares en ellos y mira bien antes de cruzar, porque los ciclistas van rápido y en grupos compactos.',
+        ],
+        guide: {
+          title: 'Dinamarca en una semana',
+          sections: [
+            { title: 'Cuándo ir', body: 'La mejor época va de mayo a septiembre: tardes largas y luminosas, baños en las piscinas del puerto y festivales, desde Roskilde a principios del verano hasta el festival de jazz de Copenhague en julio. La primavera y el principio del otoño son más tranquilos y baratos, y diciembre lo salva el hygge: mercados navideños, gløgg y las luces del Tivoli. En invierno anochece hacia las cuatro, pero en los museos casi no hay colas.' },
+            { title: 'Ruta de 7 días', body: 'Dedica cuatro días a Copenhague: Nyhavn y Christiansborg, el Tivoli, la ciudad libre de Christiania y una excursión al castillo de Kronborg en Elsinor, con parada en el museo Louisiana por el camino. Después, tres horas de tren hasta Aarhus: el panorama arcoíris de ARoS, el museo al aire libre Den Gamle By y Moesgaard. Si te sobra un día, ve a Skagen, donde se juntan dos mares, o a Legoland en Billund.' },
+            { title: 'Qué probar', body: 'Empieza por el smørrebrød, el sándwich abierto sobre pan de centeno con arenque, rosbif o gambas. Para desayunar, hojaldre wienerbrød y un rollo de canela kanelsnegl. Copenhague es la capital de la nueva cocina nórdica: si no es Noma, un bistró más sencillo con producto local. En la calle pide un perrito caliente en una furgoneta pølsevogn y, por la noche, cerveza artesana o un akvavit helado.' },
+            { title: 'Dinero, conexión y transporte', body: 'Dinamarca es uno de los países más caros de Europa: comer en un café cuesta de 150 a 250 coronas y cenar en un restaurante, desde 400. Casi no necesitarás efectivo, pero la tarjeta debe ser de un banco extranjero. Para los datos sirve una SIM local de Lebara o Telia o una eSIM. Por el país se viaja en los trenes de DSB y por Copenhague, en el metro, que funciona 24 horas, y en las bicis de alquiler Donkey Republic.' },
+          ],
+        },
+      },
+      de: {
+        tagline: 'Hygge, Fahrräder und die besten Restaurants des Nordens',
+        description: 'In Dänemark stehen Königspaläste neben makellosem Design, und mitten in der Hauptstadt badet man im Hafen. Hier wurden Lego und Hygge erfunden, hier radelt man bei jedem Wetter und macht selbst aus einem grauen Tag einen gemütlichen.',
+        howToGet: 'Direktflüge ab Moskau gibt es nicht: Am bequemsten fliegst du über Istanbul, Belgrad oder Jerewan, mit Umstieg 7–9 Stunden. Im Land übernehmen die DSB-Züge: Die Metro fährt in 15 Minuten vom Flughafen Kastrup ins Zentrum von Kopenhagen, nach Aarhus sind es rund drei Stunden; die Inseln erkundest du am besten mit dem Auto über die Brücken, die Hauptstadt mit dem Rad.',
+        tips: [
+          'In Russland ausgegebene Visa- und Mastercard-Karten funktionieren nicht, und Bargeld wird immer seltener angenommen – besorg dir vorher eine Karte einer ausländischen Bank, denn fast überall zahlt man mit Karte oder Handy.',
+          'Tickets für den Nahverkehr in Kopenhagen kaufst du in der App DOT Billetter, Fernzugtickets in der DSB-App; die Copenhagen Card deckt Verkehrsmittel und Dutzende Museen ab.',
+          'Radwege sind heilig: Bleib nie darauf stehen und schau beim Überqueren in beide Richtungen – Radfahrer sind schnell und in dichten Kolonnen unterwegs.',
+        ],
+        guide: {
+          title: 'Dänemark in einer Woche',
+          sections: [
+            { title: 'Wann reisen', body: 'Die beste Zeit ist von Mai bis September: lange helle Abende, Baden in den Hafenbädern und Festivals, von Roskilde im Frühsommer bis zum Copenhagen Jazz Festival im Juli. Frühling und Frühherbst sind ruhiger und günstiger, den Dezember rettet das Hygge: Weihnachtsmärkte, Gløgg und die Lichter des Tivoli. Im Winter wird es gegen vier dunkel, dafür gibt es in den Museen kaum Schlangen.' },
+            { title: 'Route für 7 Tage', body: 'Vier Tage gehören Kopenhagen: Nyhavn und Christiansborg, Tivoli, die Freistadt Christiania und ein Ausflug zum Schloss Kronborg in Helsingør mit Halt im Museum Louisiana unterwegs. Dann drei Stunden mit dem Zug nach Aarhus: das Regenbogenpanorama von ARoS, das Freilichtmuseum Den Gamle By und Moesgaard. Bleibt ein Tag übrig, fahr nach Skagen, wo zwei Meere aufeinandertreffen, oder ins Legoland in Billund.' },
+            { title: 'Was probieren', body: 'Fang mit Smørrebrød an, dem offenen Roggenbrot mit Hering, Roastbeef oder Krabben. Zum Frühstück gibt es blättriges Wienerbrød und eine Zimtschnecke namens Kanelsnegl. Kopenhagen ist die Hauptstadt der Neuen Nordischen Küche: Wenn nicht Noma, dann ein einfacheres Bistro mit regionalen Produkten. Auf der Straße holst du dir einen Hotdog am Pølsevogn, abends ein Craftbier oder eiskalten Aquavit.' },
+            { title: 'Geld, Netz und Verkehr', body: 'Dänemark gehört zu den teuersten Ländern Europas: Ein Mittagessen im Café kostet 150–250 Kronen, ein Abendessen im Restaurant ab 400. Bargeld brauchst du kaum, aber die Karte muss von einer ausländischen Bank sein. Fürs Netz reicht eine lokale SIM von Lebara oder Telia oder eine eSIM. Durchs Land fährst du mit den DSB-Zügen, durch Kopenhagen mit der rund um die Uhr fahrenden Metro und Leihrädern von Donkey Republic.' },
+          ],
+        },
+      },
+      fr: {
+        tagline: 'Hygge, vélos et les meilleures tables du Nord',
+        description: 'Au Danemark, les palais royaux côtoient un design irréprochable et l’on se baigne dans le port en plein centre de la capitale. C’est le pays de Lego et du hygge, où l’on pédale par tous les temps et où même une journée grise devient douillette.',
+        howToGet: 'Il n’existe pas de vol direct depuis Moscou : le plus simple est de passer par Istanbul, Belgrade ou Erevan, soit 7 à 9 heures de trajet avec la correspondance. Sur place, les trains DSB font l’essentiel : le métro relie l’aéroport de Kastrup au centre de Copenhague en 15 minutes et Aarhus est à environ trois heures. Les îles se découvrent en voiture par les ponts, la capitale à vélo.',
+        tips: [
+          'Les cartes Visa et Mastercard émises en Russie ne fonctionnent pas et l’espèce est de moins en moins acceptée : prenez avant le départ une carte d’une banque étrangère, car presque tout se règle par carte ou par téléphone.',
+          'Achetez les billets des transports de Copenhague dans l’application DOT Billetter et ceux des trains dans l’application DSB ; la Copenhagen Card inclut les transports et des dizaines de musées.',
+          'Les pistes cyclables sont sacrées : ne vous y arrêtez jamais et regardez des deux côtés avant de traverser, les cyclistes roulent vite et en flot serré.',
+        ],
+        guide: {
+          title: 'Le Danemark en une semaine',
+          sections: [
+            { title: 'Quand partir', body: 'La meilleure période va de mai à septembre : longues soirées lumineuses, baignades dans les bassins du port et festivals, de Roskilde au début de l’été au festival de jazz de Copenhague en juillet. Le printemps et le début de l’automne sont plus calmes et moins chers, et décembre est sauvé par le hygge : marchés de Noël, gløgg et lumières de Tivoli. L’hiver, il fait nuit vers seize heures, mais les musées sont presque sans file d’attente.' },
+            { title: 'Itinéraire de 7 jours', body: 'Consacrez quatre jours à Copenhague : Nyhavn et Christiansborg, Tivoli, la ville libre de Christiania et une excursion au château de Kronborg à Elseneur, avec un arrêt au musée Louisiana en chemin. Prenez ensuite le train pour Aarhus, trois heures de trajet : le panorama arc-en-ciel d’ARoS, le musée en plein air Den Gamle By et Moesgaard. S’il reste un jour, filez à Skagen, où deux mers se rencontrent, ou au Legoland de Billund.' },
+            { title: 'Que goûter', body: 'Commencez par le smørrebrød, la tartine ouverte sur pain de seigle garnie de hareng, de rôti de bœuf ou de crevettes. Au petit-déjeuner, viennoiseries feuilletées wienerbrød et roulé à la cannelle kanelsnegl. Copenhague est la capitale de la nouvelle cuisine nordique : à défaut de Noma, un bistrot plus simple autour des produits locaux. Dans la rue, un hot-dog au camion pølsevogn, et le soir une bière artisanale ou un aquavit glacé.' },
+            { title: 'Argent, téléphone et transports', body: 'Le Danemark compte parmi les pays les plus chers d’Europe : un déjeuner au café coûte 150 à 250 couronnes, un dîner au restaurant à partir de 400. Vous n’aurez guère besoin d’espèces, mais votre carte doit venir d’une banque étrangère. Pour l’internet mobile, une SIM locale Lebara ou Telia ou une eSIM suffit. On voyage dans le pays en trains DSB et dans Copenhague en métro, ouvert jour et nuit, ou à vélo de location Donkey Republic.' },
+          ],
+        },
+      },
+      it: {
+        tagline: 'Hygge, biciclette e i migliori ristoranti del Nord',
+        description: 'In Danimarca i palazzi reali convivono con un design impeccabile e nel porto della capitale si fa il bagno in pieno centro. È la patria del Lego e dell’hygge, dove si pedala con ogni tempo e anche una giornata grigia diventa accogliente.',
+        howToGet: 'Non ci sono voli diretti da Mosca: le rotte più comode passano per Istanbul, Belgrado o Erevan, 7–9 ore compreso lo scalo. Nel Paese ci pensano i treni DSB: la metro collega l’aeroporto di Kastrup al centro di Copenaghen in 15 minuti e Aarhus dista circa tre ore; le isole si esplorano meglio in auto attraverso i ponti, la capitale in bicicletta.',
+        tips: [
+          'Le carte Visa e Mastercard emesse in Russia qui non funzionano e i contanti sono accettati sempre meno: procurati prima una carta di una banca estera, perché quasi tutto si paga con carta o telefono.',
+          'Compra i biglietti dei mezzi di Copenaghen nell’app DOT Billetter e quelli dei treni nell’app DSB; la Copenhagen Card include trasporti e decine di musei.',
+          'Le piste ciclabili sono sacre: non fermarti mai sopra e guarda bene prima di attraversare, perché i ciclisti vanno veloci e in fila fitta.',
+        ],
+        guide: {
+          title: 'La Danimarca in una settimana',
+          sections: [
+            { title: 'Quando andare', body: 'Il periodo migliore va da maggio a settembre: lunghe serate luminose, bagni nelle piscine del porto e festival, da Roskilde a inizio estate al Copenhagen Jazz Festival di luglio. Primavera e inizio autunno sono più tranquilli ed economici, mentre dicembre è salvato dall’hygge: mercatini di Natale, gløgg e le luci del Tivoli. D’inverno fa buio verso le quattro, ma nei musei le code quasi spariscono.' },
+            { title: 'Itinerario di 7 giorni', body: 'Dedica quattro giorni a Copenaghen: Nyhavn e Christiansborg, il Tivoli, la città libera di Christiania e una gita al castello di Kronborg a Elsinore, con sosta al museo Louisiana lungo la strada. Poi tre ore di treno fino ad Aarhus: il panorama arcobaleno di ARoS, il museo all’aperto Den Gamle By e Moesgaard. Se avanza un giorno, vai a Skagen, dove si incontrano due mari, o a Legoland a Billund.' },
+            { title: 'Cosa assaggiare', body: 'Comincia dallo smørrebrød, il panino aperto su pane di segale con aringa, roast beef o gamberetti. A colazione sfoglie wienerbrød e la girella alla cannella kanelsnegl. Copenaghen è la capitale della nuova cucina nordica: se non Noma, un bistrot più semplice con prodotti locali. Per strada prendi un hot dog al furgoncino pølsevogn e la sera una birra artigianale o un akvavit ghiacciato.' },
+            { title: 'Soldi, connessione e trasporti', body: 'La Danimarca è tra i Paesi più cari d’Europa: un pranzo al caffè costa 150–250 corone, una cena al ristorante da 400 in su. I contanti servono poco, ma la carta deve essere di una banca estera. Per internet basta una SIM locale Lebara o Telia oppure una eSIM. Nel Paese ci si sposta con i treni DSB, a Copenaghen con la metro aperta 24 ore su 24 e con le bici a noleggio di Donkey Republic.' },
+          ],
+        },
+      },
+    },
+  },
+  cities: [
+    {
+      id: 'copenhagen', lat: 55.6761, lng: 12.5683, image: 'X0R8lTMUplY', gallery: ['yNNa5rEIcF8', 'UAxCHln587Q', '4RTy9UXw3Ns', '8AleSscP-j0'],
+      rating: 4.7, reviews: 16840, tags: ['city', 'architecture', 'food', 'history'], months: [5, 6, 7, 8, 9, 12], budgetPerDay: 170, currency: 'DKK',
+      language: 'da', timezone: 'UTC+1', zoom: 12, theme: { accent: '#b91c1c', accent2: '#f59e0b', motif: 'grid' },
+      text: {
+        ru: { name: 'Копенгаген', tagline: 'Гавань, велосипеды и новая северная кухня', description: 'Копенгаген умеет быть одновременно королевским и непринуждённым: дворцы и шпили соседствуют с гаванью, где купаются прямо в центре. Здесь лучшие в мире велодорожки, рестораны со звёздами Michelin и квартал Христиания со своими правилами.', tips: ['Если планируете много музеев, возьмите Copenhagen Card на 48–72 часа — она окупается уже за два дня.', 'Летом берите купальник: в гаванских бассейнах Islands Brygge вода чистая, а вход бесплатный.'], gettingThere: 'Из аэропорта Каструп до центра 15 минут на метро линии M2 или около 15 минут на поезде до Центрального вокзала; билет покупается в приложении DOT Billetter или в автомате.' },
+        en: { name: 'Copenhagen', tagline: 'Harbour swims, bicycles and New Nordic cooking', description: 'Copenhagen manages to be both regal and relaxed: palaces and spires line a harbour where people swim right in the centre. It has the world’s best bike lanes, Michelin-starred restaurants and Christiania, a neighbourhood with its own rules.', tips: ['If you plan to see a lot of museums, get a 48- or 72-hour Copenhagen Card — it pays for itself within two days.', 'Pack swimwear in summer: the water at the Islands Brygge harbour bath is clean and entry is free.'], gettingThere: 'From Kastrup airport it is 15 minutes to the centre on metro line M2, or about 15 minutes by train to Central Station; buy tickets in the DOT Billetter app or from a machine.' },
+        es: { name: 'Copenhague', tagline: 'Baños en el puerto, bicicletas y nueva cocina nórdica', description: 'Copenhague consigue ser a la vez regia y desenfadada: palacios y agujas bordean un puerto donde la gente se baña en pleno centro. Tiene los mejores carriles bici del mundo, restaurantes con estrellas Michelin y Christiania, un barrio con sus propias reglas.', tips: ['Si piensas ver muchos museos, compra la Copenhagen Card de 48 o 72 horas: se amortiza en dos días.', 'En verano lleva bañador: en la piscina del puerto de Islands Brygge el agua está limpia y la entrada es gratis.'], gettingThere: 'Desde el aeropuerto de Kastrup hay 15 minutos al centro en la línea M2 del metro o unos 15 minutos en tren hasta la Estación Central; el billete se compra en la app DOT Billetter o en las máquinas.' },
+        de: { name: 'Kopenhagen', tagline: 'Hafenbäder, Fahrräder und Neue Nordische Küche', description: 'Kopenhagen ist königlich und entspannt zugleich: Paläste und Turmspitzen säumen einen Hafen, in dem man mitten in der Stadt schwimmt. Hier gibt es die besten Radwege der Welt, Restaurants mit Michelin-Sternen und Christiania, ein Viertel mit eigenen Regeln.', tips: ['Wenn du viele Museen besuchen willst, nimm die Copenhagen Card für 48 oder 72 Stunden – sie rechnet sich schon nach zwei Tagen.', 'Pack im Sommer Badesachen ein: Im Hafenbad Islands Brygge ist das Wasser sauber und der Eintritt frei.'], gettingThere: 'Vom Flughafen Kastrup sind es mit der Metrolinie M2 15 Minuten ins Zentrum oder etwa 15 Minuten mit dem Zug zum Hauptbahnhof; Tickets gibt es in der App DOT Billetter oder am Automaten.' },
+        fr: { name: 'Copenhague', tagline: 'Bains dans le port, vélos et cuisine néo-nordique', description: 'Copenhague sait être à la fois royale et décontractée : palais et flèches bordent un port où l’on nage en plein centre. On y trouve les meilleures pistes cyclables du monde, des tables étoilées et Christiania, un quartier qui a ses propres règles.', tips: ['Si vous prévoyez beaucoup de musées, prenez la Copenhagen Card de 48 ou 72 heures, rentabilisée en deux jours.', 'En été, emportez un maillot : au bassin portuaire d’Islands Brygge, l’eau est propre et l’entrée gratuite.'], gettingThere: 'Depuis l’aéroport de Kastrup, comptez 15 minutes jusqu’au centre par la ligne M2 du métro ou environ 15 minutes en train jusqu’à la gare centrale ; le billet s’achète dans l’application DOT Billetter ou aux distributeurs.' },
+        it: { name: 'Copenaghen', tagline: 'Bagni nel porto, biciclette e nuova cucina nordica', description: 'Copenaghen riesce a essere regale e rilassata insieme: palazzi e guglie si affacciano su un porto dove si nuota in pieno centro. Ha le migliori piste ciclabili del mondo, ristoranti stellati e Christiania, un quartiere con regole tutte sue.', tips: ['Se pensi di visitare molti musei, prendi la Copenhagen Card da 48 o 72 ore: si ripaga in due giorni.', 'D’estate porta il costume: nella piscina del porto di Islands Brygge l’acqua è pulita e l’ingresso gratuito.'], gettingThere: 'Dall’aeroporto di Kastrup ci vogliono 15 minuti per il centro con la linea M2 della metro o circa 15 minuti in treno fino alla Stazione Centrale; il biglietto si compra nell’app DOT Billetter o alle macchinette.' },
+      },
+    },
+    {
+      id: 'aarhus', lat: 56.1629, lng: 10.2039, image: 'SWIPYBNXIQ0', gallery: ['dRPFMUu5MBk', '1Awv8tx3Y8M', 'iZK37px0UHg', 'uSkNDSqkAzQ'],
+      rating: 4.6, reviews: 5240, tags: ['city', 'art', 'museums', 'food'], months: [5, 6, 7, 8, 9, 12], budgetPerDay: 140, currency: 'DKK',
+      language: 'da', timezone: 'UTC+1', zoom: 12, theme: { accent: '#7c3aed', accent2: '#f97316', motif: 'waves' },
+      text: {
+        ru: { name: 'Орхус', tagline: 'Студенческий город радуги ARoS и датского дизайна', description: 'Второй город Дании — молодой, лёгкий на подъём и очень дизайнерский: портовый район Aarhus Ø с домом-айсбергом, библиотека Dokk1 и радужная галерея на крыше музея ARoS. При этом здесь же один из лучших музеев под открытым небом в Европе и пляжи в двадцати минутах от центра.', tips: ['Центр легко обойти пешком: от вокзала до Латинского квартала и набережной у реки 10–15 минут.', 'В солнечный день доезжайте до пляжа Bellevue на севере города — местные купаются там уже с июня.'], gettingThere: 'Из Копенгагена — около трёх часов на поезде DSB или 40 минут на самолёте; из аэропорта Орхуса до центра идёт автобус-экспресс, дорога занимает около 50 минут.' },
+        en: { name: 'Aarhus', tagline: 'A student city of ARoS rainbows and Danish design', description: 'Denmark’s second city is young, spontaneous and deeply design-minded: the Aarhus Ø harbour district with the Iceberg housing, the Dokk1 library and the rainbow walkway on the roof of ARoS. Yet it also has one of Europe’s best open-air museums and beaches twenty minutes from the centre.', tips: ['The centre is easy on foot: the Latin Quarter and the riverside promenade are 10–15 minutes from the station.', 'On a sunny day head to Bellevue beach in the north of the city — locals start swimming there in June.'], gettingThere: 'From Copenhagen it takes about three hours by DSB train or 40 minutes by plane; an express bus runs from Aarhus airport to the centre in about 50 minutes.' },
+        es: { name: 'Aarhus', tagline: 'Ciudad estudiantil del arcoíris de ARoS y el diseño danés', description: 'La segunda ciudad de Dinamarca es joven, espontánea y muy de diseño: el barrio portuario de Aarhus Ø con los edificios Iceberg, la biblioteca Dokk1 y la pasarela arcoíris en el tejado de ARoS. Y además tiene uno de los mejores museos al aire libre de Europa y playas a veinte minutos del centro.', tips: ['El centro se recorre a pie: del Barrio Latino y el paseo junto al río a la estación hay 10–15 minutos.', 'Si hace sol, ve a la playa de Bellevue, al norte de la ciudad; los locales se bañan allí ya en junio.'], gettingThere: 'Desde Copenhague son unas tres horas en tren de DSB o 40 minutos en avión; del aeropuerto de Aarhus al centro va un autobús exprés que tarda unos 50 minutos.' },
+        de: { name: 'Aarhus', tagline: 'Studentenstadt mit ARoS-Regenbogen und dänischem Design', description: 'Dänemarks zweitgrößte Stadt ist jung, spontan und durch und durch designverliebt: das Hafenviertel Aarhus Ø mit dem Eisberg-Wohnkomplex, die Bibliothek Dokk1 und der Regenbogengang auf dem Dach von ARoS. Zugleich hat sie eines der besten Freilichtmuseen Europas und Strände zwanzig Minuten vom Zentrum.', tips: ['Das Zentrum erkundest du zu Fuß: Vom Bahnhof bis ins Lateinerviertel und an die Flusspromenade sind es 10–15 Minuten.', 'An sonnigen Tagen lohnt der Strand Bellevue im Norden der Stadt – die Einheimischen baden dort schon ab Juni.'], gettingThere: 'Von Kopenhagen aus sind es rund drei Stunden mit dem DSB-Zug oder 40 Minuten mit dem Flugzeug; vom Flughafen Aarhus fährt ein Expressbus in etwa 50 Minuten ins Zentrum.' },
+        fr: { name: 'Aarhus', tagline: 'Ville étudiante de l’arc-en-ciel d’ARoS et du design danois', description: 'La deuxième ville du Danemark est jeune, spontanée et très design : le quartier portuaire d’Aarhus Ø et ses immeubles Iceberg, la bibliothèque Dokk1 et la passerelle arc-en-ciel sur le toit d’ARoS. Elle possède aussi l’un des plus beaux musées en plein air d’Europe et des plages à vingt minutes du centre.', tips: ['Le centre se parcourt à pied : le Quartier latin et la promenade au bord de la rivière sont à 10–15 minutes de la gare.', 'Par beau temps, allez à la plage de Bellevue, au nord de la ville : les habitants s’y baignent dès juin.'], gettingThere: 'Depuis Copenhague, comptez environ trois heures en train DSB ou 40 minutes en avion ; un bus express relie l’aéroport d’Aarhus au centre en une cinquantaine de minutes.' },
+        it: { name: 'Aarhus', tagline: 'Città studentesca dell’arcobaleno di ARoS e del design danese', description: 'La seconda città della Danimarca è giovane, spontanea e molto attenta al design: il quartiere portuale di Aarhus Ø con gli edifici Iceberg, la biblioteca Dokk1 e la passerella arcobaleno sul tetto di ARoS. Eppure ha anche uno dei migliori musei all’aperto d’Europa e spiagge a venti minuti dal centro.', tips: ['Il centro si gira a piedi: dalla stazione al Quartiere Latino e alla passeggiata sul fiume ci vogliono 10–15 minuti.', 'Nelle giornate di sole vai alla spiaggia di Bellevue, a nord della città: i locali fanno il bagno già da giugno.'], gettingThere: 'Da Copenaghen ci vogliono circa tre ore con il treno DSB o 40 minuti in aereo; dall’aeroporto di Aarhus al centro c’è un autobus espresso che impiega una cinquantina di minuti.' },
+      },
+    },
+  ],
+  places: [
+    {
+      id: 'copenhagen-tivoli', city: 'copenhagen', category: 'attraction', lat: 55.6737, lng: 12.5681, image: '4RTy9UXw3Ns',
+      rating: 4.6, reviews: 98400, tags: ['gardens', 'history', 'romance'], price: { kind: 'from', amount: 160, currency: 'DKK' }, hours: '11:00–22:00',
+      address: 'Vesterbrogade 3, 1630 København V',
+      text: {
+        ru: { name: 'Сады Тиволи', description: 'Один из старейших парков развлечений в мире, открытый в 1843 году: деревянные американские горки, восточные павильоны и тысячи огней по вечерам. Говорят, именно здесь Уолт Дисней вдохновился на свой парк.', tip: 'Приходите к закату, когда зажигаются гирлянды, а летом по пятницам — на концерты, которые входят в стоимость входа.' },
+        en: { name: 'Tivoli Gardens', description: 'One of the world’s oldest amusement parks, opened in 1843: a wooden roller coaster, oriental pavilions and thousands of lights after dark. Walt Disney is said to have found inspiration for his own park here.', tip: 'Come at sunset when the lights come on, and on summer Fridays for the concerts included in the entry ticket.' },
+        es: { name: 'Jardines de Tivoli', description: 'Uno de los parques de atracciones más antiguos del mundo, abierto en 1843: montaña rusa de madera, pabellones orientales y miles de luces al anochecer. Dicen que Walt Disney se inspiró aquí para su propio parque.', tip: 'Ven al atardecer, cuando se encienden las luces, y los viernes de verano para los conciertos incluidos en la entrada.' },
+        de: { name: 'Tivoli', description: 'Einer der ältesten Vergnügungsparks der Welt, eröffnet 1843: eine Holzachterbahn, orientalische Pavillons und Tausende Lichter am Abend. Walt Disney soll sich hier für seinen eigenen Park inspiriert haben.', tip: 'Komm zum Sonnenuntergang, wenn die Lichter angehen, und an Sommerfreitagen zu den Konzerten, die im Eintritt enthalten sind.' },
+        fr: { name: 'Jardins de Tivoli', description: 'L’un des plus anciens parcs d’attractions du monde, ouvert en 1843 : montagnes russes en bois, pavillons orientaux et des milliers de lumières à la nuit tombée. Walt Disney s’en serait inspiré pour son propre parc.', tip: 'Venez au coucher du soleil, quand les guirlandes s’allument, et le vendredi en été pour les concerts compris dans l’entrée.' },
+        it: { name: 'Giardini di Tivoli', description: 'Uno dei parchi divertimento più antichi del mondo, aperto nel 1843: montagne russe in legno, padiglioni orientali e migliaia di luci la sera. Si dice che Walt Disney si sia ispirato proprio qui per il suo parco.', tip: 'Vieni al tramonto, quando si accendono le luci, e d’estate il venerdì per i concerti compresi nel biglietto.' },
+      },
+    },
+    {
+      id: 'copenhagen-kronborg', city: 'copenhagen', category: 'attraction', lat: 56.039, lng: 12.6213, image: '8AleSscP-j0',
+      rating: 4.7, reviews: 21300, tags: ['castles', 'history', 'unesco'], price: { kind: 'from', amount: 140, currency: 'DKK' }, hours: '10:00–17:00',
+      address: 'Kronborg 2C, 3000 Helsingør',
+      text: {
+        ru: { name: 'Замок Кронборг', description: 'Ренессансная крепость в Хельсингёре, стерегущая пролив Эресунн, — тот самый Эльсинор из «Гамлета» и объект ЮНЕСКО. Летом во дворе играют Шекспира, а в казематах дремлет каменный Хольгер Датчанин.', tip: 'Совместите с музеем Louisiana в Хумлебеке: обе точки на одной ветке поезда из Копенгагена, до замка около 45 минут.' },
+        en: { name: 'Kronborg Castle', description: 'A Renaissance fortress in Helsingør guarding the Øresund strait — Hamlet’s Elsinore and a UNESCO site. Shakespeare is staged in the courtyard in summer, while the stone figure of Holger the Dane slumbers in the casemates.', tip: 'Combine it with the Louisiana museum in Humlebæk: both are on the same train line from Copenhagen, about 45 minutes to the castle.' },
+        es: { name: 'Castillo de Kronborg', description: 'Fortaleza renacentista de Elsinor que vigila el estrecho de Øresund: la Elsinor de Hamlet y patrimonio de la UNESCO. En verano se representa a Shakespeare en el patio y en las casamatas duerme la figura de piedra de Holger el Danés.', tip: 'Combínalo con el museo Louisiana de Humlebæk: ambos están en la misma línea de tren desde Copenhague, a unos 45 minutos del castillo.' },
+        de: { name: 'Schloss Kronborg', description: 'Die Renaissancefestung in Helsingør wacht über den Öresund – Hamlets Elsinore und UNESCO-Welterbe. Im Sommer wird im Hof Shakespeare gespielt, in den Kasematten schlummert die Steinfigur von Holger Danske.', tip: 'Kombiniere den Besuch mit dem Museum Louisiana in Humlebæk: Beide liegen an derselben Bahnlinie ab Kopenhagen, bis zum Schloss etwa 45 Minuten.' },
+        fr: { name: 'Château de Kronborg', description: 'Forteresse Renaissance d’Elseneur qui garde le détroit de l’Øresund, l’Elseneur de Hamlet et un site de l’UNESCO. L’été, on joue Shakespeare dans la cour, tandis que la statue de pierre d’Holger le Danois sommeille dans les casemates.', tip: 'Associez-le au musée Louisiana de Humlebæk : tous deux sont sur la même ligne de train depuis Copenhague, à environ 45 minutes du château.' },
+        it: { name: 'Castello di Kronborg', description: 'Fortezza rinascimentale di Elsinore a guardia dello stretto dell’Øresund: l’Elsinore di Amleto e sito UNESCO. D’estate nel cortile si recita Shakespeare, mentre nelle casematte dorme la statua di pietra di Holger il Danese.', tip: 'Abbinalo al museo Louisiana di Humlebæk: sono sulla stessa linea ferroviaria da Copenaghen, circa 45 minuti fino al castello.' },
+      },
+    },
+    {
+      id: 'copenhagen-nyhavn', city: 'copenhagen', category: 'attraction', spot: 'insta', lat: 55.6798, lng: 12.5911, image: 'X0R8lTMUplY',
+      rating: 4.7, reviews: 64200, tags: ['photo', 'architecture', 'food'], price: { kind: 'free' }, hours: 'always',
+      address: 'Nyhavn, 1051 København K',
+      text: {
+        ru: { name: 'Нюхавн', description: 'Канал XVII века с разноцветными купеческими домами и деревянными парусниками — главная открытка Копенгагена. В доме № 20 Андерсен написал свои первые сказки.', tip: 'Снимайте рано утром с мостика у площади Конгенс-Нюторв: солнечная сторона с самыми яркими фасадами освещена днём, а толп ещё нет.' },
+        en: { name: 'Nyhavn', description: 'A 17th-century canal lined with colourful merchants’ houses and wooden sailing ships — Copenhagen’s signature postcard. Hans Christian Andersen wrote his first fairy tales at number 20.', tip: 'Shoot early in the morning from the footbridge by Kongens Nytorv: the sunny side with the brightest façades is lit during the day, and the crowds haven’t arrived yet.' },
+        es: { name: 'Nyhavn', description: 'Canal del siglo XVII flanqueado por casas de comerciantes de colores y veleros de madera: la postal por excelencia de Copenhague. En el número 20 Andersen escribió sus primeros cuentos.', tip: 'Fotografía temprano desde la pasarela junto a Kongens Nytorv: el lado soleado, con las fachadas más vivas, recibe luz de día y aún no hay multitudes.' },
+        de: { name: 'Nyhavn', description: 'Ein Kanal aus dem 17. Jahrhundert mit bunten Kaufmannshäusern und hölzernen Segelschiffen – Kopenhagens Postkartenmotiv schlechthin. In Hausnummer 20 schrieb Andersen seine ersten Märchen.', tip: 'Fotografiere früh am Morgen von der Fußgängerbrücke am Kongens Nytorv: Die Sonnenseite mit den buntesten Fassaden ist tagsüber beleuchtet, und die Massen sind noch nicht da.' },
+        fr: { name: 'Nyhavn', description: 'Un canal du XVIIe siècle bordé de maisons de marchands colorées et de voiliers en bois, la carte postale de Copenhague. Andersen a écrit ses premiers contes au numéro 20.', tip: 'Photographiez tôt le matin depuis la passerelle près de Kongens Nytorv : le côté ensoleillé aux façades les plus vives est éclairé dans la journée, et la foule n’est pas encore là.' },
+        it: { name: 'Nyhavn', description: 'Un canale del Seicento con case di mercanti colorate e velieri in legno: la cartolina per eccellenza di Copenaghen. Al numero 20 Andersen scrisse le sue prime fiabe.', tip: 'Scatta la mattina presto dal ponticello vicino a Kongens Nytorv: il lato soleggiato con le facciate più vivaci è illuminato di giorno e la folla non è ancora arrivata.' },
+      },
+    },
+    {
+      id: 'copenhagen-assistens', city: 'copenhagen', category: 'nature', spot: 'hidden', lat: 55.6911, lng: 12.5497, image: 'UAxCHln587Q',
+      rating: 4.6, reviews: 4300, tags: ['history', 'gardens'], price: { kind: 'free' },
+      address: 'Kapelvej 2, 2200 København N',
+      text: {
+        ru: { name: 'Кладбище Ассистенс', description: 'Зелёный парк в районе Нёрребро, где местные читают и загорают между могилами Андерсена, Кьеркегора и Нильса Бора. Тихое и очень копенгагенское место вдали от туристических маршрутов.', tip: 'Входите с Kapelvej: могилы знаменитостей отмечены на схеме у ворот, а после прогулки загляните в кафе на соседней улице Jægersborggade.' },
+        en: { name: 'Assistens Cemetery', description: 'A leafy park in Nørrebro where locals read and sunbathe among the graves of Andersen, Kierkegaard and Niels Bohr. A quiet, very Copenhagen place far from the tourist trail.', tip: 'Enter from Kapelvej: the famous graves are marked on the map by the gate, and the cafés of neighbouring Jægersborggade are perfect afterwards.' },
+        es: { name: 'Cementerio de Assistens', description: 'Un parque frondoso de Nørrebro donde los vecinos leen y toman el sol entre las tumbas de Andersen, Kierkegaard y Niels Bohr. Un rincón tranquilo y muy copenhaguense, lejos de las rutas turísticas.', tip: 'Entra por Kapelvej: las tumbas célebres están señaladas en el plano de la puerta, y luego acércate a los cafés de la vecina Jægersborggade.' },
+        de: { name: 'Assistens Kirkegård', description: 'Ein grüner Park in Nørrebro, in dem Einheimische zwischen den Gräbern von Andersen, Kierkegaard und Niels Bohr lesen und sonnenbaden. Ein stiller, sehr kopenhagenerischer Ort abseits der Touristenpfade.', tip: 'Geh über den Kapelvej hinein: Die berühmten Gräber sind auf dem Plan am Tor markiert, danach locken die Cafés in der benachbarten Jægersborggade.' },
+        fr: { name: 'Cimetière Assistens', description: 'Un parc verdoyant de Nørrebro où les habitants lisent et bronzent entre les tombes d’Andersen, de Kierkegaard et de Niels Bohr. Un lieu paisible et très copenhaguois, loin des circuits touristiques.', tip: 'Entrez par Kapelvej : les tombes célèbres sont indiquées sur le plan près du portail, et les cafés de la rue voisine Jægersborggade attendent ensuite.' },
+        it: { name: 'Cimitero di Assistens', description: 'Un parco verde a Nørrebro dove la gente del posto legge e prende il sole tra le tombe di Andersen, Kierkegaard e Niels Bohr. Un luogo tranquillo e molto copenaghese, lontano dai percorsi turistici.', tip: 'Entra da Kapelvej: le tombe celebri sono segnate sulla mappa al cancello, e dopo vale una sosta nei caffè della vicina Jægersborggade.' },
+      },
+    },
+    {
+      id: 'copenhagen-torvehallerne', city: 'copenhagen', category: 'food', lat: 55.6838, lng: 12.5696, image: 'mIkLJoeENCc',
+      rating: 4.5, reviews: 18700, tags: ['market', 'food'], price: { kind: 'level', level: 2 }, hours: '10:00–19:00',
+      address: 'Frederiksborggade 21, 1360 København K',
+      text: {
+        ru: { name: 'Торвехаллерне', description: 'Два стеклянных павильона у станции Нёррепорт с шестью десятками прилавков: смёрребрёд, рыба, сыры, кофе и датская выпечка.', tip: 'Возьмите смёрребрёд в Hallernes Smørrebrød и устройтесь за общими столами на улице между павильонами.' },
+        en: { name: 'Torvehallerne', description: 'Two glass halls by Nørreport station with some sixty stalls selling smørrebrød, fish, cheese, coffee and Danish pastries.', tip: 'Order smørrebrød at Hallernes Smørrebrød and eat at the shared tables outside between the halls.' },
+        es: { name: 'Torvehallerne', description: 'Dos naves de cristal junto a la estación de Nørreport con unos sesenta puestos de smørrebrød, pescado, quesos, café y bollería danesa.', tip: 'Pide smørrebrød en Hallernes Smørrebrød y siéntate en las mesas compartidas al aire libre entre las naves.' },
+        de: { name: 'Torvehallerne', description: 'Zwei Glashallen am Bahnhof Nørreport mit rund sechzig Ständen: Smørrebrød, Fisch, Käse, Kaffee und dänisches Gebäck.', tip: 'Hol dir Smørrebrød bei Hallernes Smørrebrød und setz dich an die Gemeinschaftstische draußen zwischen den Hallen.' },
+        fr: { name: 'Torvehallerne', description: 'Deux halles de verre près de la station Nørreport avec une soixantaine d’étals : smørrebrød, poisson, fromages, café et viennoiseries danoises.', tip: 'Commandez un smørrebrød chez Hallernes Smørrebrød et installez-vous aux grandes tables dehors, entre les halles.' },
+        it: { name: 'Torvehallerne', description: 'Due padiglioni di vetro vicino alla stazione di Nørreport con una sessantina di banchi: smørrebrød, pesce, formaggi, caffè e dolci danesi.', tip: 'Prendi uno smørrebrød da Hallernes Smørrebrød e siediti ai tavoli comuni all’aperto tra i padiglioni.' },
+      },
+    },
+    {
+      id: 'aarhus-aros', city: 'aarhus', category: 'attraction', spot: 'insta', lat: 56.1537, lng: 10.1997, image: 'SWIPYBNXIQ0',
+      rating: 4.7, reviews: 26100, tags: ['art', 'museums', 'views', 'photo'], price: { kind: 'from', amount: 175, currency: 'DKK' }, hours: '10:00–18:00',
+      address: 'Aros Allé 2, 8000 Aarhus C',
+      text: {
+        ru: { name: 'ARoS и Your Rainbow Panorama', description: 'Музей современного искусства с кольцевой радужной галереей Олафура Элиассона на крыше: город за стеклом переливается всеми цветами. Внутри — гигантский «Мальчик» Рона Мьюека.', tip: 'Лучшие кадры получаются в солнечный день ближе к вечеру: встаньте у стекла в оранжевом или фиолетовом секторе так, чтобы в кадр попали крыши старого города.' },
+        en: { name: 'ARoS and Your Rainbow Panorama', description: 'A contemporary art museum crowned by Olafur Eliasson’s circular rainbow walkway, where the city beyond the glass shifts through every colour. Inside waits Ron Mueck’s giant Boy.', tip: 'The best shots come on a sunny late afternoon: stand by the glass in the orange or violet section so the old town rooftops fill the frame.' },
+        es: { name: 'ARoS y Your Rainbow Panorama', description: 'Museo de arte contemporáneo coronado por la pasarela circular arcoíris de Olafur Eliasson, donde la ciudad tras el cristal cambia de color. Dentro espera el gigantesco Boy de Ron Mueck.', tip: 'Las mejores fotos salen una tarde soleada: ponte junto al cristal en el tramo naranja o violeta para encuadrar los tejados del casco antiguo.' },
+        de: { name: 'ARoS und Your Rainbow Panorama', description: 'Ein Museum für Gegenwartskunst mit Olafur Eliassons kreisrundem Regenbogengang auf dem Dach – die Stadt hinter dem Glas wechselt durch alle Farben. Drinnen wartet Ron Muecks riesiger Boy.', tip: 'Die besten Fotos gelingen an einem sonnigen Spätnachmittag: Stell dich im orangen oder violetten Abschnitt ans Glas, damit die Dächer der Altstadt ins Bild kommen.' },
+        fr: { name: 'ARoS et Your Rainbow Panorama', description: 'Un musée d’art contemporain couronné par la passerelle circulaire arc-en-ciel d’Olafur Eliasson, où la ville derrière la vitre change de couleur. À l’intérieur attend le géant Boy de Ron Mueck.', tip: 'Les plus belles photos se font en fin d’après-midi ensoleillée : placez-vous contre la vitre dans la section orange ou violette pour cadrer les toits de la vieille ville.' },
+        it: { name: 'ARoS e Your Rainbow Panorama', description: 'Un museo d’arte contemporanea coronato dalla passerella circolare arcobaleno di Olafur Eliasson: la città oltre il vetro cambia di colore a ogni passo. Dentro c’è il gigantesco Boy di Ron Mueck.', tip: 'Gli scatti migliori arrivano in un tardo pomeriggio di sole: mettiti contro il vetro nel settore arancione o viola per inquadrare i tetti della città vecchia.' },
+      },
+    },
+    {
+      id: 'aarhus-den-gamle-by', city: 'aarhus', category: 'attraction', lat: 56.1588, lng: 10.192, image: '0HsfU0wX-8U',
+      rating: 4.7, reviews: 19800, tags: ['history', 'oldtown', 'museums'], price: { kind: 'from', amount: 150, currency: 'DKK' }, hours: '10:00–17:00',
+      address: 'Viborgvej 2, 8000 Aarhus C',
+      text: {
+        ru: { name: 'Den Gamle By', description: 'Музей под открытым небом, куда свезли дома со всей Дании: улочки XVII–XIX веков, лавки, пекарня и даже квартал 1970-х. Актёры в костюмах превращают прогулку в путешествие во времени.', tip: 'В декабре здесь одна из самых атмосферных рождественских ярмарок страны — приходите к вечеру, когда зажигают огни.' },
+        en: { name: 'Den Gamle By', description: 'An open-air museum of houses gathered from all over Denmark: 17th–19th-century lanes, shops, a bakery and even a 1970s quarter. Costumed actors turn the stroll into time travel.', tip: 'In December it hosts one of the country’s most atmospheric Christmas markets — come towards evening when the lights go on.' },
+        es: { name: 'Den Gamle By', description: 'Museo al aire libre con casas traídas de toda Dinamarca: callejuelas de los siglos XVII al XIX, tiendas, una panadería y hasta un barrio de los años setenta. Actores con trajes de época convierten el paseo en un viaje en el tiempo.', tip: 'En diciembre acoge uno de los mercados navideños con más encanto del país: ven al caer la tarde, cuando se encienden las luces.' },
+        de: { name: 'Den Gamle By', description: 'Ein Freilichtmuseum mit Häusern aus ganz Dänemark: Gassen aus dem 17. bis 19. Jahrhundert, Läden, eine Bäckerei und sogar ein Viertel aus den 1970ern. Schauspieler in Kostümen machen den Rundgang zur Zeitreise.', tip: 'Im Dezember findet hier einer der stimmungsvollsten Weihnachtsmärkte des Landes statt – komm gegen Abend, wenn die Lichter angehen.' },
+        fr: { name: 'Den Gamle By', description: 'Un musée en plein air réunissant des maisons venues de tout le Danemark : ruelles des XVIIe–XIXe siècles, échoppes, boulangerie et même un quartier des années 1970. Des comédiens en costume transforment la balade en voyage dans le temps.', tip: 'En décembre s’y tient l’un des marchés de Noël les plus envoûtants du pays : venez en fin de journée, quand les lumières s’allument.' },
+        it: { name: 'Den Gamle By', description: 'Un museo all’aperto con case portate da tutta la Danimarca: vicoli dal Seicento all’Ottocento, botteghe, un forno e perfino un quartiere anni Settanta. Attori in costume trasformano la passeggiata in un viaggio nel tempo.', tip: 'A dicembre ospita uno dei mercatini di Natale più suggestivi del Paese: vieni verso sera, quando si accendono le luci.' },
+      },
+    },
+    {
+      id: 'aarhus-moesgaard', city: 'aarhus', category: 'attraction', lat: 56.0886, lng: 10.2272, image: '1Awv8tx3Y8M',
+      rating: 4.7, reviews: 12400, tags: ['museums', 'history', 'architecture'], price: { kind: 'from', amount: 160, currency: 'DKK' }, hours: '10:00–17:00',
+      address: 'Moesgård Allé 15, 8270 Højbjerg',
+      text: {
+        ru: { name: 'Музей Моесгор', description: 'Археологический музей под зелёной наклонной крышей, по которой можно подняться пешком. Главная звезда — Граубалльский человек, болотная мумия возрастом более двух тысяч лет.', tip: 'После музея спуститесь через лес к морю: тропа выводит к пляжу Moesgård Strand примерно за 20 минут.' },
+        en: { name: 'Moesgaard Museum', description: 'An archaeology museum under a sloping green roof you can walk up. Its star is the Grauballe Man, a bog body more than two thousand years old.', tip: 'Afterwards walk down through the forest to the sea: the trail reaches Moesgård Strand beach in about 20 minutes.' },
+        es: { name: 'Museo Moesgaard', description: 'Museo de arqueología bajo un tejado verde inclinado por el que se puede subir a pie. Su gran estrella es el Hombre de Grauballe, una momia de turbera de más de dos mil años.', tip: 'Después baja por el bosque hasta el mar: el sendero llega a la playa de Moesgård Strand en unos 20 minutos.' },
+        de: { name: 'Moesgaard Museum', description: 'Ein Archäologiemuseum unter einem schrägen Grasdach, auf das man hinaufspazieren kann. Star der Sammlung ist der Grauballe-Mann, eine über zweitausend Jahre alte Moorleiche.', tip: 'Geh danach durch den Wald hinunter zum Meer: Der Pfad erreicht den Strand Moesgård Strand in etwa 20 Minuten.' },
+        fr: { name: 'Musée de Moesgaard', description: 'Un musée d’archéologie sous un toit végétal en pente que l’on peut gravir à pied. Sa vedette est l’Homme de Grauballe, une momie des tourbières vieille de plus de deux mille ans.', tip: 'Ensuite, descendez à travers la forêt jusqu’à la mer : le sentier rejoint la plage de Moesgård Strand en 20 minutes environ.' },
+        it: { name: 'Museo di Moesgaard', description: 'Un museo archeologico sotto un tetto verde inclinato su cui si può salire a piedi. La star è l’Uomo di Grauballe, una mummia di torbiera di oltre duemila anni.', tip: 'Dopo la visita scendi nel bosco fino al mare: il sentiero arriva alla spiaggia di Moesgård Strand in una ventina di minuti.' },
+      },
+    },
+    {
+      id: 'aarhus-infinite-bridge', city: 'aarhus', category: 'nature', spot: 'hidden', lat: 56.1307, lng: 10.2265, image: 'dRPFMUu5MBk',
+      rating: 4.6, reviews: 3100, tags: ['views', 'sunset', 'architecture'], price: { kind: 'free' }, hours: 'always',
+      address: 'Ørneredevej 3, 8270 Højbjerg',
+      text: {
+        ru: { name: 'Бесконечный мост', description: 'Круглый деревянный пирс диаметром 60 метров, уходящий в залив прямо с пляжа у павильона Varna. С него видно и город, и лес, а на закате здесь почти никого.', tip: 'Доезжайте на велосипеде вдоль берега от центра — около 4 км через лес Marselisborg; в павильоне Varna рядом есть кафе.' },
+        en: { name: 'The Infinite Bridge', description: 'A circular wooden pier 60 metres across that runs out into the bay from the beach by the Varna pavilion. It frames both the city and the forest, and at sunset it is almost empty.', tip: 'Cycle along the shore from the centre — about 4 km through Marselisborg forest; the Varna pavilion next to it has a café.' },
+        es: { name: 'El Puente Infinito', description: 'Un muelle circular de madera de 60 metros de diámetro que se adentra en la bahía desde la playa junto al pabellón Varna. Desde él se ven la ciudad y el bosque, y al atardecer casi no hay nadie.', tip: 'Llega en bici por la costa desde el centro, unos 4 km a través del bosque de Marselisborg; el pabellón Varna tiene café al lado.' },
+        de: { name: 'Die Unendliche Brücke', description: 'Ein runder Holzsteg mit 60 Metern Durchmesser, der vom Strand am Varna-Pavillon in die Bucht hinausführt. Von hier siehst du Stadt und Wald, und bei Sonnenuntergang ist kaum jemand da.', tip: 'Fahr mit dem Rad am Ufer entlang aus dem Zentrum – rund 4 km durch den Marselisborg-Wald; im Varna-Pavillon nebenan gibt es ein Café.' },
+        fr: { name: 'Le Pont infini', description: 'Un ponton circulaire en bois de 60 mètres de diamètre qui s’avance dans la baie depuis la plage près du pavillon Varna. On y voit la ville et la forêt, et au coucher du soleil il n’y a presque personne.', tip: 'Venez à vélo par le rivage depuis le centre, environ 4 km à travers la forêt de Marselisborg ; le pavillon Varna voisin abrite un café.' },
+        it: { name: 'Il Ponte Infinito', description: 'Un pontile circolare in legno di 60 metri di diametro che si spinge nella baia dalla spiaggia vicino al padiglione Varna. Da qui si vedono la città e il bosco, e al tramonto non c’è quasi nessuno.', tip: 'Arrivaci in bici lungo la costa dal centro, circa 4 km attraverso il bosco di Marselisborg; il padiglione Varna accanto ha un caffè.' },
+      },
+    },
+    {
+      id: 'aarhus-street-food', city: 'aarhus', category: 'food', lat: 56.15, lng: 10.2043, image: 'Z5zyZylTKRY',
+      rating: 4.5, reviews: 9800, tags: ['streetfood', 'food'], price: { kind: 'level', level: 1 }, hours: '11:30–21:00',
+      address: 'Ny Banegårdsgade 46, 8000 Aarhus C',
+      text: {
+        ru: { name: 'Aarhus Street Food', description: 'Бывший автобусный гараж у вокзала, где три десятка киосков готовят всё — от датских бургеров до вьетнамского фо. Отличное место для недорогого ужина в дорогой стране.', tip: 'Берите еду в нескольких киосках сразу и садитесь во внутреннем дворе — по вечерам здесь шумно и весело.' },
+        en: { name: 'Aarhus Street Food', description: 'A former bus garage by the station where some thirty stalls cook everything from Danish burgers to Vietnamese pho. A great spot for an affordable dinner in an expensive country.', tip: 'Order from several stalls at once and sit in the courtyard — it’s loud and lively in the evenings.' },
+        es: { name: 'Aarhus Street Food', description: 'Un antiguo garaje de autobuses junto a la estación donde una treintena de puestos cocinan de todo, desde hamburguesas danesas hasta pho vietnamita. Ideal para cenar barato en un país caro.', tip: 'Pide en varios puestos a la vez y siéntate en el patio: por las noches hay mucho ambiente.' },
+        de: { name: 'Aarhus Street Food', description: 'Eine ehemalige Busgarage am Bahnhof, in der rund dreißig Stände alles kochen, von dänischen Burgern bis zu vietnamesischer Pho. Ideal für ein günstiges Abendessen in einem teuren Land.', tip: 'Bestell an mehreren Ständen gleichzeitig und setz dich in den Innenhof – abends ist es laut und lebhaft.' },
+        fr: { name: 'Aarhus Street Food', description: 'Un ancien garage de bus près de la gare où une trentaine de stands cuisinent de tout, du burger danois au pho vietnamien. Parfait pour dîner sans se ruiner dans un pays cher.', tip: 'Commandez à plusieurs stands à la fois et installez-vous dans la cour, très animée le soir.' },
+        it: { name: 'Aarhus Street Food', description: 'Un ex deposito di autobus vicino alla stazione dove una trentina di chioschi cucina di tutto, dagli hamburger danesi al pho vietnamita. Perfetto per una cena economica in un Paese caro.', tip: 'Ordina da più chioschi insieme e siediti nel cortile interno: la sera c’è un’atmosfera vivace.' },
+      },
+    },
+  ],
+};
+
+export default pack;

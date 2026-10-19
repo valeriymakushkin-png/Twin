@@ -7,7 +7,7 @@ import { Suspense, useState } from 'react';
 import { usePlus } from '@/components/paywall';
 import { Photo } from '@/components/photo';
 import { Button, PlusBadge, TopBar } from '@/components/ui';
-import { destinationById, destinations } from '@/data/destinations';
+import { destinationById, destinations } from '@/data/catalog';
 import type { MeetupKind } from '@/data/types';
 import { useI18n } from '@/i18n/use';
 import { MILES } from '@/lib/gamification';

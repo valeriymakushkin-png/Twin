@@ -12,8 +12,7 @@ import { WorldMap, type MapMarker, type WorldMapHandle } from '@/components/map/
 import { Sheet } from '@/components/sheet';
 import { Chip } from '@/components/ui';
 import { resolveItem } from '@/data';
-import { destinations } from '@/data/destinations';
-import { categoryColor, places } from '@/data/places';
+import { categoryColor, destinations, places } from '@/data/catalog';
 import type { MapFilter } from '@/data/types';
 import { useI18n } from '@/i18n/use';
 import { WORLD_COUNTRIES } from '@/lib/countries';

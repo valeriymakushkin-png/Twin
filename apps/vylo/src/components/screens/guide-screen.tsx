@@ -9,7 +9,7 @@ import { PlaceRow } from '@/components/cards';
 import { HeroPage } from '@/components/hero';
 import { PlusLock } from '@/components/paywall';
 import { Avatar, Button, DemoBadge, UserName } from '@/components/ui';
-import { destinationById } from '@/data/destinations';
+import { destinationById } from '@/data/catalog';
 import { guideById, userById } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { cn } from '@/lib/utils';

@@ -47,7 +47,7 @@ export type PlaceId = (typeof PLACE_IDS)[number];
 
 type P = Place & { id: PlaceId };
 
-export const places: P[] = [
+export const basePlaces: P[] = [
   // Bali
   { id: 'uluwatu', destinationId: 'bali', category: 'attraction', lat: -8.8291, lng: 115.0849, image: 'yKjURf1u7EY', rating: 4.8, reviews: 6210, tags: ['temples', 'sunset', 'views'], price: fixed(50000, 'IDR'), hours: '07:00–19:00' },
   { id: 'tegallalang', destinationId: 'bali', category: 'nature', lat: -8.4312, lng: 115.2793, image: '-2WlTWZLnRc', rating: 4.7, reviews: 8930, tags: ['nature', 'photo', 'hiking'], price: fixed(25000, 'IDR'), hours: '08:00–18:00' },
@@ -183,8 +183,6 @@ export const places: P[] = [
   { id: 'gamsutl', destinationId: 'dagestan', category: 'attraction', lat: 42.2944, lng: 46.9367, image: 'BNwjMOa-g_A', rating: 4.8, reviews: 1400, tags: ['history', 'hiking', 'mountains'], price: free },
 ];
 
-export const placeById = (id: string) => places.find((p) => p.id === id);
-export const placesIn = (destinationId: string) => places.filter((p) => p.destinationId === destinationId);
 
 export const categoryColor = {
   attraction: '#6366f1',

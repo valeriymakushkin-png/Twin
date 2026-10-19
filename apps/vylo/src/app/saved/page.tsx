@@ -8,7 +8,7 @@ import { PlaceRow } from '@/components/cards';
 import { Photo } from '@/components/photo';
 import { Button, Empty, PageTitle, ProgressBar, Segmented } from '@/components/ui';
 import { resolveItem } from '@/data';
-import { destinationById } from '@/data/destinations';
+import { destinationById } from '@/data/catalog';
 import { useCollectionName } from '@/components/global-sheets';
 import { useI18n } from '@/i18n/use';
 import { cn, daysBetween, todayKey } from '@/lib/utils';

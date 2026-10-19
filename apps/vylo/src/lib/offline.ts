@@ -1,8 +1,7 @@
 'use client';
 
-import { destinationById } from '@/data/destinations';
-import { placesIn } from '@/data/places';
 import { photoUrl } from './photos';
+import { destinationById, destinationHref, placeHref, placesIn } from '@/data/catalog';
 
 export const offlineSupported = () => typeof navigator !== 'undefined' && 'serviceWorker' in navigator;
 
@@ -18,7 +17,7 @@ export async function downloadDestination(id: string): Promise<boolean> {
   const d = destinationById(id);
   if (!reg?.active || !d) return false;
   const places = placesIn(id);
-  const urls = [`/d/${id}/`, ...places.map((p) => `/p/${p.id}/`), '/map/', '/discover/'];
+  const urls = [destinationHref(id), ...places.map((p) => placeHref(p.id)), '/map/', '/discover/'];
   const widths = [1000, 2000, 800, 1600, 360, 720];
   const ids = [d.image, ...d.gallery, ...places.map((p) => p.image)];
   const photos = Array.from(new Set(ids.flatMap((pid) => widths.map((w) => photoUrl(pid, w)))));

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Clock, Heart, Lock, MapPin, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { resolveItem } from '@/data';
-import { destinationById } from '@/data/destinations';
+import { destinationById, destinationHref } from '@/data/catalog';
 import { userById } from '@/data/social';
 import type { Destination, Guide, Meetup, Review } from '@/data/types';
 import { useI18n } from '@/i18n/use';
@@ -17,7 +17,7 @@ import { Avatar, AvatarStack, DemoBadge, Rating, UserName } from './ui';
 export function DestinationCard({ d, className }: { d: Destination; className?: string }) {
   const { dest, country } = useI18n();
   return (
-    <Link href={`/d/${d.id}/`} className={cn('press relative block h-[200px] w-[150px] shrink-0 overflow-hidden rounded-[24px] shadow-card', className)}>
+    <Link href={destinationHref(d.id)} className={cn('press relative block h-[200px] w-[150px] shrink-0 overflow-hidden rounded-[24px] shadow-card', className)}>
       <Photo id={d.image} alt={dest(d.id).name} width={400} className="absolute inset-0" tint={d.theme.accent} />
       <div className="photo-scrim absolute inset-0" />
       <span className="absolute left-3 top-3 h-1 w-8 rounded-full" style={{ background: `linear-gradient(90deg, ${d.theme.accent}, ${d.theme.accent2})` }} />

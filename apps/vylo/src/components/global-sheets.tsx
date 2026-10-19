@@ -7,10 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { resolveItem } from '@/data';
-import { destinationById, destinations } from '@/data/destinations';
-import { placeById } from '@/data/places';
+import { destinationById, destinationHref, destinations, placeById, visaByCode } from '@/data/catalog';
 import { stories, userById } from '@/data/social';
-import { visaByCode } from '@/data/visa';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
 import { addDays, cn, todayKey } from '@/lib/utils';
@@ -391,7 +389,7 @@ function CountrySheet({ code }: { code: string }) {
           <p className="mb-2 mt-5 text-[13px] font-semibold text-muted">{t('sheets.destinations')}</p>
           <div className="grid gap-2">
             {dests.map((x) => (
-              <Link key={x.id} href={`/d/${x.id}/`} onClick={close} className="press flex items-center gap-3 rounded-2xl bg-surface-2/70 p-2">
+              <Link key={x.id} href={destinationHref(x.id)} onClick={close} className="press flex items-center gap-3 rounded-2xl bg-surface-2/70 p-2">
                 <Photo id={x.image} alt={dest(x.id).name} width={140} className="size-14 shrink-0" rounded="rounded-xl" tint={x.theme.accent} />
                 <div className="min-w-0 flex-1">
                   <p className="text-[15px] font-semibold">{dest(x.id).name}</p>
