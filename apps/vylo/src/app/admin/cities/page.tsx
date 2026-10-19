@@ -53,6 +53,7 @@ export default function AdminCities() {
           onChange={setCode}
           options={[{ value: '', label: t('admin.list.anyCountry') }, ...[...countries].sort((a, b) => country(a.code).localeCompare(country(b.code), locale)).map((c) => ({ value: c.code, label: `${flag(c.code)} ${country(c.code)}` }))]}
           className="w-56"
+          toolbar
         />
       </div>
       <Card>

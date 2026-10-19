@@ -13,11 +13,11 @@ import { cn } from '@/lib/utils';
 
 export function useAdminError() {
   const { tk, t } = useI18n();
-  return (e: unknown) => {
+  return useCallback((e: unknown) => {
     const code = e instanceof ApiError ? e.code : e instanceof AdminError ? e.message : e instanceof DOMException && e.name === 'QuotaExceededError' ? 'storage' : e instanceof TypeError ? 'network' : 'generic';
     const text = tk(`admin.errors.${code}`);
     return text.startsWith('admin.') ? t('admin.errors.generic') : text;
-  };
+  }, [t, tk]);
 }
 
 export function AButton({ variant = 'primary', size = 'md', loading, className, children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'plain' | 'danger'; size?: 'sm' | 'md'; loading?: boolean }) {
@@ -92,9 +92,9 @@ export function NumberInput({ value, onChange, step = 'any', className, ...props
   );
 }
 
-export function Select<T extends string>({ value, onChange, options, className }: { value: T; onChange: (v: T) => void; options: { value: T; label: string }[]; className?: string }) {
+export function Select<T extends string>({ value, onChange, options, className, toolbar }: { value: T; onChange: (v: T) => void; options: { value: T; label: string }[]; className?: string; toolbar?: boolean }) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value as T)} className={cn(field, 'h-9 appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%2712%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2386868b%27 stroke-width=%273%27%3E%3Cpath d=%27m6 9 6 6 6-6%27/%3E%3C/svg%3E")] bg-[length:12px] bg-[right_12px_center] bg-no-repeat pr-8', className)}>
+    <select value={value} onChange={(e) => onChange(e.target.value as T)} className={cn(field, toolbar && 'bg-white shadow-[0_0_0_0.5px_rgba(0,0,0,0.12)]', 'h-9 appearance-none bg-[url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%2712%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2386868b%27 stroke-width=%273%27%3E%3Cpath d=%27m6 9 6 6 6-6%27/%3E%3C/svg%3E")] bg-[length:12px] bg-[right_12px_center] bg-no-repeat pr-8', className)}>
       {options.map((o) => (
         <option key={o.value} value={o.value}>
           {o.label}
@@ -139,7 +139,7 @@ export function Badge({ color = '#6e6e73', children, className }: { color?: stri
 
 export function SearchField({ value, onChange, placeholder, className }: { value: string; onChange: (v: string) => void; placeholder?: string; className?: string }) {
   return (
-    <label className={cn('flex h-9 items-center gap-2 rounded-[9px] bg-[#e8e8ed]/80 px-2.5', className)}>
+    <label className={cn('flex h-9 items-center gap-2 rounded-[9px] bg-white px-2.5 shadow-[0_0_0_0.5px_rgba(0,0,0,0.12)]', className)}>
       <Search className="size-4 text-[#86868b]" />
       <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="min-w-0 flex-1 bg-transparent text-[14px] outline-none placeholder:text-[#86868b]" />
       {value && (

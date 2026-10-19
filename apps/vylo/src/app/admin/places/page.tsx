@@ -60,7 +60,7 @@ function PlacesInner() {
       />
       <div className="mb-4 flex flex-wrap gap-2">
         <SearchField value={q} onChange={setQ} placeholder={t('admin.common.search')} className="w-full md:w-72" />
-        <Select value={code} onChange={setCode} options={countryOptions} className="w-56" />
+        <Select value={code} onChange={setCode} options={countryOptions} className="w-56" toolbar />
         <Select
           value={kind}
           onChange={setKind}
@@ -71,6 +71,7 @@ function PlacesInner() {
             ...(['attraction', 'nature', 'food', 'hotel'] as const).map((c) => ({ value: c, label: tk(`categories.${c}`) })),
           ]}
           className="w-52"
+          toolbar
         />
         <Select
           value={status}
@@ -82,6 +83,7 @@ function PlacesInner() {
             { value: 'hidden', label: t('admin.list.onlyHidden') },
           ]}
           className="w-44"
+          toolbar
         />
       </div>
       <Card>

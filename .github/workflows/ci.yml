@@ -55,6 +55,8 @@ jobs:
         run: pnpm --filter @mascot/web i18n:check
       - name: Translations (Vylo)
         run: pnpm --filter @vylo/app i18n:check
+      - name: Vylo API tests
+        run: pnpm --filter @vylo/api test
       - name: Unit tests
         run: pnpm --filter @mascot/api test -- --ci
       - name: Build

@@ -85,7 +85,7 @@ export function MapPicker({ lat, lng, onChange, height = 320, zoom = 15 }: { lat
 
   return (
     <div className="relative overflow-hidden rounded-[12px] ring-1 ring-black/5" style={{ height }}>
-      <div ref={el} className="absolute inset-0" />
+      <div ref={el} className="h-full w-full" />
       <button type="button" onClick={() => setSatellite(!satellite)} className="absolute left-2 top-2 z-10 flex h-8 items-center gap-1.5 rounded-full bg-white/95 px-3 text-[12px] font-semibold shadow">
         <Layers className="size-3.5" /> {satellite ? t('map.scheme') : t('map.satellite')}
       </button>

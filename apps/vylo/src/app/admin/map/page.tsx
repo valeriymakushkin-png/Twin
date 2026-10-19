@@ -181,6 +181,7 @@ export default function AdminMapEditor() {
               onChange={setCode}
               options={[{ value: '', label: t('admin.list.anyCountry') }, ...[...countries].sort((a, b) => country(a.code).localeCompare(country(b.code), locale)).map((c) => ({ value: c.code, label: `${flag(c.code)} ${country(c.code)}` }))]}
               className="w-56"
+          toolbar
             />
             <AButton variant="secondary" onClick={() => setSatellite(!satellite)}>
               <Layers className="size-4" /> {satellite ? t('map.scheme') : t('map.satellite')}
@@ -189,7 +190,7 @@ export default function AdminMapEditor() {
         }
       />
       <div className="relative h-[68vh] min-h-[420px] overflow-hidden rounded-[16px] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_0_0_0.5px_rgba(0,0,0,0.08)]">
-        <div ref={el} className="absolute inset-0" />
+        <div ref={el} className="h-full w-full" />
         {click && editable && (
           <div className="absolute left-3 top-3 z-10 flex items-center gap-2 rounded-[12px] bg-white/95 p-2 pl-3 shadow-lg backdrop-blur">
             <span className="font-mono text-[12px] text-[#6e6e73]">
