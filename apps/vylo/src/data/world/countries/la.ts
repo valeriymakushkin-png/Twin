@@ -1,0 +1,370 @@
+import type { CountryPack } from '../types';
+
+const pack: CountryPack = {
+  country: {
+    code: 'LA',
+    region: 'sea',
+    image: 'hZLpIrG8Rbo',
+    theme: { accent: '#b45309', accent2: '#15803d', motif: 'lanterns' },
+    fromMoscow: { hours: 14, direct: false },
+    text: {
+      ru: {
+        tagline: 'Монахи в шафране, бирюзовые водопады и неспешный Меконг',
+        description: 'Лаос — самая тихая страна Индокитая: золотые храмы, утренние процессии монахов, рисовые террасы и карстовые горы над рекой. Здесь никто не торопится, а новая скоростная железная дорога связала столицу с жемчужинами севера всего за пару часов.',
+        howToGet: 'Прямых рейсов из Москвы нет: удобнее всего лететь с пересадкой в Бангкоке, Ханое, Гуанчжоу или Куньмине до Вьентьяна или Луангпрабанга — в пути 13–16 часов. Внутри страны выручает Лаосско-китайская железная дорога: Вьентьян — Вангвиенг за час, Вангвиенг — Луангпрабанг ещё за час. По городам ездят на тук-туках и через приложение LOCA.',
+        tips: [
+          'Российские Visa и Mastercard не работают: везите доллары или евро и меняйте их на кип в банках и официальных обменниках; во многих местах берут доллары и тайские баты, а часть банкоматов принимает UnionPay.',
+          'Билеты на поезд раскупают за несколько дней — покупайте их в приложении LCR Ticket или на вокзале заранее.',
+          'На утреннем подношении монахам стойте тихо и на расстоянии, не используйте вспышку и никогда не касайтесь монахов.',
+        ],
+        guide: {
+          title: 'Лаос за 10 дней',
+          sections: [
+            { title: 'Когда ехать', body: 'Лучший сезон — с ноября по февраль: сухо, солнечно и прохладно, особенно по утрам на севере, где бывает +12 °C. С марта по май становится жарко, а в горах жгут поля, и над Луангпрабангом висит дымка. С июня по октябрь идут дожди: водопады полноводны, всё вокруг зелёное, но дороги размывает. В середине апреля вся страна празднует Пи Май — лаосский Новый год с водяными битвами.' },
+            { title: 'Маршрут на 10 дней', body: 'Начните с двух дней во Вьентьяне: ступа Тхат Луанг, триумфальная арка Патусай, парк Будды и закат на Меконге. Затем поезд в Вангвиенг — два-три дня на каякинг, пещеры, голубые лагуны и полёт на воздушном шаре над карстом. Финал — четыре дня в Луангпрабанге: храм Сиенгтхонг, утреннее подношение монахам, водопад Куангси и закат с холма Пхуси.' },
+            { title: 'Что попробовать', body: 'Главное блюдо Лаоса — лааб: рубленое мясо или рыба с лаймом, мятой и жареной рисовой мукой, которое едят с клейким рисом руками. Попробуйте острый салат из зелёной папайи там мак хунг, суп-лапшу кхао пиак сен и колбаски сай ауа из Луангпрабанга. На рынках продают багеты — наследие Франции, — а к ужину подают пиво Beerlao, которым здесь гордятся.' },
+            { title: 'Деньги, связь и транспорт', body: 'Валюта — лаосский кип (LAK); цены в отелях часто указывают в долларах. Карты российских банков не работают, поэтому везите наличные и меняйте их в банках BCEL или Lao Development Bank. Сим-карты Unitel и Lao Telecom продают в аэропорту и на вокзалах по паспорту. Между городами быстрее всего поезд, на север и в горы — минивэны. В сельской местности не сходите с троп: там до сих пор остаются неразорвавшиеся боеприпасы.' },
+          ],
+        },
+      },
+      en: {
+        tagline: 'Saffron-robed monks, turquoise waterfalls and the slow Mekong',
+        description: 'Laos is the quietest country in Indochina: golden temples, morning processions of monks, rice terraces and karst mountains above the river. Nobody hurries here, and a new high-speed railway now links the capital with the gems of the north in just a couple of hours.',
+        howToGet: 'There are no direct flights from Moscow: the easiest options connect in Bangkok, Hanoi, Guangzhou or Kunming to Vientiane or Luang Prabang, 13–16 hours in total. Within the country the Laos–China Railway is a lifesaver: Vientiane to Vang Vieng takes an hour and Vang Vieng to Luang Prabang another hour. In town, use tuk-tuks or the LOCA app.',
+        tips: [
+          'Russian-issued Visa and Mastercard cards don’t work, so bring dollars or euros and change them into kip at banks and official exchange offices; many places also take dollars and Thai baht, and some ATMs accept UnionPay.',
+          'Train tickets sell out several days ahead, so buy them early in the LCR Ticket app or at the station.',
+          'At the morning alms giving stand quietly and at a distance, don’t use flash and never touch the monks.',
+        ],
+        guide: {
+          title: 'Laos in 10 days',
+          sections: [
+            { title: 'When to go', body: 'The best season is November to February: dry, sunny and cool, especially on northern mornings when it can drop to 12 °C. From March to May it gets hot, and farmers burn their fields in the hills, leaving a haze over Luang Prabang. From June to October the rains come: waterfalls are full and everything is green, but roads wash out. In mid-April the whole country celebrates Pi Mai, Lao New Year, with water fights.' },
+            { title: 'A 10-day route', body: 'Start with two days in Vientiane: That Luang stupa, the Patuxai victory gate, Buddha Park and sunset on the Mekong. Then take the train to Vang Vieng for two or three days of kayaking, caves, blue lagoons and a hot-air balloon flight over the karst. Finish with four days in Luang Prabang: Wat Xieng Thong, the morning alms giving, Kuang Si Falls and sunset from Mount Phousi.' },
+            { title: 'What to eat', body: 'The national dish is larb: minced meat or fish with lime, mint and toasted rice powder, eaten by hand with sticky rice. Try the fiery green papaya salad tam mak hung, the noodle soup khao piak sen and Luang Prabang’s sai oua sausages. Markets sell baguettes, a French legacy, and dinner comes with Beerlao, the beer locals are proud of.' },
+            { title: 'Money, SIM cards and transport', body: 'The currency is the Lao kip (LAK), though hotels often quote in dollars. Russian bank cards don’t work, so bring cash and exchange it at BCEL or Lao Development Bank. Unitel and Lao Telecom SIM cards are sold at the airport and stations on presentation of your passport. The train is fastest between cities, while minivans serve the north and the mountains. In rural areas stay on marked paths, as unexploded ordnance still remains.' },
+          ],
+        },
+      },
+      es: {
+        tagline: 'Monjes de azafrán, cascadas turquesa y el lento Mekong',
+        description: 'Laos es el país más tranquilo de Indochina: templos dorados, procesiones matinales de monjes, terrazas de arroz y montañas kársticas sobre el río. Aquí nadie tiene prisa, y un nuevo tren de alta velocidad une la capital con las joyas del norte en apenas un par de horas.',
+        howToGet: 'No hay vuelos directos desde Moscú: lo más cómodo es hacer escala en Bangkok, Hanói, Cantón o Kunming hasta Vientián o Luang Prabang, con 13–16 horas de viaje. Dentro del país, el ferrocarril Laos-China es una bendición: de Vientián a Vang Vieng hay una hora y de Vang Vieng a Luang Prabang, otra. En la ciudad, tuk-tuk o la app LOCA.',
+        tips: [
+          'Las Visa y Mastercard emitidas en Rusia no funcionan: lleva dólares o euros y cámbialos a kip en bancos y casas de cambio oficiales; muchos sitios aceptan dólares y bahts tailandeses, y algunos cajeros admiten UnionPay.',
+          'Los billetes de tren se agotan con días de antelación: cómpralos pronto en la app LCR Ticket o en la estación.',
+          'En la ofrenda matinal a los monjes quédate en silencio y a distancia, no uses flash y nunca los toques.',
+        ],
+        guide: {
+          title: 'Laos en 10 días',
+          sections: [
+            { title: 'Cuándo ir', body: 'La mejor temporada va de noviembre a febrero: seco, soleado y fresco, sobre todo por las mañanas en el norte, cuando se puede bajar a 12 °C. De marzo a mayo aprieta el calor y en las montañas se queman campos, por lo que una bruma cubre Luang Prabang. De junio a octubre llueve: las cascadas van llenas y todo está verde, pero las carreteras se deterioran. A mediados de abril el país celebra Pi Mai, el Año Nuevo lao, con batallas de agua.' },
+            { title: 'Ruta de 10 días', body: 'Empieza con dos días en Vientián: la estupa That Luang, el arco Patuxai, el Parque de Buda y el atardecer sobre el Mekong. Después, tren a Vang Vieng para dos o tres días de kayak, cuevas, lagunas azules y un vuelo en globo sobre el karst. Termina con cuatro días en Luang Prabang: Wat Xieng Thong, la ofrenda matinal a los monjes, las cascadas de Kuang Si y el atardecer desde el monte Phousi.' },
+            { title: 'Qué probar', body: 'El plato nacional es el larb: carne o pescado picado con lima, menta y polvo de arroz tostado, que se come con la mano y arroz glutinoso. Prueba la picante ensalada de papaya verde tam mak hung, la sopa de fideos khao piak sen y las salchichas sai oua de Luang Prabang. En los mercados venden baguettes, herencia francesa, y la cena se acompaña con Beerlao, la cerveza de la que presumen los laosianos.' },
+            { title: 'Dinero, móvil y transporte', body: 'La moneda es el kip laosiano (LAK), aunque los hoteles suelen dar precios en dólares. Las tarjetas de bancos rusos no funcionan, así que lleva efectivo y cámbialo en BCEL o en el Lao Development Bank. Las SIM de Unitel y Lao Telecom se venden en el aeropuerto y en las estaciones con el pasaporte. Entre ciudades, el tren es lo más rápido; al norte y a la montaña van furgonetas. En el campo no te salgas de los senderos: aún quedan artefactos sin explotar.' },
+          ],
+        },
+      },
+      de: {
+        tagline: 'Mönche in Safran, türkisfarbene Wasserfälle und der träge Mekong',
+        description: 'Laos ist das ruhigste Land Indochinas: goldene Tempel, morgendliche Mönchsprozessionen, Reisterrassen und Karstberge über dem Fluss. Niemand hat es hier eilig, und eine neue Schnellbahn verbindet die Hauptstadt in nur wenigen Stunden mit den Perlen des Nordens.',
+        howToGet: 'Direktflüge ab Moskau gibt es nicht: Am bequemsten steigst du in Bangkok, Hanoi, Guangzhou oder Kunming nach Vientiane oder Luang Prabang um, insgesamt 13–16 Stunden. Im Land ist die Laos-China-Bahn ein Segen: Vientiane–Vang Vieng dauert eine Stunde, Vang Vieng–Luang Prabang eine weitere. In der Stadt nimmst du Tuk-Tuks oder die App LOCA.',
+        tips: [
+          'In Russland ausgegebene Visa- und Mastercard-Karten funktionieren nicht – nimm Dollar oder Euro mit und tausche sie in Banken und offiziellen Wechselstuben in Kip; vielerorts werden Dollar und Thai-Baht akzeptiert, manche Automaten nehmen UnionPay.',
+          'Zugtickets sind oft Tage im Voraus ausverkauft – kauf sie früh in der App LCR Ticket oder am Bahnhof.',
+          'Beim morgendlichen Almosengang stehst du still und auf Abstand, verzichtest auf Blitz und berührst die Mönche niemals.',
+        ],
+        guide: {
+          title: 'Laos in 10 Tagen',
+          sections: [
+            { title: 'Reisezeit', body: 'Die beste Zeit ist November bis Februar: trocken, sonnig und kühl, vor allem morgens im Norden, wo es auf 12 °C abkühlen kann. Von März bis Mai wird es heiß, und in den Bergen brennen Bauern ihre Felder ab – dann hängt Dunst über Luang Prabang. Von Juni bis Oktober regnet es: Die Wasserfälle führen viel Wasser, alles ist grün, aber Straßen werden ausgespült. Mitte April feiert das Land Pi Mai, das laotische Neujahr, mit Wasserschlachten.' },
+            { title: 'Route für 10 Tage', body: 'Starte mit zwei Tagen in Vientiane: der Stupa That Luang, das Siegestor Patuxai, der Buddha-Park und der Sonnenuntergang am Mekong. Dann mit dem Zug nach Vang Vieng für zwei, drei Tage Kajak, Höhlen, blaue Lagunen und eine Heißluftballonfahrt über den Karst. Zum Schluss vier Tage Luang Prabang: Wat Xieng Thong, der morgendliche Almosengang, die Kuang-Si-Fälle und der Sonnenuntergang vom Berg Phousi.' },
+            { title: 'Was du probieren solltest', body: 'Das Nationalgericht ist Larb: gehacktes Fleisch oder Fisch mit Limette, Minze und geröstetem Reismehl, das man mit Klebreis von Hand isst. Probier den scharfen Papayasalat Tam Mak Hung, die Nudelsuppe Khao Piak Sen und die Würstchen Sai Oua aus Luang Prabang. Auf Märkten gibt es Baguettes, ein französisches Erbe, und zum Abendessen Beerlao, das Bier, auf das die Laoten stolz sind.' },
+            { title: 'Geld, Handy und Verkehr', body: 'Die Währung ist der laotische Kip (LAK), Hotels nennen Preise oft in Dollar. Russische Bankkarten funktionieren nicht, also nimm Bargeld mit und tausche bei der BCEL oder der Lao Development Bank. SIM-Karten von Unitel und Lao Telecom gibt es am Flughafen und an Bahnhöfen gegen Vorlage des Passes. Zwischen den Städten ist der Zug am schnellsten, in den Norden und die Berge fahren Minivans. Bleib auf dem Land auf markierten Wegen – es liegen noch Blindgänger.' },
+          ],
+        },
+      },
+      fr: {
+        tagline: 'Moines en safran, cascades turquoise et Mékong paisible',
+        description: 'Le Laos est le pays le plus tranquille d’Indochine : temples dorés, processions matinales de moines, rizières en terrasses et montagnes karstiques au-dessus du fleuve. Personne ne se presse ici, et une nouvelle ligne ferroviaire rapide relie désormais la capitale aux joyaux du nord en quelques heures.',
+        howToGet: 'Il n’y a pas de vol direct depuis Moscou : le plus simple est de passer par Bangkok, Hanoï, Canton ou Kunming pour rejoindre Vientiane ou Luang Prabang, soit 13 à 16 heures de trajet. Sur place, le train Laos-Chine change tout : une heure de Vientiane à Vang Vieng, une autre de Vang Vieng à Luang Prabang. En ville, tuk-tuks ou application LOCA.',
+        tips: [
+          'Les cartes Visa et Mastercard émises en Russie ne fonctionnent pas : emportez des dollars ou des euros et changez-les en kips dans les banques et bureaux de change officiels ; beaucoup d’endroits acceptent aussi dollars et bahts, et certains distributeurs prennent UnionPay.',
+          'Les billets de train s’arrachent plusieurs jours à l’avance : achetez-les tôt sur l’application LCR Ticket ou en gare.',
+          'Lors de l’offrande matinale aux moines, restez silencieux et à distance, n’utilisez pas le flash et ne touchez jamais les moines.',
+        ],
+        guide: {
+          title: 'Le Laos en 10 jours',
+          sections: [
+            { title: 'Quand partir', body: 'La meilleure saison va de novembre à février : temps sec, ensoleillé et frais, surtout le matin dans le nord, où le thermomètre peut descendre à 12 °C. De mars à mai, la chaleur monte et les paysans brûlent leurs champs dans les collines, laissant un voile de brume sur Luang Prabang. De juin à octobre arrivent les pluies : cascades gonflées, nature verdoyante, mais routes abîmées. À la mi-avril, tout le pays fête Pi Mai, le Nouvel An lao, à grands jets d’eau.' },
+            { title: 'Itinéraire de 10 jours', body: 'Commencez par deux jours à Vientiane : le stupa That Luang, l’arc de triomphe Patuxai, le parc des Bouddhas et le coucher du soleil sur le Mékong. Prenez ensuite le train pour Vang Vieng et passez deux ou trois jours entre kayak, grottes, lagons bleus et vol en montgolfière au-dessus du karst. Finissez par quatre jours à Luang Prabang : Vat Xieng Thong, offrande matinale aux moines, chutes de Kuang Si et coucher du soleil depuis le mont Phousi.' },
+            { title: 'Que goûter', body: 'Le plat national est le larb : viande ou poisson haché au citron vert, à la menthe et à la poudre de riz grillé, que l’on mange avec les doigts et du riz gluant. Goûtez la salade de papaye verte bien relevée tam mak hung, la soupe de nouilles khao piak sen et les saucisses sai oua de Luang Prabang. Les marchés vendent des baguettes, héritage français, et le dîner s’accompagne de Beerlao, la bière dont les Laotiens sont fiers.' },
+            { title: 'Argent, téléphone et transports', body: 'La monnaie est le kip laotien (LAK), même si les hôtels affichent souvent leurs prix en dollars. Les cartes des banques russes ne fonctionnent pas : prévoyez des espèces à changer à la BCEL ou à la Lao Development Bank. Les cartes SIM Unitel et Lao Telecom se vendent à l’aéroport et dans les gares sur présentation du passeport. Entre les villes, le train est le plus rapide ; vers le nord et la montagne, ce sont des minibus. À la campagne, restez sur les sentiers : des munitions non explosées subsistent.' },
+          ],
+        },
+      },
+      it: {
+        tagline: 'Monaci color zafferano, cascate turchesi e il lento Mekong',
+        description: 'Il Laos è il Paese più tranquillo dell’Indocina: templi dorati, processioni mattutine di monaci, risaie a terrazza e montagne carsiche sopra il fiume. Qui nessuno ha fretta, e una nuova ferrovia veloce collega ormai la capitale ai gioielli del nord in un paio d’ore.',
+        howToGet: 'Non ci sono voli diretti da Mosca: la soluzione più comoda è uno scalo a Bangkok, Hanoi, Canton o Kunming per Vientiane o Luang Prabang, per 13–16 ore complessive. Nel Paese la ferrovia Laos-Cina è una manna: da Vientiane a Vang Vieng ci vuole un’ora, da Vang Vieng a Luang Prabang un’altra. In città si usano i tuk-tuk o l’app LOCA.',
+        tips: [
+          'Le carte Visa e Mastercard emesse in Russia non funzionano: porta dollari o euro e cambiali in kip nelle banche e nei cambiavalute ufficiali; molti posti accettano anche dollari e baht thailandesi e alcuni bancomat prendono UnionPay.',
+          'I biglietti del treno finiscono giorni prima: comprali in anticipo nell’app LCR Ticket o in stazione.',
+          'Durante l’offerta mattutina ai monaci resta in silenzio e a distanza, non usare il flash e non toccare mai i monaci.',
+        ],
+        guide: {
+          title: 'Il Laos in 10 giorni',
+          sections: [
+            { title: 'Quando andare', body: 'La stagione migliore va da novembre a febbraio: clima secco, soleggiato e fresco, soprattutto al mattino nel nord, quando si può scendere a 12 °C. Da marzo a maggio fa caldo e in collina si bruciano i campi, così su Luang Prabang ristagna una foschia. Da giugno a ottobre piove: le cascate sono piene e tutto è verde, ma le strade si rovinano. A metà aprile tutto il Paese celebra Pi Mai, il Capodanno lao, con battaglie d’acqua.' },
+            { title: 'Itinerario di 10 giorni', body: 'Inizia con due giorni a Vientiane: lo stupa That Luang, l’arco di Patuxai, il Parco del Buddha e il tramonto sul Mekong. Poi treno per Vang Vieng e due o tre giorni tra kayak, grotte, lagune blu e un volo in mongolfiera sopra il carsismo. Chiudi con quattro giorni a Luang Prabang: Wat Xieng Thong, l’offerta mattutina ai monaci, le cascate di Kuang Si e il tramonto dal monte Phousi.' },
+            { title: 'Cosa assaggiare', body: 'Il piatto nazionale è il larb: carne o pesce tritati con lime, menta e polvere di riso tostato, da mangiare con le mani insieme al riso glutinoso. Prova la piccante insalata di papaya verde tam mak hung, la zuppa di noodles khao piak sen e le salsicce sai oua di Luang Prabang. Nei mercati si vendono baguette, eredità francese, e a cena si beve la Beerlao, la birra di cui i laotiani vanno fieri.' },
+            { title: 'Soldi, telefono e trasporti', body: 'La valuta è il kip laotiano (LAK), anche se gli hotel indicano spesso i prezzi in dollari. Le carte delle banche russe non funzionano, quindi porta contanti e cambiali presso BCEL o Lao Development Bank. Le SIM di Unitel e Lao Telecom si comprano in aeroporto e in stazione con il passaporto. Tra le città il treno è il mezzo più rapido, verso nord e in montagna vanno i minivan. In campagna resta sui sentieri: ci sono ancora ordigni inesplosi.' },
+          ],
+        },
+      },
+    },
+  },
+  cities: [
+    {
+      id: 'luang-prabang', lat: 19.8856, lng: 102.1347, image: 'hZLpIrG8Rbo', gallery: ['Q6W9PV17ZLg'],
+      rating: 4.8, reviews: 9840, tags: ['temples', 'unesco', 'oldtown', 'waterfalls'], months: [11, 12, 1, 2], budgetPerDay: 40, currency: 'LAK',
+      language: 'lo', timezone: 'UTC+7', zoom: 12, theme: { accent: '#c2410c', accent2: '#facc15', motif: 'lanterns' },
+      text: {
+        ru: { name: 'Луангпрабанг', tagline: 'Королевская столица храмов на слиянии двух рек', description: 'Бывшая королевская столица на полуострове между Меконгом и Нам Каном — целиком объект ЮНЕСКО: три десятка храмов, французские виллы и пальмы. На рассвете по улицам идут сотни монахов за подношением, а вечером открывается ночной рынок.', tips: ['Возьмите велосипед в гестхаусе: полуостров маленький и ровный.', 'Ночной рынок на Сисаванвонг-роуд работает с 17:00 — за сувенирами идите в первые часы, пока выбор лучше.'], gettingThere: 'Аэропорт в 15 минутах на тук-туке; вокзал скоростной железной дороги — в 20 минутах от центра, поезд из Вьентьяна идёт около двух часов.' },
+        en: { name: 'Luang Prabang', tagline: 'A royal capital of temples where two rivers meet', description: 'The former royal capital on a peninsula between the Mekong and the Nam Khan is a UNESCO site in its entirety, with some thirty temples, French villas and palms. At dawn hundreds of monks walk the streets to collect alms, and in the evening the night market opens.', tips: ['Borrow a bike from your guesthouse: the peninsula is small and flat.', 'The night market on Sisavangvong Road opens at 5 p.m.; shop early, when the choice is best.'], gettingThere: 'The airport is 15 minutes away by tuk-tuk, and the railway station is 20 minutes from the centre, with trains from Vientiane taking about two hours.' },
+        es: { name: 'Luang Prabang', tagline: 'Una capital real de templos donde se unen dos ríos', description: 'La antigua capital real, en una península entre el Mekong y el Nam Khan, es Patrimonio de la UNESCO por entero: una treintena de templos, villas francesas y palmeras. Al amanecer, cientos de monjes recorren las calles recogiendo ofrendas y, por la tarde, abre el mercado nocturno.', tips: ['Pide una bici en tu guesthouse: la península es pequeña y llana.', 'El mercado nocturno de Sisavangvong Road abre a las 17:00; compra al principio, cuando hay más donde elegir.'], gettingThere: 'El aeropuerto está a 15 minutos en tuk-tuk y la estación de tren, a 20 minutos del centro; el tren desde Vientián tarda unas dos horas.' },
+        de: { name: 'Luang Prabang', tagline: 'Eine königliche Tempelstadt am Zusammenfluss zweier Ströme', description: 'Die einstige Königsstadt auf einer Halbinsel zwischen Mekong und Nam Khan ist komplett UNESCO-Welterbe: rund dreißig Tempel, französische Villen und Palmen. Im Morgengrauen ziehen Hunderte Mönche zum Almosengang durch die Straßen, abends öffnet der Nachtmarkt.', tips: ['Leih dir im Gästehaus ein Fahrrad – die Halbinsel ist klein und flach.', 'Der Nachtmarkt in der Sisavangvong Road öffnet um 17 Uhr; kauf früh ein, dann ist die Auswahl am größten.'], gettingThere: 'Der Flughafen liegt 15 Tuk-Tuk-Minuten entfernt, der Bahnhof 20 Minuten vom Zentrum; der Zug aus Vientiane braucht rund zwei Stunden.' },
+        fr: { name: 'Luang Prabang', tagline: 'Une capitale royale de temples au confluent de deux rivières', description: 'L’ancienne capitale royale, sur une péninsule entre le Mékong et la Nam Khan, est entièrement classée par l’UNESCO : une trentaine de temples, des villas françaises et des palmiers. À l’aube, des centaines de moines parcourent les rues pour recevoir l’aumône, et le soir s’ouvre le marché de nuit.', tips: ['Empruntez un vélo à votre guesthouse : la péninsule est petite et plate.', 'Le marché de nuit de Sisavangvong Road ouvre à 17 heures ; faites vos achats tôt, le choix est meilleur.'], gettingThere: 'L’aéroport est à 15 minutes en tuk-tuk et la gare à 20 minutes du centre ; le train depuis Vientiane met environ deux heures.' },
+        it: { name: 'Luang Prabang', tagline: 'Una capitale reale di templi alla confluenza di due fiumi', description: 'L’antica capitale reale, su una penisola tra il Mekong e il Nam Khan, è interamente patrimonio UNESCO: una trentina di templi, ville francesi e palme. All’alba centinaia di monaci percorrono le strade per raccogliere le offerte e la sera apre il mercato notturno.', tips: ['Fatti prestare una bici dalla guesthouse: la penisola è piccola e pianeggiante.', 'Il mercato notturno di Sisavangvong Road apre alle 17; fai acquisti all’inizio, quando la scelta è migliore.'], gettingThere: 'L’aeroporto è a 15 minuti di tuk-tuk e la stazione ferroviaria a 20 minuti dal centro; il treno da Vientiane impiega circa due ore.' },
+      },
+    },
+    {
+      id: 'vang-vieng', lat: 18.9235, lng: 102.4478, image: 'iSz0IMtulos', gallery: ['r4l_VwRHDY4'],
+      rating: 4.6, reviews: 6230, tags: ['adventure', 'kayak', 'mountains', 'nature'], months: [11, 12, 1, 2, 3], budgetPerDay: 35, currency: 'LAK',
+      language: 'lo', timezone: 'UTC+7', zoom: 12, theme: { accent: '#166534', accent2: '#38bdf8', motif: 'peaks' },
+      text: {
+        ru: { name: 'Вангвиенг', tagline: 'Карстовые горы, голубые лагуны и шары на рассвете', description: 'Городок на реке Нам Сонг в окружении известняковых пиков, когда-то печально известный вечеринками, а теперь — столица приключений Лаоса: каякинг, пещеры, скалолазание и полёты на воздушном шаре.', tips: ['Пейте только заводской алкоголь из запечатанных бутылок — бесплатные «шоты» местного самогона здесь опасны.', 'Шары взлетают около 6:30 и на закате; бронируйте накануне и уточняйте прогноз ветра.'], gettingThere: 'Поезд из Вьентьяна идёт около часа, из Луангпрабанга — тоже около часа; от вокзала до центра 10 минут на тук-туке.' },
+        en: { name: 'Vang Vieng', tagline: 'Karst peaks, blue lagoons and balloons at dawn', description: 'This little town on the Nam Song river, ringed by limestone peaks, was once infamous for its parties and is now the adventure capital of Laos: kayaking, caves, rock climbing and hot-air balloon flights.', tips: ['Only drink factory-sealed alcohol: free shots of local moonshine here can be dangerous.', 'Balloons take off around 6:30 a.m. and at sunset; book the day before and check the wind forecast.'], gettingThere: 'The train from Vientiane takes about an hour, as does the one from Luang Prabang; the station is 10 minutes from the centre by tuk-tuk.' },
+        es: { name: 'Vang Vieng', tagline: 'Picos kársticos, lagunas azules y globos al amanecer', description: 'Este pueblito a orillas del río Nam Song, rodeado de picos de caliza, fue famoso por sus fiestas y hoy es la capital de la aventura de Laos: kayak, cuevas, escalada y vuelos en globo.', tips: ['Bebe solo alcohol embotellado y precintado: los chupitos gratis de aguardiente local pueden ser peligrosos.', 'Los globos despegan hacia las 6:30 y al atardecer; reserva la víspera y consulta el viento.'], gettingThere: 'El tren desde Vientián tarda una hora, igual que desde Luang Prabang; la estación está a 10 minutos del centro en tuk-tuk.' },
+        de: { name: 'Vang Vieng', tagline: 'Karstgipfel, blaue Lagunen und Ballons im Morgengrauen', description: 'Das Städtchen am Fluss Nam Song inmitten von Kalksteingipfeln war einst für seine Partys berüchtigt und ist heute die Abenteuerhauptstadt von Laos: Kajak, Höhlen, Klettern und Heißluftballonfahrten.', tips: ['Trink nur Alkohol aus versiegelten Fabrikflaschen – kostenlose Shots von lokalem Selbstgebrannten können hier gefährlich sein.', 'Die Ballons starten gegen 6:30 Uhr und zum Sonnenuntergang; buche am Vortag und prüfe die Windvorhersage.'], gettingThere: 'Der Zug aus Vientiane braucht etwa eine Stunde, der aus Luang Prabang ebenso; vom Bahnhof ins Zentrum sind es 10 Minuten per Tuk-Tuk.' },
+        fr: { name: 'Vang Vieng', tagline: 'Pics karstiques, lagons bleus et montgolfières à l’aube', description: 'Cette petite ville au bord de la Nam Song, cernée de pitons calcaires, était jadis tristement célèbre pour ses fêtes ; c’est aujourd’hui la capitale de l’aventure au Laos : kayak, grottes, escalade et vols en montgolfière.', tips: ['Ne buvez que de l’alcool en bouteille scellée : les shots gratuits d’alcool local frelaté peuvent être dangereux.', 'Les montgolfières décollent vers 6 h 30 et au coucher du soleil ; réservez la veille et vérifiez le vent.'], gettingThere: 'Le train depuis Vientiane met environ une heure, tout comme celui depuis Luang Prabang ; la gare est à 10 minutes du centre en tuk-tuk.' },
+        it: { name: 'Vang Vieng', tagline: 'Picchi carsici, lagune blu e mongolfiere all’alba', description: 'Questa cittadina sul fiume Nam Song, circondata da picchi calcarei, un tempo era famigerata per le feste e oggi è la capitale dell’avventura del Laos: kayak, grotte, arrampicata e voli in mongolfiera.', tips: ['Bevi solo alcolici in bottiglie sigillate: gli shot gratuiti di distillato locale qui possono essere pericolosi.', 'Le mongolfiere decollano verso le 6:30 e al tramonto; prenota il giorno prima e controlla il vento.'], gettingThere: 'Il treno da Vientiane impiega circa un’ora, come quello da Luang Prabang; la stazione è a 10 minuti dal centro in tuk-tuk.' },
+      },
+    },
+    {
+      id: 'vientiane', lat: 17.9757, lng: 102.6331, image: 'sDiZDr-L-Bc', gallery: [],
+      rating: 4.3, reviews: 5120, tags: ['city', 'temples', 'history', 'market'], months: [11, 12, 1, 2], budgetPerDay: 40, currency: 'LAK',
+      language: 'lo', timezone: 'UTC+7', zoom: 12, theme: { accent: '#b45309', accent2: '#dc2626', motif: 'sun' },
+      text: {
+        ru: { name: 'Вьентьян', tagline: 'Самая спокойная столица Азии на берегу Меконга', description: 'Небольшая столица с французскими бульварами, кафе с багетами и золотой ступой Тхат Луанг — главной святыней страны. Вечером весь город выходит на набережную Меконга, за которым видны огни Таиланда.', tips: ['Город удобно объехать на велосипеде или через приложение LOCA — тук-туки без счётчика дороже.', 'Многие храмы закрываются к 16:00–17:00, поэтому начинайте осмотр с утра.'], gettingThere: 'Аэропорт Ваттай в 15 минутах от центра на такси; вокзал скоростной железной дороги — в 30 минутах к северу.' },
+        en: { name: 'Vientiane', tagline: 'Asia’s most laid-back capital on the Mekong', description: 'A small capital of French boulevards, baguette cafés and the golden That Luang stupa, the country’s holiest shrine. In the evening the whole city heads to the Mekong riverfront, with the lights of Thailand on the far bank.', tips: ['Get around by bike or through the LOCA app, since unmetered tuk-tuks cost more.', 'Many temples close by 4–5 p.m., so start sightseeing in the morning.'], gettingThere: 'Wattay airport is 15 minutes from the centre by taxi, and the railway station is 30 minutes to the north.' },
+        es: { name: 'Vientián', tagline: 'La capital más tranquila de Asia, a orillas del Mekong', description: 'Una pequeña capital de bulevares franceses, cafés con baguettes y la dorada estupa That Luang, el santuario más sagrado del país. Al atardecer toda la ciudad baja al paseo del Mekong, con las luces de Tailandia en la otra orilla.', tips: ['Muévete en bici o con la app LOCA: los tuk-tuks sin taxímetro salen más caros.', 'Muchos templos cierran hacia las 16:00–17:00, así que empieza las visitas por la mañana.'], gettingThere: 'El aeropuerto de Wattay está a 15 minutos del centro en taxi y la estación de tren, a 30 minutos al norte.' },
+        de: { name: 'Vientiane', tagline: 'Asiens entspannteste Hauptstadt am Mekong', description: 'Eine kleine Hauptstadt mit französischen Boulevards, Baguette-Cafés und der goldenen Stupa That Luang, dem heiligsten Ort des Landes. Abends zieht die ganze Stadt ans Mekong-Ufer, gegenüber leuchtet Thailand.', tips: ['Fahr mit dem Rad oder nutze die App LOCA – Tuk-Tuks ohne Taxameter sind teurer.', 'Viele Tempel schließen gegen 16–17 Uhr, starte die Besichtigung also am Vormittag.'], gettingThere: 'Der Flughafen Wattay liegt 15 Taximinuten vom Zentrum entfernt, der Bahnhof 30 Minuten nördlich.' },
+        fr: { name: 'Vientiane', tagline: 'La capitale la plus nonchalante d’Asie, au bord du Mékong', description: 'Une petite capitale de boulevards français, de cafés à baguettes et du stupa doré That Luang, sanctuaire le plus sacré du pays. Le soir, toute la ville descend sur les quais du Mékong, face aux lumières de la Thaïlande.', tips: ['Circulez à vélo ou via l’application LOCA : les tuk-tuks sans compteur reviennent plus cher.', 'Beaucoup de temples ferment vers 16 ou 17 heures : commencez les visites le matin.'], gettingThere: 'L’aéroport de Wattay est à 15 minutes du centre en taxi et la gare ferroviaire à 30 minutes au nord.' },
+        it: { name: 'Vientiane', tagline: 'La capitale più rilassata d’Asia, sulle rive del Mekong', description: 'Una piccola capitale di viali francesi, caffè con baguette e il dorato stupa That Luang, il santuario più sacro del Paese. La sera tutta la città scende sul lungofiume del Mekong, con le luci della Thailandia sull’altra sponda.', tips: ['Muoviti in bici o con l’app LOCA: i tuk-tuk senza tassametro costano di più.', 'Molti templi chiudono verso le 16–17, quindi comincia le visite al mattino.'], gettingThere: 'L’aeroporto di Wattay dista 15 minuti dal centro in taxi e la stazione ferroviaria 30 minuti verso nord.' },
+      },
+    },
+  ],
+  places: [
+    // Luang Prabang
+    {
+      id: 'luang-prabang-wat-xieng-thong', city: 'luang-prabang', category: 'attraction', lat: 19.8975, lng: 102.143, image: 'hZLpIrG8Rbo',
+      rating: 4.8, reviews: 12600, tags: ['temples', 'architecture', 'unesco'], price: { kind: 'fixed', amount: 30000, currency: 'LAK' }, hours: '08:00–17:00',
+      address: 'Sakkaline Road, Luang Prabang',
+      text: {
+        ru: { name: 'Храм Ват Сиенгтхонг', description: 'Самый красивый храм Лаоса XVI века с каскадом низких крыш, спускающихся почти до земли, и мозаикой «Древо жизни» из цветного стекла на задней стене.', tip: 'Обойдите главный зал сзади — мозаика «Древо жизни» лучше всего светится в утреннем солнце.' },
+        en: { name: 'Wat Xieng Thong', description: 'The most beautiful temple in Laos, from the 16th century, with a cascade of low roofs sweeping almost to the ground and a coloured-glass “Tree of Life” mosaic on its rear wall.', tip: 'Walk round the back of the main hall, where the Tree of Life mosaic glows best in the morning sun.' },
+        es: { name: 'Wat Xieng Thong', description: 'El templo más bello de Laos, del siglo XVI, con una cascada de tejados bajos que casi tocan el suelo y un mosaico de vidrio de colores con el «Árbol de la Vida» en el muro trasero.', tip: 'Rodea la sala principal por detrás: el mosaico del Árbol de la Vida brilla más con el sol de la mañana.' },
+        de: { name: 'Wat Xieng Thong', description: 'Der schönste Tempel von Laos aus dem 16. Jahrhundert mit tief herabgezogenen, gestaffelten Dächern und einem „Lebensbaum“-Mosaik aus farbigem Glas an der Rückwand.', tip: 'Geh um die Haupthalle herum: Das Lebensbaum-Mosaik leuchtet in der Morgensonne am schönsten.' },
+        fr: { name: 'Vat Xieng Thong', description: 'Le plus beau temple du Laos, du XVIe siècle, avec une cascade de toits bas descendant presque jusqu’au sol et une mosaïque de verre coloré représentant l’« arbre de vie » sur le mur arrière.', tip: 'Faites le tour de la salle principale : la mosaïque de l’arbre de vie scintille au mieux sous le soleil du matin.' },
+        it: { name: 'Wat Xieng Thong', description: 'Il tempio più bello del Laos, del XVI secolo, con una cascata di tetti bassi che scendono quasi a terra e un mosaico di vetri colorati con l’«Albero della vita» sul muro posteriore.', tip: 'Gira dietro la sala principale: il mosaico dell’Albero della vita brilla di più con il sole del mattino.' },
+      },
+    },
+    {
+      id: 'luang-prabang-kuang-si', city: 'luang-prabang', category: 'nature', lat: 19.7489, lng: 101.9933, image: 'Q6W9PV17ZLg',
+      rating: 4.8, reviews: 19800, tags: ['waterfalls', 'nature', 'photo'], hours: '08:00–17:30',
+      address: 'Kuang Si Waterfall, Ban Thapene, Luang Prabang Province',
+      text: {
+        ru: { name: 'Водопад Куангси', description: 'Многоярусный водопад в джунглях в 30 км от города: вода цвета бирюзы стекает по известняковым террасам в каскад купален. У входа — центр спасения азиатских чёрных медведей.', tip: 'Приезжайте к открытию в 8:00 и поднимитесь по тропе слева к вершине водопада — там почти никого.' },
+        en: { name: 'Kuang Si Falls', description: 'A multi-tiered jungle waterfall 30 km from town, where turquoise water spills over limestone terraces into a chain of bathing pools. A rescue centre for Asian black bears sits by the entrance.', tip: 'Arrive at the 8 a.m. opening and take the left-hand trail to the top of the falls, where there is hardly anyone.' },
+        es: { name: 'Cascadas de Kuang Si', description: 'Una cascada escalonada en plena selva a 30 km de la ciudad: el agua turquesa cae por terrazas de caliza hasta una cadena de pozas para bañarse. En la entrada hay un centro de rescate de osos negros asiáticos.', tip: 'Llega a la apertura, a las 8:00, y sube por el sendero de la izquierda hasta lo alto: allí casi no hay nadie.' },
+        de: { name: 'Kuang-Si-Wasserfall', description: 'Ein vielstufiger Dschungelwasserfall 30 km von der Stadt: Türkisfarbenes Wasser fließt über Kalksteinterrassen in eine Kette von Badebecken. Am Eingang liegt eine Auffangstation für Kragenbären.', tip: 'Sei zur Öffnung um 8 Uhr da und nimm den linken Pfad bis zur Kante des Falls – dort ist kaum jemand.' },
+        fr: { name: 'Chutes de Kuang Si', description: 'Une cascade à étages en pleine jungle à 30 km de la ville : l’eau turquoise ruisselle sur des terrasses calcaires jusqu’à une série de bassins de baignade. À l’entrée, un centre de sauvetage d’ours noirs d’Asie.', tip: 'Arrivez à l’ouverture, à 8 heures, et empruntez le sentier de gauche jusqu’au sommet de la chute : il n’y a presque personne.' },
+        it: { name: 'Cascate di Kuang Si', description: 'Una cascata a più livelli nella giungla a 30 km dalla città: l’acqua turchese scende su terrazze calcaree in una catena di piscine naturali. All’ingresso c’è un centro di recupero per orsi neri asiatici.', tip: 'Arriva all’apertura delle 8 e prendi il sentiero di sinistra fino in cima alla cascata: lassù non c’è quasi nessuno.' },
+      },
+    },
+    {
+      id: 'luang-prabang-mount-phousi', city: 'luang-prabang', category: 'nature', spot: 'insta', lat: 19.8925, lng: 102.137, image: 'hZLpIrG8Rbo',
+      rating: 4.5, reviews: 10400, tags: ['sunset', 'views', 'photo'],
+      address: 'Sisavangvong Road, Luang Prabang',
+      text: {
+        ru: { name: 'Холм Пхуси', description: 'Холм в центре старого города с золотой ступой Тьомси на вершине: 328 ступеней — и под вами крыши храмов, Меконг и горы.', tip: 'На закате займите место у западного края площадки к 17:00, а ради тишины приходите на рассвет — в кадре будет туман над рекой.' },
+        en: { name: 'Mount Phousi', description: 'A hill in the heart of the old town crowned by the golden That Chomsi stupa: 328 steps, and temple roofs, the Mekong and the mountains spread out below.', tip: 'For sunset claim a spot on the western edge of the terrace by 5 p.m.; for peace come at dawn, with mist over the river in your frame.' },
+        es: { name: 'Monte Phousi', description: 'Una colina en pleno casco antiguo coronada por la estupa dorada That Chomsi: 328 escalones y, a tus pies, tejados de templos, el Mekong y las montañas.', tip: 'Para el atardecer coge sitio en el borde oeste de la terraza antes de las 17:00; si buscas calma, ven al amanecer, con niebla sobre el río.' },
+        de: { name: 'Berg Phousi', description: 'Ein Hügel mitten in der Altstadt mit der goldenen Stupa That Chomsi auf dem Gipfel: 328 Stufen, und unter dir liegen Tempeldächer, der Mekong und die Berge.', tip: 'Zum Sonnenuntergang sicherst du dir bis 17 Uhr einen Platz am Westrand der Terrasse; für Ruhe komm im Morgengrauen, mit Nebel über dem Fluss im Bild.' },
+        fr: { name: 'Mont Phousi', description: 'Une colline au cœur de la vieille ville couronnée par le stupa doré That Chomsi : 328 marches, et à vos pieds les toits des temples, le Mékong et les montagnes.', tip: 'Pour le coucher du soleil, prenez place au bord ouest de la terrasse avant 17 heures ; pour le calme, venez à l’aube, avec la brume sur le fleuve.' },
+        it: { name: 'Monte Phousi', description: 'Una collina nel cuore della città vecchia coronata dallo stupa dorato That Chomsi: 328 gradini e sotto di te tetti di templi, il Mekong e le montagne.', tip: 'Per il tramonto prendi posto sul bordo ovest della terrazza entro le 17; per la quiete vieni all’alba, con la nebbia sul fiume.' },
+      },
+    },
+    {
+      id: 'luang-prabang-bamboo-bridge', city: 'luang-prabang', category: 'attraction', spot: 'hidden', lat: 19.8962, lng: 102.144, image: 'hZLpIrG8Rbo',
+      rating: 4.4, reviews: 2300, tags: ['culture', 'photo', 'nature'], price: { kind: 'level', level: 1 },
+      address: 'Nam Khan riverside, Ban Xieng Mouane, Luang Prabang',
+      text: {
+        ru: { name: 'Бамбуковый мост через Нам Кан', description: 'Шаткий мост из бамбука, который жители заново собирают каждый сухой сезон и разбирают перед муссоном. На другом берегу — огороды, кафе у воды и деревни без туристов.', tip: 'Мост стоит примерно с ноября по май; ищите спуск к реке у кафе на набережной Нам Кана и держите мелочь на небольшой сбор.' },
+        en: { name: 'Nam Khan Bamboo Bridge', description: 'A wobbly bamboo bridge that villagers rebuild every dry season and dismantle before the monsoon. Across the river lie vegetable gardens, waterside cafés and villages with no tourists.', tip: 'The bridge stands roughly from November to May; look for the path down to the river by the cafés on the Nam Khan bank and keep small change for the toll.' },
+        es: { name: 'Puente de bambú del Nam Khan', description: 'Un puente de bambú tambaleante que los vecinos reconstruyen cada estación seca y desmontan antes del monzón. En la otra orilla hay huertos, cafés junto al agua y aldeas sin turistas.', tip: 'El puente está más o menos de noviembre a mayo; busca la bajada al río junto a los cafés de la orilla del Nam Khan y lleva monedas para el pequeño peaje.' },
+        de: { name: 'Bambusbrücke über den Nam Khan', description: 'Eine wackelige Bambusbrücke, die die Dorfbewohner jede Trockenzeit neu errichten und vor dem Monsun abbauen. Am anderen Ufer warten Gemüsegärten, Cafés am Wasser und Dörfer ohne Touristen.', tip: 'Die Brücke steht etwa von November bis Mai; such den Weg hinunter zum Fluss bei den Cafés am Nam-Khan-Ufer und halte Kleingeld für die Gebühr bereit.' },
+        fr: { name: 'Pont de bambou sur la Nam Khan', description: 'Un pont de bambou branlant que les villageois reconstruisent à chaque saison sèche et démontent avant la mousson. Sur l’autre rive, potagers, cafés au bord de l’eau et villages sans touristes.', tip: 'Le pont est en place à peu près de novembre à mai ; cherchez la descente vers la rivière près des cafés de la rive de la Nam Khan et gardez de la monnaie pour le péage.' },
+        it: { name: 'Ponte di bambù sul Nam Khan', description: 'Un traballante ponte di bambù che gli abitanti ricostruiscono ogni stagione secca e smontano prima del monsone. Sull’altra riva orti, caffè sull’acqua e villaggi senza turisti.', tip: 'Il ponte c’è più o meno da novembre a maggio; cerca la discesa al fiume vicino ai caffè sulla riva del Nam Khan e tieni gli spiccioli per il pedaggio.' },
+      },
+    },
+    {
+      id: 'luang-prabang-night-market-food', city: 'luang-prabang', category: 'food', lat: 19.889, lng: 102.135, image: 'hZLpIrG8Rbo',
+      rating: 4.4, reviews: 8200, tags: ['streetfood', 'market', 'food'], price: { kind: 'level', level: 1 }, hours: '17:00–22:00',
+      address: 'Sisavangvong Road, Luang Prabang',
+      text: {
+        ru: { name: 'Фуд-аллея ночного рынка', description: 'Узкий переулок у ночного рынка, где за пару долларов накладывают полную тарелку из вегетарианского «шведского стола», жарят на углях рыбу с лемонграссом и колбаски сай ауа.', tip: 'Буфет — одна тарелка за фиксированную цену; кладите сколько поместится, а рыбу и мясо с гриля покупайте отдельно.' },
+        en: { name: 'Night market food alley', description: 'A narrow lane by the night market where a couple of dollars buys a heaped plate from the vegetarian buffet, and fish with lemongrass and sai oua sausages sizzle over charcoal.', tip: 'The buffet is one plate for a fixed price, so pile it high, and buy grilled fish and meat separately.' },
+        es: { name: 'Callejón de comida del mercado nocturno', description: 'Un callejón estrecho junto al mercado nocturno donde por un par de dólares llenas un plato en el bufé vegetariano y se asan al carbón pescado con hierba limón y salchichas sai oua.', tip: 'El bufé es un plato a precio fijo: llénalo bien y compra aparte el pescado y la carne a la parrilla.' },
+        de: { name: 'Essensgasse am Nachtmarkt', description: 'Eine schmale Gasse am Nachtmarkt, in der man für ein paar Dollar einen Teller am vegetarischen Buffet volllädt und Fisch mit Zitronengras und Sai-Oua-Würstchen über Holzkohle brutzeln.', tip: 'Am Buffet gibt es einen Teller zum Festpreis – also gut beladen; gegrillten Fisch und Fleisch kaufst du extra.' },
+        fr: { name: 'Ruelle gourmande du marché de nuit', description: 'Une ruelle étroite près du marché de nuit où, pour deux dollars, on remplit une assiette au buffet végétarien, tandis que poissons à la citronnelle et saucisses sai oua grillent sur la braise.', tip: 'Le buffet, c’est une assiette à prix fixe : remplissez-la bien, et achetez à part poisson et viande grillés.' },
+        it: { name: 'Vicolo del cibo del mercato notturno', description: 'Uno stretto vicolo accanto al mercato notturno dove con un paio di dollari si riempie un piatto al buffet vegetariano e si grigliano alla brace pesce alla citronella e salsicce sai oua.', tip: 'Il buffet è un piatto a prezzo fisso: riempilo per bene e compra a parte pesce e carne alla griglia.' },
+      },
+    },
+    // Vang Vieng
+    {
+      id: 'vang-vieng-blue-lagoon', city: 'vang-vieng', category: 'nature', lat: 18.9387, lng: 102.4013, image: 'r4l_VwRHDY4',
+      rating: 4.4, reviews: 7400, tags: ['lakes', 'adventure', 'nature'], hours: '08:00–17:00',
+      address: 'Tham Phu Kham, Ban Na Thong, Vang Vieng',
+      text: {
+        ru: { name: 'Голубая лагуна и пещера Тхам Пху Кхам', description: 'Бирюзовый горный бассейн под раскидистым деревом, с ветки которого прыгают в воду, а над ним — пещера с лежащим золотым Буддой.', tip: 'Приезжайте до десяти утра на велосипеде или скутере: днём лагуну заполняют группы на багги.' },
+        en: { name: 'Blue Lagoon and Tham Phu Kham cave', description: 'A turquoise mountain pool beneath a spreading tree that people leap from, with a cave above holding a golden reclining Buddha.', tip: 'Get there before 10 a.m. by bike or scooter; by midday the lagoon fills with buggy tour groups.' },
+        es: { name: 'Laguna Azul y cueva Tham Phu Kham', description: 'Una poza de montaña turquesa bajo un árbol frondoso desde cuyas ramas se salta al agua, y encima una cueva con un Buda dorado reclinado.', tip: 'Llega antes de las 10 en bici o moto: a mediodía la laguna se llena de grupos en buggy.' },
+        de: { name: 'Blue Lagoon und Höhle Tham Phu Kham', description: 'Ein türkisfarbenes Bergbecken unter einem ausladenden Baum, von dessen Ästen man ins Wasser springt, darüber eine Höhle mit liegendem goldenem Buddha.', tip: 'Komm vor 10 Uhr mit Rad oder Roller – mittags füllt sich die Lagune mit Buggy-Gruppen.' },
+        fr: { name: 'Blue Lagoon et grotte de Tham Phu Kham', description: 'Un bassin de montagne turquoise sous un grand arbre d’où l’on saute dans l’eau, surplombé d’une grotte abritant un Bouddha couché doré.', tip: 'Arrivez avant 10 heures à vélo ou en scooter : à midi, le lagon se remplit de groupes en buggy.' },
+        it: { name: 'Blue Lagoon e grotta di Tham Phu Kham', description: 'Una pozza di montagna turchese sotto un grande albero da cui ci si tuffa, sovrastata da una grotta con un Buddha d’oro sdraiato.', tip: 'Arriva prima delle 10 in bici o scooter: a mezzogiorno la laguna si riempie di gruppi in buggy.' },
+      },
+    },
+    {
+      id: 'vang-vieng-nam-song-kayak', city: 'vang-vieng', category: 'nature', lat: 18.94, lng: 102.44, image: 'iSz0IMtulos',
+      rating: 4.6, reviews: 5100, tags: ['kayak', 'adventure', 'mountains'],
+      address: 'Nam Song River, Vang Vieng',
+      text: {
+        ru: { name: 'Сплав по реке Нам Сонг', description: 'Каяк или тюбинг вниз по течению Нам Сонг мимо известняковых скал, рисовых полей и деревень — главный способ увидеть долину Вангвиенга с воды.', tip: 'Берите однодневный тур с каякингом и заходом в водную пещеру Тхам Нам: туда заплывают на камерах, держась за верёвку.' },
+        en: { name: 'Nam Song river trip', description: 'Kayaking or tubing down the Nam Song past limestone cliffs, rice fields and villages is the classic way to see the Vang Vieng valley from the water.', tip: 'Take a day tour that combines kayaking with the Tham Nam water cave, which you float into on an inner tube holding a rope.' },
+        es: { name: 'Descenso del río Nam Song', description: 'Bajar el Nam Song en kayak o flotador entre acantilados de caliza, arrozales y aldeas es la manera clásica de ver el valle de Vang Vieng desde el agua.', tip: 'Elige un tour de un día que combine kayak y la cueva acuática Tham Nam, en la que se entra en flotador agarrado a una cuerda.' },
+        de: { name: 'Flusstour auf dem Nam Song', description: 'Mit Kajak oder Reifen den Nam Song hinab, vorbei an Kalksteinklippen, Reisfeldern und Dörfern – so siehst du das Tal von Vang Vieng klassisch vom Wasser aus.', tip: 'Buch eine Tagestour mit Kajak und der Wasserhöhle Tham Nam, in die du auf einem Reifen an einem Seil entlang treibst.' },
+        fr: { name: 'Descente de la Nam Song', description: 'Descendre la Nam Song en kayak ou en bouée, entre falaises calcaires, rizières et villages, est la manière classique de découvrir la vallée de Vang Vieng depuis l’eau.', tip: 'Choisissez une excursion d’une journée combinant kayak et grotte aquatique de Tham Nam, où l’on pénètre sur une bouée en se tenant à une corde.' },
+        it: { name: 'Discesa del fiume Nam Song', description: 'Scendere il Nam Song in kayak o su una camera d’aria tra falesie calcaree, risaie e villaggi è il modo classico di vedere la valle di Vang Vieng dall’acqua.', tip: 'Scegli un tour di un giorno che unisca kayak e la grotta d’acqua di Tham Nam, in cui si entra su una camera d’aria tenendosi a una corda.' },
+      },
+    },
+    {
+      id: 'vang-vieng-balloons', city: 'vang-vieng', category: 'attraction', spot: 'insta', lat: 18.923, lng: 102.444, image: 'iSz0IMtulos',
+      rating: 4.8, reviews: 3600, tags: ['photo', 'views', 'adventure'], price: { kind: 'from', amount: 90, currency: 'USD' },
+      address: 'Vang Vieng town centre',
+      text: {
+        ru: { name: 'Воздушные шары над Вангвиенгом', description: 'Каждое утро и вечер над рекой и карстовыми пиками поднимаются разноцветные воздушные шары — короткий полёт открывает всю долину.', tip: 'Если не летите сами, снимайте шары на рассвете с моста через Нам Сонг: они встают прямо над скалами в утреннем тумане.' },
+        en: { name: 'Hot-air balloons over Vang Vieng', description: 'Every morning and evening colourful balloons rise above the river and karst peaks, and a short flight reveals the whole valley.', tip: 'If you aren’t flying, photograph the balloons at sunrise from the bridge over the Nam Song, as they hover right above the cliffs in the morning mist.' },
+        es: { name: 'Globos sobre Vang Vieng', description: 'Cada mañana y cada tarde, globos de colores se elevan sobre el río y los picos kársticos, y un vuelo corto descubre todo el valle.', tip: 'Si no vuelas, fotografía los globos al amanecer desde el puente sobre el Nam Song: flotan justo sobre las rocas entre la niebla.' },
+        de: { name: 'Heißluftballons über Vang Vieng', description: 'Jeden Morgen und Abend steigen bunte Ballons über Fluss und Karstgipfeln auf – ein kurzer Flug zeigt das ganze Tal.', tip: 'Wenn du nicht selbst fliegst, fotografiere die Ballons bei Sonnenaufgang von der Brücke über den Nam Song: Sie schweben direkt über den Felsen im Morgennebel.' },
+        fr: { name: 'Montgolfières au-dessus de Vang Vieng', description: 'Chaque matin et chaque soir, des montgolfières colorées s’élèvent au-dessus de la rivière et des pitons karstiques, et un court vol dévoile toute la vallée.', tip: 'Si vous ne volez pas, photographiez-les au lever du soleil depuis le pont sur la Nam Song : elles flottent juste au-dessus des falaises dans la brume.' },
+        it: { name: 'Mongolfiere su Vang Vieng', description: 'Ogni mattina e ogni sera mongolfiere colorate si alzano sopra il fiume e i picchi carsici, e un breve volo svela l’intera valle.', tip: 'Se non voli, fotografale all’alba dal ponte sul Nam Song: galleggiano proprio sopra le rocce nella nebbia del mattino.' },
+      },
+    },
+    {
+      id: 'vang-vieng-tham-chang', city: 'vang-vieng', category: 'nature', spot: 'hidden', lat: 18.9128, lng: 102.4486, image: 'r4l_VwRHDY4',
+      rating: 4.3, reviews: 1600, tags: ['hiking', 'views', 'nature'],
+      address: 'Tham Chang, south of Vang Vieng town',
+      text: {
+        ru: { name: 'Пещера Тхам Чанг', description: 'Пещера в скале к югу от города, служившая убежищем в XIX веке: 147 ступеней ведут к залам со сталактитами и окну с видом на реку, а у подножия бьёт прохладный голубой источник.', tip: 'Идите через мост на южной окраине города, за курортом Vang Vieng Resort; после пещеры искупайтесь в источнике у входа.' },
+        en: { name: 'Tham Chang Cave', description: 'A cliff cave south of town that served as a refuge in the 19th century: 147 steps lead to stalactite halls and a window over the river, while a cool blue spring wells up at its foot.', tip: 'Cross the bridge on the southern edge of town beyond Vang Vieng Resort, and after the cave cool off in the spring by the entrance.' },
+        es: { name: 'Cueva Tham Chang', description: 'Una cueva en el acantilado al sur del pueblo que sirvió de refugio en el siglo XIX: 147 escalones llevan a salas con estalactitas y a una ventana sobre el río, y al pie brota un manantial azul y fresco.', tip: 'Cruza el puente del extremo sur del pueblo, pasado el Vang Vieng Resort, y después de la cueva date un baño en el manantial de la entrada.' },
+        de: { name: 'Höhle Tham Chang', description: 'Eine Felshöhle südlich der Stadt, im 19. Jahrhundert ein Zufluchtsort: 147 Stufen führen zu Tropfsteinhallen und einem Fenster über dem Fluss, am Fuß sprudelt eine kühle blaue Quelle.', tip: 'Geh über die Brücke am Südrand der Stadt hinter dem Vang Vieng Resort und kühl dich nach der Höhle in der Quelle am Eingang ab.' },
+        fr: { name: 'Grotte de Tham Chang', description: 'Une grotte dans la falaise au sud de la ville, refuge au XIXe siècle : 147 marches mènent à des salles de stalactites et à une ouverture sur la rivière, tandis qu’une source bleue et fraîche jaillit à ses pieds.', tip: 'Traversez le pont à la sortie sud de la ville, après le Vang Vieng Resort, et après la visite rafraîchissez-vous dans la source à l’entrée.' },
+        it: { name: 'Grotta di Tham Chang', description: 'Una grotta nella falesia a sud della città, rifugio nell’Ottocento: 147 gradini portano a sale di stalattiti e a una finestra sul fiume, mentre ai piedi sgorga una fresca sorgente azzurra.', tip: 'Attraversa il ponte all’estremità sud della città, oltre il Vang Vieng Resort, e dopo la grotta rinfrescati nella sorgente all’ingresso.' },
+      },
+    },
+    {
+      id: 'vang-vieng-riverside-dinner', city: 'vang-vieng', category: 'food', lat: 18.926, lng: 102.444, image: 'iSz0IMtulos',
+      rating: 4.3, reviews: 2700, tags: ['food', 'sunset', 'streetfood'], price: { kind: 'level', level: 1 }, hours: '16:00–23:00',
+      address: 'Riverside, Vang Vieng',
+      text: {
+        ru: { name: 'Ужин на берегу Нам Сонга', description: 'Деревянные террасы кафе над рекой, где подают лааб, рыбу на гриле и острый салат из папайи, а солнце садится прямо за карстовые пики.', tip: 'Займите террасу к 17:30 и закажите рыбу, запечённую в соли с лемонграссом, и клейкий рис в бамбуковой корзинке.' },
+        en: { name: 'Riverside dinner on the Nam Song', description: 'Wooden café terraces above the river serve larb, grilled fish and spicy papaya salad while the sun sets right behind the karst peaks.', tip: 'Grab a terrace by 5:30 p.m. and order salt-crusted fish with lemongrass and sticky rice in a bamboo basket.' },
+        es: { name: 'Cena a orillas del Nam Song', description: 'Terrazas de madera sobre el río donde sirven larb, pescado a la parrilla y ensalada picante de papaya mientras el sol se pone tras los picos kársticos.', tip: 'Coge terraza antes de las 17:30 y pide pescado a la sal con hierba limón y arroz glutinoso en cestita de bambú.' },
+        de: { name: 'Abendessen am Nam Song', description: 'Hölzerne Café-Terrassen über dem Fluss servieren Larb, gegrillten Fisch und scharfen Papayasalat, während die Sonne direkt hinter den Karstgipfeln versinkt.', tip: 'Sichere dir bis 17:30 Uhr einen Terrassenplatz und bestell Fisch in Salzkruste mit Zitronengras und Klebreis im Bambuskörbchen.' },
+        fr: { name: 'Dîner au bord de la Nam Song', description: 'Des terrasses de bois au-dessus de la rivière servent larb, poisson grillé et salade de papaye épicée pendant que le soleil se couche derrière les pitons karstiques.', tip: 'Installez-vous en terrasse avant 17 h 30 et commandez le poisson en croûte de sel à la citronnelle avec du riz gluant en panier de bambou.' },
+        it: { name: 'Cena sulle rive del Nam Song', description: 'Terrazze di legno sopra il fiume servono larb, pesce alla griglia e insalata piccante di papaya mentre il sole tramonta dietro i picchi carsici.', tip: 'Prendi posto in terrazza entro le 17:30 e ordina il pesce in crosta di sale alla citronella con riso glutinoso nel cestino di bambù.' },
+      },
+    },
+    // Vientiane
+    {
+      id: 'vientiane-pha-that-luang', city: 'vientiane', category: 'attraction', lat: 17.9763, lng: 102.6359, image: 'sDiZDr-L-Bc',
+      rating: 4.5, reviews: 9800, tags: ['temples', 'history', 'architecture'], hours: '08:00–17:00',
+      address: 'That Luang Road, Vientiane',
+      text: {
+        ru: { name: 'Ступа Пха Тхат Луанг', description: 'Золотая ступа высотой 45 метров — национальный символ Лаоса, изображённый на гербе. По легенде, внутри хранится реликвия Будды.', tip: 'Обойдите ступу с востока на запад к вечеру: позолота вспыхивает в лучах заходящего солнца.' },
+        en: { name: 'Pha That Luang', description: 'A 45-metre golden stupa that is the national symbol of Laos and appears on its coat of arms. Legend says it holds a relic of the Buddha.', tip: 'Walk round the stupa from east to west towards evening, when the gilding blazes in the setting sun.' },
+        es: { name: 'Pha That Luang', description: 'Una estupa dorada de 45 metros, símbolo nacional de Laos que aparece en su escudo. Según la leyenda, guarda una reliquia de Buda.', tip: 'Rodéala de este a oeste al caer la tarde: el dorado se enciende con el sol poniente.' },
+        de: { name: 'Pha That Luang', description: 'Eine 45 Meter hohe goldene Stupa, Nationalsymbol von Laos und auf dem Staatswappen abgebildet. Der Legende nach birgt sie eine Reliquie Buddhas.', tip: 'Umrunde die Stupa gegen Abend von Ost nach West – dann flammt die Vergoldung in der untergehenden Sonne auf.' },
+        fr: { name: 'Pha That Luang', description: 'Un stupa doré de 45 mètres, symbole national du Laos figurant sur ses armoiries. La légende veut qu’il abrite une relique du Bouddha.', tip: 'Faites le tour du stupa d’est en ouest en fin de journée, quand la dorure s’embrase au soleil couchant.' },
+        it: { name: 'Pha That Luang', description: 'Uno stupa dorato alto 45 metri, simbolo nazionale del Laos e presente nel suo stemma. Secondo la leggenda custodisce una reliquia del Buddha.', tip: 'Giragli intorno da est a ovest verso sera, quando la doratura si accende al sole che tramonta.' },
+      },
+    },
+    {
+      id: 'vientiane-buddha-park', city: 'vientiane', category: 'attraction', lat: 17.9128, lng: 102.7653, image: 'sDiZDr-L-Bc',
+      rating: 4.4, reviews: 8900, tags: ['art', 'culture', 'gardens'], hours: '08:00–17:00',
+      address: 'Xieng Khuan, Thanon Tha Deua, Vientiane',
+      text: {
+        ru: { name: 'Парк Будды Сиенг Кхуан', description: 'Сюрреалистичный парк у Меконга с двумя сотнями бетонных скульптур — будд, индуистских богов и демонов, созданных мистиком-скульптором в 1950-х.', tip: 'Залезьте внутрь гигантской «тыквы» через пасть демона: три яруса символизируют ад, землю и небеса, а сверху виден весь парк.' },
+        en: { name: 'Buddha Park (Xieng Khuan)', description: 'A surreal park on the Mekong with two hundred concrete sculptures of Buddhas, Hindu gods and demons, created by a mystic sculptor in the 1950s.', tip: 'Climb inside the giant “pumpkin” through a demon’s mouth: its three levels represent hell, earth and heaven, and the top overlooks the whole park.' },
+        es: { name: 'Parque de Buda (Xieng Khuan)', description: 'Un parque surrealista junto al Mekong con doscientas esculturas de hormigón de budas, dioses hindúes y demonios, creadas por un escultor místico en los años cincuenta.', tip: 'Entra en la gigantesca «calabaza» por la boca de un demonio: sus tres niveles representan el infierno, la tierra y el cielo, y desde arriba se ve todo el parque.' },
+        de: { name: 'Buddha-Park (Xieng Khuan)', description: 'Ein surrealer Park am Mekong mit zweihundert Betonskulpturen von Buddhas, Hindu-Göttern und Dämonen, geschaffen in den 1950ern von einem mystischen Bildhauer.', tip: 'Kletter durch ein Dämonenmaul in den riesigen „Kürbis“: Seine drei Ebenen stehen für Hölle, Erde und Himmel, von oben überblickst du den ganzen Park.' },
+        fr: { name: 'Parc des Bouddhas (Xieng Khuan)', description: 'Un parc surréaliste au bord du Mékong peuplé de deux cents sculptures en béton de bouddhas, de dieux hindous et de démons, créées par un sculpteur mystique dans les années 1950.', tip: 'Entrez dans la gigantesque « citrouille » par la gueule d’un démon : ses trois niveaux figurent l’enfer, la terre et le ciel, et le sommet domine tout le parc.' },
+        it: { name: 'Parco del Buddha (Xieng Khuan)', description: 'Un parco surreale sul Mekong con duecento sculture di cemento di Buddha, divinità indù e demoni, create da uno scultore mistico negli anni Cinquanta.', tip: 'Entra nella gigantesca «zucca» dalla bocca di un demone: i suoi tre livelli rappresentano inferno, terra e cielo, e dalla cima si vede tutto il parco.' },
+      },
+    },
+    {
+      id: 'vientiane-patuxai', city: 'vientiane', category: 'attraction', spot: 'insta', lat: 17.9708, lng: 102.6184, image: 'sDiZDr-L-Bc',
+      rating: 4.3, reviews: 7600, tags: ['architecture', 'views', 'photo'], hours: '08:00–17:00',
+      address: 'Lane Xang Avenue, Vientiane',
+      text: {
+        ru: { name: 'Арка Патусай', description: 'Лаосская «Триумфальная арка» 1960-х, украшенная буддийскими мотивами и мифическими кинари, стоит в конце главного проспекта Лан Санг.', tip: 'Поднимитесь на верхнюю террасу ближе к вечеру и снимайте вниз вдоль проспекта Лан Санг — улица уходит прямо к президентскому дворцу.' },
+        en: { name: 'Patuxai', description: 'Laos’s own “Arc de Triomphe” from the 1960s, decorated with Buddhist motifs and mythical kinnari, stands at the end of the main Lane Xang Avenue.', tip: 'Climb to the top terrace late in the afternoon and shoot down Lane Xang Avenue as it runs straight to the Presidential Palace.' },
+        es: { name: 'Patuxai', description: 'El «Arco de Triunfo» laosiano de los años sesenta, decorado con motivos budistas y míticas kinnari, se alza al final de la gran avenida Lane Xang.', tip: 'Sube a la terraza superior a última hora de la tarde y fotografía la avenida Lane Xang, que va recta hasta el Palacio Presidencial.' },
+        de: { name: 'Patuxai', description: 'Der laotische „Triumphbogen“ aus den 1960ern, geschmückt mit buddhistischen Motiven und mythischen Kinnari, steht am Ende der Prachtstraße Lane Xang.', tip: 'Steig am späten Nachmittag auf die obere Terrasse und fotografiere die Lane Xang Avenue, die schnurgerade zum Präsidentenpalast führt.' },
+        fr: { name: 'Patuxai', description: 'L’« Arc de triomphe » laotien des années 1960, orné de motifs bouddhiques et de kinnari mythiques, se dresse au bout de la grande avenue Lane Xang.', tip: 'Montez sur la terrasse supérieure en fin d’après-midi et photographiez l’avenue Lane Xang, qui file tout droit jusqu’au palais présidentiel.' },
+        it: { name: 'Patuxai', description: 'L’«Arco di Trionfo» laotiano degli anni Sessanta, decorato con motivi buddhisti e mitiche kinnari, sorge in fondo al grande viale Lane Xang.', tip: 'Sali sulla terrazza superiore nel tardo pomeriggio e fotografa il viale Lane Xang, che corre dritto fino al Palazzo Presidenziale.' },
+      },
+    },
+    {
+      id: 'vientiane-cope-centre', city: 'vientiane', category: 'attraction', spot: 'hidden', lat: 17.9622, lng: 102.6215, image: 'sDiZDr-L-Bc',
+      rating: 4.7, reviews: 2400, tags: ['museums', 'history'], price: { kind: 'free' }, hours: '08:00–18:00',
+      address: 'Khouvieng Road, Vientiane',
+      text: {
+        ru: { name: 'Центр COPE', description: 'Небольшой музей при реабилитационном центре, где делают протезы людям, пострадавшим от неразорвавшихся бомб: Лаос — самая бомбардированная страна в истории на душу населения.', tip: 'Вход бесплатный — он спрятан во дворе Национального центра реабилитации на Кхувиенг-роуд; оставьте пожертвование в кафе при музее.' },
+        en: { name: 'COPE Visitor Centre', description: 'A small museum at a rehabilitation centre that makes prosthetics for victims of unexploded bombs; per capita, Laos is the most heavily bombed country in history.', tip: 'Entry is free, tucked into the grounds of the National Rehabilitation Centre on Khouvieng Road; leave a donation at the museum café.' },
+        es: { name: 'Centro de visitantes COPE', description: 'Un pequeño museo en un centro de rehabilitación que fabrica prótesis para víctimas de bombas sin explotar: por habitante, Laos es el país más bombardeado de la historia.', tip: 'La entrada es gratuita y está escondida en el recinto del Centro Nacional de Rehabilitación, en Khouvieng Road; deja un donativo en la cafetería.' },
+        de: { name: 'COPE Visitor Centre', description: 'Ein kleines Museum in einem Reha-Zentrum, das Prothesen für Opfer von Blindgängern fertigt – pro Kopf ist Laos das am stärksten bombardierte Land der Geschichte.', tip: 'Der Eintritt ist frei, versteckt auf dem Gelände des Nationalen Rehabilitationszentrums an der Khouvieng Road; lass im Museumscafé eine Spende da.' },
+        fr: { name: 'Centre COPE', description: 'Un petit musée attenant à un centre de rééducation qui fabrique des prothèses pour les victimes de bombes non explosées : par habitant, le Laos est le pays le plus bombardé de l’histoire.', tip: 'L’entrée est gratuite, à l’intérieur du Centre national de réadaptation sur Khouvieng Road ; laissez un don au café du musée.' },
+        it: { name: 'COPE Visitor Centre', description: 'Un piccolo museo in un centro di riabilitazione che realizza protesi per le vittime di ordigni inesplosi: in rapporto agli abitanti, il Laos è il Paese più bombardato della storia.', tip: 'L’ingresso è gratuito, nascosto nel cortile del Centro nazionale di riabilitazione su Khouvieng Road; lascia un’offerta nel caffè del museo.' },
+      },
+    },
+    {
+      id: 'vientiane-riverside-night-market', city: 'vientiane', category: 'food', lat: 17.964, lng: 102.605, image: 'sDiZDr-L-Bc',
+      rating: 4.2, reviews: 6900, tags: ['market', 'streetfood', 'sunset'], price: { kind: 'level', level: 1 }, hours: '17:00–22:00',
+      address: 'Chao Anouvong Park, Fa Ngum Road, Vientiane',
+      text: {
+        ru: { name: 'Ночной рынок на набережной', description: 'Каждый вечер вдоль Меконга у парка Чао Анувонг раскидываются красные шатры: шашлычки, лааб, жареная рыба и манго с клейким рисом, а на набережной — массовая аэробика.', tip: 'Приходите к закату: сначала прогулка по набережной с видом на Таиланд, затем ужин в ряду с грилем.' },
+        en: { name: 'Riverside Night Market', description: 'Every evening red tents spring up along the Mekong by Chao Anouvong Park, selling skewers, larb, grilled fish and mango sticky rice, while mass aerobics fills the promenade.', tip: 'Come at sunset: stroll the riverfront facing Thailand first, then eat in the grill row.' },
+        es: { name: 'Mercado nocturno del paseo fluvial', description: 'Cada tarde surgen carpas rojas a lo largo del Mekong junto al parque Chao Anouvong, con brochetas, larb, pescado a la brasa y arroz glutinoso con mango, mientras el paseo se llena de aeróbic multitudinario.', tip: 'Ven al atardecer: primero paseo por la orilla frente a Tailandia y luego cena en la fila de parrillas.' },
+        de: { name: 'Nachtmarkt am Flussufer', description: 'Jeden Abend schießen am Mekong beim Chao-Anouvong-Park rote Zelte aus dem Boden – mit Spießen, Larb, gegrilltem Fisch und Mango mit Klebreis, während auf der Promenade Massen-Aerobic läuft.', tip: 'Komm zum Sonnenuntergang: erst über die Uferpromenade mit Blick nach Thailand, dann essen an der Grillreihe.' },
+        fr: { name: 'Marché de nuit des quais', description: 'Chaque soir, des tentes rouges surgissent le long du Mékong près du parc Chao Anouvong : brochettes, larb, poisson grillé et riz gluant à la mangue, pendant que l’aérobic collectif anime la promenade.', tip: 'Venez au coucher du soleil : balade sur les quais face à la Thaïlande, puis dîner dans l’allée des grillades.' },
+        it: { name: 'Mercato notturno sul lungofiume', description: 'Ogni sera lungo il Mekong vicino al parco Chao Anouvong spuntano tende rosse con spiedini, larb, pesce alla griglia e riso glutinoso al mango, mentre sul lungofiume va in scena l’aerobica di massa.', tip: 'Vieni al tramonto: prima una passeggiata sul lungofiume di fronte alla Thailandia, poi cena nella fila delle griglie.' },
+      },
+    },
+  ],
+};
+
+export default pack;

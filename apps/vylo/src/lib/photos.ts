@@ -61,7 +61,7 @@ export const photoPage = (id: string) => (isLegacy(id) ? 'https://unsplash.com' 
 /** Resolve an id through the Unsplash API (no-op without a key). */
 export function resolvePhoto(id: string): Promise<PhotoMeta | null> {
   loadCache();
-  if (!KEY || !id || isLegacy(id) || id.startsWith('http')) return Promise.resolve(null);
+  if (!KEY || !id || isLegacy(id) || /^(https?:|data:|\/)/.test(id)) return Promise.resolve(null);
   const hit = cache.get(id);
   if (hit) return Promise.resolve(hit);
   let p = pending.get(id);

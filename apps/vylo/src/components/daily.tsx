@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Check, ChevronRight, MapPin, Plane, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { destinationHref, destinations } from '@/data/catalog';
+import { destinationById, destinationHref, destinations, overrides } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { questsFor } from '@/lib/gamification';
 import { cn, hash, todayKey } from '@/lib/utils';
@@ -15,7 +15,9 @@ import { SaveButton } from './save-button';
 import { Rating } from './ui';
 
 export function dailyPick(date = todayKey()) {
-  return destinations[hash(`pick-${date}`) % destinations.length]!;
+  // The team can pin a destination from the admin console.
+  const pinned = overrides().settings.placeOfDay;
+  return (pinned && destinationById(pinned)) || destinations[hash(`pick-${date}`) % destinations.length]!;
 }
 
 function useCountdown() {

@@ -10,7 +10,7 @@ import { Photo } from '@/components/photo';
 import { useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
 import { Rating, Tag } from '@/components/ui';
-import { categoryColor, countryHref, destinationById, destinationHref, placeById, placesIn } from '@/data/catalog';
+import { categoryColor, countryHref, destinationById, destinationHref, isHiddenReview, placeById, placesIn } from '@/data/catalog';
 import { reviews } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { distanceKm } from '@/lib/utils';
@@ -28,7 +28,7 @@ export function PlaceScreen({ id }: { id: string }) {
   const text = place(id);
   const { addToRoute, routeHere, inRoute } = useRouteActions();
   const accent = d.theme.accent;
-  const list = [...myReviews.filter((r) => r.targetId === id), ...reviews.filter((r) => r.targetId === id)];
+  const list = [...myReviews.filter((r) => r.targetId === id), ...reviews.filter((r) => r.targetId === id && !isHiddenReview(r.id))];
   const nearby = placesIn(p.destinationId)
     .filter((x) => x.id !== id)
     .sort((a, b) => distanceKm(p, a) - distanceKm(p, b))

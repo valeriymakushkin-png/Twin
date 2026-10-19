@@ -1,0 +1,371 @@
+import type { CountryPack } from '../types';
+
+const pack: CountryPack = {
+  country: {
+    code: 'MM',
+    region: 'sea',
+    image: 'XseIoHGALZc',
+    theme: { accent: '#b45309', accent2: '#dc2626', motif: 'domes' },
+    fromMoscow: { hours: 14, direct: false },
+    visa: { regime: 'free', days: 30, cost: { kind: 'free' }, validity: 'sixMonths', docs: ['returnTicket', 'booking'], notes: [] },
+    text: {
+      ru: {
+        tagline: 'Золотые пагоды, равнина тысяч храмов и плавучие сады Инле',
+        description: 'Мьянма — страна золотых ступ, монахов в бордовых одеждах и древних храмов, рассыпанных по равнине Багана. Туристов здесь сейчас мало, люди радушны, но в стране продолжается вооружённый конфликт, поэтому поездку стоит планировать особенно внимательно.',
+        howToGet: 'Прямых рейсов из Москвы нет: летят с пересадкой в Бангкоке, Гуанчжоу, Куньмине, Сингапуре или Куала-Лумпуре в Янгон — в пути 13–16 часов. Безвизовый въезд для россиян действует через аэропорты Янгона, Нейпьидо и Мандалая. Между Янгоном, Баганом (аэропорт Ньяунг-У) и Инле (аэропорт Хехо) надёжнее всего летать местными авиакомпаниями: многие сухопутные маршруты сейчас закрыты или небезопасны.',
+        tips: [
+          'Российские Visa и Mastercard не работают, а банкоматы и обмен капризны: везите новые доллары США без надрывов и пометок и меняйте их на кьяты в банках или официальных обменниках.',
+          'Связь и интернет могут отключать по решению властей — скачайте офлайн-карты и сохраните брони и контакты отеля заранее.',
+          'В стране идёт вооружённый конфликт: перед поездкой проверьте рекомендации МИД России, ездите только в открытые для туристов районы, соблюдайте комендантский час и не фотографируйте военных и блокпосты.',
+        ],
+        guide: {
+          title: 'Мьянма: что важно знать',
+          sections: [
+            { title: 'Когда ехать', body: 'Лучший сезон — с ноября по февраль: сухо, солнечно и не слишком жарко, а над Баганом в эти месяцы самые прозрачные рассветы. С марта по май температура в центре страны доходит до +40 °C. С июня по октябрь идут муссонные ливни, особенно сильные в Янгоне, зато вокруг зелено и пусто. В середине апреля страна празднует Тинджан — новогодний водный фестиваль, когда работают далеко не все службы.' },
+            { title: 'Безопасность сейчас', body: 'После переворота 2021 года в Мьянме продолжаются боевые действия между армией и вооружёнными группами, а в марте 2025 года сильное землетрясение повредило часть пагод в центре страны. Многие районы закрыты для иностранцев. Туристы бывают в Янгоне, Багане и на Инле, но обстановка меняется: следите за сообщениями посольства России, регистрируйтесь в отеле, передвигайтесь самолётами и оформите страховку, покрывающую эвакуацию.' },
+            { title: 'Маршрут на 8 дней', body: 'Два дня в Янгоне: пагода Шведагон на закате, колониальные кварталы у пагоды Суле и кольцевая электричка через пригороды. Затем перелёт в Баган — три дня на храмы Ананда и Дхаммаянджи, рассветы над равниной и поездку к горе Попа. Финал — три дня на озере Инле: рыбаки, гребущие ногой, плавучие сады и деревни на сваях, руины пагод Индейна.' },
+            { title: 'Что попробовать', body: 'Завтрак по-бирмански — мохинга, рыбный суп с рисовой лапшой, лемонграссом и хрустящими оладьями. Обязательно попробуйте лапхет тхоук — салат из ферментированных чайных листьев с арахисом и чесноком, шанскую лапшу на Инле и карри, к которому подают десяток маленьких закусок. Всё это запивают сладким чаем с молоком в уличных чайных, где жизнь кипит с рассвета.' },
+          ],
+        },
+      },
+      en: {
+        tagline: 'Golden pagodas, a plain of temples and Inle’s floating gardens',
+        description: 'Myanmar is a land of golden stupas, monks in maroon robes and ancient temples scattered across the plain of Bagan. Visitors are few right now and people are warm, but armed conflict continues in the country, so a trip needs especially careful planning.',
+        howToGet: 'There are no direct flights from Moscow: connect in Bangkok, Guangzhou, Kunming, Singapore or Kuala Lumpur to Yangon, 13–16 hours in total. Visa-free entry for Russians applies via the airports of Yangon, Naypyidaw and Mandalay. Between Yangon, Bagan (Nyaung U airport) and Inle (Heho airport), domestic flights are the most reliable option, as many overland routes are currently closed or unsafe.',
+        tips: [
+          'Russian-issued Visa and Mastercard cards don’t work, and ATMs and exchange are unpredictable, so bring new, unmarked US dollar notes without tears and change them into kyat at banks or official exchange offices.',
+          'The authorities may cut mobile and internet connections, so download offline maps and save your bookings and hotel contacts in advance.',
+          'Armed conflict is ongoing: check the Russian Foreign Ministry’s advice before travelling, visit only areas open to tourists, respect curfews and never photograph soldiers or checkpoints.',
+        ],
+        guide: {
+          title: 'Myanmar: what you need to know',
+          sections: [
+            { title: 'When to go', body: 'The best season is November to February: dry, sunny and not too hot, with Bagan’s clearest sunrises. From March to May temperatures in the centre of the country reach 40 °C. From June to October monsoon downpours arrive, heaviest in Yangon, but the land is green and empty. In mid-April the country celebrates Thingyan, the New Year water festival, when many services shut down.' },
+            { title: 'Safety today', body: 'Since the 2021 coup, fighting has continued between the army and armed groups, and in March 2025 a strong earthquake damaged some pagodas in central Myanmar. Many regions are closed to foreigners. Tourists still visit Yangon, Bagan and Inle, but the situation changes: follow updates from the Russian embassy, register with your hotel, travel by air and take out insurance that covers evacuation.' },
+            { title: 'An 8-day route', body: 'Two days in Yangon: Shwedagon Pagoda at sunset, the colonial streets around Sule Pagoda and the circular train through the suburbs. Then fly to Bagan for three days of Ananda and Dhammayangyi temples, sunrises over the plain and a trip to Mount Popa. Finish with three days on Inle Lake: leg-rowing fishermen, floating gardens, stilt villages and the crumbling pagodas of Indein.' },
+            { title: 'What to eat', body: 'A Burmese breakfast is mohinga, fish soup with rice noodles, lemongrass and crispy fritters. Be sure to try lahpet thoke, a salad of fermented tea leaves with peanuts and garlic, Shan noodles at Inle and curries served with a dozen small side dishes. Wash it all down with sweet milky tea in the street teahouses, which buzz from dawn.' },
+          ],
+        },
+      },
+      es: {
+        tagline: 'Pagodas doradas, una llanura de templos y los jardines flotantes de Inle',
+        description: 'Myanmar es tierra de estupas doradas, monjes con túnicas granates y templos antiguos esparcidos por la llanura de Bagan. Ahora llegan pocos viajeros y la gente es muy acogedora, pero en el país continúa un conflicto armado, así que el viaje exige una planificación especialmente cuidadosa.',
+        howToGet: 'No hay vuelos directos desde Moscú: se hace escala en Bangkok, Cantón, Kunming, Singapur o Kuala Lumpur hasta Yangón, con 13–16 horas de viaje. La entrada sin visado para ciudadanos rusos se aplica en los aeropuertos de Yangón, Naipyidó y Mandalay. Entre Yangón, Bagan (aeropuerto de Nyaung U) e Inle (aeropuerto de Heho), lo más fiable son los vuelos internos: muchas rutas terrestres están cerradas o no son seguras.',
+        tips: [
+          'Las Visa y Mastercard emitidas en Rusia no funcionan y cajeros y cambio son imprevisibles: lleva dólares nuevos, sin roturas ni marcas, y cámbialos a kyats en bancos o casas de cambio oficiales.',
+          'Las autoridades pueden cortar la telefonía e internet: descarga mapas sin conexión y guarda tus reservas y el contacto del hotel.',
+          'Hay un conflicto armado en curso: consulta antes las recomendaciones del Ministerio de Exteriores ruso, visita solo zonas abiertas al turismo, respeta el toque de queda y no fotografíes militares ni controles.',
+        ],
+        guide: {
+          title: 'Myanmar: lo que debes saber',
+          sections: [
+            { title: 'Cuándo ir', body: 'La mejor temporada va de noviembre a febrero: seco, soleado y sin demasiado calor, con los amaneceres más limpios sobre Bagan. De marzo a mayo el centro del país alcanza los 40 °C. De junio a octubre llegan los aguaceros del monzón, más intensos en Yangón, pero todo está verde y vacío. A mediados de abril se celebra el Thingyan, el festival del agua de Año Nuevo, cuando muchos servicios cierran.' },
+            { title: 'Seguridad hoy', body: 'Desde el golpe de 2021 continúan los combates entre el ejército y grupos armados, y en marzo de 2025 un fuerte terremoto dañó varias pagodas del centro del país. Muchas regiones están cerradas a los extranjeros. Los turistas siguen visitando Yangón, Bagan e Inle, pero la situación cambia: sigue los avisos de la embajada rusa, regístrate en el hotel, desplázate en avión y contrata un seguro que cubra la evacuación.' },
+            { title: 'Ruta de 8 días', body: 'Dos días en Yangón: la pagoda Shwedagon al atardecer, las calles coloniales junto a la pagoda Sule y el tren circular por los suburbios. Después, vuelo a Bagan para tres días entre los templos Ananda y Dhammayangyi, amaneceres sobre la llanura y una excursión al monte Popa. Termina con tres días en el lago Inle: pescadores que reman con la pierna, jardines flotantes, aldeas sobre pilotes y las pagodas en ruinas de Indein.' },
+            { title: 'Qué probar', body: 'El desayuno birmano es la mohinga, sopa de pescado con fideos de arroz, hierba limón y buñuelos crujientes. No dejes de probar el lahpet thoke, ensalada de hojas de té fermentadas con cacahuetes y ajo, los fideos shan de Inle y los curris servidos con una docena de pequeñas guarniciones. Todo se acompaña con té dulce con leche en las teterías callejeras, animadas desde el amanecer.' },
+          ],
+        },
+      },
+      de: {
+        tagline: 'Goldene Pagoden, eine Tempelebene und Inles schwimmende Gärten',
+        description: 'Myanmar ist ein Land goldener Stupas, Mönche in weinroten Roben und uralter Tempel, die über die Ebene von Bagan verstreut sind. Derzeit kommen nur wenige Reisende, die Menschen sind herzlich, doch im Land herrscht weiterhin ein bewaffneter Konflikt – eine Reise will daher besonders sorgfältig geplant sein.',
+        howToGet: 'Direktflüge ab Moskau gibt es nicht: Man steigt in Bangkok, Guangzhou, Kunming, Singapur oder Kuala Lumpur nach Yangon um, insgesamt 13–16 Stunden. Die Visumfreiheit für russische Staatsbürger gilt bei Einreise über die Flughäfen Yangon, Naypyidaw und Mandalay. Zwischen Yangon, Bagan (Flughafen Nyaung U) und Inle (Flughafen Heho) sind Inlandsflüge am zuverlässigsten, da viele Landwege derzeit gesperrt oder unsicher sind.',
+        tips: [
+          'In Russland ausgegebene Visa- und Mastercard-Karten funktionieren nicht, Automaten und Wechsel sind unberechenbar – nimm neue, unbeschädigte Dollarscheine ohne Markierungen mit und tausche sie bei Banken oder offiziellen Wechselstuben in Kyat.',
+          'Die Behörden können Mobilfunk und Internet abschalten – lade Offline-Karten herunter und speichere Buchungen und Hotelkontakte vorab.',
+          'Es herrscht ein bewaffneter Konflikt: Prüf vor der Reise die Hinweise des russischen Außenministeriums, besuche nur für Touristen geöffnete Gebiete, halte Ausgangssperren ein und fotografiere weder Soldaten noch Kontrollposten.',
+        ],
+        guide: {
+          title: 'Myanmar: Was du wissen musst',
+          sections: [
+            { title: 'Reisezeit', body: 'Die beste Zeit ist November bis Februar: trocken, sonnig und nicht zu heiß, mit den klarsten Sonnenaufgängen über Bagan. Von März bis Mai erreichen die Temperaturen im Landesinneren 40 °C. Von Juni bis Oktober bringen Monsunschauer viel Regen, am stärksten in Yangon, dafür ist alles grün und leer. Mitte April feiert das Land Thingyan, das Neujahrs-Wasserfest, an dem viele Dienste ruhen.' },
+            { title: 'Sicherheit heute', body: 'Seit dem Putsch 2021 kämpfen Armee und bewaffnete Gruppen weiter gegeneinander, und im März 2025 beschädigte ein starkes Erdbeben einige Pagoden im Landesinneren. Viele Regionen sind für Ausländer gesperrt. Touristen reisen weiterhin nach Yangon, Bagan und an den Inle-See, doch die Lage ändert sich: Verfolge die Hinweise der russischen Botschaft, melde dich im Hotel an, reise per Flugzeug und schließe eine Versicherung mit Evakuierungsschutz ab.' },
+            { title: 'Route für 8 Tage', body: 'Zwei Tage Yangon: die Shwedagon-Pagode bei Sonnenuntergang, die Kolonialstraßen rund um die Sule-Pagode und die Ringbahn durch die Vororte. Dann Flug nach Bagan und drei Tage mit den Tempeln Ananda und Dhammayangyi, Sonnenaufgängen über der Ebene und einem Ausflug zum Mount Popa. Zum Schluss drei Tage am Inle-See: Einbeinruderer, schwimmende Gärten, Pfahldörfer und die verfallenen Pagoden von Indein.' },
+            { title: 'Was du probieren solltest', body: 'Ein burmesisches Frühstück ist Mohinga, Fischsuppe mit Reisnudeln, Zitronengras und knusprigen Krapfen. Probier unbedingt Lahpet Thoke, einen Salat aus fermentierten Teeblättern mit Erdnüssen und Knoblauch, Shan-Nudeln am Inle-See und Currys mit einem Dutzend kleiner Beilagen. Dazu trinkt man süßen Milchtee in den Straßenteestuben, in denen schon ab Sonnenaufgang Betrieb herrscht.' },
+          ],
+        },
+      },
+      fr: {
+        tagline: 'Pagodes dorées, plaine aux mille temples et jardins flottants d’Inle',
+        description: 'Le Myanmar est le pays des stupas dorés, des moines en robe bordeaux et des temples anciens semés sur la plaine de Bagan. Les voyageurs y sont rares en ce moment et l’accueil chaleureux, mais un conflit armé se poursuit dans le pays : le voyage demande donc une préparation particulièrement soigneuse.',
+        howToGet: 'Il n’y a pas de vol direct depuis Moscou : on passe par Bangkok, Canton, Kunming, Singapour ou Kuala Lumpur pour rejoindre Yangon, soit 13 à 16 heures de trajet. L’exemption de visa pour les Russes s’applique aux arrivées par les aéroports de Yangon, Naypyidaw et Mandalay. Entre Yangon, Bagan (aéroport de Nyaung U) et Inle (aéroport de Heho), les vols intérieurs sont l’option la plus sûre, car de nombreuses routes sont aujourd’hui fermées ou dangereuses.',
+        tips: [
+          'Les cartes Visa et Mastercard émises en Russie ne fonctionnent pas, et distributeurs comme bureaux de change sont aléatoires : emportez des dollars neufs, sans déchirure ni inscription, et changez-les en kyats dans les banques ou bureaux officiels.',
+          'Les autorités peuvent couper le téléphone et Internet : téléchargez des cartes hors ligne et enregistrez vos réservations et les coordonnées de l’hôtel.',
+          'Un conflit armé est en cours : consultez avant le départ les recommandations du ministère russe des Affaires étrangères, ne visitez que les zones ouvertes aux touristes, respectez le couvre-feu et ne photographiez ni militaires ni postes de contrôle.',
+        ],
+        guide: {
+          title: 'Myanmar : ce qu’il faut savoir',
+          sections: [
+            { title: 'Quand partir', body: 'La meilleure saison va de novembre à février : temps sec, ensoleillé et pas trop chaud, avec les levers de soleil les plus limpides sur Bagan. De mars à mai, le centre du pays atteint 40 °C. De juin à octobre arrivent les averses de mousson, plus fortes à Yangon, mais la campagne est verte et déserte. À la mi-avril, le pays fête Thingyan, le festival de l’eau du Nouvel An, pendant lequel de nombreux services ferment.' },
+            { title: 'La sécurité aujourd’hui', body: 'Depuis le coup d’État de 2021, les combats se poursuivent entre l’armée et des groupes armés, et en mars 2025 un violent séisme a endommagé plusieurs pagodes du centre du pays. De nombreuses régions sont fermées aux étrangers. Les touristes visitent encore Yangon, Bagan et Inle, mais la situation évolue : suivez les messages de l’ambassade de Russie, signalez-vous à l’hôtel, déplacez-vous en avion et souscrivez une assurance couvrant l’évacuation.' },
+            { title: 'Itinéraire de 8 jours', body: 'Deux jours à Yangon : la pagode Shwedagon au coucher du soleil, les rues coloniales autour de la pagode Sule et le train circulaire à travers la banlieue. Puis vol pour Bagan et trois jours entre les temples d’Ananda et de Dhammayangyi, levers de soleil sur la plaine et excursion au mont Popa. Terminez par trois jours au lac Inle : pêcheurs ramant avec la jambe, jardins flottants, villages sur pilotis et pagodes en ruine d’Indein.' },
+            { title: 'Que goûter', body: 'Le petit-déjeuner birman, c’est la mohinga, soupe de poisson aux nouilles de riz, à la citronnelle et aux beignets croustillants. Goûtez absolument le lahpet thoke, salade de feuilles de thé fermentées aux cacahuètes et à l’ail, les nouilles shan au lac Inle et les currys servis avec une douzaine de petits accompagnements. Le tout s’accompagne d’un thé au lait sucré dans les maisons de thé de rue, animées dès l’aube.' },
+          ],
+        },
+      },
+      it: {
+        tagline: 'Pagode dorate, una pianura di templi e gli orti galleggianti di Inle',
+        description: 'Il Myanmar è la terra degli stupa dorati, dei monaci in tunica bordeaux e dei templi antichi sparsi nella pianura di Bagan. Oggi i viaggiatori sono pochi e la gente è accogliente, ma nel Paese prosegue un conflitto armato, quindi il viaggio va pianificato con particolare attenzione.',
+        howToGet: 'Non ci sono voli diretti da Mosca: si fa scalo a Bangkok, Canton, Kunming, Singapore o Kuala Lumpur per Yangon, per 13–16 ore complessive. L’ingresso senza visto per i cittadini russi vale negli aeroporti di Yangon, Naypyidaw e Mandalay. Tra Yangon, Bagan (aeroporto di Nyaung U) e Inle (aeroporto di Heho) i voli interni sono la soluzione più affidabile, perché molte vie di terra sono oggi chiuse o insicure.',
+        tips: [
+          'Le carte Visa e Mastercard emesse in Russia non funzionano e bancomat e cambio sono imprevedibili: porta dollari nuovi, senza strappi né segni, e cambiali in kyat in banca o nei cambiavalute ufficiali.',
+          'Le autorità possono interrompere telefono e internet: scarica mappe offline e salva prenotazioni e contatti dell’hotel in anticipo.',
+          'È in corso un conflitto armato: prima di partire consulta le indicazioni del Ministero degli Esteri russo, visita solo le zone aperte ai turisti, rispetta il coprifuoco e non fotografare militari né posti di blocco.',
+        ],
+        guide: {
+          title: 'Myanmar: cosa sapere',
+          sections: [
+            { title: 'Quando andare', body: 'La stagione migliore va da novembre a febbraio: clima secco, soleggiato e non troppo caldo, con le albe più limpide su Bagan. Da marzo a maggio il centro del Paese tocca i 40 °C. Da giugno a ottobre arrivano gli acquazzoni monsonici, più forti a Yangon, ma il paesaggio è verde e deserto. A metà aprile si celebra il Thingyan, la festa dell’acqua di Capodanno, quando molti servizi si fermano.' },
+            { title: 'La sicurezza oggi', body: 'Dal colpo di Stato del 2021 proseguono i combattimenti tra l’esercito e gruppi armati, e nel marzo 2025 un forte terremoto ha danneggiato alcune pagode del centro del Paese. Molte regioni sono chiuse agli stranieri. I turisti visitano ancora Yangon, Bagan e Inle, ma la situazione cambia: segui gli avvisi dell’ambasciata russa, registrati in hotel, spostati in aereo e stipula un’assicurazione che copra l’evacuazione.' },
+            { title: 'Itinerario di 8 giorni', body: 'Due giorni a Yangon: la pagoda Shwedagon al tramonto, le vie coloniali attorno alla pagoda Sule e il treno circolare tra i sobborghi. Poi volo per Bagan e tre giorni tra i templi di Ananda e Dhammayangyi, albe sulla pianura e una gita al monte Popa. Chiudi con tre giorni sul lago Inle: pescatori che remano con la gamba, orti galleggianti, villaggi su palafitte e le pagode in rovina di Indein.' },
+            { title: 'Cosa assaggiare', body: 'La colazione birmana è la mohinga, zuppa di pesce con spaghetti di riso, citronella e frittelle croccanti. Assaggia assolutamente il lahpet thoke, insalata di foglie di tè fermentate con arachidi e aglio, i noodles shan sul lago Inle e i curry serviti con una dozzina di piccoli contorni. Il tutto accompagnato da tè dolce al latte nelle sale da tè di strada, animate fin dall’alba.' },
+          ],
+        },
+      },
+    },
+  },
+  cities: [
+    {
+      id: 'yangon', lat: 16.8409, lng: 96.1735, image: 'VyhGIO6vdh8', gallery: ['pXzvJeuFgd0', 'dEnHBDTzo0A', 'SSRAntZFuFA', 'VLIdhvtXHno'],
+      rating: 4.4, reviews: 6420, tags: ['temples', 'city', 'history', 'streetfood'], months: [11, 12, 1, 2], budgetPerDay: 40, currency: 'MMK',
+      language: 'my', timezone: 'UTC+6:30', zoom: 11, theme: { accent: '#ca8a04', accent2: '#be123c', motif: 'domes' },
+      text: {
+        ru: { name: 'Янгон', tagline: 'Сияющая Шведагон и колониальные улицы бывшей столицы', description: 'Крупнейший город Мьянмы с величайшей пагодой страны, обветшалыми британскими особняками и шумными уличными чайными. Здесь лучше всего чувствуется ритм бирманской жизни.', tips: ['В пагоды входят босиком — носите обувь, которую легко снять, и не забудьте закрыть плечи и колени.', 'Мотоциклы в центре Янгона запрещены, поэтому передвигайтесь на такси или через Grab.'], gettingThere: 'Международный аэропорт в 15 км к северу от центра: на такси 40–60 минут в зависимости от пробок.' },
+        en: { name: 'Yangon', tagline: 'Gleaming Shwedagon and the colonial streets of the old capital', description: 'Myanmar’s largest city has the country’s greatest pagoda, crumbling British mansions and noisy street teahouses. It is the best place to feel the rhythm of Burmese life.', tips: ['Pagodas are entered barefoot, so wear shoes that slip off easily and cover your shoulders and knees.', 'Motorbikes are banned in central Yangon, so get around by taxi or Grab.'], gettingThere: 'The international airport is 15 km north of the centre, 40–60 minutes by taxi depending on traffic.' },
+        es: { name: 'Yangón', tagline: 'La resplandeciente Shwedagon y las calles coloniales de la antigua capital', description: 'La mayor ciudad de Myanmar reúne la gran pagoda del país, decadentes mansiones británicas y bulliciosas teterías callejeras. Es el mejor lugar para sentir el ritmo de la vida birmana.', tips: ['A las pagodas se entra descalzo: lleva calzado fácil de quitar y cubre hombros y rodillas.', 'Las motos están prohibidas en el centro de Yangón: muévete en taxi o con Grab.'], gettingThere: 'El aeropuerto internacional está 15 km al norte del centro, a 40–60 minutos en taxi según el tráfico.' },
+        de: { name: 'Yangon', tagline: 'Die strahlende Shwedagon und Kolonialstraßen der alten Hauptstadt', description: 'Myanmars größte Stadt besitzt die bedeutendste Pagode des Landes, verfallende britische Villen und laute Straßenteestuben. Nirgends spürt man den Rhythmus des burmesischen Lebens besser.', tips: ['Pagoden betritt man barfuß – trag Schuhe, die sich leicht ausziehen lassen, und bedecke Schultern und Knie.', 'Motorräder sind im Zentrum von Yangon verboten, also fahr mit Taxi oder Grab.'], gettingThere: 'Der internationale Flughafen liegt 15 km nördlich des Zentrums, je nach Verkehr 40–60 Minuten per Taxi.' },
+        fr: { name: 'Yangon', tagline: 'La resplendissante Shwedagon et les rues coloniales de l’ancienne capitale', description: 'La plus grande ville du Myanmar réunit la plus importante pagode du pays, des demeures britanniques décrépites et des maisons de thé de rue animées. C’est l’endroit idéal pour sentir le rythme de la vie birmane.', tips: ['On entre pieds nus dans les pagodes : portez des chaussures faciles à retirer et couvrez épaules et genoux.', 'Les deux-roues sont interdits dans le centre de Yangon : déplacez-vous en taxi ou en Grab.'], gettingThere: 'L’aéroport international est à 15 km au nord du centre, à 40–60 minutes en taxi selon la circulation.' },
+        it: { name: 'Yangon', tagline: 'La splendente Shwedagon e le vie coloniali dell’antica capitale', description: 'La città più grande del Myanmar ospita la pagoda più importante del Paese, decadenti ville britanniche e rumorose sale da tè di strada. È il posto migliore per sentire il ritmo della vita birmana.', tips: ['Nelle pagode si entra scalzi: indossa scarpe facili da togliere e copri spalle e ginocchia.', 'Le moto sono vietate nel centro di Yangon, quindi muoviti in taxi o con Grab.'], gettingThere: 'L’aeroporto internazionale è 15 km a nord del centro, a 40–60 minuti di taxi a seconda del traffico.' },
+      },
+    },
+    {
+      id: 'bagan', lat: 21.1717, lng: 94.8585, image: 'XseIoHGALZc', gallery: ['YVMINsxTIKY', 'zOlFBjl6B1E', 'np5wC9cYINA', 'ZTIEPcsjJaw'],
+      rating: 4.9, reviews: 8150, tags: ['temples', 'history', 'unesco', 'sunset'], months: [11, 12, 1, 2], budgetPerDay: 45, currency: 'MMK',
+      language: 'my', timezone: 'UTC+6:30', zoom: 12, theme: { accent: '#c2410c', accent2: '#f59e0b', motif: 'balloons' },
+      text: {
+        ru: { name: 'Баган', tagline: 'Две тысячи храмов на равнине у Иравади', description: 'Столица древнего Паганского царства XI–XIII веков: на равнине у реки Иравади стоят более двух тысяч кирпичных храмов и ступ. Рассвет здесь, когда туман поднимается между пагодами, — одно из главных зрелищ Азии.', tips: ['Возьмите напрокат электроскутер: между храмами пыльные грунтовки, а расстояния большие.', 'Залезать на храмы запрещено — для рассвета используйте официальные смотровые холмы.'], gettingThere: 'Из Янгона лететь около 1 ч 20 мин до аэропорта Ньяунг-У, оттуда 15 минут на такси до отеля. При въезде в зону оплачивается археологический сбор.' },
+        en: { name: 'Bagan', tagline: 'Two thousand temples on a plain by the Irrawaddy', description: 'The capital of the ancient Pagan Kingdom of the 11th–13th centuries, where more than two thousand brick temples and stupas stand on a plain beside the Irrawaddy. Sunrise, as mist rises between the pagodas, is one of Asia’s great sights.', tips: ['Rent an e-scooter: the tracks between temples are dusty and distances are long.', 'Climbing the temples is banned, so use the official viewing mounds for sunrise.'], gettingThere: 'Flights from Yangon take about 1 hour 20 minutes to Nyaung U airport, then it is 15 minutes by taxi to your hotel. An archaeological zone fee is paid on entry.' },
+        es: { name: 'Bagan', tagline: 'Dos mil templos en una llanura junto al Irawadi', description: 'La capital del antiguo reino de Pagan, de los siglos XI al XIII, donde más de dos mil templos y estupas de ladrillo se alzan en una llanura junto al río Irawadi. El amanecer, cuando la niebla sube entre las pagodas, es uno de los grandes espectáculos de Asia.', tips: ['Alquila una moto eléctrica: los caminos entre templos son polvorientos y las distancias, largas.', 'Está prohibido subir a los templos: para el amanecer usa los miradores oficiales.'], gettingThere: 'Desde Yangón se vuela en 1 h 20 min al aeropuerto de Nyaung U, y de allí hay 15 minutos en taxi al hotel. A la entrada se paga una tasa de zona arqueológica.' },
+        de: { name: 'Bagan', tagline: 'Zweitausend Tempel auf einer Ebene am Irrawaddy', description: 'Die Hauptstadt des alten Pagan-Reichs aus dem 11. bis 13. Jahrhundert: Auf einer Ebene am Irrawaddy stehen mehr als zweitausend Ziegeltempel und Stupas. Der Sonnenaufgang, wenn Nebel zwischen den Pagoden aufsteigt, gehört zu den großen Anblicken Asiens.', tips: ['Miete einen E-Roller: Die Pisten zwischen den Tempeln sind staubig, die Wege weit.', 'Das Besteigen der Tempel ist verboten – nutze für den Sonnenaufgang die offiziellen Aussichtshügel.'], gettingThere: 'Ab Yangon fliegt man etwa 1 Stunde 20 Minuten zum Flughafen Nyaung U, von dort sind es 15 Taximinuten zum Hotel. Bei der Einfahrt wird eine Gebühr für die archäologische Zone fällig.' },
+        fr: { name: 'Bagan', tagline: 'Deux mille temples sur une plaine au bord de l’Irrawaddy', description: 'La capitale de l’ancien royaume de Pagan, aux XIe–XIIIe siècles : plus de deux mille temples et stupas de brique se dressent sur une plaine au bord de l’Irrawaddy. Le lever du soleil, quand la brume monte entre les pagodes, compte parmi les grands spectacles d’Asie.', tips: ['Louez un scooter électrique : les pistes entre les temples sont poussiéreuses et les distances longues.', 'Il est interdit de grimper sur les temples : pour le lever du soleil, utilisez les buttes d’observation officielles.'], gettingThere: 'Le vol depuis Yangon dure environ 1 h 20 jusqu’à l’aéroport de Nyaung U, puis 15 minutes de taxi jusqu’à l’hôtel. Une taxe de zone archéologique est perçue à l’entrée.' },
+        it: { name: 'Bagan', tagline: 'Duemila templi in una pianura sull’Irrawaddy', description: 'La capitale dell’antico regno di Pagan, tra l’XI e il XIII secolo: su una pianura accanto all’Irrawaddy sorgono oltre duemila templi e stupa di mattoni. L’alba, quando la nebbia sale tra le pagode, è uno dei grandi spettacoli dell’Asia.', tips: ['Noleggia uno scooter elettrico: le piste tra i templi sono polverose e le distanze lunghe.', 'Salire sui templi è vietato: per l’alba usa le collinette panoramiche ufficiali.'], gettingThere: 'Da Yangon si vola in circa 1 ora e 20 minuti all’aeroporto di Nyaung U, poi 15 minuti di taxi fino all’hotel. All’ingresso si paga una tassa per la zona archeologica.' },
+      },
+    },
+    {
+      id: 'inle-lake', lat: 20.6597, lng: 96.9346, image: 'CH7JI7pwVcU', gallery: ['_ghTTExqf1U'],
+      rating: 4.7, reviews: 5340, tags: ['lakes', 'culture', 'photo', 'nature'], months: [10, 11, 12, 1, 2], budgetPerDay: 40, currency: 'MMK',
+      language: 'my', timezone: 'UTC+6:30', zoom: 11, theme: { accent: '#0f766e', accent2: '#eab308', motif: 'waves' },
+      text: {
+        ru: { name: 'Озеро Инле', tagline: 'Рыбаки, гребущие ногой, и деревни на воде', description: 'Горное озеро в штате Шан, где народ интха живёт в деревнях на сваях, выращивает помидоры на плавучих грядах и гребёт, обхватив весло ногой. База для поездок — городок Ньяуншве на северном берегу.', tips: ['Нанимайте лодку на весь день в Ньяуншве и договаривайтесь о маршруте без бесконечных сувенирных мастерских.', 'Утром и вечером на воде холодно даже в сезон — возьмите тёплую кофту.'], gettingThere: 'Из Янгона лететь около часа до аэропорта Хехо, оттуда около часа на такси до Ньяуншве. При въезде в зону озера оплачивается туристический сбор.' },
+        en: { name: 'Inle Lake', tagline: 'Leg-rowing fishermen and villages on the water', description: 'A mountain lake in Shan State where the Intha people live in stilt villages, grow tomatoes on floating beds and row with one leg wrapped around the oar. The base for trips is Nyaungshwe on the northern shore.', tips: ['Hire a boat for the whole day in Nyaungshwe and agree a route that skips the endless souvenir workshops.', 'Mornings and evenings on the water are cold even in season, so bring a warm layer.'], gettingThere: 'Flights from Yangon take about an hour to Heho airport, then it is around an hour by taxi to Nyaungshwe. A zone fee is paid on entering the lake area.' },
+        es: { name: 'Lago Inle', tagline: 'Pescadores que reman con la pierna y aldeas sobre el agua', description: 'Un lago de montaña en el estado Shan donde el pueblo intha vive en aldeas sobre pilotes, cultiva tomates en huertos flotantes y rema con una pierna enroscada al remo. La base para las excursiones es Nyaungshwe, en la orilla norte.', tips: ['Contrata una barca para todo el día en Nyaungshwe y pacta una ruta sin interminables talleres de recuerdos.', 'Por la mañana y por la tarde hace frío en el agua incluso en temporada: lleva algo de abrigo.'], gettingThere: 'Desde Yangón se vuela en una hora al aeropuerto de Heho y de allí hay una hora en taxi hasta Nyaungshwe. Al entrar en la zona del lago se paga una tasa turística.' },
+        de: { name: 'Inle-See', tagline: 'Einbeinruderer und Dörfer auf dem Wasser', description: 'Ein Bergsee im Shan-Staat, an dem das Volk der Intha in Pfahldörfern lebt, Tomaten auf schwimmenden Beeten zieht und mit einem um das Ruder geschlungenen Bein rudert. Ausgangspunkt ist Nyaungshwe am Nordufer.', tips: ['Miete in Nyaungshwe ein Boot für den ganzen Tag und vereinbare eine Route ohne endlose Souvenirwerkstätten.', 'Morgens und abends ist es auf dem Wasser selbst in der Saison kalt – nimm eine warme Jacke mit.'], gettingThere: 'Ab Yangon fliegt man etwa eine Stunde zum Flughafen Heho, von dort sind es rund eine Stunde per Taxi nach Nyaungshwe. Bei der Einfahrt ins Seegebiet wird eine Gebühr erhoben.' },
+        fr: { name: 'Lac Inle', tagline: 'Pêcheurs ramant avec la jambe et villages sur l’eau', description: 'Un lac de montagne de l’État shan où le peuple intha vit dans des villages sur pilotis, cultive des tomates sur des jardins flottants et rame une jambe enroulée autour de l’aviron. La base des excursions est Nyaungshwe, sur la rive nord.', tips: ['Louez un bateau pour la journée à Nyaungshwe et négociez un itinéraire sans interminables ateliers de souvenirs.', 'Le matin et le soir, il fait froid sur l’eau même en saison : prévoyez une petite laine.'], gettingThere: 'Le vol depuis Yangon dure environ une heure jusqu’à l’aéroport de Heho, puis il faut une heure de taxi jusqu’à Nyaungshwe. Une taxe de zone est perçue à l’entrée du lac.' },
+        it: { name: 'Lago Inle', tagline: 'Pescatori che remano con la gamba e villaggi sull’acqua', description: 'Un lago di montagna nello Stato Shan dove il popolo intha vive in villaggi su palafitte, coltiva pomodori su orti galleggianti e rema con una gamba avvolta intorno al remo. La base per le escursioni è Nyaungshwe, sulla sponda nord.', tips: ['Noleggia una barca per tutto il giorno a Nyaungshwe e concorda un percorso senza infiniti laboratori di souvenir.', 'Al mattino e alla sera sull’acqua fa freddo anche in stagione: porta qualcosa di caldo.'], gettingThere: 'Da Yangon si vola in circa un’ora all’aeroporto di Heho, poi serve circa un’ora di taxi fino a Nyaungshwe. All’ingresso dell’area del lago si paga una tassa.' },
+      },
+    },
+  ],
+  places: [
+    // Yangon
+    {
+      id: 'yangon-shwedagon', city: 'yangon', category: 'attraction', lat: 16.7983, lng: 96.1496, image: 'VyhGIO6vdh8',
+      rating: 4.9, reviews: 29800, tags: ['temples', 'history', 'sunset'], price: { kind: 'fixed', amount: 10000, currency: 'MMK' }, hours: '04:00–22:00',
+      address: 'Singuttara Hill, Dagon Township, Yangon',
+      text: {
+        ru: { name: 'Пагода Шведагон', description: 'Главная святыня Мьянмы — 99-метровая ступа, покрытая золотыми пластинами и увенчанная тысячами бриллиантов и рубинов. Вокруг неё — десятки малых пагод, павильонов и молящихся паломников.', tip: 'Приходите за час до заката и обходите ступу по часовой стрелке: золото меняет цвет от жёлтого к оранжевому, а с темнотой зажигается подсветка.' },
+        en: { name: 'Shwedagon Pagoda', description: 'Myanmar’s holiest site, a 99-metre stupa clad in gold plates and crowned with thousands of diamonds and rubies, surrounded by dozens of smaller pagodas, pavilions and praying pilgrims.', tip: 'Arrive an hour before sunset and walk clockwise around the stupa as the gold shifts from yellow to orange and the floodlights come on at dusk.' },
+        es: { name: 'Pagoda Shwedagon', description: 'El lugar más sagrado de Myanmar: una estupa de 99 metros cubierta de placas de oro y coronada por miles de diamantes y rubíes, rodeada de decenas de pagodas menores, pabellones y peregrinos en oración.', tip: 'Llega una hora antes del atardecer y rodea la estupa en el sentido de las agujas del reloj: el oro pasa del amarillo al naranja y al anochecer se enciende la iluminación.' },
+        de: { name: 'Shwedagon-Pagode', description: 'Myanmars heiligster Ort: eine 99 Meter hohe, mit Goldplatten verkleidete Stupa, gekrönt von Tausenden Diamanten und Rubinen und umgeben von Dutzenden kleineren Pagoden, Pavillons und betenden Pilgern.', tip: 'Komm eine Stunde vor Sonnenuntergang und umrunde die Stupa im Uhrzeigersinn – das Gold wechselt von Gelb zu Orange, mit der Dämmerung geht die Beleuchtung an.' },
+        fr: { name: 'Pagode Shwedagon', description: 'Le lieu le plus sacré du Myanmar : un stupa de 99 mètres couvert de plaques d’or et couronné de milliers de diamants et de rubis, entouré de dizaines de petites pagodes, de pavillons et de pèlerins en prière.', tip: 'Arrivez une heure avant le coucher du soleil et faites le tour du stupa dans le sens des aiguilles d’une montre : l’or passe du jaune à l’orangé, puis l’illumination s’allume.' },
+        it: { name: 'Pagoda Shwedagon', description: 'Il luogo più sacro del Myanmar: uno stupa di 99 metri rivestito di lamine d’oro e coronato da migliaia di diamanti e rubini, circondato da decine di pagode minori, padiglioni e pellegrini in preghiera.', tip: 'Arriva un’ora prima del tramonto e gira intorno allo stupa in senso orario: l’oro passa dal giallo all’arancio e al buio si accende l’illuminazione.' },
+      },
+    },
+    {
+      id: 'yangon-sule-pagoda', city: 'yangon', category: 'attraction', lat: 16.7746, lng: 96.1588, image: 'pXzvJeuFgd0',
+      rating: 4.4, reviews: 8700, tags: ['temples', 'oldtown', 'architecture'],
+      address: 'Sule Pagoda Road, Kyauktada Township, Yangon',
+      text: {
+        ru: { name: 'Пагода Суле и колониальный центр', description: 'Золотая восьмиугольная пагода, вокруг которой британцы проложили сетку улиц центра. Рядом — ратуша, Верховный суд и сотни домов колониальной эпохи.', tip: 'После пагоды пройдитесь по улицам Панзодан и Страндроуд к отелю «Стрэнд» — это лучший маршрут по колониальному Янгону.' },
+        en: { name: 'Sule Pagoda and the colonial centre', description: 'A golden octagonal pagoda around which the British laid out the downtown grid, flanked by City Hall, the High Court and hundreds of colonial-era buildings.', tip: 'After the pagoda, walk along Pansodan Street and Strand Road to the Strand Hotel, the best route through colonial Yangon.' },
+        es: { name: 'Pagoda Sule y el centro colonial', description: 'Una pagoda dorada octogonal alrededor de la cual los británicos trazaron la cuadrícula del centro, con el Ayuntamiento, el Tribunal Supremo y cientos de edificios coloniales.', tip: 'Después de la pagoda, camina por Pansodan Street y Strand Road hasta el hotel Strand: la mejor ruta por el Yangón colonial.' },
+        de: { name: 'Sule-Pagode und das koloniale Zentrum', description: 'Eine goldene achteckige Pagode, um die herum die Briten das Straßenraster der Innenstadt anlegten, flankiert von Rathaus, Oberstem Gericht und Hunderten Bauten aus der Kolonialzeit.', tip: 'Spazier nach der Pagode über die Pansodan Street und die Strand Road zum Strand Hotel – die schönste Route durch das koloniale Yangon.' },
+        fr: { name: 'Pagode Sule et centre colonial', description: 'Une pagode dorée octogonale autour de laquelle les Britanniques ont tracé le quadrillage du centre, entourée de l’hôtel de ville, de la Haute Cour et de centaines d’édifices coloniaux.', tip: 'Après la pagode, longez Pansodan Street puis Strand Road jusqu’à l’hôtel Strand : le plus bel itinéraire du Yangon colonial.' },
+        it: { name: 'Pagoda Sule e centro coloniale', description: 'Una pagoda dorata ottagonale attorno a cui i britannici tracciarono la griglia del centro, affiancata da municipio, Corte Suprema e centinaia di edifici d’epoca coloniale.', tip: 'Dopo la pagoda percorri Pansodan Street e Strand Road fino allo Strand Hotel: il percorso migliore nella Yangon coloniale.' },
+      },
+    },
+    {
+      id: 'yangon-kandawgyi-lake', city: 'yangon', category: 'nature', spot: 'insta', lat: 16.792, lng: 96.16, image: 'VLIdhvtXHno',
+      rating: 4.4, reviews: 5100, tags: ['lakes', 'sunset', 'photo'], price: { kind: 'free' },
+      address: 'Kandawgyi Lake, Bahan Township, Yangon',
+      text: {
+        ru: { name: 'Озеро Кандоджи', description: 'Тихое озеро с деревянным променадом и позолоченной баржей Каравейк, а над деревьями сияет шпиль Шведагона.', tip: 'Встаньте на восточном деревянном настиле на закате: в кадре окажутся баржа Каравейк, отражение в воде и золотая Шведагон за ней.' },
+        en: { name: 'Kandawgyi Lake', description: 'A peaceful lake with a wooden boardwalk and the gilded Karaweik barge, with Shwedagon’s spire glowing above the trees.', tip: 'Stand on the eastern boardwalk at sunset to frame the Karaweik barge, its reflection and the golden Shwedagon behind it.' },
+        es: { name: 'Lago Kandawgyi', description: 'Un lago tranquilo con pasarela de madera y la dorada barcaza Karaweik, sobre cuyos árboles brilla la aguja de la Shwedagon.', tip: 'Ponte en la pasarela oriental al atardecer para encuadrar la barcaza Karaweik, su reflejo y la dorada Shwedagon al fondo.' },
+        de: { name: 'Kandawgyi-See', description: 'Ein ruhiger See mit Holzsteg und der vergoldeten Karaweik-Barke, über den Bäumen leuchtet die Spitze der Shwedagon.', tip: 'Stell dich bei Sonnenuntergang auf den östlichen Holzsteg: Im Bild sind die Karaweik-Barke, ihre Spiegelung und dahinter die goldene Shwedagon.' },
+        fr: { name: 'Lac Kandawgyi', description: 'Un lac paisible bordé d’une promenade en bois, avec la barge dorée de Karaweik et la flèche de la Shwedagon qui brille au-dessus des arbres.', tip: 'Placez-vous sur la promenade est au coucher du soleil pour cadrer la barge de Karaweik, son reflet et la Shwedagon dorée derrière.' },
+        it: { name: 'Lago Kandawgyi', description: 'Un lago tranquillo con una passerella di legno e la chiatta dorata di Karaweik, mentre sopra gli alberi brilla la guglia della Shwedagon.', tip: 'Mettiti sulla passerella orientale al tramonto per inquadrare la chiatta Karaweik, il suo riflesso e la Shwedagon dorata dietro.' },
+      },
+    },
+    {
+      id: 'yangon-circular-railway', city: 'yangon', category: 'attraction', spot: 'hidden', lat: 16.7804, lng: 96.1622, image: 'dEnHBDTzo0A',
+      rating: 4.3, reviews: 3900, tags: ['culture', 'photo', 'market'],
+      address: 'Yangon Central Railway Station, Pazundaung Township, Yangon',
+      text: {
+        ru: { name: 'Кольцевая железная дорога', description: 'Медленный пригородный поезд делает круг через окраины города за три часа: в вагоны заходят торговки с корзинами, за окном — рисовые поля, рынки и деревянные станции.', tip: 'Садитесь на Центральном вокзале утром, а на станции Данингон выйдите посмотреть на огромный овощной рынок прямо на путях.' },
+        en: { name: 'Yangon Circular Railway', description: 'A slow suburban train that loops through the city’s outskirts in three hours, with vendors climbing aboard with baskets and rice fields, markets and wooden stations passing by.', tip: 'Board at Central Station in the morning and hop off at Danyingon to see the huge vegetable market spread right across the tracks.' },
+        es: { name: 'Tren circular de Yangón', description: 'Un lento tren de cercanías que da la vuelta a las afueras en tres horas: suben vendedoras con cestas y por la ventana pasan arrozales, mercados y estaciones de madera.', tip: 'Súbete en la Estación Central por la mañana y bájate en Danyingon para ver el enorme mercado de verduras montado sobre las vías.' },
+        de: { name: 'Yangon Circular Railway', description: 'Ein langsamer Vorortzug, der in drei Stunden eine Runde durch die Außenbezirke dreht: Händlerinnen steigen mit Körben zu, draußen ziehen Reisfelder, Märkte und Holzbahnhöfe vorbei.', tip: 'Steig morgens am Hauptbahnhof ein und in Danyingon kurz aus – dort liegt ein riesiger Gemüsemarkt direkt auf den Gleisen.' },
+        fr: { name: 'Train circulaire de Yangon', description: 'Un lent train de banlieue qui fait le tour des faubourgs en trois heures : des marchandes montent avec leurs paniers, tandis que défilent rizières, marchés et gares en bois.', tip: 'Montez à la gare centrale le matin et descendez à Danyingon pour voir l’immense marché aux légumes installé sur les voies.' },
+        it: { name: 'Ferrovia circolare di Yangon', description: 'Un lento treno suburbano che compie il giro della periferia in tre ore: salgono venditrici con le ceste e dal finestrino scorrono risaie, mercati e stazioni di legno.', tip: 'Sali alla Stazione Centrale al mattino e scendi a Danyingon per vedere l’enorme mercato di verdure allestito sui binari.' },
+      },
+    },
+    {
+      id: 'yangon-19th-street', city: 'yangon', category: 'food', lat: 16.7735, lng: 96.153, image: 'SSRAntZFuFA',
+      rating: 4.3, reviews: 6100, tags: ['streetfood', 'nightlife', 'food'], price: { kind: 'level', level: 1 }, hours: '17:00–23:00',
+      address: '19th Street, Latha Township, Yangon',
+      text: {
+        ru: { name: '19-я улица в Чайнатауне', description: 'Вечером улица превращается в гриль-бар под открытым небом: на витринах шпажки с овощами, морепродуктами и мясом, которые жарят на углях и подают с холодным пивом.', tip: 'Выбирайте шпажки на витрине и отдавайте их повару — цену считают по цвету палочек, так что не выбрасывайте их до расчёта.' },
+        en: { name: '19th Street, Chinatown', description: 'In the evening this street becomes an open-air grill bar, with skewers of vegetables, seafood and meat on display, cooked over charcoal and served with cold beer.', tip: 'Pick skewers from the display and hand them to the cook; the bill is counted by stick colour, so keep the sticks until you pay.' },
+        es: { name: 'Calle 19 de Chinatown', description: 'Al anochecer esta calle se convierte en una parrilla al aire libre, con brochetas de verduras, marisco y carne expuestas, asadas al carbón y servidas con cerveza fría.', tip: 'Elige las brochetas del expositor y dáselas al cocinero; la cuenta se hace por el color de los palitos, así que guárdalos hasta pagar.' },
+        de: { name: '19th Street in Chinatown', description: 'Abends wird diese Straße zur Open-Air-Grillbar: Spieße mit Gemüse, Meeresfrüchten und Fleisch liegen aus, werden über Holzkohle gegrillt und mit kaltem Bier serviert.', tip: 'Such dir Spieße aus der Auslage aus und gib sie dem Koch; abgerechnet wird nach der Farbe der Stäbchen, also heb sie bis zum Bezahlen auf.' },
+        fr: { name: '19e rue de Chinatown', description: 'Le soir, cette rue devient un grill à ciel ouvert : brochettes de légumes, de fruits de mer et de viande exposées, grillées au charbon et servies avec une bière fraîche.', tip: 'Choisissez vos brochettes à l’étal et donnez-les au cuisinier ; l’addition se calcule à la couleur des bâtonnets, gardez-les jusqu’au paiement.' },
+        it: { name: '19th Street a Chinatown', description: 'La sera questa via diventa una griglia all’aperto, con spiedini di verdure, frutti di mare e carne in esposizione, cotti alla brace e serviti con birra fredda.', tip: 'Scegli gli spiedini dal banco e consegnali al cuoco; il conto si fa in base al colore degli stecchini, quindi tienili fino al pagamento.' },
+      },
+    },
+    // Bagan
+    {
+      id: 'bagan-ananda-temple', city: 'bagan', category: 'attraction', lat: 21.1708, lng: 94.8679, image: 'XseIoHGALZc',
+      rating: 4.8, reviews: 9600, tags: ['temples', 'history', 'unesco'], price: { kind: 'fixed', amount: 25000, currency: 'MMK' }, hours: '06:00–18:00',
+      address: 'Old Bagan, Nyaung-U District, Mandalay Region',
+      text: {
+        ru: { name: 'Храм Ананда', description: 'Самый почитаемый храм Багана конца XI века: белоснежные стены, позолоченный шпиль и четыре девятиметровых статуи Будды из тикового дерева, смотрящие на все стороны света.', tip: 'Встаньте у южной статуи и отойдите на пару шагов: выражение лица Будды меняется от строгого к улыбающемуся.' },
+        en: { name: 'Ananda Temple', description: 'Bagan’s most revered temple, from the late 11th century, with snow-white walls, a gilded spire and four nine-metre teak Buddhas facing the cardinal directions.', tip: 'Stand by the southern Buddha and step back a few paces: its expression changes from stern to smiling.' },
+        es: { name: 'Templo Ananda', description: 'El templo más venerado de Bagan, de finales del siglo XI, con muros blanquísimos, una aguja dorada y cuatro budas de teca de nueve metros que miran a los cuatro puntos cardinales.', tip: 'Colócate junto al buda del sur y retrocede unos pasos: su expresión pasa de severa a sonriente.' },
+        de: { name: 'Ananda-Tempel', description: 'Bagans meistverehrter Tempel aus dem späten 11. Jahrhundert, mit schneeweißen Mauern, vergoldeter Spitze und vier neun Meter hohen Teakholz-Buddhas, die in alle Himmelsrichtungen blicken.', tip: 'Stell dich vor den südlichen Buddha und tritt ein paar Schritte zurück: Sein Ausdruck wandelt sich von streng zu lächelnd.' },
+        fr: { name: 'Temple d’Ananda', description: 'Le temple le plus vénéré de Bagan, de la fin du XIe siècle : murs d’un blanc éclatant, flèche dorée et quatre bouddhas de teck de neuf mètres tournés vers les points cardinaux.', tip: 'Placez-vous devant le bouddha sud puis reculez de quelques pas : son expression passe de sévère à souriante.' },
+        it: { name: 'Tempio di Ananda', description: 'Il tempio più venerato di Bagan, della fine dell’XI secolo, con pareti candide, una guglia dorata e quattro Buddha in tek alti nove metri rivolti ai punti cardinali.', tip: 'Mettiti davanti al Buddha sud e arretra di qualche passo: la sua espressione passa da severa a sorridente.' },
+      },
+    },
+    {
+      id: 'bagan-dhammayangyi', city: 'bagan', category: 'attraction', lat: 21.16, lng: 94.869, image: 'zOlFBjl6B1E',
+      rating: 4.6, reviews: 4800, tags: ['temples', 'history', 'architecture'], hours: '06:00–18:00',
+      address: 'Old Bagan, Nyaung-U District, Mandalay Region',
+      text: {
+        ru: { name: 'Храм Дхаммаянджи', description: 'Самый массивный храм Багана в форме пирамиды, построенный в XII веке царём, убившим отца. По легенде, внутренние коридоры замуровали, и тайна храма так и осталась неразгаданной.', tip: 'Обратите внимание на кладку: между кирпичами нельзя просунуть даже иглу — так требовал царь от строителей.' },
+        en: { name: 'Dhammayangyi Temple', description: 'Bagan’s most massive temple, a pyramid built in the 12th century by a king who had killed his father. Legend says its inner corridors were bricked up, and the temple’s secret has never been solved.', tip: 'Look closely at the brickwork: not even a needle fits between the bricks, as the king demanded of his builders.' },
+        es: { name: 'Templo Dhammayangyi', description: 'El templo más macizo de Bagan, una pirámide levantada en el siglo XII por un rey que había matado a su padre. Según la leyenda, sus corredores interiores se tapiaron y su secreto nunca se ha desvelado.', tip: 'Fíjate en la mampostería: entre los ladrillos no cabe ni una aguja, tal como exigió el rey a sus constructores.' },
+        de: { name: 'Dhammayangyi-Tempel', description: 'Bagans wuchtigster Tempel, eine Pyramide aus dem 12. Jahrhundert, erbaut von einem König, der seinen Vater getötet hatte. Der Legende nach wurden die inneren Gänge zugemauert, sein Geheimnis ist bis heute ungelöst.', tip: 'Schau dir das Mauerwerk genau an: Zwischen die Ziegel passt nicht einmal eine Nadel – so verlangte es der König von seinen Baumeistern.' },
+        fr: { name: 'Temple de Dhammayangyi', description: 'Le temple le plus massif de Bagan, une pyramide élevée au XIIe siècle par un roi parricide. Selon la légende, ses couloirs intérieurs furent murés, et son secret n’a jamais été percé.', tip: 'Observez la maçonnerie : on ne peut glisser une aiguille entre les briques, comme l’exigeait le roi de ses bâtisseurs.' },
+        it: { name: 'Tempio di Dhammayangyi', description: 'Il tempio più massiccio di Bagan, una piramide costruita nel XII secolo da un re che aveva ucciso il padre. Secondo la leggenda i corridoi interni furono murati e il suo segreto non è mai stato svelato.', tip: 'Osserva la muratura: tra i mattoni non passa neppure un ago, come il re pretendeva dai costruttori.' },
+      },
+    },
+    {
+      id: 'bagan-sunrise-viewpoint', city: 'bagan', category: 'nature', spot: 'insta', lat: 21.163, lng: 94.866, image: 'YVMINsxTIKY',
+      rating: 4.8, reviews: 6900, tags: ['sunset', 'photo', 'views'], price: { kind: 'free' },
+      address: 'Near Shwesandaw Pagoda, Old Bagan, Mandalay Region',
+      text: {
+        ru: { name: 'Рассвет над равниной храмов', description: 'Официальные смотровые холмы между Старым Баганом и Шуэсандо открывают вид на сотни пагод, тонущих в утреннем тумане. В сезон, когда работают полёты, над ними поднимаются воздушные шары.', tip: 'Будьте на холме к 5:45 и снимайте на восток телевиком: силуэты ступ на фоне солнца и шаров выглядят как открытка.' },
+        en: { name: 'Sunrise over the temple plain', description: 'The official viewing mounds between Old Bagan and Shwesandaw overlook hundreds of pagodas drowning in morning mist. In season, when flights operate, hot-air balloons rise above them.', tip: 'Be on the mound by 5:45 a.m. and shoot east with a telephoto lens: stupa silhouettes against the sun and balloons look like a postcard.' },
+        es: { name: 'Amanecer sobre la llanura de templos', description: 'Los miradores oficiales entre Old Bagan y Shwesandaw dominan cientos de pagodas sumergidas en la niebla matinal. En temporada, cuando hay vuelos, se elevan sobre ellas los globos.', tip: 'Llega al mirador antes de las 5:45 y dispara hacia el este con teleobjetivo: las siluetas de las estupas contra el sol y los globos parecen una postal.' },
+        de: { name: 'Sonnenaufgang über der Tempelebene', description: 'Die offiziellen Aussichtshügel zwischen Old Bagan und Shwesandaw blicken über Hunderte Pagoden im Morgennebel. In der Saison, wenn Flüge stattfinden, steigen darüber Heißluftballons auf.', tip: 'Sei um 5:45 Uhr auf dem Hügel und fotografiere mit Tele nach Osten: Stupa-Silhouetten vor Sonne und Ballons sehen aus wie eine Postkarte.' },
+        fr: { name: 'Lever du soleil sur la plaine des temples', description: 'Les buttes d’observation officielles entre Old Bagan et Shwesandaw dominent des centaines de pagodes noyées dans la brume du matin. En saison, quand les vols ont lieu, les montgolfières s’élèvent au-dessus.', tip: 'Soyez sur la butte à 5 h 45 et photographiez vers l’est au téléobjectif : les silhouettes des stupas devant le soleil et les ballons ont des airs de carte postale.' },
+        it: { name: 'Alba sulla pianura dei templi', description: 'Le collinette panoramiche ufficiali tra Old Bagan e Shwesandaw dominano centinaia di pagode immerse nella nebbia del mattino. In stagione, quando i voli sono attivi, sopra di esse si alzano le mongolfiere.', tip: 'Sii sulla collinetta entro le 5:45 e scatta verso est con il teleobiettivo: le sagome degli stupa contro il sole e le mongolfiere sembrano una cartolina.' },
+      },
+    },
+    {
+      id: 'bagan-mount-popa', city: 'bagan', category: 'nature', spot: 'hidden', lat: 20.9244, lng: 95.2508, image: 'np5wC9cYINA',
+      rating: 4.5, reviews: 3700, tags: ['temples', 'hiking', 'volcanoes'],
+      address: 'Taung Kalat, Popa, Kyaukpadaung Township, Mandalay Region',
+      text: {
+        ru: { name: 'Гора Попа и монастырь Таунг Калат', description: 'Монастырь на вершине вулканической скалы в 50 км от Багана — обитель духов-натов, которым поклоняются бирманцы. Наверх ведут 777 ступеней.', tip: 'Выезжайте рано утром на машине с водителем и держите еду и очки подальше от макак на лестнице.' },
+        en: { name: 'Mount Popa and Taung Kalat', description: 'A monastery atop a volcanic plug 50 km from Bagan, home of the nat spirits venerated by the Burmese. Some 777 steps lead to the top.', tip: 'Leave early in the morning with a car and driver, and keep food and sunglasses away from the macaques on the stairs.' },
+        es: { name: 'Monte Popa y Taung Kalat', description: 'Un monasterio en lo alto de un pitón volcánico a 50 km de Bagan, morada de los espíritus nat que veneran los birmanos. Hasta la cima suben 777 escalones.', tip: 'Sal temprano en coche con conductor y mantén la comida y las gafas lejos de los macacos de la escalera.' },
+        de: { name: 'Mount Popa und Taung Kalat', description: 'Ein Kloster auf einem Vulkanschlot 50 km von Bagan, Sitz der Nat-Geister, die die Burmesen verehren. 777 Stufen führen hinauf.', tip: 'Fahr frühmorgens mit Auto und Fahrer los und halte Essen und Sonnenbrille von den Makaken auf der Treppe fern.' },
+        fr: { name: 'Mont Popa et Taung Kalat', description: 'Un monastère perché sur un piton volcanique à 50 km de Bagan, demeure des esprits nats vénérés par les Birmans. On y monte par 777 marches.', tip: 'Partez tôt le matin en voiture avec chauffeur et tenez nourriture et lunettes hors de portée des macaques de l’escalier.' },
+        it: { name: 'Monte Popa e Taung Kalat', description: 'Un monastero in cima a un neck vulcanico a 50 km da Bagan, dimora degli spiriti nat venerati dai birmani. Alla vetta portano 777 gradini.', tip: 'Parti al mattino presto con auto e autista e tieni cibo e occhiali lontani dai macachi sulla scalinata.' },
+      },
+    },
+    {
+      id: 'bagan-nyaung-u-market', city: 'bagan', category: 'food', lat: 21.196, lng: 94.906, image: 'ZTIEPcsjJaw',
+      rating: 4.2, reviews: 2600, tags: ['market', 'streetfood', 'culture'], price: { kind: 'level', level: 1 }, hours: '06:00–17:00',
+      address: 'Main Road, Nyaung U, Mandalay Region',
+      text: {
+        ru: { name: 'Рынок Ньяунг-У', description: 'Главный рынок округа, где утром продают танаку — жёлтую пасту для лица, — горы специй, чайные листья для лапхета и свежую мохингу из котлов.', tip: 'Приходите до 9 утра на завтрак: мохинга в рядах у входа — лучшая в Багане, а торговцы танакой охотно нанесут её вам на щёки.' },
+        en: { name: 'Nyaung U Market', description: 'The district’s main market, where in the morning you’ll find thanaka (the yellow face paste), mounds of spices, tea leaves for lahpet and fresh mohinga ladled from cauldrons.', tip: 'Come for breakfast before 9 a.m.: the mohinga in the rows by the entrance is Bagan’s best, and thanaka sellers will happily paint some on your cheeks.' },
+        es: { name: 'Mercado de Nyaung U', description: 'El mercado principal de la zona, donde por la mañana se vende thanaka, la pasta amarilla para la cara, montañas de especias, hojas de té para el lahpet y mohinga recién servida de los calderos.', tip: 'Ven a desayunar antes de las 9: la mohinga de los puestos de la entrada es la mejor de Bagan, y las vendedoras de thanaka te la pondrán en las mejillas encantadas.' },
+        de: { name: 'Markt von Nyaung U', description: 'Der Hauptmarkt der Gegend: Morgens gibt es Thanaka, die gelbe Gesichtspaste, Berge von Gewürzen, Teeblätter für Lahpet und frische Mohinga aus großen Kesseln.', tip: 'Komm vor 9 Uhr zum Frühstück: Die Mohinga an den Ständen am Eingang ist die beste in Bagan, und Thanaka-Händlerinnen tragen dir die Paste gern auf die Wangen auf.' },
+        fr: { name: 'Marché de Nyaung U', description: 'Le grand marché du secteur, où l’on trouve le matin du thanaka, la pâte jaune pour le visage, des montagnes d’épices, des feuilles de thé pour le lahpet et de la mohinga servie à la louche.', tip: 'Venez y prendre le petit-déjeuner avant 9 heures : la mohinga des étals de l’entrée est la meilleure de Bagan, et les vendeuses de thanaka vous en appliqueront volontiers sur les joues.' },
+        it: { name: 'Mercato di Nyaung U', description: 'Il mercato principale della zona, dove al mattino si vendono thanaka, la pasta gialla per il viso, montagne di spezie, foglie di tè per il lahpet e mohinga fresca servita dai pentoloni.', tip: 'Vieni a colazione entro le 9: la mohinga dei banchi all’ingresso è la migliore di Bagan e le venditrici di thanaka te la stenderanno volentieri sulle guance.' },
+      },
+    },
+    // Inle Lake
+    {
+      id: 'inle-lake-boat-trip', city: 'inle-lake', category: 'nature', lat: 20.555, lng: 96.915, image: 'CH7JI7pwVcU',
+      rating: 4.7, reviews: 7800, tags: ['lakes', 'culture', 'cruise'],
+      address: 'Nyaungshwe jetty, Inle Lake, Shan State',
+      text: {
+        ru: { name: 'Лодочная прогулка по озеру', description: 'Длинная лодка-моторка за день проходит по каналам мимо плавучих огородов, деревень на сваях, кузниц, ткацких мастерских из лотосового волокна и рынков, которые кочуют по берегам по пятидневному циклу.', tip: 'Выезжайте из Ньяуншве в 6 утра: над водой туман, а лодочник успеет показать ротационный рынок, пока он не закрылся.' },
+        en: { name: 'Inle Lake boat trip', description: 'A long motorboat spends the day threading canals past floating gardens, stilt villages, blacksmiths, lotus-silk weaving workshops and markets that rotate around the shores on a five-day cycle.', tip: 'Leave Nyaungshwe at 6 a.m., when mist hangs over the water and your boatman has time to reach the rotating market before it closes.' },
+        es: { name: 'Paseo en barca por el lago', description: 'Una larga lancha recorre durante el día canales junto a huertos flotantes, aldeas sobre pilotes, herrerías, talleres de tejido de fibra de loto y mercados que rotan por las orillas en un ciclo de cinco días.', tip: 'Sal de Nyaungshwe a las 6, con niebla sobre el agua, para que el barquero llegue al mercado rotativo antes de que cierre.' },
+        de: { name: 'Bootstour auf dem Inle-See', description: 'Ein langes Motorboot fährt den ganzen Tag durch Kanäle vorbei an schwimmenden Gärten, Pfahldörfern, Schmieden, Webereien für Lotusseide und Märkten, die im Fünf-Tage-Rhythmus um den See wandern.', tip: 'Brich um 6 Uhr in Nyaungshwe auf: Dann liegt Nebel über dem Wasser, und der Bootsmann erreicht den Wandermarkt noch vor Schluss.' },
+        fr: { name: 'Balade en bateau sur le lac', description: 'Un long bateau à moteur sillonne toute la journée les canaux, entre jardins flottants, villages sur pilotis, forges, ateliers de tissage de soie de lotus et marchés qui tournent autour du lac selon un cycle de cinq jours.', tip: 'Partez de Nyaungshwe à 6 heures, quand la brume flotte sur l’eau, pour que le batelier atteigne le marché tournant avant sa fermeture.' },
+        it: { name: 'Giro in barca sul lago', description: 'Una lunga barca a motore percorre per tutto il giorno i canali tra orti galleggianti, villaggi su palafitte, fucine, laboratori di tessitura della seta di loto e mercati che ruotano lungo le sponde con un ciclo di cinque giorni.', tip: 'Parti da Nyaungshwe alle 6, con la nebbia sull’acqua, così il barcaiolo arriva al mercato itinerante prima che chiuda.' },
+      },
+    },
+    {
+      id: 'inle-lake-phaung-daw-oo', city: 'inle-lake', category: 'attraction', lat: 20.5606, lng: 96.9133, image: 'CH7JI7pwVcU',
+      rating: 4.4, reviews: 3300, tags: ['temples', 'culture', 'lakes'], price: { kind: 'free' }, hours: '06:00–18:00',
+      address: 'Phaung Daw Oo Pagoda, Inle Lake, Shan State',
+      text: {
+        ru: { name: 'Пагода Пхаунг До У', description: 'Главная святыня озера, где хранятся пять древних статуэток Будды, настолько покрытых сусальным золотом от паломников, что они превратились в бесформенные шары.', tip: 'Осенью, во время фестиваля Пхаунг До У, статуэтки возят по озеру на золотой барже-птице — сверяйте даты по лунному календарю.' },
+        en: { name: 'Phaung Daw Oo Pagoda', description: 'The lake’s holiest shrine holds five ancient Buddha figures so thickly covered in pilgrims’ gold leaf that they have become shapeless golden balls.', tip: 'In autumn, during the Phaung Daw Oo festival, the figures are carried around the lake on a golden bird-shaped barge; check the dates by the lunar calendar.' },
+        es: { name: 'Pagoda Phaung Daw Oo', description: 'El santuario más sagrado del lago guarda cinco antiguas figuras de Buda tan cubiertas por el pan de oro de los peregrinos que se han convertido en bolas doradas sin forma.', tip: 'En otoño, durante el festival de Phaung Daw Oo, las figuras recorren el lago en una barcaza dorada con forma de ave: consulta las fechas en el calendario lunar.' },
+        de: { name: 'Phaung-Daw-Oo-Pagode', description: 'Das heiligste Heiligtum des Sees birgt fünf alte Buddhafiguren, die von Pilgern so dick mit Blattgold beklebt wurden, dass sie zu formlosen Goldkugeln geworden sind.', tip: 'Im Herbst, beim Phaung-Daw-Oo-Fest, werden die Figuren auf einer goldenen Vogelbarke über den See gefahren – die Termine richten sich nach dem Mondkalender.' },
+        fr: { name: 'Pagode Phaung Daw Oo', description: 'Le sanctuaire le plus sacré du lac abrite cinq anciennes statuettes du Bouddha si couvertes de feuilles d’or par les pèlerins qu’elles sont devenues des boules dorées informes.', tip: 'À l’automne, pendant la fête de Phaung Daw Oo, les statuettes parcourent le lac sur une barge dorée en forme d’oiseau : vérifiez les dates selon le calendrier lunaire.' },
+        it: { name: 'Pagoda Phaung Daw Oo', description: 'Il santuario più sacro del lago custodisce cinque antiche statuette del Buddha così ricoperte di foglia d’oro dai pellegrini da essere diventate sfere dorate senza forma.', tip: 'In autunno, durante la festa di Phaung Daw Oo, le statuette vengono portate per il lago su una chiatta dorata a forma di uccello: verifica le date sul calendario lunare.' },
+      },
+    },
+    {
+      id: 'inle-lake-leg-rowers', city: 'inle-lake', category: 'nature', spot: 'insta', lat: 20.61, lng: 96.91, image: 'CH7JI7pwVcU',
+      rating: 4.8, reviews: 5200, tags: ['photo', 'culture', 'lakes'], price: { kind: 'free' },
+      address: 'Northern Inle Lake, Shan State',
+      text: {
+        ru: { name: 'Рыбаки интха на рассвете', description: 'Знаменитые рыбаки, которые стоят на корме на одной ноге, другой обхватывают весло и одновременно опускают в воду конусообразную сеть.', tip: 'Попросите лодочника заглушить мотор в северной части озера на рассвете и снимайте против солнца — силуэт рыбака с сетью на фоне тумана.' },
+        en: { name: 'Intha fishermen at sunrise', description: 'The famous fishermen who balance on one leg at the stern, wrap the other around the oar and lower a conical net into the water at the same time.', tip: 'Ask your boatman to cut the engine in the northern part of the lake at sunrise and shoot into the sun for a silhouette of fisherman and net against the mist.' },
+        es: { name: 'Pescadores intha al amanecer', description: 'Los famosos pescadores que se mantienen sobre una pierna en la popa, enroscan la otra al remo y a la vez hunden en el agua una red cónica.', tip: 'Pide al barquero que apague el motor en la parte norte del lago al amanecer y dispara a contraluz: la silueta del pescador con la red sobre la niebla.' },
+        de: { name: 'Intha-Fischer bei Sonnenaufgang', description: 'Die berühmten Fischer, die auf einem Bein am Heck balancieren, das andere um das Ruder schlingen und dabei ein kegelförmiges Netz ins Wasser senken.', tip: 'Bitte den Bootsmann, bei Sonnenaufgang im Norden des Sees den Motor abzustellen, und fotografiere gegen die Sonne – Fischer und Netz als Silhouette im Nebel.' },
+        fr: { name: 'Pêcheurs intha au lever du soleil', description: 'Les célèbres pêcheurs qui se tiennent sur une jambe à la poupe, enroulent l’autre autour de l’aviron et plongent en même temps un filet conique dans l’eau.', tip: 'Demandez au batelier de couper le moteur dans le nord du lac au lever du soleil et photographiez à contre-jour : la silhouette du pêcheur et de son filet sur fond de brume.' },
+        it: { name: 'Pescatori intha all’alba', description: 'I famosi pescatori che stanno in equilibrio su una gamba a poppa, avvolgono l’altra intorno al remo e intanto calano in acqua una rete conica.', tip: 'Chiedi al barcaiolo di spegnere il motore nella parte nord del lago all’alba e scatta controluce: la sagoma del pescatore con la rete nella nebbia.' },
+      },
+    },
+    {
+      id: 'inle-lake-indein', city: 'inle-lake', category: 'attraction', spot: 'hidden', lat: 20.518, lng: 96.877, image: '_ghTTExqf1U',
+      rating: 4.6, reviews: 2900, tags: ['temples', 'history', 'photo'],
+      address: 'Indein (Inn Thein) village, west shore of Inle Lake, Shan State',
+      text: {
+        ru: { name: 'Пагоды Индейна', description: 'Лес из сотен старинных ступ, поросших травой и деревьями, на холме за деревней Индейн на западном берегу озера. Многие туры сюда не заходят.', tip: 'Лодка поднимается по узкой протоке Инн Тхейн к деревне; от пристани идите по крытой галерее вверх на холм, к самым дальним полуразрушенным ступам.' },
+        en: { name: 'Indein pagodas', description: 'A forest of hundreds of ancient stupas overgrown with grass and trees on a hill behind Indein village on the lake’s west shore. Many tours skip it.', tip: 'Boats wind up the narrow Inn Thein creek to the village; from the jetty follow the covered walkway uphill to the furthest crumbling stupas.' },
+        es: { name: 'Pagodas de Indein', description: 'Un bosque de cientos de estupas antiguas cubiertas de hierba y árboles en una colina tras el pueblo de Indein, en la orilla oeste del lago. Muchos tours no pasan por aquí.', tip: 'La barca remonta el estrecho canal de Inn Thein hasta el pueblo; desde el muelle sigue la galería cubierta colina arriba hasta las estupas más alejadas y ruinosas.' },
+        de: { name: 'Pagoden von Indein', description: 'Ein Wald aus Hunderten alter, von Gras und Bäumen überwucherter Stupas auf einem Hügel hinter dem Dorf Indein am Westufer des Sees. Viele Touren lassen ihn aus.', tip: 'Das Boot fährt den schmalen Inn-Thein-Bach hinauf bis zum Dorf; vom Steg folgst du dem überdachten Gang den Hügel hinauf zu den entlegensten verfallenen Stupas.' },
+        fr: { name: 'Pagodes d’Indein', description: 'Une forêt de centaines de stupas anciens envahis d’herbe et d’arbres, sur une colline derrière le village d’Indein, sur la rive ouest du lac. Beaucoup d’excursions l’ignorent.', tip: 'Le bateau remonte l’étroit chenal d’Inn Thein jusqu’au village ; depuis l’embarcadère, suivez la galerie couverte vers le haut de la colline jusqu’aux stupas les plus éloignés et délabrés.' },
+        it: { name: 'Pagode di Indein', description: 'Una foresta di centinaia di antichi stupa invasi da erba e alberi su una collina dietro il villaggio di Indein, sulla sponda ovest del lago. Molti tour la saltano.', tip: 'La barca risale lo stretto canale di Inn Thein fino al villaggio; dal molo segui la galleria coperta in salita fino agli stupa più lontani e diroccati.' },
+      },
+    },
+    {
+      id: 'inle-lake-nyaungshwe-market', city: 'inle-lake', category: 'food', lat: 20.661, lng: 96.933, image: 'CH7JI7pwVcU',
+      rating: 4.2, reviews: 2100, tags: ['market', 'streetfood', 'food'], price: { kind: 'level', level: 1 }, hours: '06:00–14:00',
+      address: 'Mingalar Market, Nyaungshwe, Shan State',
+      text: {
+        ru: { name: 'Рынок Мингалар в Ньяуншве', description: 'Утренний рынок, куда спускаются с гор женщины народа па-о в ярких тюрбанах. Здесь едят шанскую лапшу в бульоне, тофу из нута и жареные лепёшки.', tip: 'Закажите шан кхаусве — рисовую лапшу с курицей и маринованной горчицей — в рядах у входа, где готовят с семи утра.' },
+        en: { name: 'Mingalar Market, Nyaungshwe', description: 'A morning market where Pa-O women in bright turbans come down from the hills, and people eat Shan noodle soup, chickpea tofu and fried flatbreads.', tip: 'Order shan khauk swe, rice noodles with chicken and pickled mustard greens, in the rows by the entrance, where cooking starts at 7 a.m.' },
+        es: { name: 'Mercado Mingalar de Nyaungshwe', description: 'Un mercado matinal al que bajan de las montañas las mujeres pa-o con turbantes de colores, y donde se comen sopa de fideos shan, tofu de garbanzo y tortas fritas.', tip: 'Pide shan khauk swe, fideos de arroz con pollo y hojas de mostaza encurtidas, en los puestos de la entrada, que cocinan desde las 7.' },
+        de: { name: 'Mingalar-Markt in Nyaungshwe', description: 'Ein Morgenmarkt, zu dem Pa-O-Frauen mit bunten Turbanen aus den Bergen herabkommen; hier isst man Shan-Nudelsuppe, Kichererbsentofu und frittierte Fladen.', tip: 'Bestell Shan Khauk Swe – Reisnudeln mit Huhn und eingelegtem Senfkohl – an den Ständen am Eingang, wo ab 7 Uhr gekocht wird.' },
+        fr: { name: 'Marché Mingalar de Nyaungshwe', description: 'Un marché matinal où descendent des collines les femmes pa-o coiffées de turbans colorés, et où l’on mange soupe de nouilles shan, tofu de pois chiches et galettes frites.', tip: 'Commandez un shan khauk swe, nouilles de riz au poulet et à la moutarde marinée, aux étals de l’entrée, qui cuisinent dès 7 heures.' },
+        it: { name: 'Mercato Mingalar di Nyaungshwe', description: 'Un mercato mattutino dove scendono dalle colline le donne pa-o con turbanti colorati, e dove si mangiano zuppa di noodles shan, tofu di ceci e focacce fritte.', tip: 'Ordina lo shan khauk swe, noodles di riso con pollo e senape in salamoia, ai banchi all’ingresso, che cucinano dalle 7.' },
+      },
+    },
+  ],
+};
+
+export default pack;

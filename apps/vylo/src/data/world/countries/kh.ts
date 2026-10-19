@@ -1,0 +1,370 @@
+import type { CountryPack } from '../types';
+
+const pack: CountryPack = {
+  country: {
+    code: 'KH',
+    region: 'sea',
+    image: 'EY3tC81nFt0',
+    theme: { accent: '#9a3412', accent2: '#eab308', motif: 'sun' },
+    fromMoscow: { hours: 15, direct: false },
+    text: {
+      ru: {
+        tagline: 'Храмы Ангкора, королевский Пномпень и острова Сиамского залива',
+        description: 'Камбоджа — страна, где джунгли до сих пор обнимают каменные храмы древней Кхмерской империи, а рассвет над Ангкор-Ватом остаётся одним из главных зрелищ Азии. Здесь неспешный ритм, искренние улыбки и тихие острова с белым песком, куда ещё не добрался массовый туризм.',
+        howToGet: 'Прямых рейсов из Москвы нет: обычно летят через Бангкок, Гуанчжоу, Дубай, Доху или Ханой в Пномпень или Сиемреап — в пути 15–18 часов. Между городами ходят автобусы Giant Ibis и минивэны (Пномпень — Сиемреап около 6 часов), летают короткие внутренние рейсы, а по городам ездят на тук-туках через приложения PassApp и Grab.',
+        tips: [
+          'Российские Visa и Mastercard не работают, но это почти не мешает: в стране свободно ходят доллары США — везите новые, целые купюры без надрывов, а сдачу мелочью дадут в риелях.',
+          'Вызывайте тук-тук через PassApp или Grab — цена фиксирована, и не нужно торговаться.',
+          'В храмах закрывайте плечи и колени — без этого не пустят на верхний ярус Ангкор-Вата; телефон в тук-туке держите крепко, в Пномпене случаются рывки.',
+        ],
+        guide: {
+          title: 'Камбоджа за 10 дней',
+          sections: [
+            { title: 'Когда ехать', body: 'Лучшее время — с ноября по март: сухо, сравнительно прохладно, около +30 °C, а рвы Ангкора полны воды для отражений. Апрель и май — пекло под +38 °C. С июня по октябрь идут дожди, зато джунгли вокруг храмов ярко-зелёные, а туристов вдвое меньше. В ноябре Пномпень празднует Водный фестиваль с лодочными гонками, в середине апреля вся страна отмечает кхмерский Новый год.' },
+            { title: 'Маршрут на 10 дней', body: 'Начните с Пномпеня: два дня на Королевский дворец, Серебряную пагоду, музей Туол Сленг и закат на набережной. Затем автобус или самолёт в Сиемреап — три-четыре дня на Ангкор: рассвет у Ангкор-Вата, лики Байона, корни Та Прома и далёкий Бенг Мелеа. Финал — три дня на островах Ко Ронг и Ко Ронг Самлоем: пустые пляжи, сноркелинг и ночное купание в светящемся планктоне.' },
+            { title: 'Что попробовать', body: 'Национальное блюдо — амок: рыба в кокосовом карри, запечённая на пару в банановом листе. Попробуйте лок лак — обжаренную говядину с соусом из лайма и знаменитого кампотского перца, суп-лапшу куй тьеу на завтрак и нум банх чок — рисовую лапшу с зелёным рыбным карри от уличных торговок. Смелым — жареные тарантулы и сверчки на рынках, а на десерт — свежий манго и сок сахарного тростника.' },
+            { title: 'Деньги, связь и транспорт', body: 'Цены везде указывают в долларах США, риели нужны только для мелочи. Карты российских банков не работают, поэтому везите наличные и следите, чтобы купюры были без надрывов — рваные не примут. Сим-карты Smart, Cellcard и Metfone продают в аэропортах по паспорту. Перед прилётом заполните электронную карту прибытия. Сухопутные переходы на границе с Таиландом после столкновений 2025 года могут закрываться — проверяйте их статус заранее.' },
+          ],
+        },
+      },
+      en: {
+        tagline: 'Angkor’s temples, royal Phnom Penh and Gulf of Thailand islands',
+        description: 'Cambodia is a land where the jungle still embraces the stone temples of the ancient Khmer Empire and sunrise over Angkor Wat remains one of Asia’s great spectacles. Life moves slowly, smiles are genuine and quiet white-sand islands have yet to meet mass tourism.',
+        howToGet: 'There are no direct flights from Moscow: the usual route goes via Bangkok, Guangzhou, Dubai, Doha or Hanoi to Phnom Penh or Siem Reap, 15–18 hours in total. Between cities, Giant Ibis buses and minivans run (Phnom Penh to Siem Reap takes about 6 hours), short domestic flights operate, and in town you ride tuk-tuks booked through the PassApp and Grab apps.',
+        tips: [
+          'Russian-issued Visa and Mastercard cards don’t work, but it hardly matters: US dollars circulate freely, so bring new, undamaged notes; small change comes back in riel.',
+          'Book tuk-tuks through PassApp or Grab for a fixed fare and no haggling.',
+          'Cover shoulders and knees in temples, as you won’t be allowed onto Angkor Wat’s upper level otherwise, and hold your phone firmly in tuk-tuks, since snatch thefts happen in Phnom Penh.',
+        ],
+        guide: {
+          title: 'Cambodia in 10 days',
+          sections: [
+            { title: 'When to go', body: 'The best time is November to March: it is dry and relatively cool at around 30 °C, and Angkor’s moats are full enough for reflections. April and May are scorching, up to 38 °C. From June to October the rains come, but the jungle around the temples is vividly green and there are half as many visitors. In November Phnom Penh holds the Water Festival with boat races, and in mid-April the whole country celebrates Khmer New Year.' },
+            { title: 'A 10-day route', body: 'Start in Phnom Penh with two days for the Royal Palace, the Silver Pagoda, the Tuol Sleng museum and sunset on the riverfront. Then take a bus or plane to Siem Reap for three or four days at Angkor: sunrise at Angkor Wat, the faces of the Bayon, the roots of Ta Prohm and remote Beng Mealea. Finish with three days on Koh Rong and Koh Rong Samloem for empty beaches, snorkelling and night swims among glowing plankton.' },
+            { title: 'What to eat', body: 'The national dish is amok, fish in coconut curry steamed in a banana leaf. Try lok lak, seared beef with a dipping sauce of lime and the famous Kampot pepper, kuy teav noodle soup for breakfast and num banh chok, rice noodles with green fish curry from street vendors. The brave go for fried tarantulas and crickets at the markets; for dessert, fresh mango and sugarcane juice.' },
+            { title: 'Money, SIM cards and transport', body: 'Prices are quoted in US dollars everywhere, and riel are only needed for small change. Russian bank cards don’t work, so bring cash and make sure notes are untorn, as damaged ones are refused. Smart, Cellcard and Metfone SIM cards are sold at airports on presentation of your passport. Fill in the electronic arrival card before you fly. Land crossings on the Thai border may close after the 2025 clashes, so check their status in advance.' },
+          ],
+        },
+      },
+      es: {
+        tagline: 'Templos de Angkor, la Phnom Penh real e islas del golfo de Tailandia',
+        description: 'Camboya es un país donde la selva aún abraza los templos de piedra del antiguo Imperio jemer y el amanecer sobre Angkor Wat sigue siendo uno de los grandes espectáculos de Asia. La vida va despacio, las sonrisas son sinceras y sus tranquilas islas de arena blanca aún no conocen el turismo de masas.',
+        howToGet: 'No hay vuelos directos desde Moscú: lo habitual es volar vía Bangkok, Cantón, Dubái, Doha o Hanói hasta Phnom Penh o Siem Reap, con 15–18 horas de viaje. Entre ciudades circulan los autobuses Giant Ibis y furgonetas (Phnom Penh–Siem Reap, unas 6 horas), hay vuelos internos cortos y en la ciudad te mueves en tuk-tuk pedido por las apps PassApp y Grab.',
+        tips: [
+          'Las Visa y Mastercard emitidas en Rusia no funcionan, pero apenas importa: el dólar estadounidense circula libremente, así que lleva billetes nuevos y sin roturas; el cambio pequeño te lo darán en rieles.',
+          'Pide el tuk-tuk por PassApp o Grab: precio fijo y sin regateos.',
+          'En los templos cubre hombros y rodillas, o no podrás subir al nivel superior de Angkor Wat, y sujeta bien el móvil en el tuk-tuk, porque en Phnom Penh hay tirones.',
+        ],
+        guide: {
+          title: 'Camboya en 10 días',
+          sections: [
+            { title: 'Cuándo ir', body: 'La mejor época va de noviembre a marzo: tiempo seco y relativamente fresco, unos 30 °C, y los fosos de Angkor llenos para los reflejos. Abril y mayo son un horno de hasta 38 °C. De junio a octubre llegan las lluvias, pero la selva que rodea los templos está verdísima y hay la mitad de visitantes. En noviembre Phnom Penh celebra el Festival del Agua con regatas, y a mediados de abril todo el país festeja el Año Nuevo jemer.' },
+            { title: 'Ruta de 10 días', body: 'Empieza en Phnom Penh: dos días para el Palacio Real, la Pagoda de Plata, el museo Tuol Sleng y el atardecer en el paseo fluvial. Después, autobús o avión a Siem Reap y tres o cuatro días en Angkor: amanecer en Angkor Wat, los rostros del Bayón, las raíces de Ta Prohm y el remoto Beng Mealea. Termina con tres días en Koh Rong y Koh Rong Samloem: playas vacías, snorkel y baños nocturnos entre plancton luminoso.' },
+            { title: 'Qué probar', body: 'El plato nacional es el amok, pescado en curri de coco cocido al vapor en hoja de plátano. Prueba el lok lak, ternera salteada con salsa de lima y la famosa pimienta de Kampot, la sopa de fideos kuy teav en el desayuno y el num banh chok, fideos de arroz con curri verde de pescado de los puestos callejeros. Los valientes se atreven con tarántulas y grillos fritos; de postre, mango fresco y zumo de caña.' },
+            { title: 'Dinero, móvil y transporte', body: 'Los precios se indican en dólares en todas partes y los rieles solo sirven para el cambio. Las tarjetas de bancos rusos no funcionan, así que lleva efectivo y comprueba que los billetes no estén rotos, porque los dañados se rechazan. Las SIM de Smart, Cellcard y Metfone se venden en los aeropuertos con el pasaporte. Rellena la tarjeta electrónica de llegada antes del vuelo. Los pasos fronterizos terrestres con Tailandia pueden cerrarse tras los choques de 2025: consulta su estado.' },
+          ],
+        },
+      },
+      de: {
+        tagline: 'Angkors Tempel, das königliche Phnom Penh und Inseln am Golf',
+        description: 'Kambodscha ist ein Land, in dem der Dschungel noch immer die Steintempel des alten Khmer-Reichs umschlingt und der Sonnenaufgang über Angkor Wat zu den großen Schauspielen Asiens zählt. Das Leben geht langsam, das Lächeln ist echt, und die stillen Inseln mit weißem Sand kennen noch keinen Massentourismus.',
+        howToGet: 'Direktflüge ab Moskau gibt es nicht: Üblich ist die Route über Bangkok, Guangzhou, Dubai, Doha oder Hanoi nach Phnom Penh oder Siem Reap, insgesamt 15–18 Stunden. Zwischen den Städten fahren Giant-Ibis-Busse und Minivans (Phnom Penh–Siem Reap etwa 6 Stunden), es gibt kurze Inlandsflüge, und in der Stadt nimmst du Tuk-Tuks über die Apps PassApp und Grab.',
+        tips: [
+          'In Russland ausgegebene Visa- und Mastercard-Karten funktionieren nicht, was kaum stört: US-Dollar sind überall gängig – nimm neue, unbeschädigte Scheine mit, Wechselgeld gibt es in Riel.',
+          'Bestell Tuk-Tuks über PassApp oder Grab: Festpreis, kein Feilschen.',
+          'Bedecke in Tempeln Schultern und Knie, sonst darfst du nicht auf die obere Ebene von Angkor Wat, und halte im Tuk-Tuk dein Handy gut fest – in Phnom Penh kommt es zu Handtaschenraub.',
+        ],
+        guide: {
+          title: 'Kambodscha in 10 Tagen',
+          sections: [
+            { title: 'Reisezeit', body: 'Am besten reist du von November bis März: trocken und vergleichsweise kühl um 30 °C, und Angkors Wassergräben sind voll genug für Spiegelungen. April und Mai sind glühend heiß, bis 38 °C. Von Juni bis Oktober kommt der Regen, dafür leuchtet der Dschungel um die Tempel sattgrün, und es sind nur halb so viele Besucher da. Im November feiert Phnom Penh das Wasserfest mit Bootsrennen, Mitte April das ganze Land das Khmer-Neujahr.' },
+            { title: 'Route für 10 Tage', body: 'Starte in Phnom Penh: zwei Tage für Königspalast, Silberpagode, das Tuol-Sleng-Museum und den Sonnenuntergang am Flussufer. Dann per Bus oder Flugzeug nach Siem Reap und drei, vier Tage Angkor: Sonnenaufgang an Angkor Wat, die Gesichter des Bayon, die Wurzeln von Ta Prohm und das abgelegene Beng Mealea. Zum Schluss drei Tage auf Koh Rong und Koh Rong Samloem mit leeren Stränden, Schnorcheln und nächtlichem Baden im leuchtenden Plankton.' },
+            { title: 'Was du probieren solltest', body: 'Das Nationalgericht ist Amok, Fisch in Kokoscurry, im Bananenblatt gedämpft. Probier Lok Lak, scharf angebratenes Rind mit einer Soße aus Limette und dem berühmten Kampot-Pfeffer, die Nudelsuppe Kuy Teav zum Frühstück und Num Banh Chok, Reisnudeln mit grünem Fischcurry von Straßenhändlerinnen. Mutige probieren auf den Märkten frittierte Taranteln und Grillen, zum Nachtisch gibt es frische Mango und Zuckerrohrsaft.' },
+            { title: 'Geld, Handy und Verkehr', body: 'Preise stehen überall in US-Dollar, Riel brauchst du nur als Kleingeld. Russische Bankkarten funktionieren nicht, also nimm Bargeld mit und achte auf unbeschädigte Scheine – eingerissene werden abgelehnt. SIM-Karten von Smart, Cellcard und Metfone gibt es an Flughäfen gegen Vorlage des Passes. Füll vor dem Flug die elektronische Ankunftskarte aus. Landgrenzübergänge nach Thailand können nach den Gefechten von 2025 geschlossen sein – prüfe ihren Status vorab.' },
+          ],
+        },
+      },
+      fr: {
+        tagline: 'Temples d’Angkor, Phnom Penh la royale et îles du golfe de Thaïlande',
+        description: 'Le Cambodge est un pays où la jungle enlace encore les temples de pierre de l’ancien Empire khmer et où le lever du soleil sur Angkor Vat reste l’un des grands spectacles de l’Asie. La vie s’écoule lentement, les sourires sont sincères et de paisibles îles de sable blanc échappent encore au tourisme de masse.',
+        howToGet: 'Il n’existe pas de vol direct depuis Moscou : on passe généralement par Bangkok, Canton, Dubaï, Doha ou Hanoï pour rejoindre Phnom Penh ou Siem Reap, soit 15 à 18 heures de trajet. Entre les villes circulent les bus Giant Ibis et des minibus (Phnom Penh–Siem Reap en 6 heures environ), de courts vols intérieurs existent, et en ville on prend des tuk-tuks via les applications PassApp et Grab.',
+        tips: [
+          'Les cartes Visa et Mastercard émises en Russie ne fonctionnent pas, mais cela gêne peu : le dollar américain circule partout, alors emportez des billets neufs et intacts ; la petite monnaie est rendue en riels.',
+          'Commandez vos tuk-tuks via PassApp ou Grab : prix fixe et pas de marchandage.',
+          'Dans les temples, couvrez épaules et genoux, faute de quoi l’accès au niveau supérieur d’Angkor Vat est refusé, et tenez bien votre téléphone en tuk-tuk : les vols à l’arraché existent à Phnom Penh.',
+        ],
+        guide: {
+          title: 'Le Cambodge en 10 jours',
+          sections: [
+            { title: 'Quand partir', body: 'La meilleure période va de novembre à mars : temps sec et relativement frais, autour de 30 °C, et douves d’Angkor bien remplies pour les reflets. Avril et mai sont caniculaires, jusqu’à 38 °C. De juin à octobre arrivent les pluies, mais la jungle autour des temples est d’un vert éclatant et les visiteurs deux fois moins nombreux. En novembre, Phnom Penh fête l’eau avec des courses de pirogues, et à la mi-avril tout le pays célèbre le Nouvel An khmer.' },
+            { title: 'Itinéraire de 10 jours', body: 'Commencez par Phnom Penh : deux jours pour le Palais royal, la Pagode d’argent, le musée de Tuol Sleng et le coucher du soleil sur les quais. Puis bus ou avion pour Siem Reap et trois ou quatre jours à Angkor : lever du soleil sur Angkor Vat, visages du Bayon, racines du Ta Prohm et lointain Beng Mealea. Terminez par trois jours sur Koh Rong et Koh Rong Samloem : plages désertes, snorkeling et baignades nocturnes dans le plancton lumineux.' },
+            { title: 'Que goûter', body: 'Le plat national est l’amok, du poisson au curry de coco cuit à la vapeur dans une feuille de bananier. Goûtez le lok lak, bœuf saisi servi avec une sauce au citron vert et au célèbre poivre de Kampot, la soupe de nouilles kuy teav au petit-déjeuner et le num banh chok, nouilles de riz au curry vert de poisson vendues dans la rue. Les audacieux croquent des mygales et des grillons frits ; en dessert, mangue fraîche et jus de canne.' },
+            { title: 'Argent, téléphone et transports', body: 'Les prix sont affichés en dollars américains partout, les riels ne servent qu’à la monnaie. Les cartes des banques russes ne fonctionnent pas : prévoyez des espèces et veillez à ce que les billets soient intacts, car les billets abîmés sont refusés. Les cartes SIM Smart, Cellcard et Metfone se vendent dans les aéroports sur présentation du passeport. Remplissez la carte d’arrivée électronique avant le vol. Les postes-frontières terrestres avec la Thaïlande peuvent fermer depuis les affrontements de 2025 : vérifiez avant de partir.' },
+          ],
+        },
+      },
+      it: {
+        tagline: 'I templi di Angkor, la regale Phnom Penh e le isole del golfo',
+        description: 'La Cambogia è un Paese in cui la giungla abbraccia ancora i templi di pietra dell’antico Impero khmer e l’alba su Angkor Wat resta uno dei grandi spettacoli dell’Asia. La vita scorre lenta, i sorrisi sono sinceri e le tranquille isole di sabbia bianca non conoscono ancora il turismo di massa.',
+        howToGet: 'Non ci sono voli diretti da Mosca: di solito si vola via Bangkok, Canton, Dubai, Doha o Hanoi fino a Phnom Penh o Siem Reap, per 15–18 ore complessive. Tra le città viaggiano gli autobus Giant Ibis e i minivan (Phnom Penh–Siem Reap in circa 6 ore), ci sono brevi voli interni e in città ci si muove in tuk-tuk prenotati con le app PassApp e Grab.',
+        tips: [
+          'Le carte Visa e Mastercard emesse in Russia non funzionano, ma conta poco: i dollari americani circolano ovunque, quindi porta banconote nuove e integre; il resto spicciolo arriva in riel.',
+          'Prenota il tuk-tuk con PassApp o Grab: prezzo fisso e niente contrattazioni.',
+          'Nei templi copri spalle e ginocchia, altrimenti non si sale al livello superiore di Angkor Wat, e tieni stretto il telefono in tuk-tuk, perché a Phnom Penh capitano gli scippi.',
+        ],
+        guide: {
+          title: 'La Cambogia in 10 giorni',
+          sections: [
+            { title: 'Quando andare', body: 'Il periodo migliore va da novembre a marzo: clima secco e relativamente fresco, intorno ai 30 °C, e fossati di Angkor pieni per i riflessi. Aprile e maggio sono roventi, fino a 38 °C. Da giugno a ottobre arrivano le piogge, ma la giungla intorno ai templi è di un verde brillante e i visitatori sono la metà. A novembre Phnom Penh celebra la Festa dell’Acqua con le regate, a metà aprile tutto il Paese festeggia il Capodanno khmer.' },
+            { title: 'Itinerario di 10 giorni', body: 'Comincia da Phnom Penh: due giorni per il Palazzo Reale, la Pagoda d’Argento, il museo di Tuol Sleng e il tramonto sul lungofiume. Poi autobus o aereo per Siem Reap e tre o quattro giorni ad Angkor: alba ad Angkor Wat, i volti del Bayon, le radici di Ta Prohm e il remoto Beng Mealea. Chiudi con tre giorni a Koh Rong e Koh Rong Samloem tra spiagge deserte, snorkeling e bagni notturni nel plancton luminoso.' },
+            { title: 'Cosa assaggiare', body: 'Il piatto nazionale è l’amok, pesce al curry di cocco cotto al vapore in una foglia di banano. Prova il lok lak, manzo scottato con salsa di lime e il famoso pepe di Kampot, la zuppa di noodles kuy teav a colazione e il num banh chok, spaghetti di riso con curry verde di pesce delle venditrici di strada. I più coraggiosi assaggiano tarantole e grilli fritti; come dessert, mango fresco e succo di canna.' },
+            { title: 'Soldi, telefono e trasporti', body: 'I prezzi sono indicati ovunque in dollari americani, i riel servono solo per il resto. Le carte delle banche russe non funzionano, quindi porta contanti e controlla che le banconote non siano strappate, perché quelle rovinate vengono rifiutate. Le SIM di Smart, Cellcard e Metfone si comprano in aeroporto con il passaporto. Compila la carta d’arrivo elettronica prima del volo. I valichi di terra con la Thailandia possono chiudere dopo gli scontri del 2025: verificane lo stato.' },
+          ],
+        },
+      },
+    },
+  },
+  cities: [
+    {
+      id: 'siem-reap', lat: 13.3671, lng: 103.8448, image: 'EY3tC81nFt0', gallery: ['G4zRrmIWLP0', 'imCBr_R2Oqs', 'IDvabbb7M2Y', '_fthFagehTw', '0FLPm1B060U'],
+      rating: 4.8, reviews: 14320, tags: ['temples', 'history', 'unesco', 'photo'], months: [11, 12, 1, 2, 3], budgetPerDay: 45, currency: 'KHR',
+      language: 'km', timezone: 'UTC+7', zoom: 11, theme: { accent: '#78350f', accent2: '#f59e0b', motif: 'sun' },
+      text: {
+        ru: { name: 'Сиемреап', tagline: 'Рассвет над Ангкор-Ватом и храмы, оплетённые корнями', description: 'Уютный город на реке — база для исследования Ангкора, крупнейшего религиозного комплекса в мире, где сотни храмов раскиданы по джунглям на площади 400 км². Вечером жизнь кипит на Паб-стрит и ночных рынках.', tips: ['Покупайте абонемент на 3 дня (действует неделю) — за один день Ангкор не осилить.', 'Наймите тук-тук с водителем на весь день: малый круг стоит около 20 долларов, большой — около 25.'], gettingThere: 'Новый аэропорт Сиемреап-Ангкор находится в 50 км от города: шаттл-автобус или такси довезут примерно за час. Из Пномпеня — 6 часов на автобусе или 45 минут лёта.' },
+        en: { name: 'Siem Reap', tagline: 'Sunrise over Angkor Wat and temples wrapped in roots', description: 'This easy-going riverside town is the base for exploring Angkor, the world’s largest religious complex, with hundreds of temples scattered across 400 km² of jungle. In the evening, life buzzes on Pub Street and at the night markets.', tips: ['Buy the 3-day pass (valid for a week): Angkor can’t be done in one day.', 'Hire a tuk-tuk and driver for the whole day: the small circuit costs about 20 dollars, the grand circuit about 25.'], gettingThere: 'The new Siem Reap-Angkor airport is 50 km from town, about an hour by shuttle bus or taxi. From Phnom Penh it is 6 hours by bus or a 45-minute flight.' },
+        es: { name: 'Siem Reap', tagline: 'Amanecer sobre Angkor Wat y templos envueltos en raíces', description: 'Esta tranquila ciudad junto al río es la base para explorar Angkor, el mayor complejo religioso del mundo, con cientos de templos repartidos por 400 km² de selva. Por la noche, la vida bulle en Pub Street y en los mercados nocturnos.', tips: ['Compra el pase de 3 días (válido una semana): Angkor no se ve en una jornada.', 'Contrata un tuk-tuk con conductor para todo el día: el circuito pequeño cuesta unos 20 dólares y el grande, unos 25.'], gettingThere: 'El nuevo aeropuerto de Siem Reap-Angkor está a 50 km de la ciudad, a una hora en autobús lanzadera o taxi. Desde Phnom Penh hay 6 horas en autobús o 45 minutos de vuelo.' },
+        de: { name: 'Siem Reap', tagline: 'Sonnenaufgang über Angkor Wat und von Wurzeln umschlungene Tempel', description: 'Die gemütliche Stadt am Fluss ist die Basis für Angkor, den größten religiösen Komplex der Welt, dessen Hunderte Tempel über 400 km² Dschungel verstreut liegen. Abends tobt das Leben in der Pub Street und auf den Nachtmärkten.', tips: ['Kauf den 3-Tages-Pass (eine Woche gültig) – Angkor schafft man nicht an einem Tag.', 'Miete ein Tuk-Tuk mit Fahrer für den ganzen Tag: Die kleine Runde kostet etwa 20 Dollar, die große etwa 25.'], gettingThere: 'Der neue Flughafen Siem Reap-Angkor liegt 50 km außerhalb, rund eine Stunde per Shuttlebus oder Taxi. Ab Phnom Penh sind es 6 Stunden mit dem Bus oder 45 Minuten Flug.' },
+        fr: { name: 'Siem Reap', tagline: 'Lever du soleil sur Angkor Vat et temples enlacés de racines', description: 'Cette paisible ville au bord de la rivière sert de base pour explorer Angkor, le plus grand ensemble religieux du monde, dont les centaines de temples parsèment 400 km² de jungle. Le soir, Pub Street et les marchés de nuit s’animent.', tips: ['Prenez le pass de 3 jours (valable une semaine) : Angkor ne se visite pas en une journée.', 'Louez un tuk-tuk avec chauffeur pour la journée : environ 20 dollars pour le petit circuit, 25 pour le grand.'], gettingThere: 'Le nouvel aéroport de Siem Reap-Angkor est à 50 km de la ville, à environ une heure en navette ou en taxi. Depuis Phnom Penh, comptez 6 heures de bus ou 45 minutes de vol.' },
+        it: { name: 'Siem Reap', tagline: 'Alba su Angkor Wat e templi avvolti dalle radici', description: 'Questa tranquilla cittadina sul fiume è la base per esplorare Angkor, il più grande complesso religioso del mondo, con centinaia di templi sparsi in 400 km² di giungla. La sera la vita si accende su Pub Street e nei mercati notturni.', tips: ['Compra il pass di 3 giorni (valido una settimana): Angkor non si vede in un giorno.', 'Ingaggia un tuk-tuk con autista per l’intera giornata: il circuito piccolo costa circa 20 dollari, quello grande circa 25.'], gettingThere: 'Il nuovo aeroporto di Siem Reap-Angkor è a 50 km dalla città, circa un’ora in navetta o taxi. Da Phnom Penh ci vogliono 6 ore di autobus o 45 minuti di volo.' },
+      },
+    },
+    {
+      id: 'phnom-penh', lat: 11.5564, lng: 104.9282, image: '1CWjfwRySfU', gallery: ['KeltsItLdL8', 'GXfwfttZXi0', 'byMso_SnXA4', 'ZxY7pjSLhSQ'],
+      rating: 4.4, reviews: 8760, tags: ['city', 'history', 'market', 'food'], months: [11, 12, 1, 2, 3], budgetPerDay: 45, currency: 'KHR',
+      language: 'km', timezone: 'UTC+7', zoom: 12, theme: { accent: '#a16207', accent2: '#dc2626', motif: 'lanterns' },
+      text: {
+        ru: { name: 'Пномпень', tagline: 'Золотые крыши дворца, набережная Меконга и трудная память', description: 'Столица Камбоджи стоит у слияния Меконга и Тонлесапа: позолоченный Королевский дворец, французские виллы и бульвары соседствуют с шумными рынками и новыми небоскрёбами. Город честно рассказывает о трагедии красных кхмеров — и при этом полон жизни.', tips: ['Королевский дворец закрыт на обед с 11:00 до 14:00 — планируйте визит на утро.', 'Для дворца нужна одежда, закрывающая плечи и колени; футболки продают у входа.'], gettingThere: 'Новый международный аэропорт Течо находится в 30 км к югу от центра: дорога на такси или Grab занимает около 40–60 минут.' },
+        en: { name: 'Phnom Penh', tagline: 'Golden palace roofs, the Mekong riverfront and a hard-won memory', description: 'Cambodia’s capital stands where the Mekong meets the Tonle Sap: the gilded Royal Palace, French villas and boulevards sit beside noisy markets and new high-rises. The city faces the tragedy of the Khmer Rouge honestly and yet bursts with life.', tips: ['The Royal Palace closes for lunch from 11:00 to 14:00, so plan your visit for the morning.', 'The palace requires clothing that covers shoulders and knees; T-shirts are sold at the entrance.'], gettingThere: 'The new Techo International Airport lies 30 km south of the centre, about 40–60 minutes by taxi or Grab.' },
+        es: { name: 'Phnom Penh', tagline: 'Tejados dorados, el paseo del Mekong y una memoria difícil', description: 'La capital camboyana se alza donde el Mekong se une al Tonlé Sap: el dorado Palacio Real, villas y bulevares franceses conviven con mercados ruidosos y nuevos rascacielos. La ciudad cuenta con honestidad la tragedia de los jemeres rojos y, aun así, rebosa vida.', tips: ['El Palacio Real cierra a mediodía de 11:00 a 14:00: planea la visita por la mañana.', 'Para el palacio se exige ropa que cubra hombros y rodillas; en la entrada venden camisetas.'], gettingThere: 'El nuevo aeropuerto internacional de Techo está a 30 km al sur del centro, a unos 40–60 minutos en taxi o Grab.' },
+        de: { name: 'Phnom Penh', tagline: 'Goldene Palastdächer, das Mekong-Ufer und schwere Erinnerung', description: 'Kambodschas Hauptstadt liegt am Zusammenfluss von Mekong und Tonle Sap: Der vergoldete Königspalast, französische Villen und Boulevards stehen neben lauten Märkten und neuen Hochhäusern. Die Stadt erzählt offen von der Tragödie der Roten Khmer und ist dennoch voller Leben.', tips: ['Der Königspalast schließt mittags von 11 bis 14 Uhr – plane den Besuch für den Vormittag.', 'Im Palast müssen Schultern und Knie bedeckt sein; T-Shirts werden am Eingang verkauft.'], gettingThere: 'Der neue internationale Flughafen Techo liegt 30 km südlich des Zentrums, rund 40–60 Minuten per Taxi oder Grab.' },
+        fr: { name: 'Phnom Penh', tagline: 'Toits dorés du palais, quais du Mékong et mémoire douloureuse', description: 'La capitale cambodgienne s’étend au confluent du Mékong et du Tonlé Sap : le Palais royal doré, les villas et boulevards français côtoient des marchés bruyants et de nouvelles tours. La ville raconte sans fard la tragédie des Khmers rouges, tout en débordant de vie.', tips: ['Le Palais royal ferme de 11 h à 14 h : prévoyez votre visite le matin.', 'Une tenue couvrant épaules et genoux est exigée au palais ; des t-shirts sont vendus à l’entrée.'], gettingThere: 'Le nouvel aéroport international de Techo se trouve à 30 km au sud du centre, soit 40 à 60 minutes en taxi ou en Grab.' },
+        it: { name: 'Phnom Penh', tagline: 'Tetti dorati, il lungofiume del Mekong e una memoria difficile', description: 'La capitale cambogiana sorge alla confluenza tra il Mekong e il Tonlé Sap: il dorato Palazzo Reale, ville e viali francesi convivono con mercati rumorosi e nuovi grattacieli. La città racconta con onestà la tragedia dei khmer rossi, eppure trabocca di vita.', tips: ['Il Palazzo Reale chiude per pranzo dalle 11 alle 14: programma la visita al mattino.', 'Al palazzo servono abiti che coprano spalle e ginocchia; all’ingresso vendono magliette.'], gettingThere: 'Il nuovo aeroporto internazionale di Techo si trova 30 km a sud del centro, a circa 40–60 minuti in taxi o Grab.' },
+      },
+    },
+    {
+      id: 'koh-rong', lat: 10.7333, lng: 103.25, image: 'Jfm2l4GMNc4', gallery: ['6zEaMEMkxFQ', 'oZKcyPEIDfc', 'zCVvCTJvCF0'],
+      rating: 4.5, reviews: 4180, tags: ['beaches', 'islands', 'diving', 'jungle'], months: [11, 12, 1, 2, 3, 4], budgetPerDay: 50, currency: 'KHR',
+      language: 'km', timezone: 'UTC+7', zoom: 11, theme: { accent: '#0e7490', accent2: '#a3e635', motif: 'palms' },
+      text: {
+        ru: { name: 'Ко Ронг', tagline: 'Пустые пляжи, джунгли и светящийся планктон', description: 'Второй по величине остров Камбоджи и его тихий сосед Ко Ронг Самлоем — это километры белого песка, лес в центре и деревни на сваях. Электричество и интернет здесь работают не везде, и в этом половина очарования.', tips: ['Банкоматов почти нет — привозите наличные доллары с материка.', 'Ночью на тропах темно, берите налобный фонарик.'], gettingThere: 'Скоростные паромы из Сиануквиля идут до деревни Кох-Туч около 45 минут. До Сиануквиля из Пномпеня — 2,5–3 часа по скоростной трассе.' },
+        en: { name: 'Koh Rong', tagline: 'Empty beaches, jungle and glowing plankton', description: 'Cambodia’s second-largest island and its quiet neighbour Koh Rong Samloem offer miles of white sand, forest in the interior and villages on stilts. Electricity and internet don’t work everywhere, and that is half the charm.', tips: ['There are hardly any ATMs, so bring US dollars in cash from the mainland.', 'Trails are pitch-dark at night, so pack a head torch.'], gettingThere: 'Speed ferries from Sihanoukville reach Koh Touch village in about 45 minutes. Sihanoukville is 2.5–3 hours from Phnom Penh on the expressway.' },
+        es: { name: 'Koh Rong', tagline: 'Playas vacías, selva y plancton luminoso', description: 'La segunda isla más grande de Camboya y su tranquila vecina Koh Rong Samloem ofrecen kilómetros de arena blanca, bosque en el interior y aldeas sobre pilotes. La electricidad e internet no llegan a todas partes, y eso es la mitad de su encanto.', tips: ['Casi no hay cajeros: trae dólares en efectivo desde el continente.', 'De noche los senderos están a oscuras: lleva una linterna frontal.'], gettingThere: 'Los ferris rápidos desde Sihanoukville llegan al pueblo de Koh Touch en unos 45 minutos. Sihanoukville está a 2,5–3 horas de Phnom Penh por la autopista.' },
+        de: { name: 'Koh Rong', tagline: 'Leere Strände, Dschungel und leuchtendes Plankton', description: 'Kambodschas zweitgrößte Insel und ihre ruhige Nachbarin Koh Rong Samloem bieten kilometerlange weiße Strände, Wald im Inneren und Pfahldörfer. Strom und Internet gibt es nicht überall – genau das macht den halben Reiz aus.', tips: ['Geldautomaten gibt es kaum – bring US-Dollar in bar vom Festland mit.', 'Nachts sind die Pfade stockdunkel, pack eine Stirnlampe ein.'], gettingThere: 'Schnellfähren von Sihanoukville erreichen das Dorf Koh Touch in etwa 45 Minuten. Nach Sihanoukville sind es von Phnom Penh 2,5–3 Stunden über die Schnellstraße.' },
+        fr: { name: 'Koh Rong', tagline: 'Plages désertes, jungle et plancton lumineux', description: 'La deuxième plus grande île du Cambodge et sa paisible voisine Koh Rong Samloem offrent des kilomètres de sable blanc, une forêt au centre et des villages sur pilotis. L’électricité et Internet ne fonctionnent pas partout, et c’est la moitié du charme.', tips: ['Les distributeurs sont quasi absents : apportez des dollars en espèces depuis le continent.', 'La nuit, les sentiers sont plongés dans le noir : prévoyez une lampe frontale.'], gettingThere: 'Les ferries rapides depuis Sihanoukville rejoignent le village de Koh Touch en 45 minutes environ. Sihanoukville est à 2 h 30–3 h de Phnom Penh par l’autoroute.' },
+        it: { name: 'Koh Rong', tagline: 'Spiagge deserte, giungla e plancton luminoso', description: 'La seconda isola più grande della Cambogia e la sua tranquilla vicina Koh Rong Samloem offrono chilometri di sabbia bianca, foresta all’interno e villaggi su palafitte. Elettricità e internet non arrivano ovunque, ed è metà del fascino.', tips: ['I bancomat sono quasi inesistenti: porta dollari in contanti dalla terraferma.', 'Di notte i sentieri sono al buio: metti in valigia una frontale.'], gettingThere: 'I traghetti veloci da Sihanoukville raggiungono il villaggio di Koh Touch in circa 45 minuti. Sihanoukville dista 2,5–3 ore da Phnom Penh in autostrada.' },
+      },
+    },
+  ],
+  places: [
+    // Siem Reap
+    {
+      id: 'siem-reap-angkor-wat', city: 'siem-reap', category: 'attraction', lat: 13.4125, lng: 103.867, image: 'EY3tC81nFt0',
+      rating: 4.9, reviews: 62400, tags: ['temples', 'history', 'unesco', 'sunset'], price: { kind: 'fixed', amount: 37, currency: 'USD' }, hours: '05:00–17:30',
+      address: 'Angkor Archaeological Park, Krong Siem Reap',
+      text: {
+        ru: { name: 'Ангкор-Ват', description: 'Крупнейшее религиозное сооружение в мире, построенное в XII веке как храм Вишну: пять башен-лотосов, километры барельефов и ров шириной почти 200 метров.', tip: 'На рассвет приходите к 5 утра и встаньте у левого пруда перед главным входом — башни отразятся в воде на фоне розового неба.' },
+        en: { name: 'Angkor Wat', description: 'The world’s largest religious monument, built in the 12th century as a temple to Vishnu, with five lotus towers, kilometres of bas-reliefs and a moat almost 200 metres wide.', tip: 'For sunrise arrive by 5 a.m. and stand at the left-hand pond in front of the main entrance to see the towers reflected against a pink sky.' },
+        es: { name: 'Angkor Wat', description: 'El mayor monumento religioso del mundo, levantado en el siglo XII como templo a Visnú, con cinco torres en forma de loto, kilómetros de bajorrelieves y un foso de casi 200 metros de ancho.', tip: 'Para el amanecer llega antes de las 5 y colócate junto al estanque izquierdo, frente a la entrada principal: las torres se reflejan sobre un cielo rosado.' },
+        de: { name: 'Angkor Wat', description: 'Das größte religiöse Bauwerk der Welt, im 12. Jahrhundert als Vishnu-Tempel errichtet, mit fünf Lotustürmen, kilometerlangen Reliefs und einem fast 200 Meter breiten Wassergraben.', tip: 'Zum Sonnenaufgang bist du um 5 Uhr da und stellst dich an den linken Teich vor dem Haupteingang – die Türme spiegeln sich vor rosa Himmel im Wasser.' },
+        fr: { name: 'Angkor Vat', description: 'Le plus grand monument religieux du monde, bâti au XIIe siècle en l’honneur de Vishnou : cinq tours en bouton de lotus, des kilomètres de bas-reliefs et des douves larges de près de 200 mètres.', tip: 'Pour le lever du soleil, arrivez avant 5 heures et postez-vous au bassin de gauche, face à l’entrée principale : les tours se reflètent sur un ciel rose.' },
+        it: { name: 'Angkor Wat', description: 'Il più grande monumento religioso del mondo, costruito nel XII secolo come tempio di Visnù, con cinque torri a fiore di loto, chilometri di bassorilievi e un fossato largo quasi 200 metri.', tip: 'Per l’alba arriva entro le 5 e mettiti accanto allo stagno di sinistra davanti all’ingresso principale: le torri si specchiano nell’acqua contro il cielo rosa.' },
+      },
+    },
+    {
+      id: 'siem-reap-ta-prohm', city: 'siem-reap', category: 'attraction', lat: 13.4349, lng: 103.889, image: '0FLPm1B060U',
+      rating: 4.8, reviews: 31800, tags: ['temples', 'jungle', 'history'], price: { kind: 'fixed', amount: 37, currency: 'USD' }, hours: '07:30–17:30',
+      address: 'Angkor Archaeological Park, Krong Siem Reap',
+      text: {
+        ru: { name: 'Та Пром', description: 'Монастырь XII века, который реставраторы намеренно оставили в объятиях джунглей: корни гигантских шелковиц и сейб раздвигают стены и обвивают галереи.', tip: 'Приходите к открытию в 7:30 — до прибытия автобусов можно побыть в галереях почти одному.' },
+        en: { name: 'Ta Prohm', description: 'A 12th-century monastery that restorers deliberately left in the jungle’s embrace, its walls pried apart and galleries entwined by the roots of giant silk-cotton and strangler fig trees.', tip: 'Come at the 7:30 opening to have the galleries almost to yourself before the tour buses arrive.' },
+        es: { name: 'Ta Prohm', description: 'Un monasterio del siglo XII que los restauradores dejaron a propósito en brazos de la selva: las raíces de ceibas e higueras gigantes separan los muros y envuelven las galerías.', tip: 'Llega a la apertura, a las 7:30, para tener las galerías casi para ti antes de que lleguen los autobuses.' },
+        de: { name: 'Ta Prohm', description: 'Ein Kloster aus dem 12. Jahrhundert, das Restauratoren bewusst in der Umarmung des Dschungels ließen: Wurzeln riesiger Kapokbäume und Würgefeigen sprengen Mauern und umschlingen die Galerien.', tip: 'Komm zur Öffnung um 7:30 Uhr, dann hast du die Galerien fast für dich, bevor die Reisebusse eintreffen.' },
+        fr: { name: 'Ta Prohm', description: 'Un monastère du XIIe siècle volontairement laissé dans l’étreinte de la jungle : les racines de fromagers et de figuiers étrangleurs géants disjoignent les murs et enlacent les galeries.', tip: 'Venez dès l’ouverture, à 7 h 30, pour profiter des galeries presque seul avant l’arrivée des cars.' },
+        it: { name: 'Ta Prohm', description: 'Un monastero del XII secolo che i restauratori hanno lasciato di proposito nell’abbraccio della giungla: le radici di enormi kapok e ficus strangolatori spaccano i muri e avvolgono le gallerie.', tip: 'Arriva all’apertura delle 7:30 per avere le gallerie quasi tutte per te prima dei pullman.' },
+      },
+    },
+    {
+      id: 'siem-reap-bayon', city: 'siem-reap', category: 'attraction', spot: 'insta', lat: 13.4412, lng: 103.859, image: '_fthFagehTw',
+      rating: 4.8, reviews: 27500, tags: ['temples', 'photo', 'history'], price: { kind: 'fixed', amount: 37, currency: 'USD' }, hours: '07:30–17:30',
+      address: 'Angkor Thom, Angkor Archaeological Park, Krong Siem Reap',
+      text: {
+        ru: { name: 'Байон', description: 'Храм в самом центре Ангкор-Тхома с 54 башнями, с которых смотрят более двухсот огромных каменных лиц с загадочной полуулыбкой.', tip: 'Снимайте ранним утром с верхней террасы: косой свет с востока подчёркивает черты лиц, а людей ещё мало.' },
+        en: { name: 'Bayon', description: 'A temple at the very heart of Angkor Thom with 54 towers bearing more than two hundred huge stone faces wearing an enigmatic half-smile.', tip: 'Shoot early in the morning from the upper terrace, when low eastern light sculpts the faces and crowds are still thin.' },
+        es: { name: 'Bayón', description: 'Un templo en pleno corazón de Angkor Thom con 54 torres de las que miran más de doscientos enormes rostros de piedra con una enigmática media sonrisa.', tip: 'Fotografía a primera hora desde la terraza superior: la luz rasante del este realza los rostros y aún hay poca gente.' },
+        de: { name: 'Bayon', description: 'Ein Tempel im Herzen von Angkor Thom mit 54 Türmen, von denen mehr als zweihundert riesige Steingesichter mit rätselhaftem Halblächeln blicken.', tip: 'Fotografiere frühmorgens von der oberen Terrasse: Das flache Licht aus Osten modelliert die Gesichter, und noch ist wenig los.' },
+        fr: { name: 'Bayon', description: 'Un temple au cœur même d’Angkor Thom, dont les 54 tours portent plus de deux cents immenses visages de pierre au mystérieux demi-sourire.', tip: 'Photographiez tôt le matin depuis la terrasse supérieure : la lumière rasante de l’est sculpte les visages et la foule est encore rare.' },
+        it: { name: 'Bayon', description: 'Un tempio nel cuore di Angkor Thom con 54 torri da cui guardano oltre duecento enormi volti di pietra dall’enigmatico mezzo sorriso.', tip: 'Scatta al mattino presto dalla terrazza superiore: la luce radente da est scolpisce i volti e c’è ancora poca gente.' },
+      },
+    },
+    {
+      id: 'siem-reap-beng-mealea', city: 'siem-reap', category: 'attraction', spot: 'hidden', lat: 13.476, lng: 104.238, image: 'imCBr_R2Oqs',
+      rating: 4.6, reviews: 5200, tags: ['temples', 'jungle', 'adventure'], price: { kind: 'fixed', amount: 5, currency: 'USD' }, hours: '07:00–17:00',
+      address: 'Beng Mealea, Svay Leu District, Siem Reap Province',
+      text: {
+        ru: { name: 'Бенг Мелеа', description: 'Огромный храм XII века, почти не тронутый реставраторами: обрушенные галереи, мох и деревья, растущие прямо из стен. По руинам проложены деревянные мостки.', tip: 'Храм в 65 км от Сиемреапа и не входит в общий абонемент — берите тук-тук или такси на полдня и приезжайте утром.' },
+        en: { name: 'Beng Mealea', description: 'A vast 12th-century temple barely touched by restorers, with collapsed galleries, moss and trees growing straight out of the walls. Wooden walkways thread through the ruins.', tip: 'The temple is 65 km from Siem Reap and not covered by the Angkor pass, so hire a tuk-tuk or taxi for half a day and come in the morning.' },
+        es: { name: 'Beng Mealea', description: 'Un enorme templo del siglo XII casi intacto por los restauradores: galerías derrumbadas, musgo y árboles que brotan de los muros. Pasarelas de madera recorren las ruinas.', tip: 'Está a 65 km de Siem Reap y no entra en el pase de Angkor: contrata tuk-tuk o taxi para media jornada y ve por la mañana.' },
+        de: { name: 'Beng Mealea', description: 'Ein riesiger Tempel aus dem 12. Jahrhundert, kaum von Restauratoren berührt: eingestürzte Galerien, Moos und Bäume, die direkt aus den Mauern wachsen. Holzstege führen durch die Ruinen.', tip: 'Der Tempel liegt 65 km von Siem Reap entfernt und gehört nicht zum Angkor-Pass – nimm für einen halben Tag ein Tuk-Tuk oder Taxi und komm morgens.' },
+        fr: { name: 'Beng Mealea', description: 'Un immense temple du XIIe siècle à peine touché par les restaurateurs : galeries effondrées, mousse et arbres jaillissant des murs. Des passerelles en bois serpentent entre les ruines.', tip: 'Le temple est à 65 km de Siem Reap et n’est pas inclus dans le pass d’Angkor : louez un tuk-tuk ou un taxi pour une demi-journée et venez le matin.' },
+        it: { name: 'Beng Mealea', description: 'Un enorme tempio del XII secolo quasi intatto dai restauratori: gallerie crollate, muschio e alberi che spuntano dai muri. Passerelle di legno attraversano le rovine.', tip: 'Il tempio dista 65 km da Siem Reap e non rientra nel pass di Angkor: prendi un tuk-tuk o un taxi per mezza giornata e vai al mattino.' },
+      },
+    },
+    {
+      id: 'siem-reap-psar-chas', city: 'siem-reap', category: 'food', lat: 13.354, lng: 103.8555, image: 'IDvabbb7M2Y',
+      rating: 4.3, reviews: 7600, tags: ['market', 'streetfood', 'food'], price: { kind: 'level', level: 1 }, hours: '07:00–21:00',
+      address: 'Psar Chas, Street 9, Krong Siem Reap',
+      text: {
+        ru: { name: 'Старый рынок Псар Час', description: 'Рынок у реки, где утром торгуют рыбой, травами и фруктами, а в рядах с едой готовят куй тьеу, амок и жареную лапшу. Вокруг — сувениры, шёлк и кампотский перец.', tip: 'Завтракайте здесь до девяти утра: лапша свежайшая, а прилавки ломятся от продуктов.' },
+        en: { name: 'Psar Chas Old Market', description: 'A riverside market where fish, herbs and fruit are sold in the morning and food stalls cook kuy teav, amok and fried noodles. Around it you’ll find souvenirs, silk and Kampot pepper.', tip: 'Have breakfast here before 9 a.m., when the noodles are at their freshest and the stalls overflow with produce.' },
+        es: { name: 'Mercado Viejo Psar Chas', description: 'Un mercado junto al río donde por la mañana se vende pescado, hierbas y fruta, y en los puestos de comida se preparan kuy teav, amok y fideos fritos. Alrededor, recuerdos, seda y pimienta de Kampot.', tip: 'Desayuna aquí antes de las 9: los fideos están recién hechos y los puestos rebosan de producto.' },
+        de: { name: 'Alter Markt Psar Chas', description: 'Ein Markt am Fluss, auf dem morgens Fisch, Kräuter und Obst verkauft werden, während Garküchen Kuy Teav, Amok und gebratene Nudeln zubereiten. Ringsum gibt es Souvenirs, Seide und Kampot-Pfeffer.', tip: 'Frühstücke hier vor 9 Uhr – dann sind die Nudeln am frischesten und die Stände voller Waren.' },
+        fr: { name: 'Vieux marché Psar Chas', description: 'Un marché au bord de la rivière où l’on vend le matin poisson, herbes et fruits, tandis que les gargotes préparent kuy teav, amok et nouilles sautées. Autour, souvenirs, soie et poivre de Kampot.', tip: 'Prenez le petit-déjeuner ici avant 9 heures, quand les nouilles sont les plus fraîches et les étals débordent.' },
+        it: { name: 'Mercato Vecchio Psar Chas', description: 'Un mercato sul fiume dove al mattino si vendono pesce, erbe e frutta e i banchi di cibo preparano kuy teav, amok e noodles saltati. Tutt’intorno souvenir, seta e pepe di Kampot.', tip: 'Fai colazione qui prima delle 9, quando i noodles sono freschissimi e i banchi traboccano di prodotti.' },
+      },
+    },
+    // Phnom Penh
+    {
+      id: 'phnom-penh-royal-palace', city: 'phnom-penh', category: 'attraction', lat: 11.5636, lng: 104.931, image: 'KeltsItLdL8',
+      rating: 4.6, reviews: 21400, tags: ['architecture', 'history', 'temples'], price: { kind: 'fixed', amount: 10, currency: 'USD' }, hours: '08:00–17:00',
+      address: 'Samdach Sothearos Blvd, Phnom Penh',
+      text: {
+        ru: { name: 'Королевский дворец и Серебряная пагода', description: 'Резиденция короля с ярусными золотыми крышами и шпилями-нагами. В Серебряной пагоде пол выложен пятью тысячами серебряных плиток, а на алтаре стоит Изумрудный Будда.', tip: 'Приходите к открытию: до 11 утра свет мягче, а до обеденного перерыва вы успеете обойти всё без спешки.' },
+        en: { name: 'Royal Palace and Silver Pagoda', description: 'The king’s residence, with tiered golden roofs and naga-tipped spires. In the Silver Pagoda the floor is paved with five thousand silver tiles, and an Emerald Buddha sits on the altar.', tip: 'Arrive at opening time: the light is softer before 11 a.m., and you can see everything calmly before the lunch break.' },
+        es: { name: 'Palacio Real y Pagoda de Plata', description: 'La residencia del rey, con tejados dorados escalonados y agujas rematadas en nagas. En la Pagoda de Plata el suelo está cubierto por cinco mil baldosas de plata y en el altar reposa un Buda Esmeralda.', tip: 'Llega a la apertura: antes de las 11 la luz es más suave y lo verás todo con calma antes de la pausa del mediodía.' },
+        de: { name: 'Königspalast und Silberpagode', description: 'Die Residenz des Königs mit gestaffelten goldenen Dächern und Naga-Spitzen. In der Silberpagode ist der Boden mit fünftausend Silberfliesen ausgelegt, auf dem Altar sitzt ein Smaragd-Buddha.', tip: 'Komm zur Öffnung: Vor 11 Uhr ist das Licht weicher, und du schaffst alles in Ruhe vor der Mittagspause.' },
+        fr: { name: 'Palais royal et Pagode d’argent', description: 'La résidence du roi, aux toits dorés étagés et aux flèches ornées de nâgas. Dans la Pagode d’argent, le sol est pavé de cinq mille dalles d’argent et un Bouddha d’émeraude trône sur l’autel.', tip: 'Arrivez à l’ouverture : avant 11 heures, la lumière est plus douce et vous verrez tout sereinement avant la pause de midi.' },
+        it: { name: 'Palazzo Reale e Pagoda d’Argento', description: 'La residenza del re, con tetti dorati a più livelli e guglie a forma di naga. Nella Pagoda d’Argento il pavimento è coperto da cinquemila piastrelle d’argento e sull’altare siede un Buddha di smeraldo.', tip: 'Arriva all’apertura: prima delle 11 la luce è più morbida e vedrai tutto con calma prima della pausa pranzo.' },
+      },
+    },
+    {
+      id: 'phnom-penh-tuol-sleng', city: 'phnom-penh', category: 'attraction', lat: 11.5494, lng: 104.9178, image: 'RmzZmcTp8Os',
+      rating: 4.7, reviews: 18900, tags: ['history', 'museums'], price: { kind: 'fixed', amount: 5, currency: 'USD' }, hours: '08:00–17:00',
+      address: 'Street 113, Boeng Keng Kang, Phnom Penh',
+      text: {
+        ru: { name: 'Музей геноцида Туол Сленг', description: 'Бывшая школа, превращённая красными кхмерами в тюрьму S-21: тысячи фотографий узников и камеры, оставленные как есть. Тяжёлое, но необходимое место для понимания страны.', tip: 'Возьмите аудиогид на русском или английском — он ведёт по залам с рассказами выживших; рассчитывайте на два часа.' },
+        en: { name: 'Tuol Sleng Genocide Museum', description: 'A former school that the Khmer Rouge turned into S-21 prison, with thousands of prisoner photographs and cells left as they were. A harrowing but essential place for understanding the country.', tip: 'Take the audio guide, which leads you through the rooms with survivors’ testimonies, and allow two hours.' },
+        es: { name: 'Museo del Genocidio Tuol Sleng', description: 'Una antigua escuela que los jemeres rojos convirtieron en la prisión S-21, con miles de fotografías de presos y celdas tal como quedaron. Un lugar duro pero imprescindible para entender el país.', tip: 'Coge la audioguía, que recorre las salas con testimonios de supervivientes, y reserva dos horas.' },
+        de: { name: 'Genozidmuseum Tuol Sleng', description: 'Eine ehemalige Schule, die die Roten Khmer zum Gefängnis S-21 machten, mit Tausenden Häftlingsfotos und unverändert belassenen Zellen. Ein bedrückender, aber unverzichtbarer Ort, um das Land zu verstehen.', tip: 'Nimm den Audioguide, der dich mit Berichten Überlebender durch die Räume führt, und plane zwei Stunden ein.' },
+        fr: { name: 'Musée du génocide de Tuol Sleng', description: 'Une ancienne école transformée par les Khmers rouges en prison S-21, avec des milliers de photos de détenus et des cellules laissées en l’état. Un lieu éprouvant mais indispensable pour comprendre le pays.', tip: 'Prenez l’audioguide, qui conduit de salle en salle avec des témoignages de survivants, et comptez deux heures.' },
+        it: { name: 'Museo del genocidio di Tuol Sleng', description: 'Un’ex scuola trasformata dai khmer rossi nella prigione S-21, con migliaia di foto di prigionieri e celle lasciate com’erano. Un luogo duro ma indispensabile per capire il Paese.', tip: 'Prendi l’audioguida, che accompagna di sala in sala con le testimonianze dei sopravvissuti, e calcola due ore.' },
+      },
+    },
+    {
+      id: 'phnom-penh-sisowath-quay', city: 'phnom-penh', category: 'attraction', spot: 'insta', lat: 11.57, lng: 104.929, image: 'byMso_SnXA4',
+      rating: 4.4, reviews: 9300, tags: ['sunset', 'photo', 'city'], price: { kind: 'free' }, hours: 'always',
+      address: 'Sisowath Quay, Phnom Penh',
+      text: {
+        ru: { name: 'Набережная Сисоват', description: 'Променад вдоль Тонлесапа с французскими фасадами, флагами всех стран и вечерней аэробикой под открытым небом. Отсюда видно слияние рек и золотые крыши дворца.', tip: 'Сделайте кадр на закате с площадки напротив дворца: в объектив попадут шпили, флаги и лодки на реке.' },
+        en: { name: 'Sisowath Quay', description: 'A promenade along the Tonle Sap with French façades, flags of every nation and open-air evening aerobics. From here you see the meeting of the rivers and the palace’s golden roofs.', tip: 'Take your shot at sunset from the plaza opposite the palace to frame spires, flags and boats on the river.' },
+        es: { name: 'Paseo Sisowath', description: 'Un paseo a orillas del Tonlé Sap con fachadas francesas, banderas de todos los países y aeróbic al aire libre al atardecer. Desde aquí se ve la confluencia de los ríos y los tejados dorados del palacio.', tip: 'Haz la foto al atardecer desde la explanada frente al palacio para encuadrar agujas, banderas y barcas en el río.' },
+        de: { name: 'Sisowath Quay', description: 'Eine Promenade am Tonle Sap mit französischen Fassaden, Flaggen aller Nationen und abendlichem Aerobic unter freiem Himmel. Von hier siehst du den Zusammenfluss und die goldenen Palastdächer.', tip: 'Fotografiere zum Sonnenuntergang vom Platz gegenüber dem Palast – mit Turmspitzen, Flaggen und Booten im Bild.' },
+        fr: { name: 'Quai Sisowath', description: 'Une promenade le long du Tonlé Sap, avec façades françaises, drapeaux de toutes les nations et séances d’aérobic en plein air le soir. On y voit la confluence des fleuves et les toits dorés du palais.', tip: 'Faites votre photo au coucher du soleil depuis l’esplanade face au palais pour cadrer flèches, drapeaux et bateaux.' },
+        it: { name: 'Sisowath Quay', description: 'Una passeggiata lungo il Tonlé Sap con facciate francesi, bandiere di tutti i Paesi e aerobica serale all’aperto. Da qui si vedono la confluenza dei fiumi e i tetti dorati del palazzo.', tip: 'Scatta al tramonto dallo spiazzo di fronte al palazzo per inquadrare guglie, bandiere e barche sul fiume.' },
+      },
+    },
+    {
+      id: 'phnom-penh-koh-dach', city: 'phnom-penh', category: 'nature', spot: 'hidden', lat: 11.67, lng: 104.95, image: 'ZxY7pjSLhSQ',
+      rating: 4.4, reviews: 1700, tags: ['culture', 'roadtrip', 'nature'], price: { kind: 'free' },
+      address: 'Koh Dach, Mukh Kampul District, Kandal Province',
+      text: {
+        ru: { name: 'Шёлковый остров Кох Дач', description: 'Сельский остров на Меконге в часе от центра: деревянные дома на сваях, сады манго и ткачихи, которые вручную ткут шёлковые кроматы на старых станках.', tip: 'Возьмите тук-тук или велосипед до моста на Кох Дач, а на острове ищите вывески «weaving» — мастерицы охотно показывают работу.' },
+        en: { name: 'Koh Dach Silk Island', description: 'A rural Mekong island an hour from the centre, with wooden stilt houses, mango orchards and weavers hand-looming silk kramas on old looms.', tip: 'Take a tuk-tuk or bike to the Koh Dach bridge and look for “weaving” signs on the island; the weavers are happy to show their craft.' },
+        es: { name: 'Isla de la Seda Koh Dach', description: 'Una isla rural del Mekong a una hora del centro, con casas de madera sobre pilotes, huertos de mangos y tejedoras que hacen a mano kramas de seda en telares antiguos.', tip: 'Ve en tuk-tuk o bici hasta el puente de Koh Dach y busca en la isla los carteles de «weaving»: las tejedoras enseñan su trabajo encantadas.' },
+        de: { name: 'Seideninsel Koh Dach', description: 'Eine ländliche Mekong-Insel eine Stunde vom Zentrum, mit hölzernen Pfahlhäusern, Mangogärten und Weberinnen, die auf alten Webstühlen Seidenkramas von Hand fertigen.', tip: 'Fahr per Tuk-Tuk oder Fahrrad zur Brücke nach Koh Dach und halte auf der Insel nach „weaving“-Schildern Ausschau – die Weberinnen zeigen gern ihr Handwerk.' },
+        fr: { name: 'Île de la soie Koh Dach', description: 'Une île rurale du Mékong à une heure du centre : maisons en bois sur pilotis, vergers de manguiers et tisserandes qui fabriquent des kramas de soie sur de vieux métiers.', tip: 'Rejoignez le pont de Koh Dach en tuk-tuk ou à vélo, puis repérez sur l’île les panneaux « weaving » : les tisserandes montrent volontiers leur travail.' },
+        it: { name: 'Isola della seta Koh Dach', description: 'Un’isola rurale sul Mekong a un’ora dal centro, con case di legno su palafitte, frutteti di mango e tessitrici che lavorano a mano krama di seta su vecchi telai.', tip: 'Raggiungi il ponte di Koh Dach in tuk-tuk o in bici e cerca sull’isola i cartelli «weaving»: le tessitrici mostrano volentieri il loro lavoro.' },
+      },
+    },
+    {
+      id: 'phnom-penh-russian-market', city: 'phnom-penh', category: 'food', lat: 11.5397, lng: 104.918, image: 'DHSjEaeqk2E',
+      rating: 4.3, reviews: 11200, tags: ['market', 'streetfood', 'shopping'], price: { kind: 'level', level: 1 }, hours: '07:00–17:00',
+      address: 'Street 155, Toul Tom Poung, Phnom Penh',
+      text: {
+        ru: { name: 'Русский рынок', description: 'Псар Туол Том Понг прозвали Русским в 1980-е, когда здесь закупались советские специалисты. Сегодня это лабиринт лавок с шёлком, сувенирами и фудкортом в центре, где варят лапшу и жарят рисовые блинчики.', tip: 'Ешьте в центральных рядах у прилавков с нум банх чок, а вокруг рынка ищите кофейни в старых домах-лавках.' },
+        en: { name: 'Russian Market', description: 'Psar Tuol Tom Poung was nicknamed the Russian Market in the 1980s, when Soviet experts shopped here. Today it is a maze of stalls selling silk and souvenirs around a central food court serving noodles and crispy rice pancakes.', tip: 'Eat in the central aisles at the num banh chok stalls, then look for cafés in the old shophouses around the market.' },
+        es: { name: 'Mercado Ruso', description: 'Al Psar Tuol Tom Poung lo apodaron Mercado Ruso en los años ochenta, cuando compraban aquí los especialistas soviéticos. Hoy es un laberinto de puestos de seda y recuerdos con un food court central de fideos y crepes de arroz crujientes.', tip: 'Come en los pasillos centrales, en los puestos de num banh chok, y busca después cafés en las viejas casas-tienda de los alrededores.' },
+        de: { name: 'Russischer Markt', description: 'Der Psar Tuol Tom Poung bekam in den 1980ern den Spitznamen Russischer Markt, als sowjetische Fachleute hier einkauften. Heute ist er ein Labyrinth aus Seiden- und Souvenirständen rund um einen Food Court mit Nudeln und knusprigen Reispfannkuchen.', tip: 'Iss in den mittleren Gängen an den Num-Banh-Chok-Ständen und such danach Cafés in den alten Shophouses rund um den Markt.' },
+        fr: { name: 'Marché russe', description: 'Le Psar Tuol Tom Poung a été surnommé marché russe dans les années 1980, quand les experts soviétiques venaient y faire leurs achats. C’est aujourd’hui un dédale d’étals de soie et de souvenirs autour d’un food court central de nouilles et de galettes de riz croustillantes.', tip: 'Mangez dans les allées centrales, aux étals de num banh chok, puis cherchez des cafés dans les anciens compartiments autour du marché.' },
+        it: { name: 'Mercato Russo', description: 'Lo Psar Tuol Tom Poung fu soprannominato Mercato Russo negli anni Ottanta, quando ci facevano acquisti gli esperti sovietici. Oggi è un labirinto di banchi di seta e souvenir attorno a un food court centrale di noodles e crespelle di riso croccanti.', tip: 'Mangia nelle corsie centrali ai banchi di num banh chok, poi cerca i caffè nelle vecchie shophouse attorno al mercato.' },
+      },
+    },
+    // Koh Rong
+    {
+      id: 'koh-rong-saracen-bay', city: 'koh-rong', category: 'nature', lat: 10.615, lng: 103.3, image: '6zEaMEMkxFQ',
+      rating: 4.6, reviews: 4300, tags: ['beaches', 'islands', 'diving'], price: { kind: 'free' }, hours: 'always',
+      address: 'Saracen Bay, Koh Rong Samloem, Preah Sihanouk',
+      text: {
+        ru: { name: 'Залив Сарацин', description: 'Трёхкилометровая подкова белого песка на острове Ко Ронг Самлоем: спокойная прозрачная вода, бунгало у моря и никакого транспорта, кроме лодок.', tip: 'Возьмите напрокат каяк и сплавайте к рифу у южного мыса залива — там лучший сноркелинг без лодочного тура.' },
+        en: { name: 'Saracen Bay', description: 'A three-kilometre horseshoe of white sand on Koh Rong Samloem, with calm clear water, beachfront bungalows and no transport except boats.', tip: 'Rent a kayak and paddle to the reef off the bay’s southern point for the best snorkelling without a boat tour.' },
+        es: { name: 'Bahía Saracen', description: 'Una herradura de tres kilómetros de arena blanca en Koh Rong Samloem, con agua tranquila y transparente, bungalós frente al mar y ningún transporte salvo las barcas.', tip: 'Alquila un kayak y rema hasta el arrecife del cabo sur de la bahía: el mejor snorkel sin necesidad de excursión.' },
+        de: { name: 'Saracen Bay', description: 'Ein drei Kilometer langes Hufeisen aus weißem Sand auf Koh Rong Samloem mit ruhigem, klarem Wasser, Strandbungalows und keinem Verkehr außer Booten.', tip: 'Miete ein Kajak und paddle zum Riff an der Südspitze der Bucht – dort schnorchelst du am besten, ganz ohne Bootstour.' },
+        fr: { name: 'Baie de Saracen', description: 'Un fer à cheval de trois kilomètres de sable blanc sur Koh Rong Samloem : eau calme et limpide, bungalows les pieds dans l’eau et aucun transport hormis les bateaux.', tip: 'Louez un kayak et pagayez jusqu’au récif de la pointe sud de la baie : le meilleur snorkeling sans excursion en bateau.' },
+        it: { name: 'Saracen Bay', description: 'Un ferro di cavallo di tre chilometri di sabbia bianca su Koh Rong Samloem, con acqua calma e limpida, bungalow sul mare e nessun mezzo tranne le barche.', tip: 'Noleggia un kayak e pagaia fino al reef della punta sud della baia: lo snorkeling migliore senza tour in barca.' },
+      },
+    },
+    {
+      id: 'koh-rong-plankton', city: 'koh-rong', category: 'nature', lat: 10.733, lng: 103.234, image: 'zCVvCTJvCF0',
+      rating: 4.7, reviews: 3100, tags: ['beaches', 'romance', 'nature'], price: { kind: 'free' }, hours: 'always',
+      address: 'Koh Touch Beach, Koh Rong, Preah Sihanouk',
+      text: {
+        ru: { name: 'Светящийся планктон', description: 'Тёплыми ночами вода у Ко Ронга вспыхивает голубыми искрами от каждого движения — это биолюминесцентный планктон. Ощущение, будто плаваешь среди звёзд.', tip: 'Выбирайте безлунную ночь и отходите подальше от фонарей пирса Кох-Туч или берите вечерний тур на лодке после 21:00.' },
+        en: { name: 'Glowing plankton', description: 'On warm nights the water around Koh Rong flashes with blue sparks at every movement, thanks to bioluminescent plankton. It feels like swimming among the stars.', tip: 'Pick a moonless night and move well away from the Koh Touch pier lights, or join an evening boat trip after 9 p.m.' },
+        es: { name: 'Plancton luminoso', description: 'En las noches cálidas, el agua de Koh Rong destella con chispas azules a cada movimiento gracias al plancton bioluminiscente. Es como nadar entre estrellas.', tip: 'Elige una noche sin luna y aléjate de las luces del muelle de Koh Touch, o apúntate a una salida en barca después de las 21:00.' },
+        de: { name: 'Leuchtendes Plankton', description: 'In warmen Nächten blitzt das Wasser um Koh Rong bei jeder Bewegung in blauen Funken auf – biolumineszentes Plankton. Es fühlt sich an, als schwämme man zwischen Sternen.', tip: 'Wähle eine mondlose Nacht und entferne dich weit von den Lichtern am Pier von Koh Touch, oder mach nach 21 Uhr eine abendliche Bootstour.' },
+        fr: { name: 'Plancton lumineux', description: 'Les nuits chaudes, l’eau autour de Koh Rong scintille d’étincelles bleues au moindre mouvement grâce au plancton bioluminescent. On a l’impression de nager parmi les étoiles.', tip: 'Choisissez une nuit sans lune et éloignez-vous des lumières de la jetée de Koh Touch, ou partez en bateau après 21 heures.' },
+        it: { name: 'Plancton luminoso', description: 'Nelle notti calde l’acqua intorno a Koh Rong si accende di scintille azzurre a ogni movimento grazie al plancton bioluminescente. Sembra di nuotare tra le stelle.', tip: 'Scegli una notte senza luna e allontanati dalle luci del molo di Koh Touch, oppure partecipa a un’uscita in barca dopo le 21.' },
+      },
+    },
+    {
+      id: 'koh-rong-long-beach', city: 'koh-rong', category: 'nature', spot: 'insta', lat: 10.77, lng: 103.215, image: 'Jfm2l4GMNc4',
+      rating: 4.7, reviews: 2900, tags: ['beaches', 'sunset', 'photo'], price: { kind: 'free' }, hours: 'always',
+      address: 'Long Beach, Sok San, Koh Rong, Preah Sihanouk',
+      text: {
+        ru: { name: 'Лонг-Бич (Сок Сан)', description: 'Семь километров скрипучего белого песка на западном берегу острова, почти без построек. Закаты здесь — главное шоу дня.', tip: 'Снимайте с северного края у деревни Сок Сан: на закате рыбацкие лодки встают силуэтами на фоне солнца.' },
+        en: { name: 'Long Beach (Sok San)', description: 'Seven kilometres of squeaky white sand on the island’s west coast, with almost no buildings. Sunsets here are the show of the day.', tip: 'Shoot from the northern end near Sok San village, where fishing boats turn into silhouettes against the setting sun.' },
+        es: { name: 'Long Beach (Sok San)', description: 'Siete kilómetros de arena blanca que cruje bajo los pies en la costa oeste de la isla, casi sin edificios. Los atardeceres son el espectáculo del día.', tip: 'Fotografía desde el extremo norte, junto al pueblo de Sok San: al atardecer las barcas de pesca se recortan contra el sol.' },
+        de: { name: 'Long Beach (Sok San)', description: 'Sieben Kilometer quietschend weißer Sand an der Westküste, fast ohne Bebauung. Die Sonnenuntergänge sind hier die Show des Tages.', tip: 'Fotografiere vom Nordende beim Dorf Sok San: Bei Sonnenuntergang werden die Fischerboote zu Silhouetten vor der Sonne.' },
+        fr: { name: 'Long Beach (Sok San)', description: 'Sept kilomètres de sable blanc qui crisse sous les pieds sur la côte ouest de l’île, presque sans constructions. Les couchers de soleil y sont le spectacle du jour.', tip: 'Photographiez depuis l’extrémité nord, près du village de Sok San : au couchant, les bateaux de pêche se découpent en silhouette sur le soleil.' },
+        it: { name: 'Long Beach (Sok San)', description: 'Sette chilometri di sabbia bianca che scricchiola sotto i piedi sulla costa ovest dell’isola, quasi senza costruzioni. I tramonti sono lo spettacolo della giornata.', tip: 'Scatta dall’estremità nord vicino al villaggio di Sok San: al tramonto le barche dei pescatori diventano sagome contro il sole.' },
+      },
+    },
+    {
+      id: 'koh-rong-lazy-beach', city: 'koh-rong', category: 'nature', spot: 'hidden', lat: 10.599, lng: 103.284, image: 'oZKcyPEIDfc',
+      rating: 4.6, reviews: 1400, tags: ['beaches', 'hiking', 'jungle'], price: { kind: 'free' }, hours: 'always',
+      address: 'Lazy Beach, Koh Rong Samloem, Preah Sihanouk',
+      text: {
+        ru: { name: 'Лейзи-Бич', description: 'Укромный пляж на западном берегу Ко Ронг Самлоема с горсткой бунгало и закатом над открытым морем. Добраться можно только пешком через джунгли или на лодке.', tip: 'Тропа начинается в середине залива Сарацин за указателем «Lazy Beach»: около 30 минут по лесу, возьмите воду и обувь с закрытым носом.' },
+        en: { name: 'Lazy Beach', description: 'A secluded beach on the west coast of Koh Rong Samloem with a handful of bungalows and sunsets over the open sea. You can only get there on foot through the jungle or by boat.', tip: 'The trail starts midway along Saracen Bay behind the “Lazy Beach” sign: about 30 minutes through the forest, so bring water and closed shoes.' },
+        es: { name: 'Lazy Beach', description: 'Una playa recóndita en la costa oeste de Koh Rong Samloem con un puñado de bungalós y atardeceres sobre mar abierto. Solo se llega a pie por la selva o en barca.', tip: 'El sendero empieza a mitad de la bahía Saracen, tras el cartel de «Lazy Beach»: unos 30 minutos por el bosque, lleva agua y calzado cerrado.' },
+        de: { name: 'Lazy Beach', description: 'Ein abgeschiedener Strand an der Westküste von Koh Rong Samloem mit einer Handvoll Bungalows und Sonnenuntergängen über dem offenen Meer. Erreichbar nur zu Fuß durch den Dschungel oder per Boot.', tip: 'Der Pfad beginnt in der Mitte der Saracen Bay hinter dem Schild „Lazy Beach“: etwa 30 Minuten durch den Wald, nimm Wasser und feste Schuhe mit.' },
+        fr: { name: 'Lazy Beach', description: 'Une plage retirée sur la côte ouest de Koh Rong Samloem, avec une poignée de bungalows et des couchers de soleil sur le large. On n’y accède qu’à pied à travers la jungle ou en bateau.', tip: 'Le sentier part du milieu de la baie de Saracen, derrière le panneau « Lazy Beach » : environ 30 minutes en forêt, prévoyez de l’eau et des chaussures fermées.' },
+        it: { name: 'Lazy Beach', description: 'Una spiaggia appartata sulla costa ovest di Koh Rong Samloem con una manciata di bungalow e tramonti sul mare aperto. Ci si arriva solo a piedi attraverso la giungla o in barca.', tip: 'Il sentiero parte a metà della Saracen Bay, dietro il cartello «Lazy Beach»: circa 30 minuti nel bosco, porta acqua e scarpe chiuse.' },
+      },
+    },
+    {
+      id: 'koh-rong-koh-touch-bbq', city: 'koh-rong', category: 'food', lat: 10.732, lng: 103.238, image: 'Jfm2l4GMNc4',
+      rating: 4.3, reviews: 1800, tags: ['streetfood', 'food', 'nightlife'], price: { kind: 'level', level: 1 }, hours: '17:00–23:00',
+      address: 'Koh Touch Village, Koh Rong, Preah Sihanouk',
+      text: {
+        ru: { name: 'Рыбное барбекю в Кох-Туче', description: 'По вечерам кафе у пирса деревни Кох-Туч выставляют на лёд дневной улов — барракуду, кальмаров, креветок — и жарят его на углях с кампотским перцем и лаймом.', tip: 'Выбирайте рыбу, пойманную в тот же день (спросите, у какого кафе своя лодка), и ужинайте за столиками прямо на песке.' },
+        en: { name: 'Koh Touch seafood barbecue', description: 'In the evening the cafés by Koh Touch pier lay out the day’s catch on ice — barracuda, squid, prawns — and grill it over charcoal with Kampot pepper and lime.', tip: 'Choose fish caught the same day (ask which café has its own boat) and eat at tables right on the sand.' },
+        es: { name: 'Barbacoa de marisco en Koh Touch', description: 'Al anochecer, los cafés junto al muelle de Koh Touch exponen sobre hielo la pesca del día, barracuda, calamar y langostinos, y la asan al carbón con pimienta de Kampot y lima.', tip: 'Elige pescado del mismo día (pregunta qué café tiene barca propia) y cena en las mesas sobre la arena.' },
+        de: { name: 'Fischgrill in Koh Touch', description: 'Abends legen die Cafés am Pier von Koh Touch den Tagesfang auf Eis – Barrakuda, Tintenfisch, Garnelen – und grillen ihn über Holzkohle mit Kampot-Pfeffer und Limette.', tip: 'Wähl Fisch vom selben Tag (frag, welches Café ein eigenes Boot hat) und iss an Tischen direkt im Sand.' },
+        fr: { name: 'Barbecue de la mer à Koh Touch', description: 'Le soir, les cafés de la jetée de Koh Touch exposent sur la glace la pêche du jour, barracuda, calmars et crevettes, grillée au charbon avec du poivre de Kampot et du citron vert.', tip: 'Choisissez un poisson pêché le jour même (demandez quel café a son propre bateau) et dînez sur les tables posées dans le sable.' },
+        it: { name: 'Grigliata di pesce a Koh Touch', description: 'La sera i caffè vicino al molo di Koh Touch espongono sul ghiaccio il pescato del giorno, barracuda, calamari e gamberi, e lo grigliano alla brace con pepe di Kampot e lime.', tip: 'Scegli pesce pescato in giornata (chiedi quale caffè ha una barca propria) e cena ai tavoli direttamente sulla sabbia.' },
+      },
+    },
+  ],
+};
+
+export default pack;

@@ -11,7 +11,7 @@ import { SearchOverlay } from '@/components/map/search-overlay';
 import { Photo } from '@/components/photo';
 import { RegionExplorer } from '@/components/region-explorer';
 import { Avatar, Chip, SectionHeader, UserName } from '@/components/ui';
-import { countryHref, destinationById, destinationHref, destinations, placeHref, places } from '@/data/catalog';
+import { countryHref, destinationById, destinationHref, destinations, isHiddenReview, overrides, placeHref, places } from '@/data/catalog';
 import { guides, reviews, stories, users } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { useNotifications } from '@/lib/notifications';
@@ -107,7 +107,7 @@ export default function DiscoverPage() {
               <section>
                 <SectionHeader title={t('discover.popular')} onAction={() => setTab('destinations')} />
                 <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-5 pb-3">
-                  {destinations.slice(0, 12).map((d) => (
+                  {[...(overrides().settings.featured ?? []).map((id) => destinationById(id)).filter((d) => d !== undefined), ...destinations.filter((d) => !overrides().settings.featured?.includes(d.id))].slice(0, 12).map((d) => (
                     <DestinationCard key={d.id} d={d} />
                   ))}
                 </div>
@@ -164,7 +164,7 @@ export default function DiscoverPage() {
               <section>
                 <SectionHeader title={t('discover.realPlaces')} />
                 <div className="mt-3 grid gap-3 px-5">
-                  {reviews.slice(0, 4).map((r) => (
+                  {reviews.filter((r) => !isHiddenReview(r.id)).slice(0, 4).map((r) => (
                     <ReviewCard key={r.id} r={r} />
                   ))}
                 </div>

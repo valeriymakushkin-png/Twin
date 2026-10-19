@@ -126,7 +126,8 @@ function rebuild() {
   for (const v of [...baseVisa, ...worldVisa]) vs.set(v.code, v);
   for (const [code, p] of Object.entries(o.countries)) {
     const base = vs.get(code);
-    if (p.visa && base) vs.set(code, { ...base, ...p.visa, code });
+    // Rules can also be written for a country that had none.
+    if (p.visa && (base || p.visa.regime)) vs.set(code, { ...(base ?? { days: 0, cost: { kind: 'free' }, validity: 'sixMonths', docs: [], notes: [] }), ...p.visa, code } as VisaInfo);
   }
   visaCountries.splice(0, visaCountries.length, ...vs.values());
   byVisa.clear();
@@ -170,3 +171,23 @@ export const countryHref = (code: string) => (BUNDLED_COUNTRIES.has(code) ? `/c/
 
 export { categoryColor } from './places';
 export { isEasyRegime, regimeTone } from './visa';
+
+/** The catalogue as shipped, before any admin edits (the admin console diffs against it). */
+export const bundledDestinations: Destination[] = [...baseDestinations, ...worldCities];
+export const bundledPlaces: Place[] = [...basePlaces, ...worldPlaces];
+export const bundledDestination = (id: string) => bundledDestinations.find((d) => d.id === id);
+export const bundledPlace = (id: string) => bundledPlaces.find((p) => p.id === id);
+export const bundledCountry = (code: string) => worldCountries.find((c) => c.code === code);
+export const bundledVisa = (code: string) => [...baseVisa, ...worldVisa].find((v) => v.code === code);
+
+/** Country facts before admin edits: the world pack, or derived from its first bundled city. */
+export function baseCountry(code: string): CountryFacts | undefined {
+  const w = bundledCountry(code);
+  if (w) return w;
+  const d = bundledDestinations.find((x) => x.countryCode === code);
+  return d ? derivedCountry(d) : undefined;
+}
+
+/** Moderation switches from the admin console. */
+export const isHiddenReview = (id: string) => !!current.settings.hiddenReviews?.includes(id);
+export const isHiddenMeetup = (id: string) => !!current.settings.hiddenMeetups?.includes(id);

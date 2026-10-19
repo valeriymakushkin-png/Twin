@@ -1,0 +1,17 @@
+{
+  "name": "@vylo/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vylo API: team accounts with roles, published catalogue edits, audit log and photo uploads (Node 22, built-in SQLite, no runtime dependencies)",
+  "type": "module",
+  "scripts": {
+    "dev": "node --experimental-strip-types --no-warnings --watch src/server.ts",
+    "start": "node --experimental-strip-types --no-warnings src/server.ts",
+    "test": "node --experimental-strip-types --no-warnings --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "typescript": "~5.9.3"
+  }
+}

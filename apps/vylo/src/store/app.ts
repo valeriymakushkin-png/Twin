@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { destinationById, placeById, placesIn, visaByCode } from '@/data/catalog';
+import { destinationById, isHiddenMeetup, placeById, placesIn, visaByCode } from '@/data/catalog';
 import { meetups as seedMeetups, userById } from '@/data/social';
 import type { Meetup, Review, VisaDoc, VisaRegime } from '@/data/types';
 import { detectLocale, type Locale } from '@/i18n/config';
@@ -506,7 +506,7 @@ export const useApp = create<State>()(
 /** All meetups: curated plus the ones the user created. */
 export function useAllMeetups() {
   const mine = useApp((s) => s.myMeetups);
-  return [...mine, ...seedMeetups];
+  return [...mine, ...seedMeetups.filter((m) => !isHiddenMeetup(m.id))];
 }
 
 export function meetupStart(m: Meetup) {

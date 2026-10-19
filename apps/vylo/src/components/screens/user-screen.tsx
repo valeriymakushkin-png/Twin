@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { GuideCard, MeetupRow, ReviewCard } from '@/components/cards';
 import { Photo } from '@/components/photo';
 import { Avatar, BackButton, Button, DemoBadge, UserName } from '@/components/ui';
+import { isHiddenReview } from '@/data/catalog';
 import { guides, meetups, reviews, stories, userById } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
@@ -18,7 +19,7 @@ export function UserScreen({ id }: { id: string }) {
   const text = user(id);
   const cover = stories.find((s) => s.userId === id)?.image ?? '6GzOuSeMmPw';
   const theirGuides = guides.filter((g) => g.authorId === id);
-  const theirReviews = reviews.filter((r) => r.authorId === id);
+  const theirReviews = reviews.filter((r) => r.authorId === id && !isHiddenReview(r.id));
   const hosted = meetups.filter((m) => m.hostId === id);
 
   return (
