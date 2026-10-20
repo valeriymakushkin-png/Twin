@@ -1,0 +1,292 @@
+import type { CountryPack } from '../types';
+
+const pack: CountryPack = {
+  country: {
+    code: 'QA',
+    region: 'mideast',
+    image: 'bw-yPjhXl78',
+    theme: { accent: '#7f1d1d', accent2: '#e7c9a0', motif: 'dunes' },
+    fromMoscow: { hours: 5.5, direct: true },
+    visa: { regime: 'free', days: 30, cost: { kind: 'free' }, validity: 'sixMonths', docs: ['returnTicket', 'booking'], notes: [] },
+    text: {
+      ru: {
+        tagline: 'Музеи Жана Нувеля, Сук-Вакиф и дюны, сбегающие в море',
+        description: 'Катар — маленький полуостров, который за двадцать лет превратился в одну из культурных столиц Залива: музей исламского искусства И. М. Пея, «роза пустыни» Национального музея и небоскрёбы Вест-Бэй. А за городом начинаются мангры, форты и Внутреннее море, где дюны уходят прямо в воду.',
+        howToGet: 'Из Москвы в Доху летают прямые рейсы Qatar Airways, около 5,5 часа в пути. По Дохе удобно ездить на современном метро и такси Karwa, Uber и Careem; на север, в Эль-Хор и Зубару, проще всего добраться на арендованной машине, а во Внутреннее море — только на джипе с опытным водителем.',
+        tips: [
+          'Российские Visa и Mastercard в Катаре не работают: везите доллары и меняйте их на риалы в обменниках в торговых центрах или на Сук-Вакифе, либо пользуйтесь картой зарубежного банка.',
+          'Купите транспортную карту метро Doha Metro Travel Card и скачайте Karwa или Uber — вечером это самый удобный способ добраться до Катары и Перл.',
+          'В музеях, торговых центрах и на рынках закрывайте плечи и колени; алкоголь продают только в отелях с лицензией, а пить на улице запрещено.',
+        ],
+        guide: {
+          title: 'Катар за 4–5 дней',
+          sections: [
+            { title: 'Когда ехать', body: 'Лучшие месяцы — с ноября по март: днём 22–28 градусов, по вечерам свежо, и самое время для пикников в дюнах и прогулок по корнишу. С мая по сентябрь жара переваливает за 40 градусов при высокой влажности, и жизнь уходит в кондиционированные моллы и музеи. В Рамадан днём многие кафе закрыты, зато вечера на Сук-Вакифе особенно атмосферны.' },
+            { title: 'Маршрут на 4–5 дней', body: 'Первый день — Музей исламского искусства и прогулка по корнишу к закату, вечер на Сук-Вакифе. Второй — Национальный музей и квартал Мушейреб, затем Катара с амфитеатром и голубятнями. Третий — джип-сафари на юг, к дюнам Внутреннего моря. Четвёртый — север: мангры Эль-Хора на каяке, остров Пёрпл и форт Зубара, объект ЮНЕСКО.' },
+            { title: 'Что попробовать', body: 'Главное национальное блюдо — мачбус, рис со специями и бараниной или рыбой, а на завтрак здесь едят балалит — сладкую вермишель с омлетом. На Сук-Вакифе пробуйте лепёшки регаг с яйцом и сыром, жареную рыбу и сладкий чай карак с кардамоном, который местные пьют в любое время суток. Ливанская, иранская и индийская кухни в Дохе тоже отменные.' },
+            { title: 'Деньги, связь и транспорт', body: 'Валюта — катарский риал (QAR), привязанный к доллару. Карты российских банков не работают, так что берите наличные. SIM-карты Ooredoo и Vodafone продают в аэропорту по паспорту, есть туристические пакеты. Метро связывает аэропорт с центром, Катарой и Лусаилом; такси недорогие, а машину можно арендовать с международными правами.' },
+          ],
+        },
+      },
+      en: {
+        tagline: 'Landmark museums, Souq Waqif and dunes that run into the sea',
+        description: 'Qatar is a small peninsula that has become one of the Gulf’s cultural capitals in twenty years: I. M. Pei’s Museum of Islamic Art, the “desert rose” of the National Museum and the skyscrapers of West Bay. Beyond the city lie mangroves, forts and the Inland Sea, where dunes slide straight into the water.',
+        howToGet: 'Qatar Airways flies direct from Moscow to Doha in about 5.5 hours. In Doha the modern metro and Karwa, Uber and Careem taxis are the easiest way around; a rental car is simplest for the north, Al Khor and Zubarah, while the Inland Sea is reachable only by 4x4 with an experienced driver.',
+        tips: [
+          'Russian-issued Visa and Mastercard cards don’t work in Qatar, so bring US dollars and change them into riyals at mall exchange offices or in Souq Waqif, or use a foreign bank card.',
+          'Buy a Doha Metro Travel Card and download Karwa or Uber, the handiest way to reach Katara and The Pearl in the evening.',
+          'Cover shoulders and knees in museums, malls and markets; alcohol is sold only in licensed hotels, and drinking in public is prohibited.',
+        ],
+        guide: {
+          title: 'Qatar in 4–5 days',
+          sections: [
+            { title: 'When to go', body: 'The best months are November to March, with daytime highs of 22–28°C, cool evenings and perfect weather for dune picnics and walks along the Corniche. From May to September the heat tops 40°C with high humidity, and life moves into air-conditioned malls and museums. During Ramadan many cafés close in the daytime, but evenings in Souq Waqif are especially atmospheric.' },
+            { title: 'A 4–5 day route', body: 'Day one: the Museum of Islamic Art, a sunset walk on the Corniche and an evening in Souq Waqif. Day two: the National Museum and the Msheireb district, then Katara with its amphitheatre and pigeon towers. Day three: a 4x4 safari south to the dunes of the Inland Sea. Day four: the north, with kayaking in the Al Khor mangroves, Purple Island and the UNESCO-listed Zubarah Fort.' },
+            { title: 'What to eat', body: 'The national dish is machboos, spiced rice with lamb or fish, and for breakfast people eat balaleet, sweet vermicelli topped with an omelette. In Souq Waqif try regag flatbread with egg and cheese, fried fish and sweet karak tea with cardamom, which locals drink at any hour. Doha’s Lebanese, Iranian and Indian food is excellent too.' },
+            { title: 'Money, SIM cards and transport', body: 'The currency is the Qatari riyal (QAR), pegged to the dollar. Russian bank cards don’t work, so bring cash. Ooredoo and Vodafone SIM cards are sold at the airport with a passport, including tourist packages. The metro links the airport with the centre, Katara and Lusail; taxis are cheap, and you can rent a car with an international licence.' },
+          ],
+        },
+      },
+      es: {
+        tagline: 'Museos icónicos, Souq Waqif y dunas que bajan hasta el mar',
+        description: 'Catar es una pequeña península que en veinte años se ha convertido en una de las capitales culturales del Golfo: el Museo de Arte Islámico de I. M. Pei, la «rosa del desierto» del Museo Nacional y los rascacielos de West Bay. Fuera de la ciudad esperan manglares, fuertes y el Mar Interior, donde las dunas se hunden en el agua.',
+        howToGet: 'Qatar Airways vuela directo de Moscú a Doha en unas 5,5 horas. En Doha lo más cómodo son el moderno metro y los taxis de Karwa, Uber y Careem; para el norte, Al Khor y Zubarah, lo más sencillo es alquilar coche, y al Mar Interior solo se llega en 4x4 con un conductor experto.',
+        tips: [
+          'Las tarjetas Visa y Mastercard emitidas en Rusia no funcionan en Catar: lleva dólares y cámbialos por riales en las casas de cambio de los centros comerciales o en Souq Waqif, o usa una tarjeta extranjera.',
+          'Compra la Doha Metro Travel Card y descarga Karwa o Uber, lo más práctico para ir por la noche a Katara y The Pearl.',
+          'Cubre hombros y rodillas en museos, centros comerciales y mercados; el alcohol solo se vende en hoteles con licencia y beber en la calle está prohibido.',
+        ],
+        guide: {
+          title: 'Catar en 4–5 días',
+          sections: [
+            { title: 'Cuándo ir', body: 'Los mejores meses van de noviembre a marzo: de día 22–28 °C, noches frescas y tiempo ideal para picnics en las dunas y paseos por la Corniche. De mayo a septiembre se superan los 40 °C con mucha humedad, y la vida se refugia en centros comerciales y museos climatizados. En Ramadán muchos cafés cierran de día, pero las noches en Souq Waqif son especialmente evocadoras.' },
+            { title: 'Ruta de 4–5 días', body: 'Primer día: el Museo de Arte Islámico, un paseo por la Corniche al atardecer y la noche en Souq Waqif. Segundo: el Museo Nacional y el barrio de Msheireb, y luego Katara con su anfiteatro y palomares. Tercero: safari en 4x4 hacia el sur, a las dunas del Mar Interior. Cuarto: el norte, con kayak entre los manglares de Al Khor, Purple Island y el fuerte de Zubarah, Patrimonio de la UNESCO.' },
+            { title: 'Qué probar', body: 'El plato nacional es el machboos, arroz especiado con cordero o pescado, y para desayunar se toma balaleet, fideos dulces con tortilla. En Souq Waqif prueba el pan regag con huevo y queso, el pescado frito y el dulce té karak con cardamomo, que aquí se bebe a cualquier hora. La cocina libanesa, iraní e india de Doha también es excelente.' },
+            { title: 'Dinero, móvil y transporte', body: 'La moneda es el rial catarí (QAR), ligado al dólar. Las tarjetas de bancos rusos no funcionan, así que lleva efectivo. Las SIM de Ooredoo y Vodafone se venden en el aeropuerto con pasaporte, con paquetes turísticos. El metro une el aeropuerto con el centro, Katara y Lusail; los taxis son baratos y se puede alquilar coche con el permiso internacional.' },
+          ],
+        },
+      },
+      de: {
+        tagline: 'Spektakuläre Museen, Souq Waqif und Dünen, die ins Meer laufen',
+        description: 'Katar ist eine kleine Halbinsel, die in zwanzig Jahren zu einer Kulturhauptstadt am Golf wurde: I. M. Peis Museum für Islamische Kunst, die „Wüstenrose“ des Nationalmuseums und die Wolkenkratzer der West Bay. Außerhalb der Stadt warten Mangroven, Forts und das Binnenmeer, wo die Dünen direkt ins Wasser gleiten.',
+        howToGet: 'Qatar Airways fliegt direkt von Moskau nach Doha, in rund 5,5 Stunden. In Doha kommst du am einfachsten mit der modernen Metro und mit Taxis von Karwa, Uber und Careem voran; in den Norden nach Al Khor und Zubarah fährst du am besten mit dem Mietwagen, ins Binnenmeer nur im Geländewagen mit erfahrenem Fahrer.',
+        tips: [
+          'In Russland ausgegebene Visa- und Mastercard-Karten funktionieren in Katar nicht – nimm US-Dollar mit und tausche sie in den Wechselstuben der Malls oder im Souq Waqif in Riyal, oder nutze eine ausländische Bankkarte.',
+          'Kauf dir die Doha Metro Travel Card und lade Karwa oder Uber herunter – abends der bequemste Weg nach Katara und The Pearl.',
+          'Bedecke in Museen, Malls und auf Märkten Schultern und Knie; Alkohol gibt es nur in lizenzierten Hotels, und Trinken in der Öffentlichkeit ist verboten.',
+        ],
+        guide: {
+          title: 'Katar in 4–5 Tagen',
+          sections: [
+            { title: 'Reisezeit', body: 'Die besten Monate sind November bis März: tagsüber 22–28 °C, kühle Abende und ideales Wetter für Picknicks in den Dünen und Spaziergänge an der Corniche. Von Mai bis September steigt die Hitze über 40 °C bei hoher Luftfeuchtigkeit, und das Leben verlagert sich in klimatisierte Malls und Museen. Im Ramadan sind tagsüber viele Cafés zu, doch die Abende im Souq Waqif sind besonders stimmungsvoll.' },
+            { title: 'Route für 4–5 Tage', body: 'Tag eins: Museum für Islamische Kunst, Spaziergang an der Corniche bei Sonnenuntergang und Abend im Souq Waqif. Tag zwei: Nationalmuseum und das Viertel Msheireb, dann Katara mit Amphitheater und Taubentürmen. Tag drei: Geländewagensafari nach Süden zu den Dünen des Binnenmeers. Tag vier: der Norden mit Kajakfahrt in den Mangroven von Al Khor, Purple Island und dem UNESCO-Fort Zubarah.' },
+            { title: 'Was du probieren solltest', body: 'Das Nationalgericht ist Machboos, würziger Reis mit Lamm oder Fisch, und zum Frühstück isst man Balaleet, süße Fadennudeln mit Omelett. Im Souq Waqif probierst du Regag-Fladen mit Ei und Käse, frittierten Fisch und süßen Karak-Tee mit Kardamom, den Einheimische zu jeder Tageszeit trinken. Auch libanesische, iranische und indische Küche ist in Doha hervorragend.' },
+            { title: 'Geld, Handy und Verkehr', body: 'Die Währung ist der Katar-Riyal (QAR), an den Dollar gekoppelt. Russische Bankkarten funktionieren nicht, nimm also Bargeld mit. SIM-Karten von Ooredoo und Vodafone gibt es am Flughafen mit Reisepass, auch als Touristenpakete. Die Metro verbindet den Flughafen mit dem Zentrum, Katara und Lusail; Taxis sind günstig, und ein Mietwagen ist mit internationalem Führerschein möglich.' },
+          ],
+        },
+      },
+      fr: {
+        tagline: 'Musées iconiques, souq Waqif et dunes qui plongent dans la mer',
+        description: 'Le Qatar est une petite péninsule devenue en vingt ans l’une des capitales culturelles du Golfe : le musée d’Art islamique d’I. M. Pei, la « rose des sables » du Musée national et les gratte-ciel de West Bay. Hors de la ville, place aux mangroves, aux forts et à la mer intérieure, où les dunes glissent droit dans l’eau.',
+        howToGet: 'Qatar Airways relie Moscou à Doha sans escale en 5 h 30 environ. À Doha, le métro moderne et les taxis Karwa, Uber et Careem sont le moyen le plus simple de circuler ; pour le nord, Al Khor et Zubarah, louez une voiture, et la mer intérieure ne se rejoint qu’en 4x4 avec un chauffeur expérimenté.',
+        tips: [
+          'Les cartes Visa et Mastercard émises en Russie ne fonctionnent pas au Qatar : emportez des dollars et changez-les en riyals dans les bureaux de change des centres commerciaux ou au souq Waqif, ou utilisez une carte étrangère.',
+          'Achetez la Doha Metro Travel Card et téléchargez Karwa ou Uber, le plus pratique pour rejoindre Katara et The Pearl le soir.',
+          'Couvrez épaules et genoux dans les musées, les centres commerciaux et les marchés ; l’alcool n’est vendu que dans les hôtels agréés et il est interdit de boire dans la rue.',
+        ],
+        guide: {
+          title: 'Le Qatar en 4 ou 5 jours',
+          sections: [
+            { title: 'Quand partir', body: 'Les meilleurs mois vont de novembre à mars : 22 à 28 °C en journée, des soirées fraîches et une météo idéale pour pique-niquer dans les dunes et flâner sur la Corniche. De mai à septembre, la chaleur dépasse 40 °C avec une forte humidité, et la vie se réfugie dans les centres commerciaux et les musées climatisés. Pendant le ramadan, beaucoup de cafés ferment le jour, mais les soirées au souq Waqif sont magiques.' },
+            { title: 'Itinéraire de 4 ou 5 jours', body: 'Premier jour : le musée d’Art islamique, une balade sur la Corniche au coucher du soleil et la soirée au souq Waqif. Deuxième jour : le Musée national et le quartier de Msheireb, puis Katara, son amphithéâtre et ses pigeonniers. Troisième jour : safari en 4x4 vers le sud, jusqu’aux dunes de la mer intérieure. Quatrième jour : le nord, en kayak dans les mangroves d’Al Khor, à Purple Island et au fort de Zubarah, classé à l’UNESCO.' },
+            { title: 'Que goûter', body: 'Le plat national est le machboos, riz épicé à l’agneau ou au poisson, et au petit-déjeuner on mange le balaleet, vermicelles sucrés surmontés d’une omelette. Au souq Waqif, goûtez le pain regag à l’œuf et au fromage, le poisson frit et le thé karak sucré à la cardamome, que l’on boit ici à toute heure. Les cuisines libanaise, iranienne et indienne de Doha sont aussi excellentes.' },
+            { title: 'Argent, téléphone et transports', body: 'La monnaie est le riyal qatari (QAR), arrimé au dollar. Les cartes des banques russes ne fonctionnent pas : prévoyez des espèces. Les cartes SIM Ooredoo et Vodafone s’achètent à l’aéroport avec un passeport, avec des forfaits touristiques. Le métro relie l’aéroport au centre, à Katara et à Lusail ; les taxis sont bon marché et l’on peut louer une voiture avec un permis international.' },
+          ],
+        },
+      },
+      it: {
+        tagline: 'Musei iconici, Souq Waqif e dune che scendono nel mare',
+        description: 'Il Qatar è una piccola penisola diventata in vent’anni una delle capitali culturali del Golfo: il Museo d’Arte Islamica di I. M. Pei, la «rosa del deserto» del Museo Nazionale e i grattacieli di West Bay. Fuori città ti aspettano mangrovie, forti e il Mare Interno, dove le dune scivolano dritte in acqua.',
+        howToGet: 'Qatar Airways vola diretto da Mosca a Doha in circa 5 ore e mezza. A Doha la moderna metro e i taxi Karwa, Uber e Careem sono il modo più comodo per muoversi; per il nord, Al Khor e Zubarah, conviene l’auto a noleggio, mentre il Mare Interno si raggiunge solo in 4x4 con un autista esperto.',
+        tips: [
+          'Le carte Visa e Mastercard emesse in Russia in Qatar non funzionano: porta dollari e cambiali in riyal negli uffici di cambio dei centri commerciali o al Souq Waqif, oppure usa una carta estera.',
+          'Compra la Doha Metro Travel Card e scarica Karwa o Uber, il modo più pratico per raggiungere Katara e The Pearl la sera.',
+          'Copri spalle e ginocchia in musei, centri commerciali e mercati; gli alcolici si vendono solo negli hotel autorizzati ed è vietato bere per strada.',
+        ],
+        guide: {
+          title: 'Il Qatar in 4–5 giorni',
+          sections: [
+            { title: 'Quando andare', body: 'I mesi migliori vanno da novembre a marzo: di giorno 22–28 °C, serate fresche e clima ideale per picnic tra le dune e passeggiate sulla Corniche. Da maggio a settembre il caldo supera i 40 °C con molta umidità, e la vita si sposta in centri commerciali e musei climatizzati. Durante il Ramadan molti caffè chiudono di giorno, ma le serate al Souq Waqif sono particolarmente suggestive.' },
+            { title: 'Itinerario di 4–5 giorni', body: 'Primo giorno: Museo d’Arte Islamica, passeggiata sulla Corniche al tramonto e serata al Souq Waqif. Secondo: Museo Nazionale e quartiere di Msheireb, poi Katara con l’anfiteatro e le torri dei piccioni. Terzo: safari in 4x4 verso sud, fino alle dune del Mare Interno. Quarto: il nord, con il kayak tra le mangrovie di Al Khor, Purple Island e il forte di Zubarah, patrimonio UNESCO.' },
+            { title: 'Cosa assaggiare', body: 'Il piatto nazionale è il machboos, riso speziato con agnello o pesce, e a colazione si mangia il balaleet, vermicelli dolci con una frittata sopra. Al Souq Waqif assaggia il pane regag con uovo e formaggio, il pesce fritto e il dolce tè karak al cardamomo, che qui si beve a ogni ora. Anche la cucina libanese, iraniana e indiana di Doha è eccellente.' },
+            { title: 'Soldi, telefono e trasporti', body: 'La valuta è il riyal del Qatar (QAR), ancorato al dollaro. Le carte delle banche russe non funzionano, quindi porta contanti. Le SIM Ooredoo e Vodafone si comprano in aeroporto con il passaporto, anche in pacchetti turistici. La metro collega l’aeroporto con il centro, Katara e Lusail; i taxi costano poco e si può noleggiare un’auto con la patente internazionale.' },
+          ],
+        },
+      },
+    },
+  },
+  cities: [
+    {
+      id: 'doha', lat: 25.2854, lng: 51.531, image: 'bw-yPjhXl78', gallery: ['4AOwHhqsLTY', 'fdAEWZSGPR8', 'ng3UEoZuoqM', '3ha-RuNKnuQ', '_28gej_Duv8'],
+      rating: 4.6, reviews: 13200, tags: ['museums', 'architecture', 'city', 'market'], months: [11, 12, 1, 2, 3], budgetPerDay: 130, currency: 'QAR',
+      language: 'ar', timezone: 'UTC+3', zoom: 11, theme: { accent: '#7f1d1d', accent2: '#38bdf8', motif: 'grid' },
+      text: {
+        ru: { name: 'Доха', tagline: 'Музей на воде, огни Вест-Бэй и вечерний Сук-Вакиф', description: 'Столица Катара выстроилась полумесяцем вокруг залива: с одной стороны небоскрёбы Вест-Бэй, с другой — Музей исламского искусства и старый рынок Сук-Вакиф. Здесь работают лучшие музеи региона, а вечерняя жизнь кипит на корнише, в Катаре и на насыпном острове Перл.', tips: ['Купите сразу билеты в Музей исламского искусства и Национальный музей — их часто продают и комбинированными пакетами через Qatar Museums.', 'На Сук-Вакиф приходите после заката, когда жара спадает, а лавки и кафе работают до поздней ночи.'], gettingThere: 'Из аэропорта Хамад красная линия метро за 20 минут довозит до центра, такси Karwa — примерно за то же время.' },
+        en: { name: 'Doha', tagline: 'A museum on the water, West Bay’s lights and Souq Waqif at night', description: 'Qatar’s capital curves like a crescent around its bay, with the skyscrapers of West Bay on one side and the Museum of Islamic Art and the old Souq Waqif on the other. It has the region’s finest museums, and evening life buzzes along the Corniche, in Katara and on the artificial island of The Pearl.', tips: ['Buy tickets for the Museum of Islamic Art and the National Museum together, as Qatar Museums often sells combined passes.', 'Visit Souq Waqif after sunset, when the heat eases and the shops and cafés stay open late into the night.'], gettingThere: 'From Hamad International Airport the red metro line reaches the centre in 20 minutes, and a Karwa taxi takes about the same.' },
+        es: { name: 'Doha', tagline: 'Un museo sobre el agua, las luces de West Bay y Souq Waqif de noche', description: 'La capital de Catar se curva como una media luna en torno a su bahía: a un lado, los rascacielos de West Bay; al otro, el Museo de Arte Islámico y el viejo Souq Waqif. Tiene los mejores museos de la región, y la vida nocturna bulle en la Corniche, en Katara y en la isla artificial de The Pearl.', tips: ['Compra juntas las entradas del Museo de Arte Islámico y del Museo Nacional, porque Qatar Museums suele venderlas en pases combinados.', 'Ve a Souq Waqif después del atardecer, cuando baja el calor y tiendas y cafés abren hasta muy tarde.'], gettingThere: 'Desde el aeropuerto Hamad, la línea roja de metro llega al centro en 20 minutos, y un taxi Karwa tarda más o menos lo mismo.' },
+        de: { name: 'Doha', tagline: 'Ein Museum am Wasser, die Lichter der West Bay und der Souq Waqif', description: 'Katars Hauptstadt schwingt sich wie ein Halbmond um ihre Bucht: auf der einen Seite die Wolkenkratzer der West Bay, auf der anderen das Museum für Islamische Kunst und der alte Souq Waqif. Hier stehen die besten Museen der Region, und abends pulsiert das Leben an der Corniche, in Katara und auf der künstlichen Insel The Pearl.', tips: ['Kauf die Tickets für das Museum für Islamische Kunst und das Nationalmuseum zusammen – Qatar Museums bietet oft Kombipässe an.', 'Geh nach Sonnenuntergang in den Souq Waqif, wenn die Hitze nachlässt und Läden und Cafés bis spät in die Nacht offen haben.'], gettingThere: 'Vom Flughafen Hamad fährt die rote Metrolinie in 20 Minuten ins Zentrum, ein Karwa-Taxi braucht etwa genauso lange.' },
+        fr: { name: 'Doha', tagline: 'Un musée sur l’eau, les lumières de West Bay et le souq Waqif la nuit', description: 'La capitale du Qatar s’arrondit en croissant autour de sa baie : d’un côté les gratte-ciel de West Bay, de l’autre le musée d’Art islamique et le vieux souq Waqif. On y trouve les plus beaux musées de la région, et le soir la vie bat son plein sur la Corniche, à Katara et sur l’île artificielle de The Pearl.', tips: ['Achetez ensemble les billets du musée d’Art islamique et du Musée national : Qatar Museums propose souvent des pass combinés.', 'Allez au souq Waqif après le coucher du soleil, quand la chaleur retombe et que boutiques et cafés restent ouverts tard dans la nuit.'], gettingThere: 'Depuis l’aéroport Hamad, la ligne rouge du métro rejoint le centre en 20 minutes, un taxi Karwa à peu près en autant de temps.' },
+        it: { name: 'Doha', tagline: 'Un museo sull’acqua, le luci di West Bay e il Souq Waqif di sera', description: 'La capitale del Qatar si piega a mezzaluna intorno alla sua baia: da un lato i grattacieli di West Bay, dall’altro il Museo d’Arte Islamica e l’antico Souq Waqif. Qui ci sono i migliori musei della regione, e la sera la vita scorre sulla Corniche, a Katara e sull’isola artificiale di The Pearl.', tips: ['Compra insieme i biglietti del Museo d’Arte Islamica e del Museo Nazionale, perché Qatar Museums vende spesso pass combinati.', 'Vai al Souq Waqif dopo il tramonto, quando il caldo cala e negozi e caffè restano aperti fino a tarda notte.'], gettingThere: 'Dall’aeroporto Hamad la linea rossa della metro arriva in centro in 20 minuti, un taxi Karwa ci mette più o meno lo stesso.' },
+      },
+    },
+    {
+      id: 'al-khor', lat: 25.6839, lng: 51.5058, image: 'Do6yoytec5E', gallery: ['_28gej_Duv8', 'UIR2ojtAqWs'],
+      rating: 4.4, reviews: 2860, tags: ['nature', 'kayak', 'history', 'beaches'], months: [11, 12, 1, 2, 3, 4], budgetPerDay: 100, currency: 'QAR',
+      language: 'ar', timezone: 'UTC+3', zoom: 9, theme: { accent: '#065f46', accent2: '#a855f7', motif: 'waves' },
+      text: {
+        ru: { name: 'Эль-Хор и север Катара', tagline: 'Мангры, фламинго, стадион-шатёр и форт Зубара', description: 'Старый рыбацкий городок в часе езды от Дохи — ворота на тихий север полуострова. Здесь мангровые протоки с цаплями и фламинго, стадион Аль-Бейт в форме бедуинского шатра, а дальше на северо-запад — город-крепость Зубара, объект ЮНЕСКО.', tips: ['Каяки в манграх Аль-Тахиры берите во время прилива — при отливе протоки мелеют и грести почти негде.', 'Возьмите воду и перекус: за пределами Эль-Хора кафе на севере редки, особенно у Зубары.'], gettingThere: 'Из Дохи около 50 минут на машине по шоссе Аль-Хор; также ходят автобусы Mowasalat Karwa, но машина гораздо удобнее.' },
+        en: { name: 'Al Khor and Northern Qatar', tagline: 'Mangroves, flamingos, a tent-shaped stadium and Zubarah Fort', description: 'An old fishing town an hour from Doha and the gateway to the peninsula’s quiet north. Here are mangrove channels with herons and flamingos, the Al Bayt Stadium shaped like a Bedouin tent, and further north-west the UNESCO-listed fortified town of Zubarah.', tips: ['Rent kayaks in the Al Thakhira mangroves at high tide, as the channels get too shallow to paddle at low tide.', 'Bring water and snacks, since cafés are scarce in the north beyond Al Khor, especially near Zubarah.'], gettingThere: 'It is about 50 minutes from Doha by car on the Al Khor highway; Mowasalat Karwa buses also run, but a car is far easier.' },
+        es: { name: 'Al Khor y el norte de Catar', tagline: 'Manglares, flamencos, un estadio en forma de jaima y el fuerte de Zubarah', description: 'Un antiguo pueblo pesquero a una hora de Doha y la puerta al tranquilo norte de la península. Aquí hay canales de manglares con garzas y flamencos, el estadio Al Bayt con forma de jaima beduina y, más al noroeste, la ciudad fortificada de Zubarah, Patrimonio de la UNESCO.', tips: ['Alquila kayak en los manglares de Al Thakhira con marea alta, porque con la bajamar los canales quedan demasiado someros.', 'Lleva agua y algo de comer: más allá de Al Khor apenas hay cafés, sobre todo cerca de Zubarah.'], gettingThere: 'Está a unos 50 minutos de Doha en coche por la autopista de Al Khor; también hay autobuses Mowasalat Karwa, pero el coche es mucho más cómodo.' },
+        de: { name: 'Al Khor und Nordkatar', tagline: 'Mangroven, Flamingos, ein Zeltstadion und das Fort Zubarah', description: 'Ein altes Fischerstädtchen eine Stunde von Doha und das Tor zum ruhigen Norden der Halbinsel. Hier gibt es Mangrovenkanäle mit Reihern und Flamingos, das Al-Bayt-Stadion in Form eines Beduinenzelts und weiter nordwestlich die befestigte Stadt Zubarah, UNESCO-Welterbe.', tips: ['Leih dir Kajaks in den Mangroven von Al Thakhira bei Flut – bei Ebbe sind die Kanäle zu flach zum Paddeln.', 'Nimm Wasser und Snacks mit: Jenseits von Al Khor gibt es im Norden kaum Cafés, vor allem bei Zubarah.'], gettingThere: 'Von Doha sind es etwa 50 Minuten mit dem Auto über den Al-Khor-Highway; es fahren auch Busse von Mowasalat Karwa, das Auto ist aber viel bequemer.' },
+        fr: { name: 'Al Khor et le nord du Qatar', tagline: 'Mangroves, flamants, un stade en forme de tente et le fort de Zubarah', description: 'Une ancienne ville de pêcheurs à une heure de Doha, porte d’entrée du nord paisible de la péninsule. On y trouve des chenaux de mangroves peuplés de hérons et de flamants, le stade Al Bayt en forme de tente bédouine et, plus au nord-ouest, la ville fortifiée de Zubarah, inscrite à l’UNESCO.', tips: ['Louez un kayak dans les mangroves d’Al Thakhira à marée haute : à marée basse, les chenaux sont trop peu profonds pour pagayer.', 'Emportez eau et en-cas : au-delà d’Al Khor, les cafés se font rares dans le nord, surtout près de Zubarah.'], gettingThere: 'Comptez environ 50 minutes de voiture depuis Doha par l’autoroute d’Al Khor ; des bus Mowasalat Karwa circulent aussi, mais la voiture est bien plus pratique.' },
+        it: { name: 'Al Khor e il nord del Qatar', tagline: 'Mangrovie, fenicotteri, uno stadio a tenda e il forte di Zubarah', description: 'Un antico paese di pescatori a un’ora da Doha e la porta del tranquillo nord della penisola. Qui ci sono canali di mangrovie con aironi e fenicotteri, lo stadio Al Bayt a forma di tenda beduina e, più a nord-ovest, la città fortificata di Zubarah, patrimonio UNESCO.', tips: ['Noleggia il kayak tra le mangrovie di Al Thakhira con l’alta marea, perché con la bassa i canali sono troppo poco profondi.', 'Porta acqua e qualcosa da mangiare: oltre Al Khor nel nord i caffè sono rari, soprattutto vicino a Zubarah.'], gettingThere: 'Da Doha ci sono circa 50 minuti d’auto sull’autostrada di Al Khor; ci sono anche autobus Mowasalat Karwa, ma l’auto è molto più comoda.' },
+      },
+    },
+  ],
+  places: [
+    // Doha
+    {
+      id: 'doha-museum-of-islamic-art', city: 'doha', category: 'attraction', lat: 25.2952, lng: 51.5389, image: '4AOwHhqsLTY',
+      rating: 4.8, reviews: 23800, tags: ['museums', 'art', 'architecture'], price: { kind: 'fixed', amount: 50, currency: 'QAR' }, hours: '09:00–19:00',
+      address: 'Corniche, Doha',
+      text: {
+        ru: { name: 'Музей исламского искусства', description: 'Последний большой проект И. М. Пея — геометричное здание из светлого камня на собственном острове у корниша. Внутри — рукописи, керамика, ковры и драгоценности за 1400 лет истории исламского мира.', tip: 'Поднимитесь к огромному окну атриума высотой 45 метров: оно выходит прямо на небоскрёбы Вест-Бэй через залив.' },
+        en: { name: 'Museum of Islamic Art', description: 'I. M. Pei’s last major project, a geometric building of pale stone on its own island off the Corniche. Inside are manuscripts, ceramics, carpets and jewellery spanning 1,400 years of Islamic history.', tip: 'Head up to the huge 45-metre atrium window, which frames the West Bay skyscrapers across the bay.' },
+        es: { name: 'Museo de Arte Islámico', description: 'El último gran proyecto de I. M. Pei, un edificio geométrico de piedra clara en su propia isla frente a la Corniche. Dentro hay manuscritos, cerámica, alfombras y joyas de 1400 años de historia islámica.', tip: 'Sube al enorme ventanal de 45 metros del atrio, que encuadra los rascacielos de West Bay al otro lado de la bahía.' },
+        de: { name: 'Museum für Islamische Kunst', description: 'I. M. Peis letztes großes Projekt, ein geometrischer Bau aus hellem Stein auf einer eigenen Insel vor der Corniche. Drinnen zeigen Handschriften, Keramik, Teppiche und Schmuck 1400 Jahre islamische Geschichte.', tip: 'Geh hinauf zum riesigen, 45 Meter hohen Atriumfenster – es rahmt die Wolkenkratzer der West Bay jenseits der Bucht.' },
+        fr: { name: 'Musée d’Art islamique', description: 'Le dernier grand projet d’I. M. Pei, un édifice géométrique en pierre claire sur son propre îlot face à la Corniche. À l’intérieur, manuscrits, céramiques, tapis et bijoux couvrent 1 400 ans d’histoire islamique.', tip: 'Montez jusqu’à l’immense baie vitrée de l’atrium, haute de 45 mètres, qui cadre les gratte-ciel de West Bay de l’autre côté de la baie.' },
+        it: { name: 'Museo d’Arte Islamica', description: 'L’ultimo grande progetto di I. M. Pei, un edificio geometrico di pietra chiara su un’isola tutta sua davanti alla Corniche. All’interno manoscritti, ceramiche, tappeti e gioielli raccontano 1400 anni di storia islamica.', tip: 'Sali fino all’enorme vetrata dell’atrio alta 45 metri, che inquadra i grattacieli di West Bay dall’altra parte della baia.' },
+      },
+    },
+    {
+      id: 'doha-national-museum', city: 'doha', category: 'attraction', lat: 25.2876, lng: 51.549, image: 'fdAEWZSGPR8',
+      rating: 4.7, reviews: 15400, tags: ['museums', 'architecture', 'history'], price: { kind: 'fixed', amount: 50, currency: 'QAR' }, hours: '09:00–19:00',
+      address: 'Museum Park St, Doha',
+      text: {
+        ru: { name: 'Национальный музей Катара', description: 'Здание Жана Нувеля из сотен наклонных дисков, повторяющих кристаллы «розы пустыни». Залы рассказывают о геологии, бедуинах, ловле жемчуга и превращении Катара в нефтяную державу.', tip: 'Обойдите здание снаружи по часовой стрелке до старого дворца шейха Абдаллы: на закате диски отбрасывают самые резкие тени.' },
+        en: { name: 'National Museum of Qatar', description: 'Jean Nouvel’s building of hundreds of tilted discs, modelled on the crystals of the desert rose. Its galleries cover geology, the Bedouin, pearl diving and Qatar’s transformation into an oil power.', tip: 'Walk clockwise around the outside to the old palace of Sheikh Abdullah, as at sunset the discs cast their sharpest shadows.' },
+        es: { name: 'Museo Nacional de Catar', description: 'El edificio de Jean Nouvel está hecho de cientos de discos inclinados que imitan los cristales de la rosa del desierto. Sus salas tratan la geología, los beduinos, la pesca de perlas y la transformación de Catar en potencia petrolera.', tip: 'Rodea el edificio por fuera en el sentido de las agujas del reloj hasta el antiguo palacio del jeque Abdalá: al atardecer los discos proyectan las sombras más nítidas.' },
+        de: { name: 'Nationalmuseum von Katar', description: 'Jean Nouvels Bau aus Hunderten schräg gestellter Scheiben ist den Kristallen der Wüstenrose nachempfunden. Die Säle erzählen von Geologie, Beduinen, Perlentaucherei und Katars Aufstieg zur Ölmacht.', tip: 'Geh außen im Uhrzeigersinn um das Gebäude bis zum alten Palast von Scheich Abdullah – bei Sonnenuntergang werfen die Scheiben die schärfsten Schatten.' },
+        fr: { name: 'Musée national du Qatar', description: 'Le bâtiment de Jean Nouvel assemble des centaines de disques inclinés inspirés des cristaux de la rose des sables. Ses salles évoquent la géologie, les Bédouins, la pêche aux perles et la transformation du Qatar en puissance pétrolière.', tip: 'Faites le tour extérieur dans le sens des aiguilles d’une montre jusqu’à l’ancien palais du cheikh Abdallah : au coucher du soleil, les disques projettent leurs ombres les plus nettes.' },
+        it: { name: 'Museo Nazionale del Qatar', description: 'L’edificio di Jean Nouvel è fatto di centinaia di dischi inclinati che riprendono i cristalli della rosa del deserto. Le sale raccontano geologia, beduini, pesca delle perle e la trasformazione del Qatar in potenza petrolifera.', tip: 'Gira intorno all’edificio in senso orario fino all’antico palazzo dello sceicco Abdullah: al tramonto i dischi proiettano le ombre più nette.' },
+      },
+    },
+    {
+      id: 'doha-mia-park', city: 'doha', category: 'nature', spot: 'insta', lat: 25.299, lng: 51.537, image: 'bw-yPjhXl78',
+      rating: 4.7, reviews: 12100, tags: ['views', 'sunset', 'photo', 'city'], price: { kind: 'free' }, hours: 'always',
+      address: 'MIA Park, Corniche, Doha',
+      text: {
+        ru: { name: 'Парк MIA и вид на Вест-Бэй', description: 'Зелёный полуостров рядом с Музеем исламского искусства с газонами, кафе и стальной скульптурой Ричарда Серры «7». Отсюда открывается самая известная панорама небоскрёбов Дохи через залив.', tip: 'Встаньте на дальнем мысе парка в синий час, сразу после заката: небоскрёбы Вест-Бэй зажигаются и отражаются в воде вместе с лодками-дау.' },
+        en: { name: 'MIA Park and the West Bay view', description: 'A green peninsula beside the Museum of Islamic Art, with lawns, cafés and Richard Serra’s steel sculpture 7. It offers Doha’s most famous panorama of skyscrapers across the bay.', tip: 'Stand at the far tip of the park in the blue hour just after sunset, when the West Bay towers light up and reflect in the water with the dhows.' },
+        es: { name: 'Parque MIA y la vista de West Bay', description: 'Una península verde junto al Museo de Arte Islámico, con césped, cafés y la escultura de acero 7 de Richard Serra. Desde aquí se ve la panorámica más famosa de los rascacielos de Doha al otro lado de la bahía.', tip: 'Ponte en la punta del parque en la hora azul, justo después del atardecer, cuando las torres de West Bay se encienden y se reflejan en el agua junto a los dhows.' },
+        de: { name: 'MIA Park und der Blick auf die West Bay', description: 'Eine grüne Halbinsel neben dem Museum für Islamische Kunst mit Rasenflächen, Cafés und Richard Serras Stahlskulptur 7. Von hier bietet sich Dohas berühmtestes Panorama der Wolkenkratzer jenseits der Bucht.', tip: 'Stell dich zur blauen Stunde direkt nach Sonnenuntergang an die äußerste Spitze des Parks, wenn die Türme der West Bay aufleuchten und sich mit den Dhaus im Wasser spiegeln.' },
+        fr: { name: 'Parc du MIA et la vue sur West Bay', description: 'Une presqu’île verdoyante à côté du musée d’Art islamique, avec pelouses, cafés et la sculpture d’acier 7 de Richard Serra. On y découvre le panorama le plus célèbre des gratte-ciel de Doha, de l’autre côté de la baie.', tip: 'Placez-vous à la pointe du parc à l’heure bleue, juste après le coucher du soleil, quand les tours de West Bay s’allument et se reflètent dans l’eau avec les boutres.' },
+        it: { name: 'MIA Park e la vista su West Bay', description: 'Una penisola verde accanto al Museo d’Arte Islamica, con prati, caffè e la scultura d’acciaio 7 di Richard Serra. Da qui si gode il panorama più famoso dei grattacieli di Doha al di là della baia.', tip: 'Mettiti sulla punta estrema del parco all’ora blu, subito dopo il tramonto, quando le torri di West Bay si accendono e si riflettono nell’acqua insieme ai dhow.' },
+      },
+    },
+    {
+      id: 'doha-souq-waqif', city: 'doha', category: 'food', lat: 25.2867, lng: 51.533, image: 'ng3UEoZuoqM',
+      rating: 4.7, reviews: 48600, tags: ['market', 'food', 'streetfood', 'culture'], price: { kind: 'level', level: 1 }, hours: '10:00–23:00',
+      address: 'Souq Waqif, Al Souq, Doha',
+      text: {
+        ru: { name: 'Сук-Вакиф', description: 'Старый рынок с глиняными стенами и деревянными балками, где торгуют специями, тканями и соколами, а вечерами работают десятки кафе и ресторанов. Это лучшее место в Дохе, чтобы поужинать по-местному.', tip: 'Загляните в соколиный рынок и госпиталь для соколов на краю сука, а потом выпейте чашку чая карак в одном из маленьких кафе у входа.' },
+        en: { name: 'Souq Waqif', description: 'An old market of mud walls and wooden beams selling spices, fabrics and falcons, with dozens of cafés and restaurants open in the evening. It is the best place in Doha to eat like a local.', tip: 'Look into the falcon souq and falcon hospital at the edge of the market, then have a cup of karak tea at one of the little cafés by the entrance.' },
+        es: { name: 'Souq Waqif', description: 'Un viejo mercado de muros de adobe y vigas de madera donde se venden especias, telas y halcones, con decenas de cafés y restaurantes abiertos por la noche. Es el mejor lugar de Doha para comer como un local.', tip: 'Asómate al zoco de halcones y al hospital de halcones en el borde del mercado, y luego toma un té karak en uno de los cafetines de la entrada.' },
+        de: { name: 'Souq Waqif', description: 'Ein alter Markt mit Lehmmauern und Holzbalken, auf dem Gewürze, Stoffe und Falken verkauft werden und abends Dutzende Cafés und Restaurants öffnen. Der beste Ort in Doha, um wie die Einheimischen zu essen.', tip: 'Schau beim Falkenmarkt und im Falkenkrankenhaus am Rand des Souks vorbei und trink danach einen Karak-Tee in einem der kleinen Cafés am Eingang.' },
+        fr: { name: 'Souq Waqif', description: 'Un vieux marché aux murs de terre et aux poutres de bois où l’on vend épices, tissus et faucons, avec des dizaines de cafés et de restaurants ouverts le soir. C’est le meilleur endroit de Doha pour manger comme les habitants.', tip: 'Jetez un œil au souk aux faucons et à l’hôpital des faucons en bordure du marché, puis prenez un thé karak dans l’un des petits cafés de l’entrée.' },
+        it: { name: 'Souq Waqif', description: 'Un antico mercato dai muri di fango e travi di legno dove si vendono spezie, stoffe e falchi, con decine di caffè e ristoranti aperti la sera. È il posto migliore di Doha per mangiare come la gente del posto.', tip: 'Dai un’occhiata al suk dei falchi e all’ospedale dei falchi ai margini del mercato, poi bevi un tè karak in uno dei piccoli caffè all’ingresso.' },
+      },
+    },
+    {
+      id: 'doha-khor-al-adaid', city: 'doha', category: 'nature', spot: 'hidden', lat: 24.62, lng: 51.33, image: '_28gej_Duv8',
+      rating: 4.8, reviews: 5600, tags: ['desert', 'adventure', 'beaches', 'sunset'], price: { kind: 'from', amount: 250, currency: 'QAR' },
+      address: 'Khor Al Adaid, southern Qatar',
+      text: {
+        ru: { name: 'Внутреннее море Хор-эль-Удейд', description: 'Морской залив на юге Катара, окружённый высокими дюнами: песок здесь сбегает прямо в бирюзовую воду, а на другом берегу уже Саудовская Аравия. Дорог туда нет, только бездорожье по барханам.', tip: 'Едьте только с туром на джипе от Дохи или Месаида — водители спускают шины и знают маршрут; берите тур с закатом и ужином в лагере на берегу.' },
+        en: { name: 'Khor Al Adaid Inland Sea', description: 'A sea inlet in southern Qatar ringed by tall dunes, where sand slides straight into turquoise water and the far shore is already Saudi Arabia. There are no roads, only off-road tracks over the dunes.', tip: 'Go only on a 4x4 tour from Doha or Mesaieed, whose drivers deflate the tyres and know the route, and pick a sunset tour with dinner at a beach camp.' },
+        es: { name: 'Mar Interior de Khor Al Adaid', description: 'Una ensenada en el sur de Catar rodeada de altas dunas, donde la arena baja directa hasta el agua turquesa y la otra orilla ya es Arabia Saudí. No hay carreteras, solo pistas sobre las dunas.', tip: 'Ve únicamente en tour de 4x4 desde Doha o Mesaieed, cuyos conductores desinflan las ruedas y conocen la ruta, y elige uno con atardecer y cena en un campamento en la orilla.' },
+        de: { name: 'Binnenmeer Khor Al Adaid', description: 'Eine Meeresbucht im Süden Katars, umringt von hohen Dünen, deren Sand direkt ins türkisfarbene Wasser gleitet – das andere Ufer gehört schon zu Saudi-Arabien. Straßen gibt es nicht, nur Pisten über die Dünen.', tip: 'Fahr nur mit einer Geländewagentour ab Doha oder Mesaieed, deren Fahrer Luft aus den Reifen lassen und die Route kennen, und wähle eine Tour mit Sonnenuntergang und Abendessen im Strandcamp.' },
+        fr: { name: 'Mer intérieure de Khor Al Adaid', description: 'Un bras de mer du sud du Qatar cerné de hautes dunes, où le sable glisse droit dans une eau turquoise et dont la rive opposée appartient déjà à l’Arabie saoudite. Aucune route n’y mène, seulement des pistes à travers les dunes.', tip: 'N’y allez qu’en excursion en 4x4 depuis Doha ou Mesaieed, avec des chauffeurs qui dégonflent les pneus et connaissent le trajet, et choisissez une sortie au coucher du soleil avec dîner dans un camp sur la plage.' },
+        it: { name: 'Mare Interno di Khor Al Adaid', description: 'Un’insenatura nel sud del Qatar circondata da alte dune, dove la sabbia scivola dritta nell’acqua turchese e la riva opposta è già Arabia Saudita. Non ci sono strade, solo piste tra le dune.', tip: 'Vai solo con un tour in 4x4 da Doha o Mesaieed, con autisti che sgonfiano le gomme e conoscono il percorso, e scegli quello al tramonto con cena in un campo sulla spiaggia.' },
+      },
+    },
+    // Al Khor
+    {
+      id: 'al-khor-al-bayt-stadium', city: 'al-khor', category: 'attraction', spot: 'insta', lat: 25.6522, lng: 51.4875, image: 'Do6yoytec5E',
+      rating: 4.6, reviews: 9300, tags: ['architecture', 'photo'], price: { kind: 'free' },
+      address: 'Al Bayt Stadium, Al Khor',
+      text: {
+        ru: { name: 'Стадион Аль-Бейт', description: 'Стадион чемпионата мира 2022 года в виде гигантского бедуинского шатра «бейт аш-шаар» с чёрно-белыми полосами. Вокруг разбит парк с озером и дорожками для прогулок.', tip: 'Снимайте с дальнего берега озера в парке перед закатом, чтобы шатёр целиком отразился в воде.' },
+        en: { name: 'Al Bayt Stadium', description: 'The 2022 World Cup stadium designed as a giant black-and-white striped Bedouin tent, a bayt al sha’ar. It is surrounded by a park with a lake and walking paths.', tip: 'Shoot from the far side of the park lake before sunset to get the whole tent reflected in the water.' },
+        es: { name: 'Estadio Al Bayt', description: 'El estadio del Mundial de 2022 con forma de gigantesca jaima beduina, una bayt al sha’ar de rayas blancas y negras. Lo rodea un parque con lago y senderos.', tip: 'Fotografía desde la orilla opuesta del lago del parque antes del atardecer, para que toda la jaima se refleje en el agua.' },
+        de: { name: 'Al-Bayt-Stadion', description: 'Das WM-Stadion von 2022, gestaltet als riesiges schwarz-weiß gestreiftes Beduinenzelt, ein Bayt al-Sha’ar. Ringsum liegt ein Park mit See und Spazierwegen.', tip: 'Fotografiere vor Sonnenuntergang vom gegenüberliegenden Ufer des Parksees, damit sich das ganze Zelt im Wasser spiegelt.' },
+        fr: { name: 'Stade Al Bayt', description: 'Le stade de la Coupe du monde 2022 conçu comme une immense tente bédouine rayée noir et blanc, une bayt al-sha’ar. Il est entouré d’un parc avec un lac et des allées de promenade.', tip: 'Photographiez depuis la rive opposée du lac du parc avant le coucher du soleil pour que toute la tente se reflète dans l’eau.' },
+        it: { name: 'Stadio Al Bayt', description: 'Lo stadio dei Mondiali 2022 progettato come una gigantesca tenda beduina a strisce bianche e nere, una bayt al-sha’ar. Intorno c’è un parco con un lago e vialetti.', tip: 'Scatta dalla riva opposta del lago del parco prima del tramonto, così l’intera tenda si riflette nell’acqua.' },
+      },
+    },
+    {
+      id: 'al-khor-al-thakhira-mangroves', city: 'al-khor', category: 'nature', lat: 25.731, lng: 51.548, image: '_28gej_Duv8',
+      rating: 4.6, reviews: 4800, tags: ['nature', 'kayak', 'wildlife'], price: { kind: 'free' }, hours: 'always',
+      address: 'Al Thakhira, Al Khor',
+      text: {
+        ru: { name: 'Мангры Аль-Тахира', description: 'Самые большие мангровые заросли Катара с тихими протоками, где живут цапли, крабы и зимой — фламинго. Здесь лучше всего грести на каяке или сапе среди зелёных деревьев посреди пустыни.', tip: 'Прокат каяков работает у въезда к манграм; выходите на воду утром на приливе, пока нет ветра.' },
+        en: { name: 'Al Thakhira mangroves', description: 'Qatar’s largest mangrove forest, with quiet channels home to herons, crabs and, in winter, flamingos. It is best explored by kayak or paddleboard, gliding between green trees in the middle of the desert.', tip: 'Kayak rentals operate by the mangrove entrance; head out in the morning at high tide before the wind picks up.' },
+        es: { name: 'Manglares de Al Thakhira', description: 'El mayor manglar de Catar, con canales tranquilos donde viven garzas, cangrejos y, en invierno, flamencos. Lo mejor es recorrerlo en kayak o tabla de paddle entre árboles verdes en pleno desierto.', tip: 'Junto a la entrada de los manglares alquilan kayaks; sal al agua por la mañana con marea alta, antes de que sople el viento.' },
+        de: { name: 'Mangroven von Al Thakhira', description: 'Katars größter Mangrovenwald mit stillen Kanälen, in denen Reiher, Krabben und im Winter Flamingos leben. Am schönsten erkundest du ihn per Kajak oder SUP zwischen grünen Bäumen mitten in der Wüste.', tip: 'Kajakverleihe gibt es am Zugang zu den Mangroven; paddle morgens bei Flut los, bevor der Wind auffrischt.' },
+        fr: { name: 'Mangroves d’Al Thakhira', description: 'La plus grande mangrove du Qatar, avec des chenaux tranquilles où vivent hérons, crabes et, en hiver, flamants roses. On l’explore au mieux en kayak ou en paddle, entre des arbres verts en plein désert.', tip: 'Des loueurs de kayaks se trouvent à l’entrée des mangroves ; partez le matin à marée haute, avant que le vent se lève.' },
+        it: { name: 'Mangrovie di Al Thakhira', description: 'La più grande foresta di mangrovie del Qatar, con canali tranquilli dove vivono aironi, granchi e d’inverno fenicotteri. Il modo migliore per esplorarla è in kayak o sul SUP, tra alberi verdi in pieno deserto.', tip: 'All’ingresso delle mangrovie si noleggiano kayak; esci in acqua al mattino con l’alta marea, prima che si alzi il vento.' },
+      },
+    },
+    {
+      id: 'al-khor-purple-island', city: 'al-khor', category: 'nature', spot: 'hidden', lat: 25.664, lng: 51.517, image: 'UIR2ojtAqWs',
+      rating: 4.4, reviews: 3100, tags: ['nature', 'history', 'hiking'], price: { kind: 'free' }, hours: 'always',
+      address: 'Jazirat Bin Ghanim, Al Khor',
+      text: {
+        ru: { name: 'Остров Пёрпл (Джазират-бин-Ганим)', description: 'Низкий остров среди мангров, где в древности добывали пурпурную краску из морских улиток — отсюда и название. Сейчас это тихое место для прогулок по отмелям и наблюдения за птицами.', tip: 'На остров ведёт насыпная дорога с юга Эль-Хора; приезжайте при отливе, когда можно бродить по отмелям, и наденьте обувь, которую не жалко намочить.' },
+        en: { name: 'Purple Island (Jazirat Bin Ghanim)', description: 'A low island among the mangroves where purple dye was once made from sea snails, hence the name. Today it is a quiet spot for walking the shallows and birdwatching.', tip: 'A causeway leads to the island from the south of Al Khor; come at low tide to wander the flats, and wear shoes you don’t mind getting wet.' },
+        es: { name: 'Purple Island (Jazirat Bin Ghanim)', description: 'Una isla baja entre manglares donde en la antigüedad se obtenía tinte púrpura de caracoles marinos, de ahí su nombre. Hoy es un lugar tranquilo para pasear por los bajíos y observar aves.', tip: 'Una calzada lleva a la isla desde el sur de Al Khor; ve con marea baja para caminar por los bajíos y ponte calzado que pueda mojarse.' },
+        de: { name: 'Purple Island (Jazirat Bin Ghanim)', description: 'Eine flache Insel zwischen Mangroven, auf der man einst Purpurfarbstoff aus Meeresschnecken gewann – daher der Name. Heute ein stiller Ort für Wattwanderungen und Vogelbeobachtung.', tip: 'Ein Damm führt vom Süden Al Khors zur Insel; komm bei Ebbe, um über die Sandbänke zu laufen, und trag Schuhe, die nass werden dürfen.' },
+        fr: { name: 'Purple Island (Jazirat Bin Ghanim)', description: 'Une île basse au milieu des mangroves où l’on tirait autrefois une teinture pourpre de coquillages marins, d’où son nom. C’est aujourd’hui un lieu paisible pour marcher sur les hauts-fonds et observer les oiseaux.', tip: 'Une digue mène à l’île depuis le sud d’Al Khor ; venez à marée basse pour arpenter les estrans, avec des chaussures qui peuvent se mouiller.' },
+        it: { name: 'Purple Island (Jazirat Bin Ghanim)', description: 'Un’isola bassa tra le mangrovie dove anticamente si ricavava la porpora dai molluschi marini, da cui il nome. Oggi è un luogo tranquillo per camminare nelle secche e osservare gli uccelli.', tip: 'Una strada rialzata porta all’isola dal sud di Al Khor; vai con la bassa marea per camminare sulle secche e metti scarpe che possano bagnarsi.' },
+      },
+    },
+    {
+      id: 'al-khor-zubarah-fort', city: 'al-khor', category: 'attraction', lat: 25.9766, lng: 51.0459, image: 'Do6yoytec5E',
+      rating: 4.5, reviews: 6200, tags: ['history', 'unesco', 'castles'], price: { kind: 'free' }, hours: '09:00–17:00',
+      address: 'Al Zubarah, Madinat ash Shamal',
+      text: {
+        ru: { name: 'Форт Зубара', description: 'Квадратная крепость 1938 года с круглыми башнями посреди пустыни рядом с раскопками города ловцов жемчуга XVIII века. Весь археологический заповедник Зубара внесён в список ЮНЕСКО.', tip: 'После форта проедьте пару километров к морю, к раскопкам старого города: вдоль берега видны основания домов, мечети и рынка.' },
+        en: { name: 'Zubarah Fort', description: 'A square 1938 fortress with round towers standing alone in the desert next to the excavated 18th-century town of pearl merchants. The whole Al Zubarah archaeological site is on the UNESCO list.', tip: 'After the fort drive a couple of kilometres to the sea to see the old town’s excavations, where the foundations of houses, a mosque and a market line the shore.' },
+        es: { name: 'Fuerte de Zubarah', description: 'Una fortaleza cuadrada de 1938 con torres redondas, solitaria en el desierto junto a la ciudad excavada de mercaderes de perlas del siglo XVIII. Todo el yacimiento de Al Zubarah es Patrimonio de la UNESCO.', tip: 'Después del fuerte conduce un par de kilómetros hacia el mar para ver las excavaciones de la ciudad, donde junto a la costa asoman los cimientos de casas, una mezquita y un mercado.' },
+        de: { name: 'Fort Zubarah', description: 'Eine quadratische Festung von 1938 mit Rundtürmen, einsam in der Wüste neben der ausgegrabenen Stadt der Perlenhändler aus dem 18. Jahrhundert. Die gesamte Ausgrabungsstätte Al Zubarah ist UNESCO-Welterbe.', tip: 'Fahr nach dem Fort ein paar Kilometer zum Meer zu den Ausgrabungen der alten Stadt, wo am Ufer die Fundamente von Häusern, einer Moschee und einem Markt liegen.' },
+        fr: { name: 'Fort de Zubarah', description: 'Une forteresse carrée de 1938 flanquée de tours rondes, isolée dans le désert à côté de la ville de marchands de perles du XVIIIe siècle mise au jour par les fouilles. Tout le site archéologique d’Al Zubarah est inscrit à l’UNESCO.', tip: 'Après le fort, roulez quelques kilomètres jusqu’à la mer pour voir les fouilles de l’ancienne ville, où les fondations de maisons, d’une mosquée et d’un marché bordent le rivage.' },
+        it: { name: 'Forte di Zubarah', description: 'Una fortezza quadrata del 1938 con torri rotonde, isolata nel deserto accanto alla città dei mercanti di perle del Settecento riportata alla luce dagli scavi. L’intero sito archeologico di Al Zubarah è patrimonio UNESCO.', tip: 'Dopo il forte guida un paio di chilometri verso il mare per vedere gli scavi della città, dove lungo la riva affiorano le fondamenta di case, una moschea e un mercato.' },
+      },
+    },
+    {
+      id: 'al-khor-fuwairit-beach', city: 'al-khor', category: 'nature', lat: 26.0333, lng: 51.3667, image: 'UIR2ojtAqWs',
+      rating: 4.5, reviews: 2400, tags: ['beaches', 'wildlife', 'nature'], price: { kind: 'free' }, hours: 'always',
+      address: 'Fuwairit, northern Qatar',
+      text: {
+        ru: { name: 'Пляж Фувайрит', description: 'Дикий пляж с белым песком и мелкой бирюзовой водой на северо-востоке полуострова. Это главное в Катаре место гнездования черепах бисса.', tip: 'С апреля по июль пляж закрывают ради черепах — планируйте поездку с осени по март и не оставляйте после себя мусор.' },
+        en: { name: 'Fuwairit Beach', description: 'A wild beach of white sand and shallow turquoise water on the peninsula’s north-east coast. It is Qatar’s main nesting site for hawksbill turtles.', tip: 'The beach closes for the turtles from April to July, so plan your visit between autumn and March and take all your rubbish with you.' },
+        es: { name: 'Playa de Fuwairit', description: 'Una playa salvaje de arena blanca y agua turquesa poco profunda en la costa noreste de la península. Es el principal lugar de anidación de tortugas carey de Catar.', tip: 'De abril a julio la playa se cierra por las tortugas, así que planea la visita entre el otoño y marzo y llévate toda la basura.' },
+        de: { name: 'Fuwairit Beach', description: 'Ein wilder Strand mit weißem Sand und flachem türkisfarbenem Wasser an der Nordostküste der Halbinsel. Er ist Katars wichtigster Nistplatz für Echte Karettschildkröten.', tip: 'Von April bis Juli ist der Strand für die Schildkröten gesperrt – plane deinen Besuch zwischen Herbst und März und nimm deinen Müll wieder mit.' },
+        fr: { name: 'Plage de Fuwairit', description: 'Une plage sauvage de sable blanc et d’eau turquoise peu profonde sur la côte nord-est de la péninsule. C’est le principal site de ponte des tortues imbriquées du Qatar.', tip: 'D’avril à juillet, la plage est fermée pour protéger les tortues : prévoyez votre visite entre l’automne et mars et remportez tous vos déchets.' },
+        it: { name: 'Spiaggia di Fuwairit', description: 'Una spiaggia selvaggia di sabbia bianca e acqua turchese bassa sulla costa nord-orientale della penisola. È il principale sito di nidificazione delle tartarughe embricate del Qatar.', tip: 'Da aprile a luglio la spiaggia viene chiusa per le tartarughe, quindi programma la visita tra l’autunno e marzo e porta via tutti i tuoi rifiuti.' },
+      },
+    },
+  ],
+};
+
+export default pack;

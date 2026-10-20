@@ -1,0 +1,291 @@
+import type { CountryPack } from '../types';
+
+const pack: CountryPack = {
+  country: {
+    code: 'JO',
+    region: 'mideast',
+    image: 'yXFgRwJge3o',
+    theme: { accent: '#b45309', accent2: '#be123c', motif: 'dunes' },
+    fromMoscow: { hours: 5, direct: true },
+    text: {
+      ru: {
+        tagline: 'Розовая Петра, римские руины Аммана и вода, которая держит на плаву',
+        description: 'Иордания — страна, где на пятачке размером с Португалию уместились набатейская Петра, красные пески Вади-Рам, римские города и самая низкая точка суши на планете — Мёртвое море. Здесь безопасно, гостеприимно и всё близко: от Аммана до моря меньше часа езды.',
+        howToGet: 'Royal Jordanian летает из Москвы (Домодедово) в Амман без пересадок, около 5 часов; другие варианты — через Стамбул или Дубай. По стране между Амманом, Петрой и Акабой ходят комфортные автобусы JETT, в столице работают Careem и Uber, но удобнее всего арендовать машину: дороги хорошие, а Мёртвое море, Мадаба и Джераш лежат в часе езды друг от друга.',
+        tips: [
+          'Российские Visa и Mastercard в Иордании не работают: везите доллары и меняйте их на динары в обменниках Аммана, а в Петре и Вади-Раме расплачивайтесь наличными.',
+          'Купите Jordan Pass онлайн до поездки: он включает визовый сбор и вход в Петру, Джераш, Цитадель и ещё десятки мест.',
+          'Одевайтесь скромно вне пляжей и курортов, спрашивайте разрешения, прежде чем фотографировать женщин, и учитывайте, что в пятницу утром многие лавки закрыты.',
+        ],
+        guide: {
+          title: 'Иордания за 7 дней',
+          sections: [
+            { title: 'Когда ехать', body: 'Лучше всего весной, с марта по май, и осенью, с октября по ноябрь: днём 20–28 градусов, а в Петре и Вади-Раме приятно ходить пешком. Летом в долине Иордана и у Мёртвого моря бывает за 40, зато в Аммане на холмах прохладнее. Зимой в столице может пойти снег, но у Мёртвого моря и в Акабе тепло и солнечно.' },
+            { title: 'Маршрут на 7 дней', body: 'Два дня в Аммане: Цитадель, римский театр, улица Рейнбоу и поездка в Джераш. Затем Мадаба с мозаичной картой и гора Нево, вечер и ночь на Мёртвом море. По Королевской дороге — к Петре на два дня, включая подъём к Монастырю. Завершите путешествие ночью в лагере в Вади-Раме и днём у Красного моря в Акабе.' },
+            { title: 'Что попробовать', body: 'Национальное блюдо — мансаф, баранина в соусе из сушёного йогурта джамид на рисе и тонкой лепёшке. На завтрак ешьте фалафель и хумус с горячим хлебом, на десерт — кнафе с горячим сыром и сиропом. В Вади-Раме попробуйте зарб — мясо и овощи, которые бедуины запекают в яме под песком, а запивайте всё сладким чаем с шалфеем.' },
+            { title: 'Деньги, связь и транспорт', body: 'Валюта — иорданский динар (JOD), он дороже доллара: 1 динар примерно равен 1,4 доллара. Карты российских банков не работают, поэтому везите наличные доллары. SIM-карты Zain и Orange продают в аэропорту Королевы Алии. Между городами ходят автобусы JETT, по Амману удобно на такси Careem, а для Мёртвого моря и Королевской дороги лучше взять машину.' },
+          ],
+        },
+      },
+      en: {
+        tagline: 'Rose-red Petra, Amman’s Roman ruins and water that keeps you afloat',
+        description: 'Jordan packs Nabataean Petra, the red sands of Wadi Rum, Roman cities and the lowest point on Earth, the Dead Sea, into an area the size of Portugal. It is safe, hospitable and compact, with the sea less than an hour’s drive from Amman.',
+        howToGet: 'Royal Jordanian flies non-stop from Moscow Domodedovo to Amman in about 5 hours; other options connect via Istanbul or Dubai. Comfortable JETT buses link Amman, Petra and Aqaba, Careem and Uber work in the capital, but a rental car is the easiest choice, as the roads are good and the Dead Sea, Madaba and Jerash are all within an hour of each other.',
+        tips: [
+          'Russian-issued Visa and Mastercard cards don’t work in Jordan, so bring US dollars, change them into dinars in Amman and pay cash in Petra and Wadi Rum.',
+          'Buy the Jordan Pass online before you go: it covers the visa fee and entry to Petra, Jerash, the Citadel and dozens of other sites.',
+          'Dress modestly away from beaches and resorts, ask before photographing women, and expect many shops to be shut on Friday mornings.',
+        ],
+        guide: {
+          title: 'Jordan in 7 days',
+          sections: [
+            { title: 'When to go', body: 'Spring, from March to May, and autumn, from October to November, are best, with daytime highs of 20–28°C and pleasant walking in Petra and Wadi Rum. In summer the Jordan Valley and the Dead Sea can top 40°C, though Amman’s hills are cooler. In winter it may snow in the capital, while the Dead Sea and Aqaba stay warm and sunny.' },
+            { title: 'A 7-day route', body: 'Spend two days in Amman for the Citadel, the Roman Theatre, Rainbow Street and a trip to Jerash. Then visit Madaba with its mosaic map and Mount Nebo, and spend the evening and night at the Dead Sea. Take the King’s Highway to Petra for two days, including the climb to the Monastery. Finish with a night at a Wadi Rum camp and a day by the Red Sea in Aqaba.' },
+            { title: 'What to eat', body: 'The national dish is mansaf, lamb in a sauce of dried jameed yoghurt served on rice and thin flatbread. Have falafel and hummus with hot bread for breakfast and knafeh with melted cheese and syrup for dessert. In Wadi Rum try zarb, meat and vegetables that the Bedouin bake in a pit under the sand, and wash it all down with sweet sage tea.' },
+            { title: 'Money, SIM cards and transport', body: 'The currency is the Jordanian dinar (JOD), worth more than the dollar, at about 1.4 US dollars. Russian bank cards don’t work, so bring dollars in cash. Zain and Orange SIM cards are sold at Queen Alia Airport. JETT buses run between cities, Careem taxis are handy in Amman, and a car is best for the Dead Sea and the King’s Highway.' },
+          ],
+        },
+      },
+      es: {
+        tagline: 'La Petra rosada, las ruinas romanas de Amán y un agua que te mantiene a flote',
+        description: 'Jordania reúne en un territorio del tamaño de Portugal la Petra nabatea, las arenas rojas de Wadi Rum, ciudades romanas y el punto más bajo de la Tierra, el mar Muerto. Es un país seguro, hospitalario y compacto: el mar queda a menos de una hora de Amán.',
+        howToGet: 'Royal Jordanian vuela sin escalas de Moscú-Domodédovo a Amán en unas 5 horas; también se puede conectar en Estambul o Dubái. Los cómodos autobuses JETT unen Amán, Petra y Áqaba, en la capital funcionan Careem y Uber, pero lo más práctico es alquilar coche: las carreteras son buenas y el mar Muerto, Madaba y Jerash están a una hora entre sí.',
+        tips: [
+          'Las tarjetas Visa y Mastercard emitidas en Rusia no funcionan en Jordania: lleva dólares, cámbialos por dinares en Amán y paga en efectivo en Petra y Wadi Rum.',
+          'Compra el Jordan Pass por internet antes del viaje: incluye la tasa de visado y la entrada a Petra, Jerash, la Ciudadela y decenas de lugares más.',
+          'Viste con discreción fuera de playas y resorts, pide permiso antes de fotografiar a mujeres y ten en cuenta que muchas tiendas cierran el viernes por la mañana.',
+        ],
+        guide: {
+          title: 'Jordania en 7 días',
+          sections: [
+            { title: 'Cuándo ir', body: 'Lo mejor es la primavera, de marzo a mayo, y el otoño, de octubre a noviembre: de día 20–28 °C y caminatas agradables en Petra y Wadi Rum. En verano el valle del Jordán y el mar Muerto superan los 40 °C, aunque en las colinas de Amán hace más fresco. En invierno puede nevar en la capital, mientras que el mar Muerto y Áqaba siguen cálidos y soleados.' },
+            { title: 'Ruta de 7 días', body: 'Dos días en Amán: la Ciudadela, el teatro romano, Rainbow Street y una excursión a Jerash. Luego Madaba con su mapa de mosaico y el monte Nebo, y tarde y noche en el mar Muerto. Por la Carretera del Rey, dos días en Petra con la subida al Monasterio. Termina con una noche en un campamento de Wadi Rum y un día junto al mar Rojo en Áqaba.' },
+            { title: 'Qué probar', body: 'El plato nacional es el mansaf, cordero en salsa de yogur seco jameed servido sobre arroz y pan fino. Desayuna faláfel y hummus con pan caliente, y de postre toma knafeh con queso fundido y almíbar. En Wadi Rum prueba el zarb, carne y verduras que los beduinos asan en un hoyo bajo la arena, y acompáñalo todo con té dulce con salvia.' },
+            { title: 'Dinero, móvil y transporte', body: 'La moneda es el dinar jordano (JOD), que vale más que el dólar, unos 1,4 dólares. Las tarjetas de bancos rusos no funcionan, así que lleva dólares en efectivo. Las SIM de Zain y Orange se venden en el aeropuerto Reina Alia. Entre ciudades circulan los autobuses JETT, en Amán son prácticos los taxis Careem, y para el mar Muerto y la Carretera del Rey conviene el coche.' },
+          ],
+        },
+      },
+      de: {
+        tagline: 'Das rosarote Petra, Ammans Römerruinen und Wasser, das dich trägt',
+        description: 'Jordanien vereint auf der Fläche Portugals das nabatäische Petra, den roten Sand des Wadi Rum, römische Städte und den tiefsten Punkt der Erde, das Tote Meer. Das Land ist sicher, gastfreundlich und kompakt – von Amman bist du in weniger als einer Stunde am Meer.',
+        howToGet: 'Royal Jordanian fliegt nonstop von Moskau-Domodedowo nach Amman, rund 5 Stunden; alternativ steigst du in Istanbul oder Dubai um. Komfortable JETT-Busse verbinden Amman, Petra und Akaba, in der Hauptstadt gibt es Careem und Uber, am bequemsten ist aber ein Mietwagen: Die Straßen sind gut, und Totes Meer, Madaba und Jerash liegen je eine Stunde voneinander entfernt.',
+        tips: [
+          'In Russland ausgegebene Visa- und Mastercard-Karten funktionieren in Jordanien nicht – nimm US-Dollar mit, tausche sie in Amman in Dinar und zahl in Petra und im Wadi Rum bar.',
+          'Kauf den Jordan Pass vor der Reise online: Er deckt die Visagebühr und den Eintritt nach Petra, Jerash, in die Zitadelle und Dutzende weitere Stätten ab.',
+          'Kleide dich abseits von Stränden und Resorts zurückhaltend, frag, bevor du Frauen fotografierst, und rechne damit, dass freitagvormittags viele Läden geschlossen sind.',
+        ],
+        guide: {
+          title: 'Jordanien in 7 Tagen',
+          sections: [
+            { title: 'Reisezeit', body: 'Am besten sind Frühling von März bis Mai und Herbst von Oktober bis November: tagsüber 20–28 °C und angenehme Wanderungen in Petra und im Wadi Rum. Im Sommer werden Jordantal und Totes Meer über 40 °C heiß, auf Ammans Hügeln ist es kühler. Im Winter kann es in der Hauptstadt schneien, am Toten Meer und in Akaba bleibt es warm und sonnig.' },
+            { title: 'Route für 7 Tage', body: 'Zwei Tage Amman mit Zitadelle, Römischem Theater, Rainbow Street und einem Ausflug nach Jerash. Dann Madaba mit der Mosaikkarte und der Berg Nebo, Abend und Nacht am Toten Meer. Über den Königsweg nach Petra für zwei Tage, inklusive Aufstieg zum Kloster. Zum Abschluss eine Nacht im Wüstencamp im Wadi Rum und ein Tag am Roten Meer in Akaba.' },
+            { title: 'Was du probieren solltest', body: 'Das Nationalgericht ist Mansaf, Lamm in einer Soße aus getrocknetem Jameed-Joghurt auf Reis und dünnem Fladenbrot. Zum Frühstück gibt es Falafel und Hummus mit warmem Brot, zum Dessert Knafeh mit geschmolzenem Käse und Sirup. Im Wadi Rum probierst du Zarb, Fleisch und Gemüse, das Beduinen in einer Grube unter dem Sand garen, dazu süßen Salbeitee.' },
+            { title: 'Geld, Handy und Verkehr', body: 'Die Währung ist der Jordanische Dinar (JOD), mehr wert als der Dollar, etwa 1,4 US-Dollar. Russische Bankkarten funktionieren nicht, nimm also Dollar in bar mit. SIM-Karten von Zain und Orange gibt es am Flughafen Queen Alia. Zwischen den Städten fahren JETT-Busse, in Amman sind Careem-Taxis praktisch, und fürs Tote Meer und den Königsweg nimmst du am besten ein Auto.' },
+          ],
+        },
+      },
+      fr: {
+        tagline: 'Pétra la rose, les ruines romaines d’Amman et une eau où l’on flotte',
+        description: 'La Jordanie réunit, sur un territoire grand comme le Portugal, Pétra la nabatéenne, les sables rouges du Wadi Rum, des cités romaines et le point le plus bas de la planète, la mer Morte. Le pays est sûr, accueillant et compact : la mer est à moins d’une heure d’Amman.',
+        howToGet: 'Royal Jordanian relie Moscou-Domodedovo à Amman sans escale en 5 heures environ ; sinon, on passe par Istanbul ou Dubaï. Des bus confortables JETT relient Amman, Pétra et Aqaba, Careem et Uber fonctionnent dans la capitale, mais le plus simple est de louer une voiture : les routes sont bonnes et la mer Morte, Madaba et Jerash sont à une heure les unes des autres.',
+        tips: [
+          'Les cartes Visa et Mastercard émises en Russie ne fonctionnent pas en Jordanie : emportez des dollars, changez-les en dinars à Amman et payez en espèces à Pétra et au Wadi Rum.',
+          'Achetez le Jordan Pass en ligne avant de partir : il couvre les frais de visa et l’entrée à Pétra, Jerash, la Citadelle et des dizaines d’autres sites.',
+          'Habillez-vous sobrement hors des plages et des resorts, demandez avant de photographier des femmes et sachez que beaucoup de boutiques ferment le vendredi matin.',
+        ],
+        guide: {
+          title: 'La Jordanie en 7 jours',
+          sections: [
+            { title: 'Quand partir', body: 'Le printemps, de mars à mai, et l’automne, d’octobre à novembre, sont idéaux : 20 à 28 °C en journée et de belles marches à Pétra et au Wadi Rum. L’été, la vallée du Jourdain et la mer Morte dépassent 40 °C, mais les collines d’Amman restent plus fraîches. L’hiver, il peut neiger dans la capitale, tandis que la mer Morte et Aqaba restent chaudes et ensoleillées.' },
+            { title: 'Itinéraire de 7 jours', body: 'Deux jours à Amman pour la Citadelle, le théâtre romain, Rainbow Street et une excursion à Jerash. Puis Madaba et sa carte en mosaïque, le mont Nébo, et la soirée et la nuit au bord de la mer Morte. Par la route des Rois, deux jours à Pétra avec la montée au Monastère. Terminez par une nuit dans un camp du Wadi Rum et une journée au bord de la mer Rouge à Aqaba.' },
+            { title: 'Que goûter', body: 'Le plat national est le mansaf, de l’agneau dans une sauce au yaourt séché jameed, servi sur du riz et un pain fin. Au petit-déjeuner, falafels et houmous avec du pain chaud ; au dessert, la knafeh au fromage fondu et au sirop. Au Wadi Rum, goûtez le zarb, viande et légumes que les Bédouins cuisent dans une fosse sous le sable, avec un thé sucré à la sauge.' },
+            { title: 'Argent, téléphone et transports', body: 'La monnaie est le dinar jordanien (JOD), plus fort que le dollar : environ 1,4 dollar. Les cartes des banques russes ne fonctionnent pas : prévoyez des dollars en espèces. Les cartes SIM Zain et Orange s’achètent à l’aéroport Reine-Alia. Les bus JETT relient les villes, les taxis Careem sont pratiques à Amman, et une voiture s’impose pour la mer Morte et la route des Rois.' },
+          ],
+        },
+      },
+      it: {
+        tagline: 'La rosa Petra, le rovine romane di Amman e un’acqua che ti tiene a galla',
+        description: 'La Giordania racchiude, in un territorio grande come il Portogallo, la Petra nabatea, le sabbie rosse del Wadi Rum, città romane e il punto più basso della Terra, il Mar Morto. È un paese sicuro, ospitale e compatto: da Amman il mare è a meno di un’ora d’auto.',
+        howToGet: 'Royal Jordanian vola senza scali da Mosca-Domodedovo ad Amman in circa 5 ore; in alternativa si fa scalo a Istanbul o Dubai. I comodi autobus JETT collegano Amman, Petra e Aqaba, nella capitale funzionano Careem e Uber, ma la scelta migliore è un’auto a noleggio: le strade sono buone e Mar Morto, Madaba e Jerash distano un’ora l’uno dall’altro.',
+        tips: [
+          'Le carte Visa e Mastercard emesse in Russia in Giordania non funzionano: porta dollari, cambiali in dinari ad Amman e paga in contanti a Petra e nel Wadi Rum.',
+          'Compra online il Jordan Pass prima di partire: copre la tassa del visto e l’ingresso a Petra, Jerash, la Cittadella e decine di altri siti.',
+          'Vesti in modo sobrio lontano da spiagge e resort, chiedi prima di fotografare le donne e ricorda che il venerdì mattina molti negozi sono chiusi.',
+        ],
+        guide: {
+          title: 'La Giordania in 7 giorni',
+          sections: [
+            { title: 'Quando andare', body: 'I periodi migliori sono la primavera, da marzo a maggio, e l’autunno, da ottobre a novembre: di giorno 20–28 °C e camminate piacevoli a Petra e nel Wadi Rum. D’estate la valle del Giordano e il Mar Morto superano i 40 °C, mentre sulle colline di Amman fa più fresco. D’inverno nella capitale può nevicare, ma al Mar Morto e ad Aqaba resta caldo e soleggiato.' },
+            { title: 'Itinerario di 7 giorni', body: 'Due giorni ad Amman tra Cittadella, teatro romano, Rainbow Street e una gita a Jerash. Poi Madaba con la mappa a mosaico e il monte Nebo, e sera e notte sul Mar Morto. Lungo la Strada dei Re, due giorni a Petra con la salita al Monastero. Chiudi con una notte in un campo tendato nel Wadi Rum e un giorno sul Mar Rosso ad Aqaba.' },
+            { title: 'Cosa assaggiare', body: 'Il piatto nazionale è il mansaf, agnello in salsa di yogurt secco jameed servito su riso e pane sottile. A colazione falafel e hummus con pane caldo, per dessert la knafeh con formaggio fuso e sciroppo. Nel Wadi Rum assaggia lo zarb, carne e verdure che i beduini cuociono in una buca sotto la sabbia, e accompagna tutto con il tè dolce alla salvia.' },
+            { title: 'Soldi, telefono e trasporti', body: 'La valuta è il dinaro giordano (JOD), che vale più del dollaro, circa 1,4 dollari. Le carte delle banche russe non funzionano, quindi porta dollari in contanti. Le SIM Zain e Orange si comprano all’aeroporto Regina Alia. Tra le città viaggiano gli autobus JETT, ad Amman sono comodi i taxi Careem, e per il Mar Morto e la Strada dei Re conviene l’auto.' },
+          ],
+        },
+      },
+    },
+  },
+  cities: [
+    {
+      id: 'amman', lat: 31.9539, lng: 35.9106, image: 'HF9o2ke4two', gallery: ['LYGv30tGmxE', 'kpU3NaymHTI'],
+      rating: 4.5, reviews: 9870, tags: ['history', 'food', 'city', 'culture'], months: [3, 4, 5, 10, 11], budgetPerDay: 70, currency: 'JOD',
+      language: 'ar', timezone: 'UTC+3', zoom: 12, theme: { accent: '#a16207', accent2: '#e7e5e4', motif: 'mosaic' },
+      text: {
+        ru: { name: 'Амман', tagline: 'Город на семи холмах, римский театр и лучший фалафель Леванта', description: 'Иорданская столица раскинулась по холмам белыми каменными кварталами, а в центре, в долине, стоят римский театр на шесть тысяч зрителей и Цитадель с храмом Геркулеса. Вечером жизнь перемещается на улицу Рейнбоу и в кафе с видом на огни города.', tips: ['Ходите по центру пешком, но наверх, к Цитадели и Рейнбоу, берите такси Careem — склоны очень крутые.', 'В Джераш езжайте с утра: от Аммана меньше часа, а к полудню на открытых руинах становится жарко.'], gettingThere: 'Из аэропорта Королевы Алии до центра около 40 минут на такси или 1 час на автобусе Airport Express до станции Северного автовокзала.' },
+        en: { name: 'Amman', tagline: 'A city on seven hills, a Roman theatre and the Levant’s best falafel', description: 'Jordan’s capital spreads across its hills in white stone neighbourhoods, while down in the valley at its heart stand a Roman theatre for six thousand spectators and the Citadel with its Temple of Hercules. In the evening life moves to Rainbow Street and cafés overlooking the city lights.', tips: ['Walk around downtown, but take a Careem taxi up to the Citadel and Rainbow Street, as the slopes are very steep.', 'Go to Jerash in the morning; it is under an hour from Amman, and the exposed ruins get hot by noon.'], gettingThere: 'Queen Alia Airport is about 40 minutes from the centre by taxi, or an hour by the Airport Express bus to the North Bus Station.' },
+        es: { name: 'Amán', tagline: 'Una ciudad de siete colinas, un teatro romano y el mejor faláfel del Levante', description: 'La capital jordana se extiende por sus colinas en barrios de piedra blanca, mientras en el valle del centro se alzan un teatro romano para seis mil espectadores y la Ciudadela con el templo de Hércules. Por la noche la vida se traslada a Rainbow Street y a cafés con vistas a las luces de la ciudad.', tips: ['Recorre el centro a pie, pero sube a la Ciudadela y a Rainbow Street en taxi Careem, porque las cuestas son muy empinadas.', 'Ve a Jerash por la mañana: está a menos de una hora de Amán y a mediodía las ruinas al sol abrasan.'], gettingThere: 'Del aeropuerto Reina Alia al centro hay unos 40 minutos en taxi o una hora en el autobús Airport Express hasta la estación de autobuses Norte.' },
+        de: { name: 'Amman', tagline: 'Eine Stadt auf sieben Hügeln, ein Römertheater und Levante-Falafel', description: 'Jordaniens Hauptstadt breitet sich mit weißen Steinvierteln über ihre Hügel aus, unten im Tal stehen ein Römisches Theater für sechstausend Zuschauer und die Zitadelle mit dem Herkulestempel. Abends verlagert sich das Leben in die Rainbow Street und in Cafés mit Blick auf die Lichter der Stadt.', tips: ['Erkunde die Altstadt zu Fuß, aber nimm zur Zitadelle und zur Rainbow Street ein Careem-Taxi – die Hänge sind sehr steil.', 'Fahr morgens nach Jerash: Es liegt weniger als eine Stunde von Amman entfernt, und mittags wird es in den schattenlosen Ruinen heiß.'], gettingThere: 'Vom Flughafen Queen Alia sind es mit dem Taxi etwa 40 Minuten ins Zentrum, mit dem Airport-Express-Bus rund eine Stunde bis zum Nordbusbahnhof.' },
+        fr: { name: 'Amman', tagline: 'Une ville aux sept collines, un théâtre romain et les meilleurs falafels du Levant', description: 'La capitale jordanienne s’étale sur ses collines en quartiers de pierre blanche, tandis qu’au fond de la vallée centrale se dressent un théâtre romain de six mille places et la Citadelle avec son temple d’Hercule. Le soir, la vie se déplace vers Rainbow Street et les cafés qui dominent les lumières de la ville.', tips: ['Parcourez le centre à pied, mais montez à la Citadelle et à Rainbow Street en taxi Careem : les pentes sont très raides.', 'Allez à Jerash le matin : c’est à moins d’une heure d’Amman, et à midi les ruines en plein soleil deviennent brûlantes.'], gettingThere: 'L’aéroport Reine-Alia est à 40 minutes environ du centre en taxi, ou à une heure en bus Airport Express jusqu’à la gare routière Nord.' },
+        it: { name: 'Amman', tagline: 'Una città su sette colli, un teatro romano e il miglior falafel del Levante', description: 'La capitale giordana si allarga sulle colline con quartieri di pietra bianca, mentre nella valle al centro sorgono un teatro romano da seimila spettatori e la Cittadella con il tempio di Ercole. La sera la vita si sposta su Rainbow Street e nei caffè affacciati sulle luci della città.', tips: ['Gira il centro a piedi, ma sali alla Cittadella e a Rainbow Street in taxi Careem, perché le salite sono ripidissime.', 'Vai a Jerash al mattino: dista meno di un’ora da Amman e a mezzogiorno le rovine sotto il sole scottano.'], gettingThere: 'Dall’aeroporto Regina Alia al centro ci sono circa 40 minuti di taxi o un’ora con l’autobus Airport Express fino alla stazione degli autobus Nord.' },
+      },
+    },
+    {
+      id: 'dead-sea', lat: 31.7189, lng: 35.5895, image: 'yXFgRwJge3o', gallery: ['msm_WyzzmkQ', 'x0dvAPPKHm4', 'eO_4UtF4sl8', '0j6YDatcqHI', 'QCodkebTC70'],
+      rating: 4.7, reviews: 8640, tags: ['spa', 'nature', 'sunset', 'canyon'], months: [3, 4, 5, 10, 11, 12], budgetPerDay: 120, currency: 'JOD',
+      language: 'ar', timezone: 'UTC+3', zoom: 10, theme: { accent: '#0e7490', accent2: '#fde68a', motif: 'waves' },
+      text: {
+        ru: { name: 'Мёртвое море', tagline: 'Самая низкая точка Земли, целебная грязь и закаты над Иудейскими горами', description: 'Берег Мёртвого моря лежит на 430 метров ниже уровня океана: вода здесь в десять раз солонее обычной и держит на поверхности без малейших усилий. Иорданская сторона — это спа-отели в Свеймехе, горячие источники в ущельях и каньон Вади-Муджиб.', tips: ['Не брейтесь накануне и не опускайте голову под воду: соль сильно щиплет, а попав в глаза — жжёт; плавайте на спине не дольше 15–20 минут.', 'Вечером садитесь лицом к западу: солнце уходит за горы на противоположном берегу и окрашивает воду в розовый.'], gettingThere: 'Из Аммана около 45–60 минут на машине или такси; общественный транспорт к отелям почти не ходит.' },
+        en: { name: 'Dead Sea', tagline: 'The lowest point on Earth, healing mud and sunsets over the Judaean hills', description: 'The Dead Sea shore lies 430 metres below sea level, and the water is ten times saltier than the ocean, keeping you afloat effortlessly. The Jordanian side offers spa hotels in Sweimeh, hot springs in the gorges and the canyon of Wadi Mujib.', tips: ['Don’t shave the day before and never put your head under: the salt stings badly and burns if it gets in your eyes; float on your back for no more than 15–20 minutes.', 'In the evening sit facing west, as the sun sinks behind the hills on the far shore and turns the water pink.'], gettingThere: 'It is 45–60 minutes from Amman by car or taxi, and there is almost no public transport to the hotels.' },
+        es: { name: 'Mar Muerto', tagline: 'El punto más bajo de la Tierra, barro curativo y atardeceres sobre los montes', description: 'La orilla del mar Muerto está a 430 metros bajo el nivel del mar, y su agua es diez veces más salada que la del océano, así que flotas sin el menor esfuerzo. El lado jordano ofrece hoteles spa en Sweimeh, aguas termales en los barrancos y el cañón de Wadi Mujib.', tips: ['No te afeites el día antes ni metas la cabeza: la sal escuece mucho y arde si te entra en los ojos; flota boca arriba no más de 15–20 minutos.', 'Por la tarde siéntate mirando al oeste: el sol se pone tras los montes de la otra orilla y tiñe el agua de rosa.'], gettingThere: 'Está a 45–60 minutos de Amán en coche o taxi, y casi no hay transporte público a los hoteles.' },
+        de: { name: 'Totes Meer', tagline: 'Der tiefste Punkt der Erde, Heilschlamm und Sonnenuntergänge', description: 'Das Ufer des Toten Meeres liegt 430 Meter unter dem Meeresspiegel, das Wasser ist zehnmal salziger als der Ozean und trägt dich mühelos. Die jordanische Seite bietet Spa-Hotels in Sweimeh, heiße Quellen in den Schluchten und den Canyon des Wadi Mujib.', tips: ['Rasier dich am Vortag nicht und tauch den Kopf nie unter: Das Salz brennt stark, besonders in den Augen; lass dich höchstens 15–20 Minuten auf dem Rücken treiben.', 'Setz dich abends mit Blick nach Westen: Die Sonne versinkt hinter den Bergen am anderen Ufer und färbt das Wasser rosa.'], gettingThere: 'Von Amman sind es 45–60 Minuten mit Auto oder Taxi; zu den Hotels fahren kaum öffentliche Verkehrsmittel.' },
+        fr: { name: 'Mer Morte', tagline: 'Le point le plus bas du globe, une boue bienfaisante et des couchers de soleil', description: 'La rive de la mer Morte se trouve à 430 mètres sous le niveau de la mer, et son eau, dix fois plus salée que l’océan, vous porte sans le moindre effort. Côté jordanien, on trouve les hôtels-spas de Sweimeh, des sources chaudes au fond des gorges et le canyon du Wadi Mujib.', tips: ['Ne vous rasez pas la veille et ne mettez jamais la tête sous l’eau : le sel pique fort et brûle les yeux ; flottez sur le dos 15 à 20 minutes au maximum.', 'Le soir, asseyez-vous face à l’ouest : le soleil plonge derrière les montagnes de la rive opposée et teinte l’eau de rose.'], gettingThere: 'Comptez 45 à 60 minutes depuis Amman en voiture ou en taxi ; les transports publics ne desservent presque pas les hôtels.' },
+        it: { name: 'Mar Morto', tagline: 'Il punto più basso della Terra, fango benefico e tramonti sui monti', description: 'La riva del Mar Morto si trova 430 metri sotto il livello del mare, e l’acqua, dieci volte più salata dell’oceano, ti tiene a galla senza alcuno sforzo. Il lato giordano offre hotel con spa a Sweimeh, sorgenti calde nelle gole e il canyon del Wadi Mujib.', tips: ['Non raderti il giorno prima e non mettere mai la testa sott’acqua: il sale brucia molto, soprattutto negli occhi; galleggia sulla schiena per non più di 15–20 minuti.', 'La sera siediti rivolto a ovest: il sole cala dietro i monti della riva opposta e tinge l’acqua di rosa.'], gettingThere: 'Da Amman ci vogliono 45–60 minuti in auto o in taxi, e i mezzi pubblici verso gli hotel quasi non ci sono.' },
+      },
+    },
+  ],
+  places: [
+    // Amman
+    {
+      id: 'amman-citadel', city: 'amman', category: 'attraction', spot: 'insta', lat: 31.9545, lng: 35.9349, image: 'HF9o2ke4two',
+      rating: 4.7, reviews: 27300, tags: ['history', 'views', 'sunset', 'photo'], price: { kind: 'fixed', amount: 3, currency: 'JOD' }, hours: '08:00–19:00',
+      address: 'K. Ali Ben Al-Hussein St, Amman',
+      text: {
+        ru: { name: 'Цитадель и храм Геркулеса', description: 'Холм Джебель-аль-Калаа, где жили со времён бронзового века: колонны римского храма Геркулеса, Омейядский дворец VIII века и археологический музей. Отсюда весь старый Амман виден как на ладони.', tip: 'Приходите за час до заката и встаньте у колонн храма Геркулеса, развернувшись к римскому театру: город и колонны окрасятся золотом, а с минаретов зазвучит вечерний азан.' },
+        en: { name: 'Citadel and Temple of Hercules', description: 'Jebel al-Qal’a, a hill inhabited since the Bronze Age, with the columns of the Roman Temple of Hercules, an 8th-century Umayyad palace and an archaeological museum. The whole of old Amman spreads out below.', tip: 'Arrive an hour before sunset and stand by the columns of the Temple of Hercules facing the Roman Theatre, as the city and columns turn gold and the evening call to prayer rings out.' },
+        es: { name: 'Ciudadela y templo de Hércules', description: 'Jebel al-Qal’a, una colina habitada desde la Edad del Bronce, con las columnas del templo romano de Hércules, un palacio omeya del siglo VIII y un museo arqueológico. Desde aquí se ve todo el viejo Amán.', tip: 'Llega una hora antes del atardecer y colócate junto a las columnas del templo de Hércules mirando al teatro romano: la ciudad y las columnas se doran mientras suena la llamada a la oración.' },
+        de: { name: 'Zitadelle und Herkulestempel', description: 'Der Jebel al-Qal’a, seit der Bronzezeit bewohnt, mit den Säulen des römischen Herkulestempels, einem Omaijadenpalast aus dem 8. Jahrhundert und einem archäologischen Museum. Von hier liegt das ganze alte Amman zu deinen Füßen.', tip: 'Komm eine Stunde vor Sonnenuntergang und stell dich mit Blick zum Römischen Theater an die Säulen des Herkulestempels – Stadt und Säulen leuchten golden, während der Abendgebetsruf erklingt.' },
+        fr: { name: 'Citadelle et temple d’Hercule', description: 'Le Jebel al-Qal’a, colline habitée depuis l’âge du bronze, avec les colonnes du temple romain d’Hercule, un palais omeyyade du VIIIe siècle et un musée archéologique. Tout le vieil Amman s’étend à vos pieds.', tip: 'Arrivez une heure avant le coucher du soleil et placez-vous près des colonnes du temple d’Hercule, face au théâtre romain : la ville et les colonnes se dorent tandis que retentit l’appel à la prière du soir.' },
+        it: { name: 'Cittadella e tempio di Ercole', description: 'Il Jebel al-Qal’a, collina abitata dall’età del bronzo, con le colonne del tempio romano di Ercole, un palazzo omayyade dell’VIII secolo e un museo archeologico. Da qui tutta la vecchia Amman si stende ai tuoi piedi.', tip: 'Arriva un’ora prima del tramonto e mettiti accanto alle colonne del tempio di Ercole guardando verso il teatro romano: città e colonne si tingono d’oro mentre risuona la preghiera della sera.' },
+      },
+    },
+    {
+      id: 'amman-roman-theatre', city: 'amman', category: 'attraction', lat: 31.9515, lng: 35.9395, image: 'LYGv30tGmxE',
+      rating: 4.6, reviews: 21400, tags: ['history', 'architecture'], price: { kind: 'fixed', amount: 2, currency: 'JOD' }, hours: '08:00–19:00',
+      address: 'Al-Hashemi St, Amman',
+      text: {
+        ru: { name: 'Римский театр', description: 'Театр II века, врезанный в склон холма, на шесть тысяч мест — один из лучше всего сохранившихся на Ближнем Востоке. По бокам сцены разместились два небольших музея народного быта и костюма.', tip: 'Поднимитесь на самый верхний ряд: акустика такая, что слышно шёпот со сцены, а вид на Цитадель напротив — лучший в центре.' },
+        en: { name: 'Roman Theatre', description: 'A 2nd-century theatre cut into the hillside for six thousand spectators, one of the best preserved in the Middle East. Two small museums of folk life and costume sit on either side of the stage.', tip: 'Climb to the very top row, where the acoustics carry a whisper from the stage and the view of the Citadel opposite is the best downtown.' },
+        es: { name: 'Teatro romano', description: 'Un teatro del siglo II excavado en la ladera para seis mil espectadores, uno de los mejor conservados de Oriente Próximo. A ambos lados del escenario hay dos pequeños museos de vida popular y trajes.', tip: 'Sube a la última fila: la acústica deja oír un susurro desde el escenario y la vista de la Ciudadela, enfrente, es la mejor del centro.' },
+        de: { name: 'Römisches Theater', description: 'Ein in den Hang geschlagenes Theater aus dem 2. Jahrhundert für sechstausend Zuschauer, eines der besterhaltenen im Nahen Osten. Links und rechts der Bühne liegen zwei kleine Museen zu Volksleben und Trachten.', tip: 'Steig bis in die oberste Reihe: Die Akustik trägt selbst ein Flüstern von der Bühne, und der Blick auf die gegenüberliegende Zitadelle ist der beste der Innenstadt.' },
+        fr: { name: 'Théâtre romain', description: 'Un théâtre du IIe siècle taillé dans la colline pour six mille spectateurs, l’un des mieux conservés du Proche-Orient. De part et d’autre de la scène, deux petits musées présentent arts populaires et costumes.', tip: 'Grimpez au dernier rang : l’acoustique porte un murmure depuis la scène, et la vue sur la Citadelle en face est la plus belle du centre.' },
+        it: { name: 'Teatro romano', description: 'Un teatro del II secolo scavato nel fianco della collina per seimila spettatori, uno dei meglio conservati del Medio Oriente. Ai lati del palco ci sono due piccoli musei di vita popolare e costumi.', tip: 'Sali fino all’ultima fila: l’acustica porta un sussurro dal palco e la vista sulla Cittadella di fronte è la migliore del centro.' },
+      },
+    },
+    {
+      id: 'amman-jerash', city: 'amman', category: 'attraction', lat: 32.2808, lng: 35.8913, image: 'LYGv30tGmxE',
+      rating: 4.8, reviews: 18900, tags: ['history', 'architecture', 'photo'], price: { kind: 'fixed', amount: 10, currency: 'JOD' }, hours: '08:00–18:00',
+      address: 'Jerash Archaeological Site, Jerash',
+      text: {
+        ru: { name: 'Джераш', description: 'Античная Гераса — один из самых полных римских городов за пределами Италии: овальная площадь с колоннадой, улица Кардо с колеями от колесниц, храмы Зевса и Артемиды и два театра. Город в 50 километрах к северу от Аммана.', tip: 'Пройдите по Кардо до храма Артемиды, а потом поднимитесь к Северному театру — туда доходят немногие, и там почти всегда пусто.' },
+        en: { name: 'Jerash', description: 'Ancient Gerasa is one of the most complete Roman cities outside Italy, with a colonnaded oval plaza, the Cardo street rutted by chariot wheels, the temples of Zeus and Artemis and two theatres. It lies 50 kilometres north of Amman.', tip: 'Walk the Cardo to the Temple of Artemis, then climb to the North Theatre, which few people reach and which is almost always empty.' },
+        es: { name: 'Jerash', description: 'La antigua Gerasa es una de las ciudades romanas más completas fuera de Italia: una plaza oval con columnata, la calle Cardo con surcos de carros, los templos de Zeus y Artemisa y dos teatros. Está a 50 kilómetros al norte de Amán.', tip: 'Recorre el Cardo hasta el templo de Artemisa y sube luego al Teatro Norte, al que llega poca gente y que casi siempre está vacío.' },
+        de: { name: 'Jerash', description: 'Das antike Gerasa ist eine der vollständigsten Römerstädte außerhalb Italiens, mit ovalem Säulenplatz, der von Wagenrädern gefurchten Cardo, den Tempeln von Zeus und Artemis und zwei Theatern. Es liegt 50 Kilometer nördlich von Amman.', tip: 'Geh die Cardo entlang bis zum Artemistempel und steig dann zum Nordtheater hinauf – dorthin kommen nur wenige, und es ist fast immer leer.' },
+        fr: { name: 'Jerash', description: 'L’antique Gérasa est l’une des cités romaines les plus complètes hors d’Italie, avec sa place ovale à colonnade, le cardo creusé d’ornières de chars, les temples de Zeus et d’Artémis et deux théâtres. Elle se trouve à 50 kilomètres au nord d’Amman.', tip: 'Suivez le cardo jusqu’au temple d’Artémis, puis montez au théâtre Nord, où peu de visiteurs s’aventurent et qui est presque toujours désert.' },
+        it: { name: 'Jerash', description: 'L’antica Gerasa è una delle città romane più complete fuori dall’Italia, con la piazza ovale colonnata, il cardo solcato dalle ruote dei carri, i templi di Zeus e Artemide e due teatri. Si trova 50 chilometri a nord di Amman.', tip: 'Percorri il cardo fino al tempio di Artemide e poi sali al Teatro Nord, dove arrivano in pochi e che è quasi sempre deserto.' },
+      },
+    },
+    {
+      id: 'amman-qasr-al-abd', city: 'amman', category: 'attraction', spot: 'hidden', lat: 31.9136, lng: 35.7516, image: 'HF9o2ke4two',
+      rating: 4.5, reviews: 1300, tags: ['history', 'architecture', 'nature'], price: { kind: 'fixed', amount: 1, currency: 'JOD' }, hours: '08:00–17:00',
+      address: 'Iraq Al-Amir, Wadi As-Seer',
+      text: {
+        ru: { name: 'Каср-аль-Абд в Арак-эль-Эмире', description: 'Загадочный эллинистический дворец II века до н. э. из гигантских каменных блоков с резными львами, стоящий в зелёной долине среди оливковых рощ. Рядом — пещеры Арак-эль-Эмир и женский кооператив, где делают бумагу и керамику.', tip: 'Ехать около 30 минут на такси на запад от Аммана через Вади-эс-Сир; попросите водителя подождать, а у дворца найдите резного льва-фонтан на угловом блоке.' },
+        en: { name: 'Qasr al-Abd at Iraq al-Amir', description: 'A mysterious Hellenistic palace from the 2nd century BC, built of giant stone blocks with carved lions and set in a green valley of olive groves. Nearby are the Iraq al-Amir caves and a women’s cooperative making paper and pottery.', tip: 'It is a 30-minute taxi ride west of Amman via Wadi As-Seer, so ask the driver to wait, and look for the carved lion fountain on a corner block of the palace.' },
+        es: { name: 'Qasr al-Abd en Iraq al-Amir', description: 'Un misterioso palacio helenístico del siglo II a. C., de bloques de piedra gigantes con leones tallados, en un valle verde entre olivares. Cerca están las cuevas de Iraq al-Amir y una cooperativa de mujeres que hace papel y cerámica.', tip: 'Está a 30 minutos en taxi al oeste de Amán por Wadi As-Seer: pide al conductor que espere y busca el león-fuente tallado en un bloque de esquina del palacio.' },
+        de: { name: 'Qasr al-Abd in Iraq al-Amir', description: 'Ein rätselhafter hellenistischer Palast aus dem 2. Jahrhundert v. Chr. aus riesigen Steinblöcken mit gemeißelten Löwen, gelegen in einem grünen Tal voller Olivenhaine. In der Nähe liegen die Höhlen von Iraq al-Amir und eine Frauenkooperative, die Papier und Keramik herstellt.', tip: 'Mit dem Taxi sind es 30 Minuten westlich von Amman über Wadi As-Seer – bitte den Fahrer zu warten und such am Eckblock des Palastes den gemeißelten Löwenbrunnen.' },
+        fr: { name: 'Qasr al-Abd à Iraq al-Amir', description: 'Un mystérieux palais hellénistique du IIe siècle av. J.-C., fait de blocs de pierre géants ornés de lions sculptés, dans une vallée verdoyante d’oliveraies. Tout près se trouvent les grottes d’Iraq al-Amir et une coopérative de femmes qui fabrique papier et céramiques.', tip: 'Comptez 30 minutes de taxi à l’ouest d’Amman par Wadi As-Seer : demandez au chauffeur d’attendre et cherchez le lion-fontaine sculpté sur un bloc d’angle du palais.' },
+        it: { name: 'Qasr al-Abd a Iraq al-Amir', description: 'Un misterioso palazzo ellenistico del II secolo a.C., fatto di enormi blocchi di pietra con leoni scolpiti, in una valle verde tra gli uliveti. Vicino ci sono le grotte di Iraq al-Amir e una cooperativa femminile che produce carta e ceramiche.', tip: 'Sono 30 minuti di taxi a ovest di Amman passando per Wadi As-Seer: chiedi all’autista di aspettare e cerca il leone-fontana scolpito su un blocco d’angolo del palazzo.' },
+      },
+    },
+    {
+      id: 'amman-hashem-restaurant', city: 'amman', category: 'food', lat: 31.9532, lng: 35.9339, image: 'kpU3NaymHTI',
+      rating: 4.5, reviews: 12800, tags: ['food', 'streetfood'], price: { kind: 'level', level: 1 }, hours: 'always',
+      address: 'King Faisal St, Downtown Amman',
+      text: {
+        ru: { name: 'Ресторан Hashem', description: 'Легендарная закусочная в переулке у улицы Короля Фейсала, открытая с 1950-х годов. Меню почти не меняется: фалафель, хумус, фуль, свежий хлеб и мятный чай — и всё это за пару динаров.', tip: 'Садитесь за уличный столик и ничего не заказывайте отдельно — официант сам принесёт полный набор; после ужина перейдите к Habibah за кнафе.' },
+        en: { name: 'Hashem Restaurant', description: 'A legendary eatery in an alley off King Faisal Street, open since the 1950s. The menu barely changes: falafel, hummus, foul, fresh bread and mint tea, all for a couple of dinars.', tip: 'Take an outdoor table and don’t bother ordering, as the waiter will bring the full spread; afterwards walk over to Habibah for knafeh.' },
+        es: { name: 'Restaurante Hashem', description: 'Un local legendario en un callejón junto a la calle Rey Faisal, abierto desde los años cincuenta. El menú apenas cambia: faláfel, hummus, ful, pan recién hecho y té de menta, todo por un par de dinares.', tip: 'Siéntate en una mesa de fuera y no pidas nada: el camarero te traerá el surtido completo; después ve a Habibah a por knafeh.' },
+        de: { name: 'Hashem Restaurant', description: 'Ein legendäres Lokal in einer Gasse an der King Faisal Street, geöffnet seit den 1950er-Jahren. Die Karte ändert sich kaum: Falafel, Hummus, Ful, frisches Brot und Minztee, alles für ein paar Dinar.', tip: 'Setz dich an einen Tisch draußen und bestell gar nichts einzeln – der Kellner bringt die komplette Auswahl; danach gehst du zu Habibah auf eine Knafeh.' },
+        fr: { name: 'Restaurant Hashem', description: 'Une gargote légendaire dans une ruelle donnant sur la rue du Roi-Fayçal, ouverte depuis les années 1950. La carte ne change presque pas : falafels, houmous, foul, pain frais et thé à la menthe, le tout pour deux dinars.', tip: 'Installez-vous en terrasse sans rien commander : le serveur apporte d’office l’assortiment complet ; ensuite, filez chez Habibah pour une knafeh.' },
+        it: { name: 'Ristorante Hashem', description: 'Un locale leggendario in un vicolo accanto a via Re Faisal, aperto dagli anni Cinquanta. Il menu cambia appena: falafel, hummus, ful, pane fresco e tè alla menta, il tutto per un paio di dinari.', tip: 'Siediti a un tavolo all’aperto e non ordinare nulla: il cameriere porterà l’assortimento completo; poi vai da Habibah per la knafeh.' },
+      },
+    },
+    // Dead Sea
+    {
+      id: 'dead-sea-amman-beach', city: 'dead-sea', category: 'nature', lat: 31.7186, lng: 35.5869, image: 'yXFgRwJge3o',
+      rating: 4.3, reviews: 9600, tags: ['spa', 'beaches', 'sunset'], price: { kind: 'from', amount: 20, currency: 'JOD' }, hours: '09:00–19:00',
+      address: 'Amman Beach Tourism Resort, Sweimeh',
+      text: {
+        ru: { name: 'Пляж Amman Beach', description: 'Самый доступный способ искупаться в Мёртвом море без проживания в отеле: платный пляж с душами, бассейнами и грязью для обёртываний. Вода тёплая почти круглый год.', tip: 'Обязательно возьмите сланцы — соляная корка у кромки острая, — и смойте соль в пресном душе сразу после купания.' },
+        en: { name: 'Amman Beach', description: 'The most affordable way to swim in the Dead Sea without staying at a hotel, a paid beach with showers, pools and mud for wraps. The water is warm almost all year round.', tip: 'Bring flip-flops, as the salt crust at the water’s edge is sharp, and rinse off in the fresh-water showers straight after swimming.' },
+        es: { name: 'Playa Amman Beach', description: 'La forma más económica de bañarse en el mar Muerto sin alojarse en un hotel: una playa de pago con duchas, piscinas y barro para envolturas. El agua está templada casi todo el año.', tip: 'Lleva chanclas, porque la costra de sal de la orilla corta, y quítate la sal en las duchas de agua dulce nada más salir.' },
+        de: { name: 'Amman Beach', description: 'Die günstigste Möglichkeit, im Toten Meer zu baden, ohne im Hotel zu wohnen: ein Bezahlstrand mit Duschen, Pools und Schlamm für Packungen. Das Wasser ist fast das ganze Jahr warm.', tip: 'Nimm Badeschlappen mit – die Salzkruste am Ufer ist scharfkantig – und spül das Salz gleich nach dem Baden unter den Süßwasserduschen ab.' },
+        fr: { name: 'Amman Beach', description: 'Le moyen le plus abordable de se baigner dans la mer Morte sans loger à l’hôtel : une plage payante avec douches, piscines et boue pour les enveloppements. L’eau est chaude presque toute l’année.', tip: 'Prenez des tongs, car la croûte de sel au bord de l’eau est coupante, et rincez-vous aux douches d’eau douce juste après la baignade.' },
+        it: { name: 'Amman Beach', description: 'Il modo più economico per fare il bagno nel Mar Morto senza alloggiare in hotel: una spiaggia a pagamento con docce, piscine e fango per gli impacchi. L’acqua è calda quasi tutto l’anno.', tip: 'Porta le infradito, perché la crosta di sale sulla riva è tagliente, e sciacquati sotto le docce d’acqua dolce subito dopo il bagno.' },
+      },
+    },
+    {
+      id: 'dead-sea-mount-nebo', city: 'dead-sea', category: 'attraction', lat: 31.7684, lng: 35.7255, image: 'kpU3NaymHTI',
+      rating: 4.6, reviews: 11200, tags: ['history', 'views', 'culture'], price: { kind: 'fixed', amount: 3, currency: 'JOD' }, hours: '08:00–18:00',
+      address: 'Mount Nebo, Madaba',
+      text: {
+        ru: { name: 'Гора Нево', description: 'Вершина, с которой, по библейскому преданию, Моисей увидел Землю обетованную. В базилике сохранились византийские мозаики, а в ясный день видно Мёртвое море, Иерихон и даже очертания Иерусалима.', tip: 'Совместите с Мадабой в 10 километрах: в церкви Святого Георгия там лежит мозаичная карта Святой земли VI века.' },
+        en: { name: 'Mount Nebo', description: 'The summit from which, according to the Bible, Moses saw the Promised Land. The basilica preserves Byzantine mosaics, and on a clear day you can see the Dead Sea, Jericho and even the outline of Jerusalem.', tip: 'Combine it with Madaba 10 kilometres away, where St George’s Church holds a 6th-century mosaic map of the Holy Land.' },
+        es: { name: 'Monte Nebo', description: 'La cima desde la que, según la Biblia, Moisés vio la Tierra Prometida. La basílica conserva mosaicos bizantinos, y en días despejados se ven el mar Muerto, Jericó e incluso el perfil de Jerusalén.', tip: 'Combínalo con Madaba, a 10 kilómetros, donde la iglesia de San Jorge guarda un mapa en mosaico de Tierra Santa del siglo VI.' },
+        de: { name: 'Berg Nebo', description: 'Der Gipfel, von dem aus Mose der Bibel zufolge das Gelobte Land sah. Die Basilika bewahrt byzantinische Mosaiken, und an klaren Tagen siehst du das Tote Meer, Jericho und sogar die Umrisse Jerusalems.', tip: 'Kombiniere den Besuch mit dem 10 Kilometer entfernten Madaba, wo die Georgskirche eine Mosaikkarte des Heiligen Landes aus dem 6. Jahrhundert birgt.' },
+        fr: { name: 'Mont Nébo', description: 'Le sommet d’où, selon la Bible, Moïse aperçut la Terre promise. La basilique conserve des mosaïques byzantines et, par temps clair, on voit la mer Morte, Jéricho et même la silhouette de Jérusalem.', tip: 'Associez-le à Madaba, à 10 kilomètres, où l’église Saint-Georges abrite une carte en mosaïque de la Terre sainte du VIe siècle.' },
+        it: { name: 'Monte Nebo', description: 'La cima da cui, secondo la Bibbia, Mosè vide la Terra Promessa. La basilica conserva mosaici bizantini, e nelle giornate limpide si vedono il Mar Morto, Gerico e perfino il profilo di Gerusalemme.', tip: 'Abbinalo a Madaba, a 10 chilometri, dove la chiesa di San Giorgio custodisce una mappa a mosaico della Terra Santa del VI secolo.' },
+      },
+    },
+    {
+      id: 'dead-sea-wadi-mujib', city: 'dead-sea', category: 'nature', lat: 31.4655, lng: 35.5733, image: 'QCodkebTC70',
+      rating: 4.8, reviews: 7300, tags: ['canyon', 'adventure', 'hiking', 'waterfalls'], price: { kind: 'from', amount: 21, currency: 'JOD' },
+      address: 'Mujib Biosphere Reserve, Dead Sea Hwy',
+      text: {
+        ru: { name: 'Каньон Вади-Муджиб', description: 'Узкое ущелье из красного песчаника, по дну которого бежит тёплая река прямо в Мёртвое море. Маршрут Siq Trail идёт вверх по воде — где по щиколотку, где вплавь — до водопада.', tip: 'Маршрут открыт только в тёплый сезон, примерно с апреля по октябрь; надевайте обувь, которую не жалко намочить, и оставьте телефон в непромокаемом мешке — спасжилет выдают на входе.' },
+        en: { name: 'Wadi Mujib', description: 'A narrow red sandstone gorge with a warm river running along its floor straight into the Dead Sea. The Siq Trail heads upstream through the water, ankle-deep in places and swimming in others, to a waterfall.', tip: 'The trail is only open in the warm season, roughly April to October; wear shoes you don’t mind soaking and keep your phone in a dry bag, as life jackets are handed out at the entrance.' },
+        es: { name: 'Wadi Mujib', description: 'Un estrecho desfiladero de arenisca roja por cuyo fondo corre un río templado hasta el mar Muerto. El Siq Trail remonta el agua, a ratos por los tobillos y a ratos a nado, hasta una cascada.', tip: 'La ruta solo abre en temporada cálida, más o menos de abril a octubre; ponte calzado que pueda mojarse y guarda el móvil en una bolsa estanca; el chaleco salvavidas te lo dan en la entrada.' },
+        de: { name: 'Wadi Mujib', description: 'Eine enge Schlucht aus rotem Sandstein, durch die ein warmer Fluss direkt ins Tote Meer fließt. Der Siq Trail führt flussaufwärts durchs Wasser, mal knöcheltief, mal schwimmend, bis zu einem Wasserfall.', tip: 'Der Weg ist nur in der warmen Saison geöffnet, etwa April bis Oktober; trag Schuhe, die nass werden dürfen, und pack das Handy in einen wasserdichten Beutel – Schwimmwesten gibt es am Eingang.' },
+        fr: { name: 'Wadi Mujib', description: 'Une étroite gorge de grès rouge au fond de laquelle coule une rivière tiède qui se jette dans la mer Morte. Le Siq Trail remonte le courant, tantôt les pieds dans l’eau, tantôt à la nage, jusqu’à une cascade.', tip: 'Le parcours n’ouvre qu’à la saison chaude, environ d’avril à octobre ; portez des chaussures qui peuvent être trempées et glissez le téléphone dans un sac étanche, les gilets de sauvetage étant fournis à l’entrée.' },
+        it: { name: 'Wadi Mujib', description: 'Una stretta gola di arenaria rossa sul cui fondo scorre un fiume tiepido che sfocia nel Mar Morto. Il Siq Trail risale la corrente, a tratti con l’acqua alle caviglie e a tratti a nuoto, fino a una cascata.', tip: 'Il percorso è aperto solo nella stagione calda, più o meno da aprile a ottobre; metti scarpe che possano bagnarsi e tieni il telefono in una sacca stagna, il giubbotto salvagente lo danno all’ingresso.' },
+      },
+    },
+    {
+      id: 'dead-sea-panorama', city: 'dead-sea', category: 'nature', spot: 'insta', lat: 31.6047, lng: 35.6136, image: 'eO_4UtF4sl8',
+      rating: 4.6, reviews: 3800, tags: ['views', 'sunset', 'photo'], hours: '09:00–18:00',
+      address: 'Dead Sea Panoramic Complex, Dead Sea Hwy',
+      text: {
+        ru: { name: 'Панорамный комплекс Мёртвого моря', description: 'Смотровая площадка на краю обрыва в 400 метрах над водой с небольшим музеем о геологии и истории Мёртвого моря. Отсюда видно всё море целиком — от северного берега до соляных отмелей на юге.', tip: 'Приезжайте к закату и снимайте с края террасы на запад: солнце садится за горы на другом берегу, а вода внизу становится серебряной.' },
+        en: { name: 'Dead Sea Panoramic Complex', description: 'A clifftop viewpoint 400 metres above the water with a small museum on the geology and history of the Dead Sea. From here you can take in the whole sea, from the northern shore to the salt flats in the south.', tip: 'Come for sunset and shoot west from the edge of the terrace, as the sun drops behind the far shore’s hills and the water below turns silver.' },
+        es: { name: 'Complejo Panorámico del Mar Muerto', description: 'Un mirador al borde de un acantilado, 400 metros sobre el agua, con un pequeño museo sobre la geología y la historia del mar Muerto. Desde aquí se abarca el mar entero, de la orilla norte a las salinas del sur.', tip: 'Ven al atardecer y fotografía hacia el oeste desde el borde de la terraza: el sol se esconde tras los montes de la otra orilla y el agua se vuelve plateada.' },
+        de: { name: 'Dead Sea Panoramic Complex', description: 'Ein Aussichtspunkt an der Abbruchkante 400 Meter über dem Wasser mit einem kleinen Museum zu Geologie und Geschichte des Toten Meeres. Von hier überblickst du das ganze Meer, vom Nordufer bis zu den Salzflächen im Süden.', tip: 'Komm zum Sonnenuntergang und fotografiere vom Terrassenrand nach Westen – die Sonne versinkt hinter den Bergen am anderen Ufer, und das Wasser unten wird silbern.' },
+        fr: { name: 'Complexe panoramique de la mer Morte', description: 'Un belvédère au bord d’une falaise, à 400 mètres au-dessus de l’eau, avec un petit musée consacré à la géologie et à l’histoire de la mer Morte. On embrasse toute la mer, de la rive nord jusqu’aux salines du sud.', tip: 'Venez au coucher du soleil et cadrez vers l’ouest depuis le bord de la terrasse : le soleil disparaît derrière les montagnes de l’autre rive et l’eau devient argentée.' },
+        it: { name: 'Complesso panoramico del Mar Morto', description: 'Un belvedere sul ciglio di una scogliera, 400 metri sopra l’acqua, con un piccolo museo sulla geologia e la storia del Mar Morto. Da qui si abbraccia tutto il mare, dalla riva nord alle saline del sud.', tip: 'Vieni al tramonto e scatta verso ovest dal bordo della terrazza: il sole scende dietro i monti della riva opposta e l’acqua sotto diventa d’argento.' },
+      },
+    },
+    {
+      id: 'dead-sea-main-hot-springs', city: 'dead-sea', category: 'nature', spot: 'hidden', lat: 31.6075, lng: 35.6005, image: 'msm_WyzzmkQ',
+      rating: 4.4, reviews: 4100, tags: ['spa', 'waterfalls', 'nature'], price: { kind: 'from', amount: 25, currency: 'JOD' },
+      address: 'Hammamat Ma’in, Madaba Governorate',
+      text: {
+        ru: { name: 'Горячие источники Хаммамат-Маин', description: 'В глубоком ущелье над Мёртвым морем из скал бьют десятки горячих минеральных источников, а самый большой водопад падает тёплой струёй прямо в естественную купель. Место знали ещё во времена Ирода.', tip: 'Едьте серпантином от трассы у Мёртвого моря или из Мадабы; лучше в будни утром, когда в купели под водопадом почти никого.' },
+        en: { name: 'Ma’in Hot Springs', description: 'In a deep gorge above the Dead Sea dozens of hot mineral springs gush from the rock, and the largest waterfall pours warm water straight into a natural pool. The springs were known as far back as Herod’s time.', tip: 'Take the winding road up from the Dead Sea highway or down from Madaba, ideally on a weekday morning when the pool under the waterfall is almost empty.' },
+        es: { name: 'Aguas termales de Ma’in', description: 'En un profundo barranco sobre el mar Muerto brotan de la roca decenas de manantiales minerales calientes, y la cascada principal cae templada en una poza natural. Ya se conocían en tiempos de Herodes.', tip: 'Llega por la carretera de curvas que sube desde la autopista del mar Muerto o baja desde Madaba, mejor un día laborable por la mañana, cuando la poza bajo la cascada está casi vacía.' },
+        de: { name: 'Heiße Quellen von Ma’in', description: 'In einer tiefen Schlucht über dem Toten Meer sprudeln Dutzende heiße Mineralquellen aus dem Fels, und der größte Wasserfall stürzt warm in ein natürliches Becken. Die Quellen kannte man schon zur Zeit des Herodes.', tip: 'Fahr die Serpentinenstraße von der Toten-Meer-Straße hinauf oder von Madaba hinunter, am besten an einem Werktagmorgen, wenn das Becken unter dem Wasserfall fast leer ist.' },
+        fr: { name: 'Sources chaudes de Ma’in', description: 'Au fond d’une gorge profonde au-dessus de la mer Morte, des dizaines de sources minérales chaudes jaillissent de la roche, et la plus grande cascade se déverse tiède dans un bassin naturel. Elles étaient déjà connues au temps d’Hérode.', tip: 'Empruntez la route en lacets qui monte depuis la route de la mer Morte ou descend de Madaba, de préférence un matin de semaine, quand le bassin sous la cascade est presque vide.' },
+        it: { name: 'Sorgenti calde di Ma’in', description: 'In una gola profonda sopra il Mar Morto decine di sorgenti minerali calde sgorgano dalla roccia, e la cascata più grande cade tiepida in una vasca naturale. Erano note già ai tempi di Erode.', tip: 'Arriva lungo la strada a tornanti che sale dalla statale del Mar Morto o scende da Madaba, meglio un mattino feriale, quando la vasca sotto la cascata è quasi vuota.' },
+      },
+    },
+  ],
+};
+
+export default pack;
