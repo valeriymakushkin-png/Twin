@@ -52,7 +52,7 @@ const guide: VisaGuide = {
         BR: 'Граждане Бразилии и Израиля по соглашениям въезжают без визы на 59 дней и могут продлевать дальше на общих условиях.',
       },
       waivers: [
-        'Граждане Индии с действующей визой или видом на жительство США, Японии, Австралии, Канады, страны Шенгена, Сингапура или Великобритании въезжают без визы на 30 дней вместо 14. Виза или ВНЖ должны быть действительны на дату въезда; дополнительно нужны eTravel, билет на выезд, бронь жилья и подтверждение средств. Продлить такой въезд нельзя — для долгого пребывания нужна виза.',
+        'Граждане Индии с действующей визой или видом на жительство США, Японии, Австралии, Канады, страны Шенгена, Сингапура или Великобритании въезжают без визы на 30 дней вместо 14. Виза или ВНЖ должны быть действительны на дату въезда; дополнительно нужны eTravel, билет на выезд, бронь жилья и подтверждение средств. Для поездки дольше месяца надёжнее заранее оформить визу.',
       ],
     },
     en: {
@@ -84,7 +84,7 @@ const guide: VisaGuide = {
         BR: 'Brazilian and Israeli citizens enter visa-free for 59 days under bilateral agreements and can extend further on the usual terms.',
       },
       waivers: [
-        'Indian citizens holding a valid visa or residence permit of the US, Japan, Australia, Canada, a Schengen state, Singapore or the UK enter visa-free for 30 days instead of 14. The visa or permit must be valid on the day you arrive, and you still need eTravel, an onward ticket, an accommodation booking and proof of funds. This stay cannot be extended — get a visa for longer trips.',
+        'Indian citizens holding a valid visa or residence permit of the US, Japan, Australia, Canada, a Schengen state, Singapore or the UK enter visa-free for 30 days instead of 14. The visa or permit must be valid on the day you arrive, and you still need eTravel, an onward ticket, an accommodation booking and proof of funds. For trips longer than a month, getting a visa in advance is the safer route.',
       ],
     },
     es: {
@@ -116,7 +116,7 @@ const guide: VisaGuide = {
         BR: 'Los ciudadanos de Brasil e Israel entran sin visado durante 59 días por acuerdos bilaterales y pueden seguir prorrogando en las condiciones habituales.',
       },
       waivers: [
-        'Los ciudadanos indios con visado o permiso de residencia vigente de EE. UU., Japón, Australia, Canadá, un país Schengen, Singapur o el Reino Unido entran sin visado durante 30 días en lugar de 14. El visado o permiso debe estar vigente el día de llegada, y siguen haciendo falta eTravel, billete de salida, reserva de alojamiento y prueba de fondos. Esta estancia no se prorroga: para viajes largos pide visado.',
+        'Los ciudadanos indios con visado o permiso de residencia vigente de EE. UU., Japón, Australia, Canadá, un país Schengen, Singapur o el Reino Unido entran sin visado durante 30 días en lugar de 14. El visado o permiso debe estar vigente el día de llegada, y siguen haciendo falta eTravel, billete de salida, reserva de alojamiento y prueba de fondos. Para viajes de más de un mes, lo más seguro es pedir visado con antelación.',
       ],
     },
     de: {
@@ -148,7 +148,7 @@ const guide: VisaGuide = {
         BR: 'Brasilianische und israelische Staatsangehörige reisen dank bilateraler Abkommen 59 Tage visumfrei ein und können zu den üblichen Bedingungen weiter verlängern.',
       },
       waivers: [
-        'Indische Staatsangehörige mit gültigem Visum oder Aufenthaltstitel der USA, Japans, Australiens, Kanadas, eines Schengen-Staats, Singapurs oder Großbritanniens reisen 30 statt 14 Tage visumfrei ein. Visum oder Titel müssen am Einreisetag gültig sein; eTravel, Weiterflugticket, Unterkunftsbuchung und Finanznachweis brauchst du trotzdem. Verlängern lässt sich dieser Aufenthalt nicht – für längere Reisen ist ein Visum nötig.',
+        'Indische Staatsangehörige mit gültigem Visum oder Aufenthaltstitel der USA, Japans, Australiens, Kanadas, eines Schengen-Staats, Singapurs oder Großbritanniens reisen 30 statt 14 Tage visumfrei ein. Visum oder Titel müssen am Einreisetag gültig sein; eTravel, Weiterflugticket, Unterkunftsbuchung und Finanznachweis brauchst du trotzdem. Für Reisen über einen Monat ist ein vorab beantragtes Visum der sicherere Weg.',
       ],
     },
     fr: {
@@ -180,7 +180,7 @@ const guide: VisaGuide = {
         BR: 'Les ressortissants brésiliens et israéliens entrent sans visa pour 59 jours grâce à des accords bilatéraux et peuvent ensuite prolonger aux conditions habituelles.',
       },
       waivers: [
-        'Les ressortissants indiens titulaires d’un visa ou d’un titre de séjour valable des États-Unis, du Japon, d’Australie, du Canada, d’un État Schengen, de Singapour ou du Royaume-Uni entrent sans visa pour 30 jours au lieu de 14. Le visa ou le titre doit être valable le jour de l’arrivée, et l’eTravel, un billet de sortie, une réservation d’hébergement et une preuve de fonds restent exigés. Ce séjour n’est pas prolongeable : pour plus long, il faut un visa.',
+        'Les ressortissants indiens titulaires d’un visa ou d’un titre de séjour valable des États-Unis, du Japon, d’Australie, du Canada, d’un État Schengen, de Singapour ou du Royaume-Uni entrent sans visa pour 30 jours au lieu de 14. Le visa ou le titre doit être valable le jour de l’arrivée, et l’eTravel, un billet de sortie, une réservation d’hébergement et une preuve de fonds restent exigés. Pour un séjour de plus d’un mois, mieux vaut demander un visa à l’avance.',
       ],
     },
     it: {
@@ -212,7 +212,7 @@ const guide: VisaGuide = {
         BR: 'I cittadini brasiliani e israeliani entrano senza visto per 59 giorni grazie ad accordi bilaterali e possono poi prorogare alle condizioni normali.',
       },
       waivers: [
-        'I cittadini indiani con visto o permesso di soggiorno valido di Stati Uniti, Giappone, Australia, Canada, uno Stato Schengen, Singapore o Regno Unito entrano senza visto per 30 giorni invece di 14. Il visto o il permesso deve essere valido il giorno dell’arrivo, e restano necessari eTravel, biglietto di uscita, prenotazione dell’alloggio e prova dei fondi. Questo soggiorno non è prorogabile: per viaggi più lunghi serve il visto.',
+        'I cittadini indiani con visto o permesso di soggiorno valido di Stati Uniti, Giappone, Australia, Canada, uno Stato Schengen, Singapore o Regno Unito entrano senza visto per 30 giorni invece di 14. Il visto o il permesso deve essere valido il giorno dell’arrivo, e restano necessari eTravel, biglietto di uscita, prenotazione dell’alloggio e prova dei fondi. Per viaggi di oltre un mese è più sicuro chiedere il visto in anticipo.',
       ],
     },
   },
