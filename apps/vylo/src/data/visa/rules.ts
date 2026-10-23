@@ -141,7 +141,8 @@ function fromMatrix(passport: string, dest: string): Omit<VisaResult, 'baseRegim
 
 /** How a holder of `passport` gets into `dest`, given the visas and permits they already hold. */
 export function visaFor(passport: string, dest: string, holdings: readonly Holding[] = []): VisaResult | undefined {
-  const curated = passport === 'RU' && !passportRules(dest)?.RU ? visaByCode(dest) : undefined;
+  // Hand-curated Russian rows step aside when the admin or a (newer) guide has an explicit rule for RU.
+  const curated = passport === 'RU' && !passportRules(dest)?.RU && !guides.get(dest)?.overrides?.RU ? visaByCode(dest) : undefined;
   const base = curated ? { ...curated, passport, cost: curated.cost as Price | undefined, curated: true } : fromMatrix(passport, dest);
   if (!base) return undefined;
   const g = guides.get(dest);
