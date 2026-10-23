@@ -42,7 +42,7 @@ const guide: VisaGuide = {
         'Перерасчёт свыше 90 дней грозит штрафом и разбирательством в суде на выезде. Продлить пребывание в полиции сложно и долго — проще выехать и вернуться.',
       ],
       passports: {
-        RU: 'Россияне въезжают без визы на 90 дней. Для визарана в Сеуту, Мелилью или Испанию нужна действующая шенгенская виза. Российские карты не работают — везите евро наличными; прямые рейсы Royal Air Maroc из Москвы бывают сезонно, чаще летают через Стамбул.',
+        RU: 'Россияне въезжают без визы на 90 дней. Для визарана в Сеуту, Мелилью или Испанию нужна действующая шенгенская виза. Российские карты не работают — везите евро наличными; регулярных прямых рейсов из Москвы нет, обычно летают через Стамбул.',
         IN: 'Гражданам Индии доступна e-виза на acces-maroc.ma; при многократной визе или ВНЖ США, Великобритании или Шенгена её также дают.',
         IL: 'Граждане Израиля после нормализации отношений получают e-визу; летают прямые рейсы.',
         UA: 'Гражданам Украины нужна консульская виза — или e-виза при наличии многократной визы либо ВНЖ США, Великобритании, Шенгена и других стран из списка.',
@@ -71,7 +71,7 @@ const guide: VisaGuide = {
         'Overstaying beyond 90 days can mean a fine and a court hearing on departure. Extending with the police is slow and difficult — leaving and coming back is easier.',
       ],
       passports: {
-        RU: 'Russian citizens enter visa-free for 90 days. For a visa run to Ceuta, Melilla or Spain you need a valid Schengen visa. Russian bank cards do not work, so bring euros in cash; Royal Air Maroc sometimes flies direct from Moscow in season, but most people connect in Istanbul.',
+        RU: 'Russian citizens enter visa-free for 90 days. For a visa run to Ceuta, Melilla or Spain you need a valid Schengen visa. Russian bank cards do not work, so bring euros in cash; there are no regular direct flights from Moscow, so most people connect in Istanbul.',
         IN: 'Indian citizens can get the e-visa on acces-maroc.ma; it is also issued to holders of a multiple-entry visa or residence permit from the US, the UK or Schengen.',
         IL: 'Since normalisation, Israeli citizens get an e-visa, and there are direct flights.',
         UA: 'Ukrainian citizens need a consular visa — or an e-visa if they hold a multiple-entry visa or residence permit from the US, the UK, Schengen or other listed countries.',
@@ -100,7 +100,7 @@ const guide: VisaGuide = {
         'Pasar de los 90 días puede suponer multa y comparecencia ante un juez al salir. Prorrogar en la policía es lento y difícil: es más fácil salir y volver.',
       ],
       passports: {
-        RU: 'Los ciudadanos rusos entran sin visado 90 días. Para un visa run a Ceuta, Melilla o España necesitas un visado Schengen vigente. Las tarjetas rusas no funcionan: lleva euros en efectivo; Royal Air Maroc vuela a veces directo desde Moscú en temporada, pero lo habitual es hacer escala en Estambul.',
+        RU: 'Los ciudadanos rusos entran sin visado 90 días. Para un visa run a Ceuta, Melilla o España necesitas un visado Schengen vigente. Las tarjetas rusas no funcionan: lleva euros en efectivo; no hay vuelos directos regulares desde Moscú, así que lo habitual es hacer escala en Estambul.',
         IN: 'Los ciudadanos indios pueden obtener el visado electrónico en acces-maroc.ma; también se concede a quienes tienen visado de entradas múltiples o residencia de EE. UU., Reino Unido o Schengen.',
         IL: 'Desde la normalización, los ciudadanos israelíes obtienen visado electrónico y hay vuelos directos.',
         UA: 'Los ciudadanos ucranianos necesitan visado consular, o el electrónico si tienen un visado de entradas múltiples o residencia de EE. UU., Reino Unido, Schengen u otros países de la lista.',
@@ -129,7 +129,7 @@ const guide: VisaGuide = {
         'Wer die 90 Tage überzieht, riskiert bei der Ausreise ein Bußgeld und einen Gerichtstermin. Eine Verlängerung bei der Polizei ist langwierig und schwierig – aus- und wieder einreisen ist einfacher.',
       ],
       passports: {
-        RU: 'Russische Staatsangehörige reisen 90 Tage visumfrei ein. Für einen Visa-Run nach Ceuta, Melilla oder Spanien brauchst du ein gültiges Schengen-Visum. Russische Bankkarten funktionieren nicht – nimm Euro in bar mit; Royal Air Maroc fliegt saisonal manchmal direkt ab Moskau, meist steigt man aber in Istanbul um.',
+        RU: 'Russische Staatsangehörige reisen 90 Tage visumfrei ein. Für einen Visa-Run nach Ceuta, Melilla oder Spanien brauchst du ein gültiges Schengen-Visum. Russische Bankkarten funktionieren nicht – nimm Euro in bar mit; regelmäßige Direktflüge ab Moskau gibt es nicht, meist steigt man in Istanbul um.',
         IN: 'Indische Staatsangehörige bekommen das E-Visum auf acces-maroc.ma; es wird auch Inhabern eines Mehrfachvisums oder Aufenthaltstitels der USA, Großbritanniens oder des Schengenraums erteilt.',
         IL: 'Seit der Normalisierung bekommen israelische Staatsangehörige ein E-Visum, und es gibt Direktflüge.',
         UA: 'Ukrainische Staatsangehörige brauchen ein Konsularvisum – oder ein E-Visum mit Mehrfachvisum oder Aufenthaltstitel der USA, Großbritanniens, des Schengenraums oder anderer gelisteter Länder.',
@@ -158,7 +158,7 @@ const guide: VisaGuide = {
         'Dépasser les 90 jours peut valoir une amende et un passage devant le juge à la sortie. La prolongation auprès de la police est longue et difficile : il est plus simple de sortir et revenir.',
       ],
       passports: {
-        RU: 'Les ressortissants russes entrent sans visa pour 90 jours. Pour un visa run vers Ceuta, Melilla ou l’Espagne, il faut un visa Schengen valide. Les cartes bancaires russes ne fonctionnent pas : emportez des euros en espèces ; Royal Air Maroc relie parfois Moscou en direct en saison, mais on passe le plus souvent par Istanbul.',
+        RU: 'Les ressortissants russes entrent sans visa pour 90 jours. Pour un visa run vers Ceuta, Melilla ou l’Espagne, il faut un visa Schengen valide. Les cartes bancaires russes ne fonctionnent pas : emportez des euros en espèces ; il n’y a pas de vol direct régulier depuis Moscou, on passe le plus souvent par Istanbul.',
         IN: 'Les ressortissants indiens peuvent obtenir l’e-visa sur acces-maroc.ma ; il est aussi accordé aux titulaires d’un visa à entrées multiples ou d’un titre de séjour américain, britannique ou Schengen.',
         IL: 'Depuis la normalisation, les ressortissants israéliens obtiennent un e-visa, et il existe des vols directs.',
         UA: 'Les ressortissants ukrainiens ont besoin d’un visa consulaire — ou d’un e-visa avec un visa à entrées multiples ou un titre de séjour des États-Unis, du Royaume-Uni, de l’espace Schengen ou d’autres pays de la liste.',
@@ -187,7 +187,7 @@ const guide: VisaGuide = {
         'Superare i 90 giorni può comportare una multa e un’udienza in tribunale all’uscita. Prorogare alla polizia è lento e complicato: è più semplice uscire e rientrare.',
       ],
       passports: {
-        RU: 'I cittadini russi entrano senza visto per 90 giorni. Per un visa run a Ceuta, Melilla o in Spagna serve un visto Schengen valido. Le carte bancarie russe non funzionano: porta euro in contanti; Royal Air Maroc vola talvolta diretto da Mosca in stagione, ma di solito si fa scalo a Istanbul.',
+        RU: 'I cittadini russi entrano senza visto per 90 giorni. Per un visa run a Ceuta, Melilla o in Spagna serve un visto Schengen valido. Le carte bancarie russe non funzionano: porta euro in contanti; non ci sono voli diretti regolari da Mosca, quindi di solito si fa scalo a Istanbul.',
         IN: 'I cittadini indiani possono ottenere il visto elettronico su acces-maroc.ma; viene concesso anche a chi ha un visto a ingressi multipli o un permesso di soggiorno di Stati Uniti, Regno Unito o area Schengen.',
         IL: 'Dalla normalizzazione dei rapporti i cittadini israeliani ottengono il visto elettronico, e ci sono voli diretti.',
         UA: 'I cittadini ucraini hanno bisogno di un visto consolare, oppure di quello elettronico con un visto a ingressi multipli o un permesso di soggiorno di Stati Uniti, Regno Unito, area Schengen o altri paesi dell’elenco.',
