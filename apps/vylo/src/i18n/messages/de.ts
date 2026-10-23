@@ -316,7 +316,7 @@ const de: Messages = {
       ae180: 'Höchstens 90 Tage innerhalb eines beliebigen Zeitraums von 180 Tagen.',
       kr180: 'Höchstens 90 Tage innerhalb eines beliebigen Zeitraums von 180 Tagen.',
       sgTransit: 'Ein Transit von bis zu 96 Stunden ist visumfrei, wenn du ein Weiterreiseticket in ein Drittland hast.',
-      joPass: 'Der Jordan Pass umfasst das Visum und den Eintritt in Petra – günstiger, als beides einzeln zu bezahlen.',
+      joPass: 'Ein Visum brauchst du nicht, der Jordan Pass lohnt sich trotzdem: Er deckt Petra und rund 40 weitere Sehenswürdigkeiten ab.',
       domestic: 'Für abgelegene Gebiete wie Grenzzonen kann eine Genehmigung nötig sein.',
       isConsulate: 'Anträge laufen über die Vertretung eines anderen Schengen-Staats – informiere dich über die aktuelle Regelung.',
     },

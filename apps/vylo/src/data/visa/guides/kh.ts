@@ -156,7 +156,7 @@ const guide: VisaGuide = {
       hacks: [
         'Se pensi di restare più di due mesi, chiedi alla frontiera il visto E invece di quello turistico: costa qualche dollaro in più, ma si proroga fino a un anno senza uscire.',
         'Il nuovo aeroporto di Phnom Penh, Techo International (aperto nel 2025), e quello di Siem Reap accettano sia il visto elettronico sia quello all’arrivo: se il portale dà problemi, compra il visto all’atterraggio.',
-        'Porta l’importo esatto del visto all’arrivo in banconote da un dollaro nuove e non strappate: in Cambogia le banconote rovinate vengono rifiutate e il resto si dà malvolentieri.',
+        'Porta l’importo esatto del visto all’arrivo in banconote in dollari nuove e non strappate: in Cambogia le banconote rovinate vengono rifiutate e il resto si dà malvolentieri.',
         'Il valico di Prek Chak – Ha Tien si abbina bene a qualche giorno di mare: l’isola vietnamita di Phu Quoc è a un’ora di traghetto e accoglie i visitatori senza visto per 30 giorni.',
       ],
       pitfalls: [

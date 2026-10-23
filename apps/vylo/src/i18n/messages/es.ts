@@ -316,7 +316,7 @@ const es: Messages = {
       ae180: 'Máximo 90 días en cualquier periodo de 180 días.',
       kr180: 'Máximo 90 días en cualquier periodo de 180 días.',
       sgTransit: 'El tránsito de hasta 96 horas no requiere visado si tienes billete de continuación a un tercer país.',
-      joPass: 'El Jordan Pass incluye el visado y la entrada a Petra: sale más barato que pagar por separado.',
+      joPass: 'No hace falta visado, pero el Jordan Pass sigue compensando: incluye Petra y unos 40 lugares más.',
       domestic: 'Las zonas remotas, como las fronterizas, pueden requerir un permiso.',
       isConsulate: 'Las solicitudes se tramitan a través de la representación de otro país Schengen: consulta el procedimiento vigente.',
     },

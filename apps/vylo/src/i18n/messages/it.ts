@@ -316,7 +316,7 @@ const it: Messages = {
       ae180: 'Non più di 90 giorni nell’arco di 180 giorni.',
       kr180: 'Non più di 90 giorni nell’arco di 180 giorni.',
       sgTransit: 'Il transito fino a 96 ore è senza visto con un biglietto di proseguimento verso un paese terzo.',
-      joPass: 'Il Jordan Pass include il visto e l’ingresso a Petra: costa meno che pagarli separatamente.',
+      joPass: 'Il visto non serve, ma il Jordan Pass conviene comunque: include Petra e una quarantina di altri siti.',
       domestic: 'Per le aree remote, come le zone di frontiera, può servire un permesso.',
       isConsulate: 'Le domande passano dalla rappresentanza di un altro paese Schengen: verifica la procedura attuale.',
     },

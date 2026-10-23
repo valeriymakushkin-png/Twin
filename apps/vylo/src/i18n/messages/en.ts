@@ -316,7 +316,7 @@ const en: Messages = {
       ae180: 'No more than 90 days within any 180-day period.',
       kr180: 'No more than 90 days within any 180-day period.',
       sgTransit: 'Transit of up to 96 hours is visa-free with an onward ticket to a third country.',
-      joPass: 'The Jordan Pass includes the visa and entry to Petra — cheaper than paying separately.',
+      joPass: 'No visa needed, but the Jordan Pass still pays off: it covers Petra and some 40 other sights.',
       domestic: 'Remote areas such as border zones may require a permit.',
       isConsulate: 'Applications go through another Schengen country’s mission — check the current arrangement.',
     },

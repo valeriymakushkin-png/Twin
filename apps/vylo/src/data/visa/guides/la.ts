@@ -162,7 +162,7 @@ const guide: VisaGuide = {
         'Il treno ad alta velocità Vientiane – Vang Vieng – Luang Prabang – Boten fa risparmiare giorni di viaggio: Luang Prabang è a meno di due ore e a Boten si passa direttamente in Cina.',
         'Il visto elettronico evita i supplementi per gli «straordinari»: ai valichi terrestri, nei weekend e la sera, al visto all’arrivo si aggiungono 1–2 $.',
         'L’approvazione del visto elettronico resta valida per mesi prima dell’ingresso (temporaneamente 180 giorni invece di 60): puoi ottenerla in anticipo per un intero giro dell’Indocina.',
-        'Porta banconote da un dollaro nuove e una fototessera: alla frontiera le foto si pagano a parte e le banconote stropicciate vengono rifiutate.',
+        'Porta banconote in dollari nuove e una fototessera: alla frontiera le foto si pagano a parte e le banconote stropicciate vengono rifiutate.',
       ],
       pitfalls: [
         'I siti intermediari vendono il visto elettronico laotiano a una volta e mezza o al doppio del prezzo. L’unico portale ufficiale è laoevisa.gov.la.',

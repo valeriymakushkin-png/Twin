@@ -316,7 +316,7 @@ const fr: Messages = {
       ae180: 'Pas plus de 90 jours sur toute période de 180 jours.',
       kr180: 'Pas plus de 90 jours sur toute période de 180 jours.',
       sgTransit: 'Le transit jusqu’à 96 heures est possible sans visa avec un billet de continuation vers un pays tiers.',
-      joPass: 'Le Jordan Pass inclut le visa et l’entrée à Pétra : c’est moins cher que de payer séparément.',
+      joPass: 'Pas besoin de visa, mais le Jordan Pass reste avantageux : il couvre Pétra et une quarantaine d’autres sites.',
       domestic: 'Les zones reculées, comme les zones frontalières, peuvent nécessiter un permis.',
       isConsulate: 'Les demandes passent par la représentation d’un autre pays de l’espace Schengen : vérifiez les modalités en vigueur.',
     },
