@@ -1,10 +1,10 @@
 import { VisaScreen } from '@/components/screens/visa-screen';
-import { visaCountries } from '@/data/catalog';
+import { countries } from '@/data/catalog';
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return visaCountries.map((v) => ({ code: v.code.toLowerCase() }));
+  return countries.map((c) => ({ code: c.code.toLowerCase() }));
 }
 
 export default async function Page({ params }: { params: Promise<{ code: string }> }) {

@@ -139,19 +139,19 @@ export interface Story {
   image: string;
 }
 
-export type VisaRegime = 'free' | 'voa' | 'eta' | 'evisa' | 'required' | 'schengen' | 'domestic';
+export type VisaRegime = 'free' | 'voa' | 'eta' | 'evisa' | 'required' | 'schengen' | 'domestic' | 'eu' | 'banned';
 
 export type VisaDoc =
   | 'passport' | 'internalPassport' | 'returnTicket' | 'booking' | 'insurance' | 'insurance30k' | 'form' | 'photo'
   | 'finance' | 'itinerary' | 'employment' | 'tdac' | 'evoa' | 'touristLevy' | 'imuga' | 'eta' | 'mdac' | 'etravel'
-  | 'dviajeros' | 'ds160' | 'homeTies' | 'evisa';
+  | 'dviajeros' | 'ds160' | 'homeTies' | 'evisa' | 'idCard' | 'heldVisa' | 'yellowFever';
 
 export type VisaNote =
   | 'thRules' | 'thExtend' | 'idEcd' | 'vnEvisa' | 'jpCards' | 'schengenTime' | 'cnPilot' | 'lkScam' | 'egSinai'
   | 'amInternal' | 'kzInternal' | 'uzRegistration' | 'usInterview' | 'gbBiometrics' | 'ilQuestions' | 'tr180'
   | 'ae180' | 'kr180' | 'sgTransit' | 'joPass' | 'domestic' | 'isConsulate';
 
-export type PassportValidity = 'sixMonths' | 'threeMonthsSchengen' | 'stay' | 'p120' | 'none';
+export type PassportValidity = 'sixMonths' | 'threeMonths' | 'threeMonthsSchengen' | 'stay' | 'p120' | 'none';
 
 export interface VisaInfo {
   code: string;

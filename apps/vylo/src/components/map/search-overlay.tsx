@@ -6,7 +6,8 @@ import { useMemo, useState } from 'react';
 import { packs } from '@/content';
 import { useWorldText } from '@/content/world';
 import { allItemIds, resolveItem } from '@/data';
-import { countries as allCountries, destinations, visaByCode } from '@/data/catalog';
+import { countries as allCountries, destinations } from '@/data/catalog';
+import { useVisaLookup } from '@/store/visa';
 import { LOCALES } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
 import { countryName, flag } from '@/lib/countries';
@@ -35,6 +36,7 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
   const { recentSearches, addSearch, clearSearches } = useApp();
   const { t, tk, locale, item, dest, country } = useI18n();
   const visaTitle = useVisaTitle();
+  const visaOf = useVisaLookup();
   const world = useWorldText((s) => s.texts);
   // Names edited in the admin panel are searchable too.
   const index = useMemo(() => searchIndex(world, (id) => item(id).name), [world, item]);
@@ -126,7 +128,7 @@ export function SearchOverlay({ onClose, onPick }: { onClose: () => void; onPick
                 <span className="grid size-12 place-items-center rounded-2xl bg-surface-2 text-[26px]">{flag(c.code)}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[15px] font-semibold">{countryName(c.code, locale)}</span>
-                  <span className="block truncate text-[12px] text-muted">{visaByCode(c.code) ? visaTitle(visaByCode(c.code)!) : tk(`country.region.${c.region}`)}</span>
+                  <span className="block truncate text-[12px] text-muted">{visaOf(c.code) ? visaTitle(visaOf(c.code)!) : tk(`country.region.${c.region}`)}</span>
                 </span>
                 <ArrowUpRight className="size-4 text-faint" />
               </button>

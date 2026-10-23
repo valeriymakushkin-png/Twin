@@ -5,6 +5,7 @@ import { basePlaces } from './places';
 import type { Destination, Place, VisaInfo } from './types';
 import { baseVisa } from './visa';
 import { worldCities, worldCountries, worldPlaces, worldVisa } from './world.generated';
+import type { MatrixCell } from './visa/types';
 import type { CityText, CountryFacts, CountryText, PlaceText, Region } from './world/types';
 
 /**
@@ -38,7 +39,7 @@ export interface CatalogSettings {
 export interface CatalogOverrides {
   destinations: Record<string, Patch<Destination> & { text?: LocalizedPatch<CityText> }>;
   places: Record<string, Patch<Place> & { text?: LocalizedPatch<PlaceText> }>;
-  countries: Record<string, Patch<CountryFacts> & { text?: LocalizedPatch<CountryText>; visa?: Partial<Omit<VisaInfo, 'code'>> }>;
+  countries: Record<string, Patch<CountryFacts> & { text?: LocalizedPatch<CountryText>; visa?: Partial<Omit<VisaInfo, 'code'>>; passportRules?: Record<string, MatrixCell> }>;
   settings: CatalogSettings;
 }
 
@@ -63,7 +64,7 @@ let version = 0;
 const listeners = new Set<() => void>();
 
 const strip = <T extends object>(patch: T) => {
-  const { deleted: _d, custom: _c, updatedAt: _u, updatedBy: _b, text: _t, visa: _v, ...rest } = patch as T & Record<string, unknown>;
+  const { deleted: _d, custom: _c, updatedAt: _u, updatedBy: _b, text: _t, visa: _v, passportRules: _r, ...rest } = patch as T & Record<string, unknown>;
   return rest;
 };
 
@@ -144,6 +145,8 @@ export function applyOverrides(o: CatalogOverrides) {
 }
 
 export const overrides = () => current;
+/** Admin corrections to the passport matrix for one destination, keyed by passport. */
+export const passportRules = (code: string) => current.countries[code]?.passportRules;
 export const catalogVersion = () => version;
 export function subscribeCatalog(l: () => void) {
   listeners.add(l);

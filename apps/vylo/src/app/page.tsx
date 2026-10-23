@@ -13,6 +13,8 @@ import { useI18n } from '@/i18n/use';
 import { flag, WORLD_COUNTRIES } from '@/lib/countries';
 import { cn } from '@/lib/utils';
 import { useApp } from '@/store/app';
+import { useUI } from '@/store/ui';
+import { usePassport } from '@/store/visa';
 
 const interests: [string, TagKey][] = [
   ['🏝️', 'beaches'],
@@ -35,6 +37,8 @@ export default function OnboardingPage() {
   const complete = useApp((s) => s.completeOnboarding);
   const { t, tk, f, country, user } = useI18n();
   const [step, setStep] = useState(0);
+  const passport = usePassport();
+  const openSheet = useUI((s) => s.openSheet);
   const [name, setName] = useState('');
   const [picked, setPicked] = useState<TagKey[]>([]);
   const [style, setStyle] = useState<(typeof styles)[number]>('solo');
@@ -148,6 +152,13 @@ export default function OnboardingPage() {
                 <h2 className="mt-4 text-[28px] font-bold leading-tight tracking-[-0.035em]">{t('onboarding.step1Title')}</h2>
                 <p className="mt-1.5 text-[15px] text-muted">{t('onboarding.step1Subtitle')}</p>
                 <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('onboarding.namePlaceholder')} className="mt-6 h-14 w-full rounded-2xl bg-surface-2 px-5 text-[17px] font-medium outline-none transition focus:bg-white focus:ring-2 focus:ring-brand" />
+                <p className="mb-3 mt-7 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">{t('visa.pickTitle')}</p>
+                <button onClick={() => openSheet({ type: 'passport', slot: 'main' })} className="press flex h-14 w-full items-center gap-3 rounded-2xl bg-surface-2 px-5 text-left">
+                  <span className="text-[26px] leading-none">{flag(passport)}</span>
+                  <span className="min-w-0 flex-1 truncate text-[17px] font-medium">{country(passport)}</span>
+                  <span className="text-[14px] font-semibold text-brand">{t('visa.change')}</span>
+                </button>
+                <p className="mt-2 text-[13px] leading-snug text-muted">{t('visa.pickHint')}</p>
                 <p className="mb-3 mt-7 text-[13px] font-bold uppercase tracking-[0.08em] text-faint">{t('onboarding.inspires')}</p>
                 <div className="flex flex-wrap gap-2">
                   {interests.map(([emoji, tag]) => {

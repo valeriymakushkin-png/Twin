@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { destinationById, isHiddenMeetup, placeById, placesIn, visaByCode } from '@/data/catalog';
+import { destinationById, isHiddenMeetup, placeById, placesIn } from '@/data/catalog';
+import { currentVisa } from './visa';
 import { meetups as seedMeetups, userById } from '@/data/social';
 import type { Meetup, Review, VisaDoc, VisaRegime } from '@/data/types';
 import { detectLocale, type Locale } from '@/i18n/config';
@@ -204,7 +205,7 @@ const freshDaily = (d: Daily): Daily => (d.date === todayKey() ? d : { date: tod
 
 function defaultChecklist(destinationId: string): ChecklistItem[] {
   const d = destinationById(destinationId);
-  const visa = d ? visaByCode(d.countryCode) : undefined;
+  const visa = d ? currentVisa(d.countryCode) : undefined;
   const items: ChecklistItem[] = [];
   if (visa && (visa.regime === 'required' || visa.regime === 'schengen' || visa.regime === 'evisa' || visa.regime === 'eta'))
     items.push({ id: uid(), done: false, apply: visa.regime });

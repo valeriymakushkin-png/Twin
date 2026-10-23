@@ -76,7 +76,9 @@ export const regimeTone: Record<VisaRegime, 'mint' | 'sky' | 'amber' | 'rose'> =
   evisa: 'amber',
   required: 'rose',
   schengen: 'rose',
+  eu: 'mint',
+  banned: 'rose',
 };
 
 /** Regimes that let a traveller simply fly in. */
-export const isEasyRegime = (r: VisaRegime) => r === 'free' || r === 'voa' || r === 'domestic';
+export const isEasyRegime = (r: VisaRegime) => r === 'free' || r === 'voa' || r === 'domestic' || r === 'eu';

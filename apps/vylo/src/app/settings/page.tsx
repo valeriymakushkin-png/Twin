@@ -3,6 +3,7 @@
 import { Check, ChevronRight, FileText, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { PlusBadge, TopBar } from '@/components/ui';
+import { PassportSettings } from '@/components/visa/passport';
 import { LOCALE_META, LOCALES } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
 import { cn } from '@/lib/utils';
@@ -31,6 +32,11 @@ export default function SettingsPage() {
               </button>
             ))}
           </div>
+        </section>
+
+        <section>
+          <h2 className="mb-2 text-[13px] font-semibold text-muted">{t('settings.passport')}</h2>
+          <PassportSettings />
         </section>
 
         <section>

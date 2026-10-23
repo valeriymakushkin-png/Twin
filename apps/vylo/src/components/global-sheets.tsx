@@ -7,7 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { resolveItem } from '@/data';
-import { citiesIn, countryByCode, countryHref, destinationById, destinationHref, destinations, placeById, visaByCode } from '@/data/catalog';
+import { citiesIn, countryByCode, countryHref, destinationById, destinationHref, destinations, placeById } from '@/data/catalog';
+import { useVisa } from '@/store/visa';
 import { stories, userById } from '@/data/social';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
@@ -19,6 +20,7 @@ import { Photo } from './photo';
 import { Sheet } from './sheet';
 import { Avatar, Button } from './ui';
 import { useVisaTitle, VisaBadge } from './visa-badge';
+import { HoldingsSheet, PassportSheet } from './visa/passport';
 
 export function useCollectionName() {
   const { tk } = useI18n();
@@ -48,6 +50,12 @@ export function GlobalSheets() {
       </Sheet>
       <Sheet open={sheet?.type === 'country'} onClose={close}>
         {sheet?.type === 'country' && <CountrySheet code={sheet.code} />}
+      </Sheet>
+      <Sheet open={sheet?.type === 'passport'} onClose={close} title={sheet?.type === 'passport' && sheet.slot === 'second' ? t('visa.pickSecondTitle') : t('visa.pickTitle')}>
+        {sheet?.type === 'passport' && <PassportSheet slot={sheet.slot} />}
+      </Sheet>
+      <Sheet open={sheet?.type === 'holdings'} onClose={close} title={t('visa.holdingsTitle')}>
+        <HoldingsSheet />
       </Sheet>
       <Sheet open={sheet?.type === 'paywall'} onClose={close}>
         <Paywall onDone={close} />
@@ -356,7 +364,7 @@ function CountrySheet({ code }: { code: string }) {
   const close = useUI((s) => s.closeSheet);
   const { t, country, dest } = useI18n();
   const visaTitle = useVisaTitle();
-  const visa = visaByCode(code);
+  const visa = useVisa(code);
   const dests = citiesIn(code);
   return (
     <div className="px-5 pb-6">

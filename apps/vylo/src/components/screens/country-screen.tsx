@@ -11,7 +11,8 @@ import { useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
 import { Button, Rating, SectionHeader } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
-import { citiesIn, countryByCode, placeHref, placesInCountry, visaByCode } from '@/data/catalog';
+import { citiesIn, countryByCode, placeHref, placesInCountry } from '@/data/catalog';
+import { useVisa } from '@/store/visa';
 import type { Place, Theme } from '@/data/types';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
@@ -55,7 +56,7 @@ export function CountryScreen({ code }: { code: string }) {
   const { routeThrough } = useRouteActions();
   const cities = citiesIn(code);
   const all = placesInCountry(code);
-  const visa = visaByCode(code);
+  const visa = useVisa(code);
   const text = countryText(code);
   const name = country(code);
 

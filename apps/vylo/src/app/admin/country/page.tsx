@@ -1,13 +1,16 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import { EditorFrame, useEntityEditor } from '@/components/admin/editor';
 import { LocalizedFields, PhotoField, PriceField, ThemeField } from '@/components/admin/fields';
-import { Card, NumberInput, Row, Select, Toggle } from '@/components/admin/ui';
+import { AButton, Card, NumberInput, Row, Select, Toggle } from '@/components/admin/ui';
+import { useVisaTitle } from '@/components/visa-badge';
 import { Photo } from '@/components/photo';
 import { REGION_ORDER } from '@/components/region-explorer';
-import { baseCountry, bundledVisa, countryByCode, countryHref, visaByCode } from '@/data/catalog';
+import { baseCountry, bundledVisa, countryByCode, countryHref, passportRules, visaByCode } from '@/data/catalog';
+import { cell, MATRIX_DATE, PASSPORTS, visaFor } from '@/data/visa/rules';
+import type { MatrixCell, Status } from '@/data/visa/types';
 import type { VisaDoc, VisaInfo } from '@/data/types';
 import type { CountryFacts } from '@/data/world/types';
 import ru from '@/i18n/messages/ru';
@@ -15,7 +18,68 @@ import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
 import { cn } from '@/lib/utils';
 
-type CountryDraft = CountryFacts & { visa?: Omit<VisaInfo, 'code'> };
+type CountryDraft = CountryFacts & { visa?: Omit<VisaInfo, 'code'>; passportRules?: Record<string, MatrixCell> };
+const STATUSES: Status[] = ['free', 'voa', 'eta', 'evisa', 'required', 'banned'];
+
+/** Per-passport corrections on top of the matrix and the visa guide. */
+function PassportRulesCard({ code, rules, onChange, disabled }: { code: string; rules: Record<string, MatrixCell>; onChange: (r: Record<string, MatrixCell> | undefined) => void; disabled: boolean }) {
+  const { t, tk, country, locale } = useI18n();
+  const title = useVisaTitle();
+  const [passport, setPassport] = useState('US');
+  const sorted = useMemo(() => [...PASSPORTS].sort((a, b) => country(a).localeCompare(country(b), locale)), [country, locale]);
+  const rule = rules[passport];
+  const result = visaFor(passport, code);
+  const matrix = cell(passport, code);
+  const update = (r: MatrixCell | undefined) => {
+    const next = { ...rules };
+    if (r) next[passport] = r;
+    else delete next[passport];
+    onChange(Object.keys(next).length ? next : undefined);
+  };
+  return (
+    <Card title={t('admin.visaRules.title')} footer={t('admin.visaRules.hint', { date: MATRIX_DATE })}>
+      <Row label={t('admin.visaRules.passport')}>
+        <Select value={passport} onChange={setPassport} options={sorted.map((p) => ({ value: p, label: `${flag(p)} ${country(p)}${rules[p] ? ' •' : ''}` }))} />
+      </Row>
+      <Row label={t('admin.visaRules.now')}>
+        <p className="text-[14px]">
+          {result ? `${title(result)}${result.days ? ` · ${t('visa.stay', { count: result.days })}` : ''}` : '—'}
+          <span className="ml-2 text-[12px] text-[#86868b]">{rule ? t('admin.visaRules.fromAdmin') : result?.curated ? t('admin.visaRules.fromCurated') : matrix ? t('admin.visaRules.fromMatrix') : ''}</span>
+        </p>
+      </Row>
+      <Row label={t('admin.visaRules.fix')}>
+        <div className="flex flex-wrap items-center gap-2">
+          <Select
+            value={rule?.status ?? ''}
+            onChange={(v) => !disabled && update(v ? { status: v as Status, days: rule?.days } : undefined)}
+            options={[{ value: '', label: t('admin.visaRules.auto') }, ...STATUSES.map((s) => ({ value: s, label: tk(`visa.regime.${s}`) }))]}
+            className="w-60"
+          />
+          {rule && (
+            <>
+              <NumberInput disabled={disabled} value={rule.days} onChange={(v) => update({ ...rule, days: v ? Math.round(v) : undefined })} className="w-24" placeholder={t('admin.edit.visaDays')} />
+              <AButton size="sm" variant="plain" disabled={disabled} onClick={() => update(undefined)}>
+                {t('admin.visaRules.reset')}
+              </AButton>
+            </>
+          )}
+        </div>
+      </Row>
+      {Object.keys(rules).length > 0 && (
+        <Row label={t('admin.visaRules.list')}>
+          <div className="flex flex-wrap gap-1.5">
+            {Object.entries(rules).map(([p, r]) => (
+              <button key={p} type="button" onClick={() => setPassport(p)} className={cn('h-7 rounded-full px-2.5 text-[12px] font-medium', p === passport ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7]')}>
+                {flag(p)} {tk(`visa.regimeShort.${r.status}`)}
+                {r.days ? ` ${r.days}` : ''}
+              </button>
+            ))}
+          </div>
+        </Row>
+      )}
+    </Card>
+  );
+}
 const DOCS = Object.keys(ru.visa.doc) as VisaDoc[];
 const strip = (v: VisaInfo | undefined) => {
   if (!v) return undefined;
@@ -32,7 +96,7 @@ function CountryEditor() {
     kind: 'countries',
     id: code,
     bundled: base ? { ...base, visa: strip(bundledVisa(code)) } : undefined,
-    initial: () => ({ ...(live ?? base)!, visa: strip(visaByCode(code)) }),
+    initial: () => ({ ...(live ?? base)!, visa: strip(visaByCode(code)), passportRules: passportRules(code) }),
   });
   const { facts: c, setFacts, text, setText, canEdit } = editor;
   if (!live && !base) return <p className="text-[#86868b]">{t('country.notFound')}</p>;
@@ -116,6 +180,8 @@ function CountryEditor() {
           </div>
         </Row>
       </Card>
+
+      <PassportRulesCard code={code} rules={c.passportRules ?? {}} onChange={(r) => set('passportRules', r)} disabled={!canEdit} />
 
       <Card title={t('admin.edit.texts')}>
         <LocalizedFields

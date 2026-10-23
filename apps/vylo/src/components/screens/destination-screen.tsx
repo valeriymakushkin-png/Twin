@@ -31,7 +31,8 @@ import { useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
 import { Button, Chip, Rating, SectionHeader, Tag, UnderlineTabs } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
-import { categoryColor, countryHref, destinationById, isHiddenReview, placeHref, placesIn, visaByCode } from '@/data/catalog';
+import { categoryColor, countryHref, destinationById, isHiddenReview, placeHref, placesIn } from '@/data/catalog';
+import { useVisa } from '@/store/visa';
 import { reviews } from '@/data/social';
 import type { Theme } from '@/data/types';
 import { useI18n } from '@/i18n/use';
@@ -167,7 +168,7 @@ export function DestinationScreen({ id }: { id: string }) {
     ...myReviews.filter((r) => r.targetId === id),
     ...reviews.filter((r) => !isHiddenReview(r.id) && (r.targetId === id || placeList.some((p) => p.id === r.targetId))),
   ];
-  const visa = visaByCode(d.countryCode);
+  const visa = useVisa(d.countryCode);
   const accent = d.theme.accent;
 
   useEffect(() => {

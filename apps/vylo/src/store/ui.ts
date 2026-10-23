@@ -16,7 +16,9 @@ export type Sheet =
   | { type: 'review'; targetId: string }
   | { type: 'country'; code: string }
   | { type: 'story'; index: number }
-  | { type: 'paywall'; feature?: string };
+  | { type: 'paywall'; feature?: string }
+  | { type: 'passport'; slot: 'main' | 'second' }
+  | { type: 'holdings' };
 
 interface Reward {
   id: string;
