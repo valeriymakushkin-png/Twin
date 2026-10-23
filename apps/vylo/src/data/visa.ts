@@ -21,7 +21,7 @@ const schengen = (code: string, extra: VisaInfo['notes'] = []): VisaInfo => ({
 });
 
 const rows: VisaInfo[] = [
-  { code: 'TH', regime: 'free', days: 60, cost: free, validity: 'sixMonths', docs: ['returnTicket', 'booking', 'tdac'], notes: ['thRules', 'thExtend'] },
+  { code: 'TH', regime: 'free', days: 30, cost: free, validity: 'sixMonths', docs: ['returnTicket', 'booking', 'tdac'], notes: ['thRules', 'thExtend'] },
   { code: 'ID', regime: 'voa', days: 30, cost: fee(500000, 'IDR'), validity: 'sixMonths', docs: ['returnTicket', 'evoa', 'touristLevy'], notes: ['idEcd'] },
   { code: 'VN', regime: 'free', days: 45, cost: free, validity: 'sixMonths', docs: ['returnTicket'], notes: ['vnEvisa'] },
   { code: 'JP', regime: 'required', days: 90, cost: free, validity: 'stay', docs: ['form', 'photo', 'itinerary', 'employment', 'booking'], notes: ['jpCards'] },
