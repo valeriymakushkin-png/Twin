@@ -37,3 +37,5 @@ apps/web/public/mascot3d-worker.js
 apps/vylo/public/maplibre-gl-csp-worker.js
 apps/vylo/src/data/world.generated.ts
 apps/vylo/src/content/world/*.generated.ts
+apps/vylo/src/data/visa/guides.generated.ts
+apps/vylo/src/content/visa/*.generated.ts
