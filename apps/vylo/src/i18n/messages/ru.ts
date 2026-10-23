@@ -770,6 +770,8 @@ const ru = {
     photosText: 'Фотографии мест — с Unsplash по лицензии Unsplash License: бесплатное коммерческое использование без обязательной атрибуции. Мы всё равно указываем источник. Изображения Unsplash+ не используются.',
     map: 'Карта',
     mapText: 'Границы стран — Natural Earth (общественное достояние). Спутник и подписи — Esri World Imagery, улицы — © OpenStreetMap, © CARTO, маршруты — OSRM на данных OpenStreetMap, поиск адресов — Nominatim. Для коммерческого запуска нужны платные ключи провайдеров карт.',
+    visa: 'Визы',
+    visaText: 'Базовая матрица «паспорт × страна» — данные Passport Index (passportindex.org) в сборке imorte/passport-index-data, лицензия MIT. Визовые гиды, лайфхаки и поправки написаны и проверены командой Vylo. Информация справочная.',
     libs: 'Открытые библиотеки',
     libsText: 'Next.js, React (MIT), MapLibre GL (BSD-3), Framer Motion (MIT), Zustand (MIT), Lucide (ISC), Tailwind CSS (MIT), Inter (SIL OFL), i18n-iso-countries (MIT), topojson-client (ISC).',
     avatars: 'Аватары',

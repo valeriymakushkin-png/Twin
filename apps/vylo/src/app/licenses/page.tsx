@@ -1,6 +1,6 @@
 'use client';
 
-import { Camera, Code2, ExternalLink, Map as MapIcon, Smile, Sparkles } from 'lucide-react';
+import { Camera, Code2, ExternalLink, Map as MapIcon, Smile, Sparkles, Stamp } from 'lucide-react';
 import { TopBar } from '@/components/ui';
 import { destinations } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
@@ -10,6 +10,7 @@ export default function LicensesPage() {
   const sections = [
     { icon: Camera, title: t('licenses.photos'), text: t('licenses.photosText') },
     { icon: MapIcon, title: t('licenses.map'), text: t('licenses.mapText') },
+    { icon: Stamp, title: t('licenses.visa'), text: t('licenses.visaText') },
     { icon: Code2, title: t('licenses.libs'), text: t('licenses.libsText') },
     { icon: Smile, title: t('licenses.avatars'), text: t('licenses.avatarsText') },
     { icon: Sparkles, title: t('licenses.content'), text: t('licenses.contentText') },

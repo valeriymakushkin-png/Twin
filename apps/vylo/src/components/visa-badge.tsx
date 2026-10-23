@@ -29,8 +29,8 @@ export function useVisaTitle() {
 export function useVisaFormat() {
   const { t, f } = useI18n();
   return {
-    stay: (v: VisaResult) => (v.regime === 'eu' || v.regime === 'domestic' ? t('visa.stayUnlimited') : v.days ? t('visa.stay', { count: v.days }) : t('visa.stayVisa')),
-    cost: (v: VisaResult) => (v.cost ? f.price(v.cost) : t('visa.costUnknown')),
+    stay: (v: VisaResult) => (v.regime === 'banned' ? '—' : v.regime === 'eu' || v.regime === 'domestic' ? t('visa.stayUnlimited') : v.days ? t('visa.stay', { count: v.days }) : t('visa.stayVisa')),
+    cost: (v: VisaResult) => (v.regime === 'banned' ? '—' : v.cost ? f.price(v.cost) : t('visa.costUnknown')),
   };
 }
 

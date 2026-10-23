@@ -768,6 +768,8 @@ const de: Messages = {
     photosText: 'Die Fotos der Orte stammen von Unsplash und stehen unter der Unsplash License: kostenlose kommerzielle Nutzung ohne Pflicht zur Namensnennung. Wir nennen die Quelle trotzdem. Bilder von Unsplash+ werden nicht verwendet.',
     map: 'Karte',
     mapText: 'Ländergrenzen: Natural Earth (gemeinfrei). Satellit und Beschriftungen: Esri World Imagery; Straßen: © OpenStreetMap, © CARTO; Routen: OSRM mit OpenStreetMap-Daten; Adresssuche: Nominatim. Für einen kommerziellen Start braucht es kostenpflichtige Schlüssel von Kartenanbietern.',
+    visa: 'Visa',
+    visaText: 'Die Basismatrix Pass × Reiseziel stammt von Passport Index (passportindex.org) in der Aufbereitung imorte/passport-index-data, MIT-Lizenz. Visa-Guides, Tricks und Korrekturen schreibt und prüft das Vylo-Team. Angaben ohne Gewähr.',
     libs: 'Open-Source-Bibliotheken',
     libsText: 'Next.js, React (MIT), MapLibre GL (BSD-3), Framer Motion (MIT), Zustand (MIT), Lucide (ISC), Tailwind CSS (MIT), Inter (SIL OFL), i18n-iso-countries (MIT), topojson-client (ISC).',
     avatars: 'Avatare',
