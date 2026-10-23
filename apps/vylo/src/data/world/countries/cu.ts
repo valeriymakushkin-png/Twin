@@ -47,7 +47,7 @@ const pack: CountryPack = {
         },
       },
       es: {
-        tagline: 'Los almendrones de La Habana, la arena de Varadero y salsa hasta el amanecer',
+        tagline: 'Almendrones en La Habana, arena blanca en Varadero y salsa al alba',
         description: 'Cuba parece detenida a mediados del siglo XX: descapotables de los años cincuenta recorren el Malecón, el son sale de las ventanas coloniales y en los bares se preparan mojitos y daiquiris con recetas de la época de Hemingway. La Habana vive de música y belleza desconchada, Varadero tiene una de las mejores playas del Caribe y Trinidad conserva sus calles empedradas del siglo XVIII.',
         howToGet: 'Aeroflot y Rossiya vuelan directo desde Moscú a La Habana y Varadero en unas 13 horas; los horarios cambian según la temporada, así que consúltalos con antelación. Antes de salir hay que rellenar el formulario en línea D’Viajeros y tener seguro médico. Entre ciudades circulan los autobuses turísticos Viazul, aunque los taxis colectivos o un coche con chófer son más cómodos, y los vuelos internos son irregulares.',
         tips: [
@@ -85,7 +85,7 @@ const pack: CountryPack = {
         },
       },
       fr: {
-        tagline: 'Voitures vintage à La Havane, sable blanc à Varadero et salsa jusqu’à l’aube',
+        tagline: 'Voitures vintage à La Havane, sable de Varadero et salsa à l’aube',
         description: 'Cuba semble figée au milieu du XXe siècle : des cabriolets des années 1950 sillonnent le Malecón, le son s’échappe des fenêtres coloniales et les bars préparent mojitos et daïquiris selon les recettes de l’époque d’Hemingway. La Havane vit de musique et de beauté décrépite, Varadero possède l’une des plus belles plages des Caraïbes, et Trinidad garde ses ruelles pavées du XVIIIe siècle.',
         howToGet: 'Aeroflot et Rossiya relient directement Moscou à La Havane et Varadero en 13 heures environ ; les horaires varient selon la saison, vérifiez-les à l’avance. Avant le départ, il faut remplir le formulaire en ligne D’Viajeros et avoir une assurance maladie. Les cars touristiques Viazul relient les villes, mais les taxis collectifs ou une voiture avec chauffeur sont plus pratiques, et les vols intérieurs sont irréguliers.',
         tips: [

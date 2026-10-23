@@ -48,7 +48,7 @@ const pack: CountryPack = {
         },
       },
       es: {
-        tagline: 'Pirámides aztecas, cenotes caribeños y una cocina declarada por la UNESCO',
+        tagline: 'Pirámides aztecas, cenotes del Caribe y una cocina de la UNESCO',
         description: 'México es un país donde pirámides más antiguas que Roma conviven con catedrales barrocas y taquerías callejeras, y su cocina figura en la lista del patrimonio inmaterial de la UNESCO. La Ciudad de México abruma por su tamaño y sus museos, la Riviera Maya por su Caribe turquesa y sus cenotes, y Oaxaca por el mezcal, el mole y las tradiciones indígenas.',
         howToGet: 'No hay vuelos directos desde Moscú: lo más cómodo es Turkish Airlines vía Estambul hasta la Ciudad de México o Cancún, unas 18–20 horas con una escala. Los ciudadanos rusos necesitan la autorización electrónica gratuita SAE, que se tramita en línea en la web del INM y solo vale para llegar en avión. Las aerolíneas de bajo coste Viva Aerobus y Volaris cubren el país rápidamente, los autobuses ADO son cómodos y puntuales, y el nuevo Tren Maya recorre Yucatán.',
         tips: [
@@ -86,7 +86,7 @@ const pack: CountryPack = {
         },
       },
       fr: {
-        tagline: 'Pyramides aztèques, cénotes des Caraïbes et cuisine classée par l’UNESCO',
+        tagline: 'Pyramides aztèques, cénotes caribéens et cuisine classée à l’UNESCO',
         description: 'Le Mexique est un pays où des pyramides plus anciennes que Rome côtoient des cathédrales baroques et des taquerías de rue, et dont la cuisine est inscrite au patrimoine immatériel de l’UNESCO. Mexico impressionne par sa démesure et ses musées, la Riviera Maya par sa mer turquoise et ses cénotes souterrains, et Oaxaca par le mezcal, le mole et les traditions autochtones.',
         howToGet: 'Il n’y a pas de vol direct depuis Moscou : le plus simple est Turkish Airlines via Istanbul jusqu’à Mexico ou Cancún, soit 18 à 20 heures avec une escale. Les ressortissants russes doivent obtenir l’autorisation électronique gratuite SAE, délivrée en ligne par l’INM et valable uniquement pour une arrivée en avion. Les compagnies low cost Viva Aerobus et Volaris couvrent rapidement le pays, les cars ADO sont confortables et ponctuels, et le nouveau Tren Maya traverse le Yucatán.',
         tips: [

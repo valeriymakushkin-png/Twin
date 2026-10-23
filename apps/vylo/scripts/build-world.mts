@@ -202,10 +202,12 @@ const facts = {
 writeFileSync(
   join(root, 'src/data/world.generated.ts'),
   `${header}import type { Destination, Place, VisaInfo } from './types';\nimport type { CountryFacts } from './world/types';\n\n` +
-    `export const worldCountries: CountryFacts[] = ${json(facts.countries)};\n` +
-    `export const worldCities: Destination[] = ${json(facts.cities)};\n` +
-    `export const worldPlaces: Place[] = ${json(facts.places)};\n` +
-    `export const worldVisa: VisaInfo[] = ${json(facts.visa)};\n`,
+    // JSON.parse keeps tsc from inferring a union over thousands of literals (TS2590) and parses faster;
+    // the shapes were validated above.
+    `export const worldCountries = JSON.parse(${JSON.stringify(JSON.stringify(facts.countries))}) as CountryFacts[];\n` +
+    `export const worldCities = JSON.parse(${JSON.stringify(JSON.stringify(facts.cities))}) as Destination[];\n` +
+    `export const worldPlaces = JSON.parse(${JSON.stringify(JSON.stringify(facts.places))}) as Place[];\n` +
+    `export const worldVisa = JSON.parse(${JSON.stringify(JSON.stringify(facts.visa))}) as VisaInfo[];\n`,
 );
 mkdirSync(join(root, 'src/content/world'), { recursive: true });
 for (const l of LOCALES) {
