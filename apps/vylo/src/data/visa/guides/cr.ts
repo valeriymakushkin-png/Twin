@@ -20,6 +20,8 @@ const guide: VisaGuide = {
       days: 30,
     },
   ],
+  hackScope: [['regime:required'], null, null, null],
+  pitfallScope: [null, null, ['regime:required']],
   text: {
     ru: {
       summary:

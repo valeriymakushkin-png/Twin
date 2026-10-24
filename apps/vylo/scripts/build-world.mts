@@ -34,6 +34,8 @@ const checkOnly = args.includes('--check');
 /** Coverage targets (food, photo spots, SEA depth) fail the check only with --strict; otherwise they are reported. */
 const strict = args.includes('--strict');
 const shortfalls: string[] = [];
+/** Photo spots still showing the place photo instead of a photo of people there: optional, filled only with verified ids. */
+let peopleGaps = 0;
 const target = (msg: string) => (strict ? errors : shortfalls).push(msg);
 const only = args.filter((a) => !a.startsWith('--')).map((a) => basename(a));
 const errors: string[] = [];
@@ -173,7 +175,7 @@ for (const pack of packs) {
       if (p.spot !== 'insta') errors.push(`${pw}: "people" photos belong to photo spots (spot: 'insta') only`);
       if (!Array.isArray(p.people) || p.people.length < 1 || p.people.length > 4 || p.people.some((x) => !PHOTO.test(x)) || new Set(p.people).size !== p.people.length) errors.push(`${pw}: people must be 1–4 distinct Unsplash ids`);
       else if (p.people.includes(p.image)) errors.push(`${pw}: people photos must differ from image`);
-    } else if (p.spot === 'insta') target(`${pw}: photo spot without "people" photos`);
+    } else if (p.spot === 'insta') peopleGaps++;
     const s = perCity.get(p.city) ?? { n: 0, insta: 0, hidden: 0, food: 0 };
     s.n++;
     if (p.spot === 'insta') s.insta++;
@@ -196,7 +198,7 @@ for (const pack of packs) {
     if (b.spot === 'hidden') s.hidden++;
     if (b.category === 'food') s.food++;
     perCity.set(b.destinationId, s);
-    if (b.spot === 'insta' && !pack.peopleFor?.[b.id]) target(`place ${b.id}: photo spot without "people" photos (add it to peopleFor)`);
+    if (b.spot === 'insta' && !pack.peopleFor?.[b.id]) peopleGaps++;
   }
   const depth = c.region === 'sea' ? 10 : 6;
   for (const cityId of cityCoords.keys()) {
@@ -218,6 +220,7 @@ if (errors.length) {
 const cityCount = packs.reduce((n, p) => n + p.cities.length, 0);
 const placeCount = packs.reduce((n, p) => n + p.places.length, 0);
 for (const w of warnings) console.warn(w);
+if (peopleGaps) console.warn(`ℹ ${peopleGaps} photo spots have no "people" photo yet (optional: only add ids you have actually seen)`);
 if (shortfalls.length) console.warn(`⚠ ${shortfalls.length} coverage target(s) not met yet (check with --strict), e.g.:\n  ${shortfalls.slice(0, 5).join('\n  ')}`);
 if (checkOnly) {
   console.log(`✓ ${packs.length} countries, ${cityCount} cities, ${placeCount} places are valid`);

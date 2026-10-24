@@ -14,6 +14,8 @@ const guide: VisaGuide = {
     { name: 'Sungai Tujoh – Miri', to: 'MY', lat: 4.5867, lng: 114.0767 },
     { name: 'Serasa Ferry Terminal (Muara) → Labuan', to: 'MY', lat: 5.0239, lng: 115.0668 },
   ],
+  hackScope: [null, null, null, null],
+  pitfallScope: [['regime:free'], null, null],
   text: {
     ru: {
       summary:

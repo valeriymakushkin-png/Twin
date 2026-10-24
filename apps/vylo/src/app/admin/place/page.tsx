@@ -203,6 +203,28 @@ function PlaceEditor() {
         </div>
       </Card>
 
+      {p.spot === 'insta' && (
+        <Card title={t('admin.edit.people')} footer={t('admin.edit.peopleHint')}>
+          <div className="grid gap-3 p-4">
+            {(p.people ?? []).map((id, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <div className="min-w-0 flex-1">
+                  <PhotoField value={id} onChange={(v) => set('people', (p.people ?? []).map((x, j) => (j === i ? v : x)))} disabled={!canEdit} />
+                </div>
+                <AButton type="button" size="sm" variant="plain" disabled={!canEdit} onClick={() => set('people', (p.people ?? []).filter((_, j) => j !== i))}>
+                  {t('admin.common.delete')}
+                </AButton>
+              </div>
+            ))}
+            {(p.people?.length ?? 0) < 4 && (
+              <AButton type="button" size="sm" variant="secondary" disabled={!canEdit} onClick={() => set('people', [...(p.people ?? []), ''])} className="justify-self-start">
+                {t('admin.edit.addPeople')}
+              </AButton>
+            )}
+          </div>
+        </Card>
+      )}
+
       <Card title={t('admin.edit.texts')}>
         <LocalizedFields
           kind="places"

@@ -14,6 +14,8 @@ const guide: VisaGuide = {
   passportMonths: 3,
   rule: { days: 90, window: 180 },
   visaRun: 'no',
+  hackScope: [null, null, null, ['regime:free', 'regime:required']],
+  pitfallScope: [null, ['regime:required'], ['regime:free']],
   text: {
     ru: {
       summary:

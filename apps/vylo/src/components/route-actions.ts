@@ -2,10 +2,30 @@
 
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { placeById } from '@/data/catalog';
+import { citiesIn, placeById, placesIn } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { optimizeOrder, type RoutePoint } from '@/lib/routing';
 import { MY_LOCATION, useRoute } from '@/store/route';
+
+const score = (p: { rating: number; reviews: number }) => p.rating * Math.log10(p.reviews + 10);
+
+/**
+ * A sensible walk through a city: the best sights (photo spots included) and one place to eat, at most `max`
+ * stops — a day's worth, not every pin in town. Order is optimised later by the route planner.
+ */
+export function cityRouteIds(destinationId: string, max = 6): string[] {
+  const all = placesIn(destinationId).filter((p) => p.category !== 'hotel');
+  const sights = all.filter((p) => p.category !== 'food').sort((a, b) => score(b) - score(a));
+  const food = all.filter((p) => p.category === 'food').sort((a, b) => score(b) - score(a));
+  const picks = sights.slice(0, food.length ? max - 1 : max);
+  if (food[0]) picks.push(food[0]);
+  return picks.map((p) => p.id);
+}
+
+/** The city of a country with the most to see — where a country-level "route" should start. */
+export function mainCityOf(code: string): string | undefined {
+  return [...citiesIn(code)].sort((a, b) => placesIn(b.id).length - placesIn(a.id).length || b.rating - a.rating)[0]?.id;
+}
 
 const here = (): Promise<RoutePoint | null> =>
   new Promise((resolve) => {
@@ -27,7 +47,7 @@ export function useRouteActions() {
     return p ? { id, lat: p.lat, lng: p.lng, label: place(id).name } : null;
   };
 
-  return {
+  const actions = {
     inRoute: (id: string) => stops.some((s) => s.id === id),
     /** Append a place to the current route without leaving the screen. */
     addToRoute: (id: string) => {
@@ -45,6 +65,11 @@ export function useRouteActions() {
       setStops(me ? [me, p] : [p]);
       router.push(`/map/?route=1&focus=${id}`);
     },
+    /** A one-day walk through a city's best places. */
+    routeCity: (destinationId: string) => {
+      const ids = cityRouteIds(destinationId);
+      if (ids.length) actions.routeThrough(ids);
+    },
     /** A walk through a set of places in a sensible order. */
     routeThrough: (ids: string[]) => {
       const pts = ids.map(point).filter((x): x is RoutePoint => !!x);
@@ -53,4 +78,5 @@ export function useRouteActions() {
       router.push('/map/?route=1');
     },
   };
+  return actions;
 }

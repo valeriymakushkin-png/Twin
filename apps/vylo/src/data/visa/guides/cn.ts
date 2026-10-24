@@ -26,6 +26,8 @@ const guide: VisaGuide = {
       'US', 'CA', 'BR', 'MX', 'AR', 'CL', 'AU', 'NZ', 'KR', 'JP', 'SG', 'BN', 'AE', 'QA', 'ID', 'KG', 'VN',
     ],
   },
+  hackScope: [['regime:required'], ['regime:required'], ['regime:required'], ['regime:required'], null, null],
+  pitfallScope: [['regime:free'], null, ['regime:required'], ['regime:free']],
   text: {
     ru: {
       summary:

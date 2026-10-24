@@ -11,6 +11,8 @@ const guide: VisaGuide = {
   extend: {},
   visaRun: 'no',
   nomad: { name: 'Premium Visa', months: 12, income: { kind: 'from', amount: 1500, currency: 'USD' } },
+  hackScope: [null, null, null, null],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

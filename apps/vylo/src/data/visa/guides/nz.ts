@@ -26,6 +26,8 @@ const guide: VisaGuide = {
     { holds: ['visaAU'], passports: ['CN'], status: 'eta', days: 90 },
     { holds: ['resAU'], status: 'eta', days: 90 },
   ],
+  hackScope: [['regime:eta', 'regime:evisa', 'regime:required'], ['regime:eta'], ['CN'], null, null],
+  pitfallScope: [['regime:eta'], null, null, null],
   text: {
     ru: {
       summary:

@@ -27,7 +27,8 @@ import { MeetupRow, ReviewCard } from '@/components/cards';
 import { HeroPage, shareLink } from '@/components/hero';
 import { usePlus } from '@/components/paywall';
 import { Photo } from '@/components/photo';
-import { useRouteActions } from '@/components/route-actions';
+import { EatList, topFood } from '@/components/eat-section';
+import { cityRouteIds, useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
 import { Button, Chip, Rating, SectionHeader, Tag, UnderlineTabs } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
@@ -157,7 +158,8 @@ export function DestinationScreen({ id }: { id: string }) {
   const d = destinationById(id)!;
   const [tab, setTab] = useState<Tab>('overview');
   const [placeFilter, setPlaceFilter] = useState<PlaceFilter>('all');
-  const { routeThrough } = useRouteActions();
+  const { routeCity } = useRouteActions();
+  const cityRouteCount = cityRouteIds(id).length;
   const { markViewed, myReviews, markVisaChecked } = useApp();
   const openSheet = useUI((s) => s.openSheet);
   const { t, tk, f, dest, place, country } = useI18n();
@@ -287,9 +289,9 @@ export function DestinationScreen({ id }: { id: string }) {
               </div>
             </section>
 
-            {placeList.length > 1 && (
+            {cityRouteCount > 1 && (
               <button
-                onClick={() => routeThrough(placeList.map((p) => p.id))}
+                onClick={() => routeCity(id)}
                 className="press mx-5 -mt-3 flex items-center gap-3 rounded-[22px] p-3.5 text-left ring-1"
                 style={{ background: `${accent}0d`, borderColor: `${accent}33` }}
               >
@@ -302,7 +304,7 @@ export function DestinationScreen({ id }: { id: string }) {
                 <span className="min-w-0 flex-1">
                   <span className="block text-[15px] font-bold">{t('spots.cityRoute')}</span>
                   <span className="block text-[12px] text-muted">
-                    {t('spots.cityRouteText', { count: placeList.length })}
+                    {t('spots.cityRouteText', { count: cityRouteCount })}
                   </span>
                 </span>
               </button>
@@ -312,6 +314,20 @@ export function DestinationScreen({ id }: { id: string }) {
               <section>
                 <SectionHeader title={t('country.insta')} />
                 <SpotStrip items={placeList.filter((p) => p.spot === 'insta')} accent={accent} />
+              </section>
+            )}
+
+            {placeList.some((p) => p.category === 'food') && (
+              <section>
+                <SectionHeader
+                  title={t('eat.title')}
+                  action={t('eat.all')}
+                  onAction={() => {
+                    setPlaceFilter('food');
+                    setTab('places');
+                  }}
+                />
+                <EatList items={topFood(placeList, 4)} accent={accent} />
               </section>
             )}
 

@@ -18,6 +18,8 @@ const guide: VisaGuide = {
     { name: 'Boten – Mohan', to: 'CN', lat: 21.183, lng: 101.675 },
     { name: 'Dansavanh – Lao Bao', to: 'VN', lat: 16.6255, lng: 106.5916 },
   ],
+  hackScope: [null, ['regime:voa', 'regime:evisa'], ['regime:evisa', 'regime:voa'], ['regime:voa']],
+  pitfallScope: [['regime:evisa', 'regime:voa'], null, null],
   text: {
     ru: {
       summary:

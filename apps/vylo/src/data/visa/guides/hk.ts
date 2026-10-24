@@ -18,6 +18,8 @@ const guide: VisaGuide = {
     { name: 'Hong Kong–Macau Ferry Terminal (Sheung Wan)', to: 'MO', lat: 22.2878, lng: 114.152 },
     { name: 'Hong Kong–Zhuhai–Macao Bridge, Hong Kong Port', to: 'MO', lat: 22.2995, lng: 113.9445 },
   ],
+  hackScope: [null, null, null, null, null],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

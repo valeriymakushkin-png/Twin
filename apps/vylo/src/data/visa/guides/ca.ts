@@ -24,6 +24,8 @@ const guide: VisaGuide = {
     { holds: ['visaUS', 'visaCA'], passports: CONDITIONAL_ETA, status: 'eta', days: 180 },
     { holds: ['resUS'], status: 'free', days: 180 },
   ],
+  hackScope: [['AG', 'AR', 'BR', 'CR', 'ID', 'MY', 'MX', 'MA', 'PA', 'PH', 'KN', 'LC', 'VC', 'SC', 'TH', 'TT', 'UY'], ['regime:eta', 'regime:required'], ['regime:required'], ['regime:required'], ['regime:eta']],
+  pitfallScope: [['regime:eta'], ['regime:eta'], null, ['regime:required']],
   text: {
     ru: {
       summary:

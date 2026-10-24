@@ -366,6 +366,965 @@ const pack: CountryPack = {
         it: { name: 'Eat Streat', description: 'Un tratto pedonale di Tutanekai Street vicino al lago, sotto un tetto di vetro, pieno di ristoranti e bar e con il pavimento riscaldato dal calore geotermico. È il posto giusto per assaggiare agnello locale, frutti di mare e birra artigianale.', tip: 'La sera prendi un tavolo all’aperto: anche con il fresco, il pavimento tiepido e le stufe rendono piacevole cenare fuori.' },
       },
     },
+    {
+      "id": "auckland-ponsonby-central",
+      "city": "auckland",
+      "category": "food",
+      "lat": -36.8574,
+      "lng": 174.7437,
+      "image": "a43GxgO3ld4",
+      "rating": 4.4,
+      "reviews": 3900,
+      "tags": [
+        "food",
+        "streetfood",
+        "city"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "08:00–23:00",
+      "address": "136–148 Ponsonby Road, Ponsonby, Auckland 1011",
+      "text": {
+        "ru": {
+          "name": "Ponsonby Central",
+          "description": "Двор с рестораном-лавками в квартале Понсонби, где под одной крышей работают мини-кухни со всего мира: от тайской лапши до новозеландских пирогов. Вечером тут шумно и людно, а на веранде играет музыка.",
+          "tip": "Возьмите в разных лавках по одному блюду и сядьте за общий стол во дворе. Лучше приходить в будни до 19:00 или в субботу днём; платите картой."
+        },
+        "en": {
+          "name": "Ponsonby Central",
+          "description": "A courtyard food hall in the Ponsonby district where mini kitchens from around the world share one roof, from Thai noodles to Kiwi pies. It is lively and loud in the evening, with music on the terrace.",
+          "tip": "Pick one dish from several stalls and sit at a shared courtyard table. Come on a weekday before 19:00 or on a Saturday afternoon; pay by card."
+        },
+        "es": {
+          "name": "Ponsonby Central",
+          "description": "Un patio con mercado gastronómico en el barrio de Ponsonby, donde cocinas pequeñas de todo el mundo comparten techo, desde fideos tailandeses hasta empanadas neozelandesas. Por la noche es animado y ruidoso, con música en la terraza.",
+          "tip": "Pide un plato en varios puestos y siéntate en una mesa compartida del patio. Ve entre semana antes de las 19:00 o un sábado por la tarde; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Ponsonby Central",
+          "description": "Eine Markthalle mit Innenhof im Stadtteil Ponsonby, in der kleine Küchen aus aller Welt unter einem Dach arbeiten, von Thai-Nudeln bis zu neuseeländischen Pies. Abends ist es lebhaft und laut, auf der Terrasse spielt Musik.",
+          "tip": "Nimm von mehreren Ständen je ein Gericht und setz dich an einen der Gemeinschaftstische im Hof. Komm unter der Woche vor 19:00 Uhr oder samstagnachmittags; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Ponsonby Central",
+          "description": "Un food hall avec cour dans le quartier de Ponsonby, où de petites cuisines du monde entier partagent le même toit, des nouilles thaïes aux pies néo-zélandaises. Le soir, c’est animé et bruyant, avec de la musique sur la terrasse.",
+          "tip": "Prenez un plat à plusieurs stands et installez-vous à une table partagée dans la cour. Venez en semaine avant 19 h ou le samedi après-midi ; paiement par carte."
+        },
+        "it": {
+          "name": "Ponsonby Central",
+          "description": "Un food hall con cortile nel quartiere di Ponsonby, dove piccole cucine di tutto il mondo condividono lo stesso tetto, dai noodle thailandesi alle pie neozelandesi. La sera è vivace e rumoroso, con musica in terrazza.",
+          "tip": "Prendi un piatto da più banchi e siediti a un tavolo condiviso nel cortile. Vieni in settimana prima delle 19:00 o il sabato pomeriggio; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "auckland-la-cigale-french-market",
+      "city": "auckland",
+      "category": "food",
+      "lat": -36.859,
+      "lng": 174.7785,
+      "image": "a43GxgO3ld4",
+      "rating": 4.5,
+      "reviews": 2800,
+      "tags": [
+        "market",
+        "food",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "Sat 09:00–14:00, Sun 09:00–13:00",
+      "address": "69 St Georges Bay Road, Parnell, Auckland 1052",
+      "text": {
+        "ru": {
+          "name": "Французский рынок La Cigale",
+          "description": "Выходной рынок в Парнелле: сыры, багеты, круассаны, свежие овощи, устрицы и кофе. Продавцы раскладывают товар под навесом, а покупатели завтракают прямо на месте.",
+          "tip": "Приходите в субботу к 10 утра: к этому времени всё в наличии, а толпа ещё небольшая. Попробуйте свежие круассаны и кофе, платите картой или наличными."
+        },
+        "en": {
+          "name": "La Cigale French Market",
+          "description": "A weekend market in Parnell with cheese, baguettes, croissants, fresh vegetables, oysters and coffee. Vendors set up under a canopy while shoppers have breakfast on the spot.",
+          "tip": "Go on Saturday around 10:00, when everything is stocked and the crowd is still modest. Try the fresh croissants and coffee; cards and cash both work."
+        },
+        "es": {
+          "name": "Mercado francés La Cigale",
+          "description": "Un mercado de fin de semana en Parnell con quesos, baguettes, cruasanes, verduras frescas, ostras y café. Los vendedores montan sus puestos bajo un toldo y los visitantes desayunan allí mismo.",
+          "tip": "Ve el sábado hacia las 10:00, cuando hay de todo y aún no hay mucha gente. Prueba los cruasanes recién hechos y el café; se acepta tarjeta y efectivo."
+        },
+        "de": {
+          "name": "La Cigale French Market",
+          "description": "Ein Wochenendmarkt in Parnell mit Käse, Baguette, Croissants, frischem Gemüse, Austern und Kaffee. Die Händler bauen unter einem Dach auf, und die Besucher frühstücken gleich vor Ort.",
+          "tip": "Komm samstags gegen 10:00, wenn alles da ist und der Andrang noch gering. Probier frische Croissants und Kaffee; Karte und Bargeld werden akzeptiert."
+        },
+        "fr": {
+          "name": "Marché français La Cigale",
+          "description": "Un marché du week-end à Parnell avec fromages, baguettes, croissants, légumes frais, huîtres et café. Les vendeurs s’installent sous un auvent et les visiteurs prennent leur petit-déjeuner sur place.",
+          "tip": "Venez le samedi vers 10 h, quand tout est en stock et que la foule est encore modeste. Goûtez les croissants frais et le café ; cartes et espèces sont acceptées."
+        },
+        "it": {
+          "name": "Mercato francese La Cigale",
+          "description": "Un mercato del weekend a Parnell con formaggi, baguette, croissant, verdure fresche, ostriche e caffè. I venditori si sistemano sotto una tettoia e i visitatori fanno colazione sul posto.",
+          "tip": "Vai il sabato verso le 10:00, quando c’è tutto e la folla è ancora contenuta. Assaggia i croissant freschi e il caffè; si pagano carte e contanti."
+        }
+      }
+    },
+    {
+      "id": "auckland-depot-eatery",
+      "city": "auckland",
+      "category": "food",
+      "lat": -36.8486,
+      "lng": 174.7627,
+      "image": "a43GxgO3ld4",
+      "rating": 4.5,
+      "reviews": 5100,
+      "tags": [
+        "food",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "07:00–23:00",
+      "address": "86 Federal Street, Auckland CBD 1010",
+      "text": {
+        "ru": {
+          "name": "Depot Eatery & Oyster Bar",
+          "description": "Популярное место шеф-повара Эла Брауна рядом со Скай-Тауэр, где подают устриц, жареную рыбу и блюда на углях в простом интерьере. Заказы приносят на разделяемых тарелках, а бронирований здесь не принимают.",
+          "tip": "Берите блюда на троих: фирменные булочки с устрицами и «Глаз Тарара» (рыба на углях) уходят первыми. Записывайтесь в очередь у входа в 17:30, платить можно картой."
+        },
+        "en": {
+          "name": "Depot Eatery & Oyster Bar",
+          "description": "Chef Al Brown’s casual spot by the Sky Tower serves oysters, grilled fish and charcoal dishes in a simple room. Food comes on sharing plates and bookings are not taken.",
+          "tip": "Order dishes for the table: the oysters and the charcoal fish go first. Put your name down at the door by 17:30; pay by card."
+        },
+        "es": {
+          "name": "Depot Eatery & Oyster Bar",
+          "description": "El local informal del chef Al Brown junto a la Sky Tower sirve ostras, pescado a la parrilla y platos al carbón en una sala sencilla. La comida llega en platos para compartir y no se aceptan reservas.",
+          "tip": "Pide platos para compartir: las ostras y el pescado al carbón se agotan primero. Apúntate en la puerta hacia las 17:30; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Depot Eatery & Oyster Bar",
+          "description": "Das ungezwungene Lokal von Koch Al Brown neben dem Sky Tower serviert Austern, gegrillten Fisch und Holzkohlegerichte in einem schlichten Raum. Das Essen kommt auf Tellern zum Teilen, Reservierungen gibt es nicht.",
+          "tip": "Bestell Gerichte für den ganzen Tisch: Austern und Holzkohlefisch sind zuerst weg. Trag dich gegen 17:30 an der Tür in die Liste ein; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Depot Eatery & Oyster Bar",
+          "description": "L’adresse décontractée du chef Al Brown près de la Sky Tower sert huîtres, poisson grillé et plats au charbon dans une salle simple. Les plats arrivent à partager et l’on ne réserve pas.",
+          "tip": "Commandez des plats pour la table : les huîtres et le poisson au charbon partent en premier. Inscrivez-vous à l’entrée vers 17 h 30 ; paiement par carte."
+        },
+        "it": {
+          "name": "Depot Eatery & Oyster Bar",
+          "description": "Il locale informale dello chef Al Brown accanto alla Sky Tower serve ostriche, pesce alla griglia e piatti al carbone in una sala semplice. I piatti arrivano da condividere e non si prenota.",
+          "tip": "Ordina piatti per tutto il tavolo: ostriche e pesce al carbone finiscono per primi. Metti il nome in lista all’ingresso verso le 17:30; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "auckland-giapo",
+      "city": "auckland",
+      "category": "food",
+      "lat": -36.8446,
+      "lng": 174.7673,
+      "image": "a43GxgO3ld4",
+      "rating": 4.6,
+      "reviews": 3200,
+      "tags": [
+        "food",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "from",
+        "amount": 9,
+        "currency": "NZD"
+      },
+      "hours": "12:00–22:00",
+      "address": "Fort Lane, Auckland CBD 1010",
+      "text": {
+        "ru": {
+          "name": "Giapo",
+          "description": "Лавка мороженого, известная необычными рожками с декором из шоколада, глазури и съедобных мелочей. Авторские вкусы меняются сезонно, а фирменные рожки больше похожи на скульптуры.",
+          "tip": "Спросите у продавца вкус дня и возьмите рожок с шоколадной глазурью; очередь меньше будним днём после обеда. Платите картой."
+        },
+        "en": {
+          "name": "Giapo",
+          "description": "An ice-cream shop famed for outlandish cones decorated with chocolate, glaze and edible bits. Signature flavours change with the season, and the showpiece cones look like sculptures.",
+          "tip": "Ask the server for the flavour of the day and add a chocolate-glazed cone; the queue is shorter on weekday afternoons. Pay by card."
+        },
+        "es": {
+          "name": "Giapo",
+          "description": "Una heladería famosa por sus cucuruchos extravagantes decorados con chocolate, glaseado y detalles comestibles. Los sabores de autor cambian con la estación y los cucuruchos estrella parecen esculturas.",
+          "tip": "Pregunta por el sabor del día y añade un cucurucho con cobertura de chocolate; la cola es más corta entre semana por la tarde. Se paga con tarjeta."
+        },
+        "de": {
+          "name": "Giapo",
+          "description": "Eine Eisdiele, die für ihre ausgefallenen Waffeln mit Schokolade, Glasur und essbaren Verzierungen bekannt ist. Die Hausspezialitäten wechseln mit den Jahreszeiten, und die Prachtstücke sehen aus wie Skulpturen.",
+          "tip": "Frag nach der Sorte des Tages und nimm die Waffel mit Schokoglasur dazu; werktags am Nachmittag ist die Schlange kürzer. Bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Giapo",
+          "description": "Un glacier réputé pour ses cornets extravagants décorés de chocolat, de glaçage et de détails comestibles. Les parfums maison changent avec les saisons et les cornets vedettes ressemblent à des sculptures.",
+          "tip": "Demandez le parfum du jour et ajoutez un cornet glacé au chocolat ; la file est plus courte en semaine l’après-midi. Paiement par carte."
+        },
+        "it": {
+          "name": "Giapo",
+          "description": "Una gelateria famosa per i coni stravaganti decorati con cioccolato, glassa e dettagli commestibili. I gusti d’autore cambiano con le stagioni e i coni più scenografici sembrano sculture.",
+          "tip": "Chiedi il gusto del giorno e aggiungi un cono con glassa al cioccolato; la coda è più corta nei pomeriggi feriali. Si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "auckland-rangitoto-summit",
+      "city": "auckland",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -36.7855,
+      "lng": 174.8605,
+      "image": "PTdVqYSyQzQ",
+      "rating": 4.7,
+      "reviews": 4800,
+      "tags": [
+        "volcanoes",
+        "views",
+        "hiking",
+        "photo"
+      ],
+      "price": {
+        "kind": "from",
+        "amount": 40,
+        "currency": "NZD"
+      },
+      "hours": "06:00–17:00",
+      "address": "Rangitoto Island, Hauraki Gulf",
+      "text": {
+        "ru": {
+          "name": "Вершина острова Рангитото",
+          "description": "Молодой вулкан в заливе Хаураки, возникший около 600 лет назад: чёрные лавовые поля и лес поморских деревьев. С вершины открывается вид на Окленд, острова и залив.",
+          "tip": "Поднимайтесь по тропе от причала около часа и снимайте у лавового поля с видом на город. Берите воду, закрытую обувь и шапку: тени нет. Паром идёт от Даунтауна, оплата картой."
+        },
+        "en": {
+          "name": "Rangitoto summit",
+          "description": "A young volcano in the Hauraki Gulf, born around 600 years ago, with black lava fields and a pōhutukawa forest. From the top you can see Auckland, the islands and the gulf.",
+          "tip": "Hike up from the wharf in about an hour and shoot at the lava field with the city behind you. Bring water, closed shoes and a hat, as there is little shade. The ferry leaves from Downtown; pay by card."
+        },
+        "es": {
+          "name": "Cumbre de Rangitoto",
+          "description": "Un volcán joven en el golfo de Hauraki, nacido hace unos 600 años, con campos de lava negra y un bosque de pōhutukawa. Desde la cima se ven Auckland, las islas y el golfo.",
+          "tip": "Sube desde el muelle en una hora y haz fotos en el campo de lava con la ciudad al fondo. Lleva agua, calzado cerrado y gorra, porque hay poca sombra. El ferri sale de Downtown; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Gipfel von Rangitoto",
+          "description": "Ein junger Vulkan im Hauraki-Golf, vor rund 600 Jahren entstanden, mit schwarzen Lavafeldern und einem Pōhutukawa-Wald. Vom Gipfel siehst du Auckland, die Inseln und den Golf.",
+          "tip": "Wander vom Anleger in etwa einer Stunde hinauf und fotografier am Lavafeld mit der Stadt im Hintergrund. Nimm Wasser, feste Schuhe und Kappe mit, es gibt kaum Schatten. Die Fähre fährt ab Downtown; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Sommet de Rangitoto",
+          "description": "Un jeune volcan du golfe de Hauraki, apparu il y a environ 600 ans, avec des champs de lave noire et une forêt de pōhutukawa. Du sommet, on voit Auckland, les îles et le golfe.",
+          "tip": "Montez depuis le quai en une heure environ et photographiez au champ de lave avec la ville en arrière-plan. Emportez eau, chaussures fermées et chapeau, car il y a peu d’ombre. Le ferry part de Downtown ; paiement par carte."
+        },
+        "it": {
+          "name": "Vetta di Rangitoto",
+          "description": "Un giovane vulcano nel golfo di Hauraki, nato circa 600 anni fa, con campi di lava nera e una foresta di pōhutukawa. Dalla cima si vedono Auckland, le isole e il golfo.",
+          "tip": "Sali dal molo in circa un’ora e scatta al campo di lava con la città alle spalle. Porta acqua, scarpe chiuse e cappello, perché c’è poca ombra. Il traghetto parte da Downtown; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "auckland-piha-lion-rock",
+      "city": "auckland",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -36.9524,
+      "lng": 174.4686,
+      "image": "a43GxgO3ld4",
+      "rating": 4.8,
+      "reviews": 7600,
+      "tags": [
+        "beaches",
+        "surf",
+        "photo",
+        "views"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Marine Parade South, Piha, Auckland 0772",
+      "text": {
+        "ru": {
+          "name": "Скала Лайон-Рок в Пихе",
+          "description": "Скала в форме льва возвышается над чёрным вулканическим песком пляжа Пиха на западном берегу. Это место сёрферов и самый узнаваемый вид западного побережья Окленда.",
+          "tip": "Приезжайте утром или за час до заката: поднимитесь на тропу к смотровой и снимайте скалу на фоне волн. Купайтесь только между флагами спасателей — на Пихе мощные течения. Дорога от города занимает около часа."
+        },
+        "en": {
+          "name": "Lion Rock at Piha",
+          "description": "A lion-shaped rock rises above the black volcanic sand of Piha beach on the west coast. It is a surfers’ spot and the best-known view of Auckland’s wild coast.",
+          "tip": "Come in the morning or an hour before sunset: walk the track to the lookout and shoot the rock against the waves. Swim only between the lifeguard flags, as Piha has strong currents. The drive from the city takes about an hour."
+        },
+        "es": {
+          "name": "Lion Rock de Piha",
+          "description": "Una roca con forma de león se alza sobre la arena volcánica negra de la playa de Piha, en la costa oeste. Es un lugar de surfistas y la vista más conocida de la costa salvaje de Auckland.",
+          "tip": "Ve por la mañana o una hora antes del atardecer: sube por el sendero al mirador y fotografía la roca con las olas de fondo. Báñate solo entre las banderas de los socorristas, porque en Piha hay corrientes fuertes. El trayecto desde la ciudad dura una hora."
+        },
+        "de": {
+          "name": "Lion Rock in Piha",
+          "description": "Ein löwenförmiger Fels erhebt sich über dem schwarzen Vulkansand des Piha Beach an der Westküste. Er ist ein Surfertreff und die bekannteste Ansicht der wilden Küste von Auckland.",
+          "tip": "Komm am Morgen oder eine Stunde vor Sonnenuntergang: Geh auf dem Pfad zum Aussichtspunkt und fotografier den Fels vor den Wellen. Bade nur zwischen den Flaggen der Rettungsschwimmer, denn in Piha gibt es starke Strömungen. Die Fahrt von der Stadt dauert etwa eine Stunde."
+        },
+        "fr": {
+          "name": "Lion Rock à Piha",
+          "description": "Un rocher en forme de lion domine le sable volcanique noir de la plage de Piha, sur la côte ouest. C’est un spot de surf et la vue la plus connue de la côte sauvage d’Auckland.",
+          "tip": "Venez le matin ou une heure avant le coucher du soleil : montez par le sentier jusqu’au belvédère et photographiez le rocher devant les vagues. Ne vous baignez qu’entre les drapeaux des sauveteurs, car les courants sont forts à Piha. Comptez une heure de route depuis la ville."
+        },
+        "it": {
+          "name": "Lion Rock a Piha",
+          "description": "Una roccia a forma di leone si erge sulla sabbia vulcanica nera della spiaggia di Piha, sulla costa occidentale. È un luogo per surfisti e la vista più nota della costa selvaggia di Auckland.",
+          "tip": "Vai al mattino o un’ora prima del tramonto: sali lungo il sentiero fino al belvedere e fotografa la roccia contro le onde. Fai il bagno solo tra le bandiere dei bagnini, perché a Piha ci sono forti correnti. Il viaggio dalla città dura circa un’ora."
+        }
+      }
+    },
+    {
+      "id": "queenstown-joes-garage",
+      "city": "queenstown",
+      "category": "food",
+      "lat": -45.0337,
+      "lng": 168.6592,
+      "image": "tu92JGw2YJM",
+      "rating": 4.5,
+      "reviews": 3400,
+      "tags": [
+        "food",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "07:00–16:00",
+      "address": "Searle Lane, Queenstown 9300",
+      "text": {
+        "ru": {
+          "name": "Joe’s Garage",
+          "description": "Небольшое кафе в переулке в центре стало первым, где в городе начали варить хороший кофе, и до сих пор остаётся любимым у местных. Сэндвичи, завтраки и выпечка подаются в уютном зале с деревянными столами.",
+          "tip": "Закажите завтрак с яйцами и флэт-уайт и приходите до 9 утра, чтобы не стоять в очереди. Платите картой, места внутри мало — в хорошую погоду берите кофе на вынос."
+        },
+        "en": {
+          "name": "Joe’s Garage",
+          "description": "This small café in a lane in the centre was among the first in town to serve good coffee and is still a local favourite. Sandwiches, breakfasts and pastries come in a cosy room with wooden tables.",
+          "tip": "Order the egg breakfast and a flat white and come before 9:00 to skip the queue. Pay by card; space is tight, so take your coffee away in good weather."
+        },
+        "es": {
+          "name": "Joe’s Garage",
+          "description": "Esta pequeña cafetería en un callejón del centro fue una de las primeras de la ciudad en servir buen café y sigue siendo la favorita de los locales. Los sándwiches, desayunos y bollería se sirven en una sala acogedora con mesas de madera.",
+          "tip": "Pide el desayuno con huevos y un flat white, y llega antes de las 9:00 para evitar la cola. Se paga con tarjeta; hay poco sitio, así que con buen tiempo llévate el café."
+        },
+        "de": {
+          "name": "Joe’s Garage",
+          "description": "Das kleine Café in einer Gasse im Zentrum gehörte zu den ersten der Stadt mit gutem Kaffee und ist bis heute bei Einheimischen beliebt. Sandwiches, Frühstück und Gebäck gibt es in einem gemütlichen Raum mit Holztischen.",
+          "tip": "Bestell das Eierfrühstück und einen Flat White und komm vor 9:00 Uhr, um der Schlange zu entgehen. Bezahlt wird mit Karte; drinnen ist es eng, bei gutem Wetter nimm den Kaffee mit."
+        },
+        "fr": {
+          "name": "Joe’s Garage",
+          "description": "Ce petit café d’une ruelle du centre a été l’un des premiers de la ville à servir du bon café et reste une valeur sûre pour les habitants. Sandwichs, petits-déjeuners et viennoiseries sont servis dans une salle chaleureuse aux tables en bois.",
+          "tip": "Commandez le petit-déjeuner aux œufs et un flat white, et venez avant 9 h pour éviter la queue. Paiement par carte ; la salle est petite, prenez votre café à emporter quand il fait beau."
+        },
+        "it": {
+          "name": "Joe’s Garage",
+          "description": "Questo piccolo caffè in un vicolo del centro è stato tra i primi della città a servire un buon caffè ed è ancora amato dai locali. Panini, colazioni e dolci arrivano in una sala accogliente con tavoli di legno.",
+          "tip": "Ordina la colazione con le uova e un flat white e vieni prima delle 9:00 per evitare la coda. Si paga con carta; c’è poco spazio, con bel tempo prendi il caffè da asporto."
+        }
+      }
+    },
+    {
+      "id": "queenstown-patagonia-chocolates",
+      "city": "queenstown",
+      "category": "food",
+      "lat": -45.0343,
+      "lng": 168.6609,
+      "image": "tu92JGw2YJM",
+      "rating": 4.6,
+      "reviews": 4100,
+      "tags": [
+        "food",
+        "lakes"
+      ],
+      "price": {
+        "kind": "from",
+        "amount": 6,
+        "currency": "NZD"
+      },
+      "hours": "09:00–21:00",
+      "address": "50 Beach Street, Queenstown 9300",
+      "text": {
+        "ru": {
+          "name": "Patagonia Chocolates",
+          "description": "Шоколадная лавка с видом на озеро Вакатипу, где готовят шоколад и мороженое вручную. Здесь пьют густой горячий шоколад и едят пончики с тёмной шоколадной глазурью.",
+          "tip": "Возьмите горячий шоколад и трюфели и сядьте на набережной с видом на воду. Днём приходите вне часа пик (14:00–16:00); платить можно картой."
+        },
+        "en": {
+          "name": "Patagonia Chocolates",
+          "description": "A chocolate shop with a view of Lake Wakatipu where chocolate and ice cream are made by hand. Locals come for thick hot chocolate and doughnuts with dark chocolate glaze.",
+          "tip": "Get a hot chocolate and truffles and sit on the waterfront facing the lake. Visit outside the peak, between 14:00 and 16:00; pay by card."
+        },
+        "es": {
+          "name": "Patagonia Chocolates",
+          "description": "Una chocolatería con vistas al lago Wakatipu donde el chocolate y el helado se hacen a mano. Se viene a por chocolate caliente espeso y donuts con cobertura de chocolate negro.",
+          "tip": "Pide un chocolate caliente y trufas y siéntate en el paseo junto al lago. Ve fuera de la hora punta, entre las 14:00 y las 16:00; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Patagonia Chocolates",
+          "description": "Ein Schokoladengeschäft mit Blick auf den Lake Wakatipu, in dem Schokolade und Eis von Hand gemacht werden. Man kommt für dicke heiße Schokolade und Doughnuts mit dunkler Schokoglasur.",
+          "tip": "Hol dir eine heiße Schokolade und Trüffel und setz dich an die Uferpromenade mit Blick auf den See. Komm außerhalb der Stoßzeit, zwischen 14:00 und 16:00 Uhr; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Patagonia Chocolates",
+          "description": "Une chocolaterie avec vue sur le lac Wakatipu, où chocolat et glaces sont faits à la main. On y vient pour le chocolat chaud épais et les beignets au glaçage au chocolat noir.",
+          "tip": "Prenez un chocolat chaud et des truffes et asseyez-vous sur le front de lac. Venez hors de l’heure de pointe, entre 14 h et 16 h ; paiement par carte."
+        },
+        "it": {
+          "name": "Patagonia Chocolates",
+          "description": "Una cioccolateria con vista sul lago Wakatipu dove cioccolato e gelato sono fatti a mano. Si viene per la cioccolata calda densa e le ciambelle con glassa di cioccolato fondente.",
+          "tip": "Prendi una cioccolata calda e dei tartufi e siediti sul lungolago. Vai fuori dall’ora di punta, tra le 14:00 e le 16:00; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "queenstown-fergbaker",
+      "city": "queenstown",
+      "category": "food",
+      "lat": -45.0329,
+      "lng": 168.6594,
+      "image": "tu92JGw2YJM",
+      "rating": 4.6,
+      "reviews": 6500,
+      "tags": [
+        "food",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "06:00–04:00",
+      "address": "40 Shotover Street, Queenstown 9300",
+      "text": {
+        "ru": {
+          "name": "Fergbaker",
+          "description": "Пекарня при знаменитой бургерной Fergburger работает почти круглосуточно и печёт пироги, булочки и сэндвичи. Это то, что здесь берут с собой на тропу или после ночной гулянки.",
+          "tip": "Возьмите пирог с бараниной или сладкий пончик и приходите утром — очередь почти не стоит. Платите картой; наличные тоже подойдут."
+        },
+        "en": {
+          "name": "Fergbaker",
+          "description": "The bakery attached to the famous Fergburger bakes pies, rolls and sandwiches almost around the clock. It is what locals grab for the trail or after a night out.",
+          "tip": "Try a lamb pie or a sweet doughnut and come in the morning, when there is hardly a queue. Pay by card; cash works as well."
+        },
+        "es": {
+          "name": "Fergbaker",
+          "description": "La panadería junto a la famosa Fergburger hornea pasteles salados, bollos y sándwiches casi las 24 horas. Es lo que los locales compran para la ruta o después de salir de fiesta.",
+          "tip": "Prueba el pastel de cordero o un donut dulce y ve por la mañana, cuando casi no hay cola. Se paga con tarjeta; el efectivo también vale."
+        },
+        "de": {
+          "name": "Fergbaker",
+          "description": "Die Bäckerei neben dem berühmten Fergburger backt fast rund um die Uhr Pies, Brötchen und Sandwiches. Einheimische holen sich hier etwas für den Wanderweg oder nach einer durchzechten Nacht.",
+          "tip": "Probier den Lammpie oder einen süßen Doughnut und komm morgens, wenn kaum jemand ansteht. Bezahlt wird mit Karte, Bargeld geht auch."
+        },
+        "fr": {
+          "name": "Fergbaker",
+          "description": "La boulangerie attenante au célèbre Fergburger cuit tourtes, petits pains et sandwichs presque jour et nuit. Les habitants y prennent de quoi manger pour la randonnée ou après une soirée.",
+          "tip": "Goûtez la tourte à l’agneau ou un beignet sucré et venez le matin, quand il y a à peine de file. Paiement par carte ; les espèces passent aussi."
+        },
+        "it": {
+          "name": "Fergbaker",
+          "description": "Il forno accanto al celebre Fergburger sforna pie, panini e sandwich quasi giorno e notte. È ciò che i locali prendono per il sentiero o dopo una serata fuori.",
+          "tip": "Assaggia la pie all’agnello o una ciambella dolce e vieni al mattino, quando c’è poca coda. Si paga con carta; va bene anche il contante."
+        }
+      }
+    },
+    {
+      "id": "queenstown-botswana-butchery",
+      "city": "queenstown",
+      "category": "food",
+      "lat": -45.0338,
+      "lng": 168.6615,
+      "image": "tu92JGw2YJM",
+      "rating": 4.6,
+      "reviews": 2700,
+      "tags": [
+        "food",
+        "luxury",
+        "lakes"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 3
+      },
+      "hours": "17:00–23:00",
+      "address": "Steamer Wharf, 88 Beach Street, Queenstown 9300",
+      "text": {
+        "ru": {
+          "name": "Botswana Butchery",
+          "description": "Один из самых известных ресторанов города на пристани Steamer Wharf, где подают стейки, дичь и морепродукты из местных хозяйств и лучшее новозеландское вино. Из окон открывается вид на озеро и горы.",
+          "tip": "Закажите стейк из мраморной говядины и бокал пино-нуар из Централ-Отаго. Столик на вечер бронируйте за несколько дней, к закату — ещё раньше; платить можно картой."
+        },
+        "en": {
+          "name": "Botswana Butchery",
+          "description": "One of the city’s best-known restaurants on Steamer Wharf serves steaks, game and seafood from local farms along with top New Zealand wines. Windows frame the lake and mountains.",
+          "tip": "Order the marbled beef steak and a glass of Central Otago pinot noir. Book a few days ahead for dinner, and earlier for sunset; pay by card."
+        },
+        "es": {
+          "name": "Botswana Butchery",
+          "description": "Uno de los restaurantes más conocidos de la ciudad, en Steamer Wharf, sirve carnes, caza y mariscos de granjas locales con los mejores vinos neozelandeses. Las ventanas enmarcan el lago y las montañas.",
+          "tip": "Pide el filete de ternera con vetas y una copa de pinot noir de Central Otago. Reserva la cena con unos días de antelación y antes aún si quieres ver el atardecer; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Botswana Butchery",
+          "description": "Eines der bekanntesten Restaurants der Stadt am Steamer Wharf serviert Steaks, Wild und Meeresfrüchte von lokalen Höfen sowie erstklassige neuseeländische Weine. Die Fenster rahmen See und Berge.",
+          "tip": "Bestell das marmorierte Rindersteak und ein Glas Pinot Noir aus Central Otago. Reserviere das Abendessen einige Tage vorher, für den Sonnenuntergang noch früher; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Botswana Butchery",
+          "description": "L’un des restaurants les plus connus de la ville, sur Steamer Wharf, sert steaks, gibier et fruits de mer de fermes locales avec les meilleurs vins néo-zélandais. Les fenêtres encadrent le lac et les montagnes.",
+          "tip": "Commandez le steak de bœuf persillé et un verre de pinot noir du Central Otago. Réservez quelques jours à l’avance, et plus tôt pour le coucher du soleil ; paiement par carte."
+        },
+        "it": {
+          "name": "Botswana Butchery",
+          "description": "Uno dei ristoranti più noti della città, a Steamer Wharf, serve bistecche, selvaggina e pesce di aziende locali insieme ai migliori vini neozelandesi. Le finestre inquadrano il lago e le montagne.",
+          "tip": "Ordina la bistecca di manzo marezzata e un calice di pinot nero del Central Otago. Prenota la cena con qualche giorno di anticipo, e prima ancora per il tramonto; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "queenstown-hill-time-walk",
+      "city": "queenstown",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -45.0228,
+      "lng": 168.6728,
+      "image": "tu92JGw2YJM",
+      "rating": 4.7,
+      "reviews": 3900,
+      "tags": [
+        "hiking",
+        "views",
+        "mountains",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Belfast Terrace, Queenstown 9300",
+      "text": {
+        "ru": {
+          "name": "Вершина Queenstown Hill",
+          "description": "Тропа Time Walk за полтора часа поднимается к площадке на холме над городом. Сверху видны озеро Вакатипу, пики Рекордс и хребет Рим-Рок.",
+          "tip": "Выходите за час до заката и снимайте на верхней площадке с видом на озеро; для кадра встаньте у каменной композиции Time Walk. Берите куртку и фонарь для спуска."
+        },
+        "en": {
+          "name": "Queenstown Hill summit",
+          "description": "The Time Walk track climbs for about ninety minutes to a lookout above town. From the top you can see Lake Wakatipu, the Remarkables and the Cecil Peak.",
+          "tip": "Set off an hour before sunset and shoot at the top lookout facing the lake; stand by the stone Time Walk installation for your frame. Bring a jacket and a torch for the descent."
+        },
+        "es": {
+          "name": "Cima de Queenstown Hill",
+          "description": "El sendero Time Walk sube durante unos noventa minutos hasta un mirador sobre la ciudad. Desde arriba se ven el lago Wakatipu, The Remarkables y Cecil Peak.",
+          "tip": "Sal una hora antes del atardecer y haz las fotos en el mirador de arriba mirando al lago; colócate junto a la instalación de piedra del Time Walk. Lleva chaqueta y linterna para bajar."
+        },
+        "de": {
+          "name": "Gipfel Queenstown Hill",
+          "description": "Der Time-Walk-Pfad steigt in rund neunzig Minuten zu einem Aussichtspunkt über der Stadt an. Oben siehst du den Lake Wakatipu, die Remarkables und den Cecil Peak.",
+          "tip": "Brich eine Stunde vor Sonnenuntergang auf und fotografier am oberen Aussichtspunkt mit Blick zum See; stell dich neben die steinerne Time-Walk-Installation. Nimm Jacke und Taschenlampe für den Abstieg mit."
+        },
+        "fr": {
+          "name": "Sommet de Queenstown Hill",
+          "description": "Le sentier Time Walk grimpe pendant environ quatre-vingt-dix minutes jusqu’à un belvédère au-dessus de la ville. Du sommet, on voit le lac Wakatipu, The Remarkables et le Cecil Peak.",
+          "tip": "Partez une heure avant le coucher du soleil et photographiez au belvédère du sommet face au lac ; placez-vous près de l’installation en pierre du Time Walk. Prenez une veste et une lampe pour la descente."
+        },
+        "it": {
+          "name": "Cima di Queenstown Hill",
+          "description": "Il sentiero Time Walk sale per circa novanta minuti fino a un belvedere sopra la città. Dalla cima si vedono il lago Wakatipu, i Remarkables e il Cecil Peak.",
+          "tip": "Parti un’ora prima del tramonto e scatta dal belvedere in cima verso il lago; mettiti vicino all’installazione in pietra del Time Walk. Porta una giacca e una torcia per la discesa."
+        }
+      }
+    },
+    {
+      "id": "queenstown-arrowtown-autumn-avenue",
+      "city": "queenstown",
+      "category": "attraction",
+      "spot": "insta",
+      "lat": -44.9401,
+      "lng": 168.831,
+      "image": "tu92JGw2YJM",
+      "rating": 4.7,
+      "reviews": 5200,
+      "tags": [
+        "history",
+        "photo",
+        "gardens"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Buckingham Street, Arrowtown 9302",
+      "text": {
+        "ru": {
+          "name": "Осенняя аллея в Эрроутауне",
+          "description": "Исторический посёлок золотоискателей в 20 км от Квинстауна с аллеей вязов и клёнов, которая в апреле-мае становится золотой и красной. Деревянные домики и лавки сохранились с XIX века.",
+          "tip": "Приезжайте в конце апреля, рано утром: встаньте посреди аллеи и подбросьте листья, пусть фотограф снимает с низкой точки. Одевайтесь тепло — в долине прохладно."
+        },
+        "en": {
+          "name": "Arrowtown autumn avenue",
+          "description": "A historic gold-rush village 20 km from Queenstown with an avenue of elms and maples that turns gold and red in April and May. Wooden cottages and shops date from the 19th century.",
+          "tip": "Come in late April, early in the morning: stand in the middle of the avenue and toss some leaves while your photographer shoots from a low angle. Dress warmly, as the valley is cool."
+        },
+        "es": {
+          "name": "Avenida otoñal de Arrowtown",
+          "description": "Un histórico pueblo de la fiebre del oro a 20 km de Queenstown con una avenida de olmos y arces que en abril y mayo se vuelve dorada y roja. Las casitas y tiendas de madera datan del siglo XIX.",
+          "tip": "Ve a finales de abril, a primera hora: colócate en medio de la avenida y lanza unas hojas mientras te fotografían desde abajo. Abrígate, el valle es fresco."
+        },
+        "de": {
+          "name": "Herbstallee in Arrowtown",
+          "description": "Ein historisches Goldgräberdorf 20 km von Queenstown mit einer Allee aus Ulmen und Ahornen, die im April und Mai gold und rot leuchtet. Holzhäuschen und Läden stammen aus dem 19. Jahrhundert.",
+          "tip": "Komm Ende April früh am Morgen: Stell dich mitten in die Allee und wirf etwas Laub in die Luft, während dein Fotograf aus der Froschperspektive fotografiert. Zieh dich warm an, im Tal ist es kühl."
+        },
+        "fr": {
+          "name": "Allée d’automne d’Arrowtown",
+          "description": "Un village historique de la ruée vers l’or à 20 km de Queenstown, avec une allée d’ormes et d’érables qui devient dorée et rouge en avril et mai. Les maisons et boutiques en bois datent du XIXe siècle.",
+          "tip": "Venez fin avril, tôt le matin : placez-vous au milieu de l’allée et lancez quelques feuilles pendant que votre photographe cadre en contre-plongée. Habillez-vous chaudement, la vallée est fraîche."
+        },
+        "it": {
+          "name": "Viale autunnale di Arrowtown",
+          "description": "Un villaggio storico della corsa all’oro a 20 km da Queenstown con un viale di olmi e aceri che ad aprile e maggio diventa dorato e rosso. Casette e negozi in legno risalgono all’Ottocento.",
+          "tip": "Vieni a fine aprile, di mattina presto: mettiti in mezzo al viale e lancia qualche foglia mentre il fotografo scatta dal basso. Vestiti caldo, la valle è fresca."
+        }
+      }
+    },
+    {
+      "id": "rotorua-fat-dog-cafe",
+      "city": "rotorua",
+      "category": "food",
+      "lat": -38.1385,
+      "lng": 176.2501,
+      "image": "1DLdLYKCQOs",
+      "rating": 4.6,
+      "reviews": 2800,
+      "tags": [
+        "food",
+        "city"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "07:00–15:00",
+      "address": "1161 Arawa Street, Rotorua 3010",
+      "text": {
+        "ru": {
+          "name": "Fat Dog Cafe",
+          "description": "Яркое кафе с огромными порциями завтраков и сладких блюд в центре Роторуа. Фирменные «бенедикты» и оладьи с беконом ставят в очередь даже в будни.",
+          "tip": "Закажите бенедикт с беконом и свежий кофе, а приходите до 9 утра или после 11. Платить можно картой."
+        },
+        "en": {
+          "name": "Fat Dog Cafe",
+          "description": "A colourful café in central Rotorua with huge breakfast portions and sweet dishes. Its eggs Benedict and bacon pancakes make a queue even on weekdays.",
+          "tip": "Order the bacon Benedict and a fresh coffee, and come before 9:00 or after 11:00. Pay by card."
+        },
+        "es": {
+          "name": "Fat Dog Cafe",
+          "description": "Una cafetería colorida en el centro de Rotorua con enormes raciones de desayuno y platos dulces. Sus huevos Benedict y las tortitas con beicon provocan cola incluso entre semana.",
+          "tip": "Pide los huevos Benedict con beicon y un café recién hecho, y llega antes de las 9:00 o después de las 11:00. Se paga con tarjeta."
+        },
+        "de": {
+          "name": "Fat Dog Cafe",
+          "description": "Ein buntes Café im Zentrum von Rotorua mit riesigen Frühstücksportionen und süßen Gerichten. Die Eggs Benedict und die Pancakes mit Speck sorgen auch werktags für Schlangen.",
+          "tip": "Bestell die Eggs Benedict mit Speck und einen frischen Kaffee und komm vor 9:00 oder nach 11:00 Uhr. Bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Fat Dog Cafe",
+          "description": "Un café coloré du centre de Rotorua, aux portions de petit-déjeuner énormes et aux plats sucrés. Ses œufs Bénédicte et ses pancakes au bacon font la queue même en semaine.",
+          "tip": "Commandez les œufs Bénédicte au bacon et un café frais, et venez avant 9 h ou après 11 h. Paiement par carte."
+        },
+        "it": {
+          "name": "Fat Dog Cafe",
+          "description": "Un caffè colorato nel centro di Rotorua con porzioni enormi di colazione e piatti dolci. Le uova alla Benedict e i pancake con pancetta creano coda anche nei giorni feriali.",
+          "tip": "Ordina le uova alla Benedict con pancetta e un caffè fresco, e vieni prima delle 9:00 o dopo le 11:00. Si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "rotorua-night-market",
+      "city": "rotorua",
+      "category": "food",
+      "lat": -38.1372,
+      "lng": 176.2502,
+      "image": "1DLdLYKCQOs",
+      "rating": 4.4,
+      "reviews": 2300,
+      "tags": [
+        "market",
+        "streetfood",
+        "food"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "Thu 17:00–21:00",
+      "address": "Tutanekai Street, Rotorua 3010",
+      "text": {
+        "ru": {
+          "name": "Ночной рынок на Тутанекай-стрит",
+          "description": "Еженедельный вечерний рынок, на который улица Тутанекай превращается по четвергам: десятки киосков с едой из разных стран, музыка и ремесленные лавки. Здесь едят жареные пельмени, кукурузу и местные сладости.",
+          "tip": "Приходите в четверг к 18:00, пока не заняты столики, и берите по одному блюду в разных ларьках. Берите наличные: часть киосков не принимает карты."
+        },
+        "en": {
+          "name": "Tutanekai Street Night Market",
+          "description": "On Thursdays Tutanekai Street turns into a weekly evening market with dozens of food stalls from many countries, music and craft stands. People eat fried dumplings, corn and local sweets here.",
+          "tip": "Arrive around 18:00 on Thursday before the tables fill, and take one dish from several stalls. Bring cash, as some stalls don’t take cards."
+        },
+        "es": {
+          "name": "Mercado nocturno de Tutanekai Street",
+          "description": "Los jueves, Tutanekai Street se convierte en un mercado semanal de noche con decenas de puestos de comida de muchos países, música y artesanía. Aquí se comen empanadillas fritas, maíz y dulces locales.",
+          "tip": "Llega el jueves hacia las 18:00, antes de que se llenen las mesas, y pide un plato en varios puestos. Lleva efectivo, porque algunos puestos no aceptan tarjeta."
+        },
+        "de": {
+          "name": "Nachtmarkt in der Tutanekai Street",
+          "description": "Donnerstags verwandelt sich die Tutanekai Street in einen wöchentlichen Abendmarkt mit Dutzenden Essensständen aus vielen Ländern, Musik und Handwerk. Es gibt gebratene Teigtaschen, Mais und lokale Süßigkeiten.",
+          "tip": "Komm donnerstags gegen 18:00 Uhr, bevor die Tische voll sind, und nimm von mehreren Ständen je ein Gericht. Hab Bargeld dabei, manche Stände nehmen keine Karten."
+        },
+        "fr": {
+          "name": "Marché nocturne de Tutanekai Street",
+          "description": "Le jeudi, Tutanekai Street devient un marché nocturne hebdomadaire avec des dizaines de stands de cuisine de nombreux pays, de la musique et de l’artisanat. On y mange des raviolis frits, du maïs et des douceurs locales.",
+          "tip": "Arrivez le jeudi vers 18 h, avant que les tables ne se remplissent, et prenez un plat à plusieurs stands. Gardez des espèces, certains stands n’acceptent pas la carte."
+        },
+        "it": {
+          "name": "Mercato notturno di Tutanekai Street",
+          "description": "Il giovedì Tutanekai Street diventa un mercato serale settimanale con decine di bancarelle di cibo di molti Paesi, musica e artigianato. Qui si mangiano ravioli fritti, mais e dolci locali.",
+          "tip": "Arriva il giovedì verso le 18:00, prima che i tavoli si riempiano, e prendi un piatto da più bancarelle. Porta contanti, perché alcune bancarelle non accettano carte."
+        }
+      }
+    },
+    {
+      "id": "rotorua-mitai-hangi",
+      "city": "rotorua",
+      "category": "food",
+      "lat": -38.1175,
+      "lng": 176.2425,
+      "image": "0DRR9edmcSA",
+      "rating": 4.7,
+      "reviews": 6200,
+      "tags": [
+        "food",
+        "culture",
+        "history"
+      ],
+      "price": {
+        "kind": "from",
+        "amount": 120,
+        "currency": "NZD"
+      },
+      "hours": "17:00–21:30",
+      "address": "196 Fairy Springs Road, Rotorua 3015",
+      "text": {
+        "ru": {
+          "name": "Хаку и хангi в Mitai",
+          "description": "Вечер в маорийской деревне: приветственная церемония, показ воинского танца хака и ужин хангi, приготовленный в земляной печи. Мясо и овощи томятся несколько часов на горячих камнях.",
+          "tip": "Бронируйте за несколько дней и выбирайте вечерний тур, чтобы увидеть, как достают хангi. Приходите за 15 минут, возьмите куртку, платите картой."
+        },
+        "en": {
+          "name": "Mitai Māori Village hāngi",
+          "description": "An evening in a Māori village: a welcome ceremony, a haka performance and a hāngi dinner cooked in an earth oven. Meat and vegetables steam for hours on hot stones.",
+          "tip": "Book a few days ahead and choose the evening tour to watch the hāngi being lifted. Arrive 15 minutes early, bring a jacket and pay by card."
+        },
+        "es": {
+          "name": "Hāngi en Mitai Māori Village",
+          "description": "Una velada en una aldea maorí: ceremonia de bienvenida, espectáculo de haka y cena hāngi cocinada en un horno de tierra. La carne y las verduras se cuecen durante horas sobre piedras calientes.",
+          "tip": "Reserva con unos días de antelación y elige el tour de la noche para ver cómo se saca el hāngi. Llega 15 minutos antes, lleva chaqueta y paga con tarjeta."
+        },
+        "de": {
+          "name": "Hāngi im Mitai Māori Village",
+          "description": "Ein Abend in einem Māori-Dorf: Begrüßungszeremonie, Haka-Vorführung und ein Hāngi-Abendessen aus dem Erdofen. Fleisch und Gemüse garen stundenlang auf heißen Steinen.",
+          "tip": "Buche einige Tage vorher und wähl die Abendtour, um zu sehen, wie der Hāngi geöffnet wird. Sei 15 Minuten früher da, nimm eine Jacke mit und zahl mit Karte."
+        },
+        "fr": {
+          "name": "Hāngi au Mitai Māori Village",
+          "description": "Une soirée dans un village maori : cérémonie d’accueil, démonstration de haka et dîner hāngi cuit au four en terre. Viande et légumes mijotent des heures sur des pierres chaudes.",
+          "tip": "Réservez quelques jours à l’avance et choisissez la visite du soir pour voir sortir le hāngi. Arrivez 15 minutes avant, prenez une veste et payez par carte."
+        },
+        "it": {
+          "name": "Hāngi al Mitai Māori Village",
+          "description": "Una serata in un villaggio māori: cerimonia di benvenuto, esibizione di haka e cena hāngi cotta nel forno di terra. Carne e verdure cuociono per ore su pietre roventi.",
+          "tip": "Prenota qualche giorno prima e scegli il tour serale per vedere l’apertura dell’hāngi. Arriva 15 minuti prima, porta una giacca e paga con carta."
+        }
+      }
+    },
+    {
+      "id": "rotorua-pig-and-whistle",
+      "city": "rotorua",
+      "category": "food",
+      "lat": -38.1394,
+      "lng": 176.2491,
+      "image": "1DLdLYKCQOs",
+      "rating": 4.3,
+      "reviews": 2500,
+      "tags": [
+        "food",
+        "history",
+        "nightlife"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "11:00–23:00",
+      "address": "1182 Haupapa Street, Rotorua 3010",
+      "text": {
+        "ru": {
+          "name": "Pig & Whistle",
+          "description": "Паб в здании бывшего полицейского участка 1940 года с живой музыкой, крафтовым пивом и сытной едой. Внутри сохранились камеры и старые стойки.",
+          "tip": "Возьмите пиво местного пивоваренного завода и стейк или фиш-энд-чипс, а на вечер приходите ради живой музыки. Платите картой."
+        },
+        "en": {
+          "name": "Pig & Whistle",
+          "description": "A pub in the former 1940 police station with live music, craft beer and hearty food. The cells and old counters are still inside.",
+          "tip": "Try a local craft beer and a steak or fish and chips, and come in the evening for the live music. Pay by card."
+        },
+        "es": {
+          "name": "Pig & Whistle",
+          "description": "Un pub en la antigua comisaría de 1940 con música en vivo, cerveza artesanal y platos contundentes. Dentro se conservan las celdas y los viejos mostradores.",
+          "tip": "Prueba una cerveza artesanal local y un filete o fish and chips, y ven por la noche por la música en directo. Se paga con tarjeta."
+        },
+        "de": {
+          "name": "Pig & Whistle",
+          "description": "Ein Pub in der ehemaligen Polizeiwache von 1940 mit Livemusik, Craft-Bier und deftigem Essen. Drinnen sind noch die Zellen und alte Tresen erhalten.",
+          "tip": "Probier ein lokales Craft-Bier und ein Steak oder Fish and Chips, und komm abends wegen der Livemusik. Bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Pig & Whistle",
+          "description": "Un pub dans l’ancien commissariat de 1940, avec musique live, bière artisanale et plats copieux. Les cellules et les vieux comptoirs sont toujours là.",
+          "tip": "Goûtez une bière artisanale locale et un steak ou un fish and chips, et venez le soir pour la musique live. Paiement par carte."
+        },
+        "it": {
+          "name": "Pig & Whistle",
+          "description": "Un pub nell’ex stazione di polizia del 1940 con musica dal vivo, birra artigianale e piatti sostanziosi. All’interno restano le celle e i vecchi banconi.",
+          "tip": "Assaggia una birra artigianale locale e una bistecca o un fish and chips, e vieni la sera per la musica dal vivo. Si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "rotorua-hobbiton",
+      "city": "rotorua",
+      "category": "attraction",
+      "spot": "insta",
+      "lat": -37.8722,
+      "lng": 175.6831,
+      "image": "BGJgp2H8bM0",
+      "rating": 4.8,
+      "reviews": 28900,
+      "tags": [
+        "photo",
+        "culture",
+        "gardens"
+      ],
+      "price": {
+        "kind": "from",
+        "amount": 120,
+        "currency": "NZD"
+      },
+      "hours": "09:00–17:00",
+      "address": "501 Buckland Road, Matamata 3472",
+      "text": {
+        "ru": {
+          "name": "Деревня Хоббитон",
+          "description": "Съёмочная площадка «Властелина колец» и «Хоббита» среди зелёных холмов Матамата: круглые двери нор, ухоженные сады и таверна «Зелёный дракон». Экскурсии длятся около двух часов.",
+          "tip": "Бронируйте билет заранее и выбирайте утренний слот. Для фото встаньте у круглой двери дома Бэггинс, поверните голову к камере и попросите снимать чуть снизу. Расстояние от Роторуа — около 1 часа езды."
+        },
+        "en": {
+          "name": "Hobbiton Movie Set",
+          "description": "The Lord of the Rings and The Hobbit set among the green hills of Matamata: round hobbit doors, tidy gardens and the Green Dragon Inn. Tours last around two hours.",
+          "tip": "Book ahead and pick a morning slot. For your shot, stand at the round door of Bag End, turn to the camera and ask for a slightly low angle. It is about an hour’s drive from Rotorua."
+        },
+        "es": {
+          "name": "Set de Hobbiton",
+          "description": "El escenario de El Señor de los Anillos y El Hobbit entre las verdes colinas de Matamata: puertas redondas, jardines cuidados y la posada Green Dragon. Las visitas duran unas dos horas.",
+          "tip": "Reserva con antelación y elige un turno de mañana. Para la foto, colócate en la puerta redonda de Bolsón Cerrado, mira a la cámara y pide un ángulo algo bajo. Está a una hora en coche desde Rotorua."
+        },
+        "de": {
+          "name": "Hobbiton Movie Set",
+          "description": "Die Kulisse von Der Herr der Ringe und Der Hobbit in den grünen Hügeln von Matamata: runde Hobbit-Türen, gepflegte Gärten und das Green Dragon Inn. Die Führungen dauern etwa zwei Stunden.",
+          "tip": "Buche im Voraus und wähl ein Zeitfenster am Vormittag. Stell dich für das Foto an die runde Tür von Beutelsend, schau in die Kamera und bitte um einen leicht tiefen Winkel. Von Rotorua sind es etwa eine Stunde Fahrt."
+        },
+        "fr": {
+          "name": "Décor de Hobbiton",
+          "description": "Le décor du Seigneur des anneaux et du Hobbit au milieu des collines vertes de Matamata : portes rondes, jardins soignés et auberge du Dragon vert. Les visites durent environ deux heures.",
+          "tip": "Réservez à l’avance et choisissez un créneau le matin. Pour la photo, placez-vous devant la porte ronde de Cul-de-Sac, tournez-vous vers l’objectif et demandez un angle légèrement bas. Comptez une heure de route depuis Rotorua."
+        },
+        "it": {
+          "name": "Set di Hobbiton",
+          "description": "Il set del Signore degli Anelli e dello Hobbit tra le verdi colline di Matamata: porte rotonde, giardini curati e la locanda del Drago Verde. Le visite durano circa due ore.",
+          "tip": "Prenota in anticipo e scegli un turno mattutino. Per la foto, mettiti davanti alla porta rotonda di Casa Baggins, girati verso la fotocamera e chiedi un’angolazione leggermente dal basso. Da Rotorua è circa un’ora di auto."
+        }
+      }
+    },
+    {
+      "id": "rotorua-government-gardens",
+      "city": "rotorua",
+      "category": "attraction",
+      "spot": "insta",
+      "lat": -38.1403,
+      "lng": 176.2561,
+      "image": "0DRR9edmcSA",
+      "rating": 4.6,
+      "reviews": 5700,
+      "tags": [
+        "gardens",
+        "architecture",
+        "history",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Hinemaru Street, Rotorua 3010",
+      "text": {
+        "ru": {
+          "name": "Правительственные сады и Bath House",
+          "description": "Парк у озера Роторуа с живописным зданием Bath House в стиле тюдор 1908 года, розарием и газонами. Рядом поднимается пар от горячих источников.",
+          "tip": "Снимайте утром при мягком свете, пока нет людей: встаньте на ступенях здания Bath House и повернитесь к камере в полоборота. Ищите дымок источников на заднем плане."
+        },
+        "en": {
+          "name": "Government Gardens and the Bath House",
+          "description": "A park by Lake Rotorua with the picturesque Tudor-style Bath House of 1908, a rose garden and lawns. Steam from hot springs rises nearby.",
+          "tip": "Shoot in the morning in soft light before the crowds: stand on the Bath House steps and turn half to the camera. Look for the steam of the springs in the background."
+        },
+        "es": {
+          "name": "Government Gardens y Bath House",
+          "description": "Un parque junto al lago Rotorua con el pintoresco edificio de estilo Tudor de 1908, un rosal y céspedes. Cerca sube el vapor de las aguas termales.",
+          "tip": "Haz fotos por la mañana con luz suave, antes de la gente: colócate en las escaleras del Bath House y gírate medio hacia la cámara. Busca el vapor de las fuentes al fondo."
+        },
+        "de": {
+          "name": "Government Gardens und Bath House",
+          "description": "Ein Park am Lake Rotorua mit dem malerischen Bath House im Tudorstil von 1908, einem Rosengarten und Rasenflächen. In der Nähe steigt Dampf aus heißen Quellen auf.",
+          "tip": "Fotografier am Morgen im weichen Licht, bevor die Besucher kommen: Stell dich auf die Stufen des Bath House und dreh dich halb zur Kamera. Such im Hintergrund den Dampf der Quellen."
+        },
+        "fr": {
+          "name": "Government Gardens et Bath House",
+          "description": "Un parc au bord du lac Rotorua avec le pittoresque Bath House de style Tudor de 1908, une roseraie et des pelouses. Près de là, la vapeur des sources chaudes s’élève.",
+          "tip": "Photographiez le matin dans une lumière douce avant la foule : placez-vous sur les marches du Bath House et tournez-vous à demi vers l’objectif. Cherchez la vapeur des sources à l’arrière-plan."
+        },
+        "it": {
+          "name": "Government Gardens e Bath House",
+          "description": "Un parco sul lago Rotorua con il pittoresco Bath House in stile Tudor del 1908, un roseto e prati. Poco distante sale il vapore delle sorgenti calde.",
+          "tip": "Scatta al mattino con luce morbida, prima della folla: mettiti sui gradini del Bath House e girati a metà verso l’obiettivo. Cerca il vapore delle sorgenti sullo sfondo."
+        }
+      }
+    },
   ],
 };
 

@@ -35,6 +35,8 @@ const guide: VisaGuide = {
     { name: 'Ak-Zhol – Korday', to: 'KZ', lat: 43.035, lng: 74.713 },
     { name: 'Manas (FRU) → Almaty', to: 'KZ', lat: 43.0613, lng: 74.4776 },
   ],
+  hackScope: [null, null, null, null],
+  pitfallScope: [['regime:free'], ['regime:evisa'], null],
   text: {
     ru: {
       summary:

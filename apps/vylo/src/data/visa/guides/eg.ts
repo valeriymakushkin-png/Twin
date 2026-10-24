@@ -25,6 +25,8 @@ const guide: VisaGuide = {
       days: 30,
     },
   ],
+  hackScope: [['regime:voa', 'regime:evisa'], ['regime:voa', 'regime:evisa'], ['regime:voa'], ['IN']],
+  pitfallScope: [['regime:voa', 'regime:evisa'], ['regime:voa'], null, ['regime:voa', 'regime:evisa']],
   text: {
     ru: {
       summary:

@@ -17,6 +17,8 @@ const guide: VisaGuide = {
   transit: { hours: 72 },
   nomad: { name: 'Designated Activities (Digital Nomad)', months: 6, income: { kind: 'from', amount: 10000000, currency: 'JPY' } },
   waivers: [{ holds: ['resUS', 'resGB', 'resCA', 'resAU'], status: 'evisa', days: 90 }],
+  hackScope: [['regime:required', 'regime:evisa'], null, ['regime:required', 'regime:evisa'], ['GB', 'DE', 'AT', 'IE', 'CH', 'LI', 'MX'], ['regime:free']],
+  pitfallScope: [['regime:free'], null, null],
   text: {
     ru: {
       summary:

@@ -36,6 +36,8 @@ const guide: VisaGuide = {
     },
     { holds: ['resGCC'], status: 'evisa', days: 30 },
   ],
+  hackScope: [null, ['regime:free'], ['regime:evisa', 'regime:required'], null, null],
+  pitfallScope: [['regime:free'], null, null],
   text: {
     ru: {
       summary:

@@ -835,6 +835,11 @@ const en: Messages = {
     open: 'Open country',
     inCountry: 'More in this country',
   },
+  eat: {
+    title: 'Where to eat',
+    order: 'What to order',
+    all: 'All places to eat',
+  },
   spots: {
     insta: 'Photo spot',
     hidden: 'Hidden gem',
@@ -842,6 +847,8 @@ const en: Messages = {
     sights: 'Sights',
     food: 'Food',
     nature: 'Nature',
+    shotsHere: 'How people shoot it here',
+    shotsHereText: 'Photos of travellers at this spot',
     photoTip: 'How to shoot it',
     findTip: 'How to find it',
     gettingThere: 'Getting there',
@@ -854,6 +861,7 @@ const en: Messages = {
     addToRoute: 'Add to route',
     inRoute: 'In route',
     cityRoute: 'City walk',
+    cityRouteIn: 'Walk through {city}',
     cityRouteText: '{count} places in a convenient order',
     showOnMap: 'Show on map',
   },
@@ -1076,6 +1084,9 @@ const en: Messages = {
       newCity: 'New city',
     },
     edit: {
+      people: 'Photos of people at the spot',
+      peopleHint: 'Photos of travellers at this very spot — how the photo spot is shown in the app. Up to four.',
+      addPeople: 'Add a photo',
       basics: 'Basics',
       location: 'Address and coordinates',
       photo: 'Photo',

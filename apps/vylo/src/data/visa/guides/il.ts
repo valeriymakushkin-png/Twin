@@ -19,6 +19,8 @@ const guide: VisaGuide = {
     { name: 'Yitzhak Rabin – Wadi Araba (Eilat – Aqaba)', to: 'JO', lat: 29.5738, lng: 34.9767 },
     { name: 'Jordan River – Sheikh Hussein', to: 'JO', lat: 32.4975, lng: 35.5735 },
   ],
+  hackScope: [null, null, null, null],
+  pitfallScope: [null, ['regime:eta'], null],
   text: {
     ru: {
       summary:

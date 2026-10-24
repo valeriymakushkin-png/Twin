@@ -15,6 +15,8 @@ const guide: VisaGuide = {
     { name: 'Busia', to: 'UG', lat: 0.4633, lng: 34.0917 },
   ],
   nomad: { name: 'Class N Digital Nomad Permit', months: 12, income: { kind: 'from', amount: 2000, currency: 'USD' } },
+  hackScope: [['regime:eta'], ['regime:eta'], null, ['US'], null],
+  pitfallScope: [['regime:eta'], ['regime:eta'], ['regime:eta'], null],
   text: {
     ru: {
       summary:

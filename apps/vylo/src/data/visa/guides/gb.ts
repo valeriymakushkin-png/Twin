@@ -14,6 +14,8 @@ const guide: VisaGuide = {
   passportMonths: 0,
   visaRun: 'no',
   transit: { hours: 24 },
+  hackScope: [null, ['regime:required'], ['regime:eta'], ['regime:eta'], ['@EU']],
+  pitfallScope: [['regime:eta'], ['regime:eta'], ['@EU'], ['regime:required']],
   text: {
     ru: {
       summary:

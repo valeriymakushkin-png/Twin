@@ -11,6 +11,8 @@ const guide: VisaGuide = {
   rule: { days: 90, window: 180 },
   visaRun: 'no',
   nomad: { name: 'Temporary stay of digital nomads', months: 18, income: { kind: 'from', amount: 3622, currency: 'EUR' } },
+  hackScope: [['regime:required'], ['regime:free', 'regime:required'], null, ['regime:free', 'regime:required']],
+  pitfallScope: [['regime:required'], null, ['regime:free']],
   text: {
     ru: {
       summary:

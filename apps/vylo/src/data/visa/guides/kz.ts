@@ -12,6 +12,8 @@ const guide: VisaGuide = {
     { name: 'Almaty (ALA) → Bishkek / Tashkent', to: 'UZ', lat: 43.3521, lng: 77.0405 },
   ],
   nomad: { name: 'Neo Nomad Visa', months: 12, income: { kind: 'from', amount: 3000, currency: 'USD' } },
+  hackScope: [null, ['regime:free'], null, null],
+  pitfallScope: [['regime:free'], null, null],
   text: {
     ru: {
       summary:

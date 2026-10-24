@@ -12,6 +12,8 @@ const guide: VisaGuide = {
   visaRun: 'limited',
   nomad: { name: 'Unique Permit (digital nomad)', months: 12 },
   waivers: [{ holds: ['visaSchengen', 'visaUS', 'visaGB', 'resEU', 'resUS', 'resGB'], status: 'free', days: 90 }],
+  hackScope: [['regime:required', 'regime:evisa'], ['US', 'GB', 'CA'], null, ['US']],
+  pitfallScope: [['regime:evisa'], ['regime:required', 'regime:evisa'], null],
   text: {
     ru: {
       summary:

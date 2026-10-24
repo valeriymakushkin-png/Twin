@@ -16,6 +16,8 @@ const guide: VisaGuide = {
   rule: { days: 90, window: 180 },
   visaRun: 'limited',
   waivers: [{ holds: ['visaSchengen', 'visaUS', 'visaGB', 'resEU', 'resUS', 'resGB'], status: 'free', days: 30 }],
+  hackScope: [['regime:required'], ['regime:free'], null],
+  pitfallScope: [null, ['regime:required'], ['RU', 'TR', 'BY', 'SA']],
   text: {
     ru: {
       summary:

@@ -63,6 +63,9 @@ function inBounds(p: { lat: number; lng: number }, [w, s, e, n]: MapView['bounds
   return w <= e ? p.lng >= w && p.lng <= e : p.lng >= w || p.lng <= e;
 }
 
+/** The route panel covers over half the screen; keep the route in the part of the map that stays visible. */
+const routeSheetInset = () => Math.round(Math.min(window.innerHeight * 0.64, 600));
+
 export default function MapPage() {
   const mapRef = useRef<WorldMapHandle>(null);
   const carousel = useRef<HTMLDivElement>(null);
@@ -144,7 +147,15 @@ export default function MapPage() {
   // Deep links: ?focus=<id>, ?country=<ISO>, ?route=1
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
-    if (q.get('route')) route.setOpen(true);
+    if (q.get('route')) {
+      route.setOpen(true);
+      // Arriving with a route: frame all its stops (the map would otherwise stay on the world view).
+      const stops = useRoute.getState().stops;
+      if (stops.length) {
+        const timer = setTimeout(() => mapRef.current?.fitPoints(stops, 15, routeSheetInset()), 900);
+        return () => clearTimeout(timer);
+      }
+    }
     const code = q.get('country');
     if (code) {
       const cities = citiesIn(code);
@@ -220,7 +231,7 @@ export default function MapPage() {
     () => (route.stops.length ? { line: result?.geometry ?? [], stops: route.stops.map((s) => ({ lat: s.lat, lng: s.lng, label: s.label })), approximate: result?.approximate } : null),
     [route.stops, result],
   );
-  const fitRoute = useCallback(() => mapRef.current?.fitPoints(useRoute.getState().stops, 15), []);
+  const fitRoute = useCallback(() => mapRef.current?.fitPoints(useRoute.getState().stops, 15, routeSheetInset()), []);
   const rotated = Math.abs(bearing.bearing) > 1 || bearing.pitch > 5;
 
   return (

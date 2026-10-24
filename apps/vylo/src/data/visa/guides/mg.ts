@@ -12,6 +12,8 @@ const guide: VisaGuide = {
   docs: ['returnTicket', 'booking'],
   passportMonths: 6,
   visaRun: 'no',
+  hackScope: [['regime:voa', 'regime:evisa'], ['regime:voa', 'regime:evisa'], null, ['regime:voa']],
+  pitfallScope: [['regime:voa', 'regime:evisa'], null, null],
   text: {
     ru: {
       summary:

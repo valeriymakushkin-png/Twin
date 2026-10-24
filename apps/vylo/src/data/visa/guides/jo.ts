@@ -18,6 +18,8 @@ const guide: VisaGuide = {
     { name: 'Sheikh Hussein – Jordan River', to: 'IL', lat: 32.4975, lng: 35.5735 },
     { name: 'King Hussein Bridge – Allenby', to: 'IL', lat: 31.8733, lng: 35.5415 },
   ],
+  hackScope: [['regime:voa'], null, null, null],
+  pitfallScope: [['regime:voa'], null, ['regime:voa']],
   text: {
     ru: {
       summary:

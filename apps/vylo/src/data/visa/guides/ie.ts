@@ -20,6 +20,8 @@ const guide: VisaGuide = {
     // British-Irish Visa Scheme
     { holds: ['visaGB'], passports: ['CN', 'IN'], status: 'free', days: 90 },
   ],
+  hackScope: [['regime:free'], ['IN', 'CN'], null, ['regime:required']],
+  pitfallScope: [['regime:required'], ['regime:free'], ['regime:required']],
   text: {
     ru: {
       summary:

@@ -11,6 +11,8 @@ const guide: VisaGuide = {
   rule: { days: 90, window: 180 },
   visaRun: 'no',
   nomad: { name: 'White Card', months: 12 },
+  hackScope: [null, ['regime:free', 'regime:required'], ['regime:free', 'regime:required'], ['IN']],
+  pitfallScope: [['regime:required'], ['regime:free'], ['regime:free', 'regime:required']],
   text: {
     ru: {
       summary:

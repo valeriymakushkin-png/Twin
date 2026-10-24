@@ -16,6 +16,8 @@ const guide: VisaGuide = {
     { holds: ['resEU'], status: 'free', days: 90 },
     { holds: ['visaSchengen'], status: 'free', days: 90 },
   ],
+  hackScope: [['regime:required'], ['regime:free', 'regime:required'], ['regime:free', 'regime:required'], ['AU', 'CA', 'NZ', 'JP', 'KR']],
+  pitfallScope: [['regime:free', 'regime:required'], ['regime:required'], ['regime:required']],
   text: {
     ru: {
       summary:

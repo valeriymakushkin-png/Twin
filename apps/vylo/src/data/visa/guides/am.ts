@@ -13,6 +13,8 @@ const guide: VisaGuide = {
   rule: { days: 180, window: 365 },
   visaRun: 'no',
   waivers: [{ holds: ['resUS', 'resEU', 'resGCC'], status: 'free', days: 180 }],
+  hackScope: [['RU'], null, null, ['@EAEU']],
+  pitfallScope: [null, null, ['regime:evisa']],
   text: {
     ru: {
       summary:

@@ -18,6 +18,8 @@ const guide: VisaGuide = {
     { name: 'Bavet – Moc Bai', to: 'VN', lat: 11.0734, lng: 106.1767 },
     { name: 'Prek Chak – Xa Xia (Ha Tien)', to: 'VN', lat: 10.4219, lng: 104.4528 },
   ],
+  hackScope: [['regime:voa', 'regime:evisa'], ['regime:voa', 'regime:evisa'], ['regime:voa'], null],
+  pitfallScope: [['regime:evisa', 'regime:voa'], ['regime:voa', 'regime:evisa'], null],
   text: {
     ru: {
       summary:

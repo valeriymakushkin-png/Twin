@@ -45,7 +45,8 @@ export interface MapView {
 
 export interface WorldMapHandle {
   flyTo: (lat: number, lng: number, zoom?: number) => void;
-  fitPoints: (points: { lat: number; lng: number }[], maxZoom?: number) => void;
+  /** `bottom` reserves screen space for a sheet covering the lower part of the map (e.g. the route panel) */
+  fitPoints: (points: { lat: number; lng: number }[], maxZoom?: number, bottom?: number) => void;
   zoomOut: () => void;
   zoomBy: (delta: number) => void;
   resetNorth: () => void;
@@ -221,10 +222,11 @@ export const WorldMap = forwardRef<WorldMapHandle, Props>(function WorldMap(
       if (!m) return;
       m.flyTo({ center: [lng, lat], zoom: zoom ?? Math.max(m.getZoom(), 5), speed: 1.1, curve: 1.5, padding: padding(), essential: true });
     },
-    fitPoints: (points, maxZoom = 15) => {
+    fitPoints: (points, maxZoom = 15, bottom) => {
       const m = map.current;
       if (!m || !points.length) return;
-      if (points.length === 1) return void m.flyTo({ center: [points[0]!.lng, points[0]!.lat], zoom: Math.min(maxZoom, 14), padding: padding(), essential: true });
+      const pad = bottom === undefined ? padding() : { ...padding(), bottom };
+      if (points.length === 1) return void m.flyTo({ center: [points[0]!.lng, points[0]!.lat], zoom: Math.min(maxZoom, 14), padding: pad, essential: true });
       const lngs = points.map((p) => p.lng);
       const lats = points.map((p) => p.lat);
       m.fitBounds(
@@ -232,7 +234,7 @@ export const WorldMap = forwardRef<WorldMapHandle, Props>(function WorldMap(
           [Math.min(...lngs), Math.min(...lats)],
           [Math.max(...lngs), Math.max(...lats)],
         ],
-        { padding: padding(), maxZoom, duration: 1200 },
+        { padding: pad, maxZoom, duration: 1200 },
       );
     },
     zoomOut: () => map.current?.flyTo({ zoom: 1.4, pitch: 0, bearing: 0, speed: 1.2, padding: { top: 0, bottom: 0, left: 0, right: 0 } }),

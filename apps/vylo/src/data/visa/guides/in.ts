@@ -19,6 +19,8 @@ const guide: VisaGuide = {
     { name: 'Panitanki – Kakarbhitta', to: 'NP', lat: 26.6447, lng: 88.158 },
   ],
   transit: { hours: 24 },
+  hackScope: [['regime:evisa'], null, null, ['regime:evisa']],
+  pitfallScope: [['regime:evisa', 'regime:required'], ['regime:evisa'], ['regime:evisa', 'regime:required']],
   text: {
     ru: {
       summary:

@@ -15,6 +15,8 @@ const guide: VisaGuide = {
   rule: { days: 90, window: 180 },
   visaRun: 'no',
   nomad: { name: 'Remote work (digital nomad) visa', months: 12 },
+  hackScope: [null, null, ['regime:free', 'regime:required'], ['regime:free', 'regime:required']],
+  pitfallScope: [['regime:required'], ['regime:free'], ['regime:free', 'regime:required']],
   text: {
     ru: {
       summary:

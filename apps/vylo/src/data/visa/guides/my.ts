@@ -20,6 +20,8 @@ const guide: VisaGuide = {
     { name: 'Miri – Sungai Tujoh', to: 'BN', lat: 4.5867, lng: 114.0767 },
   ],
   nomad: { name: 'DE Rantau Nomad Pass', months: 12, income: { kind: 'fixed', amount: 24000, currency: 'USD' } },
+  hackScope: [['US', 'GB', 'AU', 'JP', 'KR', '@EU'], null, null, null, null],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

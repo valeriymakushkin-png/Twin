@@ -7,7 +7,8 @@ import { useEffect, useMemo } from 'react';
 import { DestinationCard } from '@/components/cards';
 import { HeroPage } from '@/components/hero';
 import { Photo } from '@/components/photo';
-import { useRouteActions } from '@/components/route-actions';
+import { EatList, topFood } from '@/components/eat-section';
+import { cityRouteIds, mainCityOf, useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
 import { Button, Rating, SectionHeader } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
@@ -29,13 +30,16 @@ export function useFlightTime() {
 }
 
 /** Horizontal strip of place cards with a spot badge — used for photo spots and hidden gems. */
+/** Photo spots show how travellers actually shoot them, when we have such a photo. */
+const cover = (p: Place) => (p.spot === 'insta' && p.people?.[0]) || p.image;
+
 export function SpotStrip({ items, accent }: { items: Place[]; accent: string }) {
   const { place, dest } = useI18n();
   return (
     <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-5 pb-2">
       {items.map((p) => (
         <Link key={p.id} href={placeHref(p.id)} className="press relative h-[210px] w-[160px] shrink-0 overflow-hidden rounded-[24px] shadow-card">
-          <Photo id={p.image} alt={place(p.id).name} width={420} className="absolute inset-0" tint={accent} />
+          <Photo id={cover(p)} alt={place(p.id).name} width={420} className="absolute inset-0" tint={accent} />
           <div className="photo-scrim absolute inset-0" />
           {p.spot && <SpotBadge spot={p.spot} className="absolute left-2.5 top-2.5" compact />}
           <div className="absolute inset-x-3 bottom-3 text-white">
@@ -50,10 +54,11 @@ export function SpotStrip({ items, accent }: { items: Place[]; accent: string })
 
 export function CountryScreen({ code }: { code: string }) {
   const c = countryByCode(code);
-  const { t, tk, f, country, countryText } = useI18n();
+  const { t, tk, f, country, countryText, dest } = useI18n();
   const openSheet = useUI((s) => s.openSheet);
   const flight = useFlightTime();
-  const { routeThrough } = useRouteActions();
+  const { routeCity } = useRouteActions();
+  const routeCityId = mainCityOf(code);
   const cities = citiesIn(code);
   const all = placesInCountry(code);
   const visa = useVisa(code);
@@ -179,6 +184,13 @@ export function CountryScreen({ code }: { code: string }) {
           </section>
         )}
 
+        {all.some((p) => p.category === 'food') && (
+          <section>
+            <SectionHeader title={t('eat.title')} />
+            <EatList items={topFood(all, 5)} accent={accent} showCity />
+          </section>
+        )}
+
         {text && (
           <section className="px-5">
             <h2 className="flex items-center gap-2 text-[19px] font-bold tracking-[-0.02em]">
@@ -208,9 +220,9 @@ export function CountryScreen({ code }: { code: string }) {
             {t('country.planTrip')}
           </Button>
         </div>
-        {insta.length > 1 && (
-          <button onClick={() => routeThrough(insta.filter((p) => p.destinationId === insta[0]!.destinationId).map((p) => p.id))} className="press mx-5 -mt-4 flex items-center justify-center gap-2 text-[14px] font-semibold" style={{ color: accent }}>
-            <Route className="size-4" /> {t('spots.cityRoute')}
+        {routeCityId && cityRouteIds(routeCityId).length > 1 && (
+          <button onClick={() => routeCity(routeCityId)} className="press mx-5 -mt-4 flex items-center justify-center gap-2 text-[14px] font-semibold" style={{ color: accent }}>
+            <Route className="size-4" /> {t('spots.cityRouteIn', { city: dest(routeCityId).name })}
           </button>
         )}
       </div>

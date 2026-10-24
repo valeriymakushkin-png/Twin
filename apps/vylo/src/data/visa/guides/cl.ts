@@ -17,6 +17,8 @@ const guide: VisaGuide = {
     { holds: ['visaUS', 'resUS'], passports: ['IN', 'DO'], status: 'free', days: 90 },
     { holds: ['visaUS', 'visaCA'], passports: ['CN'], status: 'free', days: 90 },
   ],
+  hackScope: [null, null, null, ['@MERCOSUR']],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

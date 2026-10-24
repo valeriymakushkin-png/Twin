@@ -14,6 +14,8 @@ const guide: VisaGuide = {
   visaRun: 'limited',
   nomad: { name: 'Visa V Nómada Digital', months: 24, income: { kind: 'from', amount: 5252715, currency: 'COP' } },
   waivers: [{ holds: ['visaUS', 'visaSchengen', 'resUS', 'resEU'], passports: ['IN', 'CN'], status: 'free', days: 90 }],
+  hackScope: [null, null, null, ['VE', 'EC', 'PE', 'BO', '@MERCOSUR']],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

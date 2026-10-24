@@ -9,6 +9,8 @@ const guide: VisaGuide = {
   docs: ['returnTicket', 'booking'],
   passportMonths: 6,
   visaRun: 'no',
+  hackScope: [['regime:evisa'], ['JP', 'KR', 'MO'], null],
+  pitfallScope: [['regime:evisa'], null, null],
   text: {
     ru: {
       summary:

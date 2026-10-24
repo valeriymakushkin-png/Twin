@@ -13,6 +13,8 @@ const guide: VisaGuide = {
   passportMonths: 6,
   visaRun: 'no',
   nomad: { name: 'Digital Nomad Visa', months: 6 },
+  hackScope: [null, ['regime:voa', 'regime:evisa'], null, ['regime:voa', 'regime:evisa', 'regime:required']],
+  pitfallScope: [['regime:voa', 'regime:evisa'], null, null, null],
   text: {
     ru: {
       summary:

@@ -199,6 +199,7 @@ const pack: CountryPack = {
       id: 'sydney-bondi-icebergs', city: 'sydney', category: 'attraction', spot: 'insta', lat: -33.8950, lng: 151.2745, image: 'OHlYxAWPlZM',
       rating: 4.8, reviews: 18700, tags: ['photo', 'beaches', 'surf'], price: { kind: 'free' }, hours: 'always',
       address: '1 Notts Avenue, Bondi Beach NSW 2026',
+      people: ["kKMJimDBQBY","1lz_Kmqe-JY"],
       text: {
         ru: { name: 'Бассейн Bondi Icebergs', description: 'Морской бассейн с океанской водой, о бортик которого разбиваются волны, работает на южном краю пляжа Бонди с начала XX века. Отсюда же начинается прибрежная тропа до Куги.', tip: 'Снимайте сверху, с Нотс-авеню над бассейном, рано утром: волны перехлёстывают бортик, а солнце встаёт над океаном.' },
         en: { name: 'Bondi Icebergs pool', description: 'This ocean pool, where waves crash over the edge, has sat at the southern end of Bondi Beach since the early 20th century. The coastal walk to Coogee starts right here.', tip: 'Shoot from Notts Avenue above the pool early in the morning, when the waves spill over the edge and the sun rises over the ocean.' },
@@ -265,6 +266,7 @@ const pack: CountryPack = {
       id: 'melbourne-hosier-lane', city: 'melbourne', category: 'attraction', spot: 'insta', lat: -37.8166, lng: 144.9691, image: 'GDBlMe5z4hc',
       rating: 4.5, reviews: 15400, tags: ['art', 'photo', 'city'], price: { kind: 'free' }, hours: 'always',
       address: 'Hosier Lane, Melbourne VIC 3000',
+      people: ["0sPIEU1nOP0"],
       text: {
         ru: { name: 'Хозиер-лейн', description: 'Мощёный переулок напротив площади Федерации от земли до крыш покрыт граффити и стрит-артом, которые обновляются почти каждую неделю. Это самая известная из мельбурнских улочек-лейнвеев.', tip: 'Приходите утром в будний день, пока нет толп, и снимайте вдоль переулка от Флиндерс-стрит — так стены с обеих сторон уходят в перспективу.' },
         en: { name: 'Hosier Lane', description: 'This cobbled lane opposite Federation Square is covered from ground to rooftop in graffiti and street art that changes almost every week. It is the most famous of Melbourne’s laneways.', tip: 'Come on a weekday morning before the crowds and shoot down the lane from Flinders Street, so the walls on both sides recede into perspective.' },
@@ -365,6 +367,964 @@ const pack: CountryPack = {
         fr: { name: 'Rusty’s Market', description: 'Un marché fermier couvert au centre de Cairns depuis la fin des années 1970, avec des fruits tropicaux introuvables en supermarché, des jus frais, du café des Atherton Tablelands et de la cuisine de rue asiatique.', tip: 'Le marché n’ouvre que du vendredi au dimanche ; goûtez mangues, ramboutans et mangoustans, et une noix de coco fraîche directement à l’étal.' },
         it: { name: 'Rusty’s Market', description: 'Un mercato contadino coperto nel centro di Cairns dalla fine degli anni Settanta, con frutta tropicale introvabile al supermercato, succhi freschi, caffè degli Atherton Tablelands e cibo di strada asiatico.', tip: 'Apre solo dal venerdì alla domenica; assaggia mango, rambutan e mangostani e un cocco fresco direttamente al banco.' },
       },
+    },
+    {
+      "id": "sydney-chinatown-dixon-street",
+      "city": "sydney",
+      "category": "food",
+      "lat": -33.8788,
+      "lng": 151.2035,
+      "image": "I2jJd5mN07I",
+      "rating": 4.4,
+      "reviews": 9800,
+      "tags": [
+        "streetfood",
+        "food",
+        "city"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "11:00–23:00",
+      "address": "Dixon Street, Haymarket NSW 2000",
+      "text": {
+        "ru": {
+          "name": "Китайский квартал на Диксон-стрит",
+          "description": "Пешеходная улица Диксон-стрит под красными фонарями — сердце сиднейского Чайна-тауна: дим-самы, жареная утка, лапша ручной вытяжки и десерты из манго. Сюда приходят поесть и студенты, и местные семьи.",
+          "tip": "Берите дим-самы на обед: в будни до 15:00 набор из корзинок стоит дешевле, чем вечером. Столик на вечер пятницы и субботы лучше занять до 18:30, а платить можно картой почти везде."
+        },
+        "en": {
+          "name": "Chinatown on Dixon Street",
+          "description": "The pedestrian Dixon Street under its red lanterns is the heart of Sydney’s Chinatown, packed with dim sum, roast duck, hand-pulled noodles and mango desserts. Students and local families eat here side by side.",
+          "tip": "Go for dim sum at lunch, when weekday baskets cost less than at dinner. On Friday and Saturday nights grab a table before 18:30; almost everyone takes cards."
+        },
+        "es": {
+          "name": "Chinatown de Dixon Street",
+          "description": "La calle peatonal Dixon Street, bajo sus faroles rojos, es el corazón del Chinatown de Sídney: dim sum, pato asado, fideos estirados a mano y postres de mango. Estudiantes y familias del barrio comen aquí codo con codo.",
+          "tip": "Ve a por dim sum a mediodía, cuando los cestos entre semana salen más baratos que por la noche. Los viernes y sábados busca mesa antes de las 18:30; casi todos aceptan tarjeta."
+        },
+        "de": {
+          "name": "Chinatown an der Dixon Street",
+          "description": "Die Fußgängerzone Dixon Street unter roten Laternen ist das Herz von Sydneys Chinatown: Dim Sum, Entenbraten, handgezogene Nudeln und Mangodesserts. Studierende und Familien aus der Gegend essen hier Seite an Seite.",
+          "tip": "Komm mittags zum Dim Sum, da sind die Körbchen unter der Woche günstiger als abends. Freitag- und samstagabends sicherst du dir vor 18:30 einen Tisch; fast überall geht Kartenzahlung."
+        },
+        "fr": {
+          "name": "Chinatown de Dixon Street",
+          "description": "La rue piétonne Dixon Street, sous ses lanternes rouges, est le cœur du Chinatown de Sydney : dim sum, canard laqué, nouilles étirées à la main et desserts à la mangue. Étudiants et familles du quartier y mangent côte à côte.",
+          "tip": "Venez pour les dim sum à midi, quand les paniers en semaine coûtent moins cher que le soir. Les vendredis et samedis, prenez une table avant 18 h 30 ; presque partout, la carte est acceptée."
+        },
+        "it": {
+          "name": "Chinatown di Dixon Street",
+          "description": "La via pedonale Dixon Street, sotto le lanterne rosse, è il cuore della Chinatown di Sydney: dim sum, anatra arrosto, spaghetti tirati a mano e dessert al mango. Studenti e famiglie del quartiere mangiano qui fianco a fianco.",
+          "tip": "Vai a pranzo per i dim sum: in settimana i cestini costano meno che a cena. Il venerdì e il sabato sera prendi posto prima delle 18:30; quasi ovunque si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "sydney-quay-restaurant",
+      "city": "sydney",
+      "category": "food",
+      "lat": -33.8587,
+      "lng": 151.21,
+      "image": "MVXxn9w4ofk",
+      "rating": 4.7,
+      "reviews": 2300,
+      "tags": [
+        "food",
+        "luxury",
+        "views"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 3
+      },
+      "hours": "18:00–22:00",
+      "address": "Overseas Passenger Terminal, 5 Hickson Road, The Rocks NSW 2000",
+      "text": {
+        "ru": {
+          "name": "Quay",
+          "description": "Один из самых известных ресторанов Австралии на втором этаже пассажирского терминала: из окон видны Оперный театр и мост Харбор-Бридж. Современная австралийская кухня и знаменитый десерт «Снежное яйцо».",
+          "tip": "Столик бронируют за 2–3 недели, а к окну — ещё раньше. Закажите дегустационное меню на вечер, чтобы увидеть и закат, и огни моста; оплата картой, дресс-код — smart casual."
+        },
+        "en": {
+          "name": "Quay",
+          "description": "One of Australia’s best-known restaurants sits on the upper level of the Overseas Passenger Terminal, with the Opera House and Harbour Bridge outside the windows. Modern Australian cooking and the famous Snow Egg dessert.",
+          "tip": "Book two to three weeks ahead, and earlier still for a window seat. Choose the tasting menu for dinner to catch both sunset and the lit-up bridge; pay by card, and dress smart casual."
+        },
+        "es": {
+          "name": "Quay",
+          "description": "Uno de los restaurantes más conocidos de Australia ocupa la planta alta de la terminal de pasajeros, con la Ópera y el Harbour Bridge al otro lado de las ventanas. Cocina australiana moderna y su célebre postre Snow Egg.",
+          "tip": "Reserva con dos o tres semanas de antelación, y antes aún si quieres mesa junto a la ventana. Elige el menú degustación de la cena para ver el atardecer y el puente iluminado; se paga con tarjeta y el código es smart casual."
+        },
+        "de": {
+          "name": "Quay",
+          "description": "Eines der bekanntesten Restaurants Australiens liegt im Obergeschoss des Passagierterminals, mit Opernhaus und Harbour Bridge vor den Fenstern. Moderne australische Küche und das berühmte Dessert Snow Egg.",
+          "tip": "Reserviere zwei bis drei Wochen im Voraus, für einen Fensterplatz noch früher. Nimm abends das Degustationsmenü, dann siehst du Sonnenuntergang und die beleuchtete Brücke; bezahlt wird mit Karte, Dresscode ist Smart Casual."
+        },
+        "fr": {
+          "name": "Quay",
+          "description": "L’un des restaurants les plus réputés d’Australie occupe l’étage du terminal des passagers, avec l’Opéra et le Harbour Bridge derrière les vitres. Cuisine australienne moderne et célèbre dessert Snow Egg.",
+          "tip": "Réservez deux à trois semaines à l’avance, et plus tôt encore pour une table côté fenêtre. Prenez le menu dégustation du dîner pour voir le coucher de soleil et le pont illuminé ; paiement par carte, tenue smart casual."
+        },
+        "it": {
+          "name": "Quay",
+          "description": "Uno dei ristoranti più noti d’Australia occupa il piano alto del terminal passeggeri, con l’Opera House e l’Harbour Bridge oltre i vetri. Cucina australiana moderna e il celebre dessert Snow Egg.",
+          "tip": "Prenota due o tre settimane prima, e ancora prima se vuoi un tavolo vicino alla finestra. Scegli il menù degustazione della cena per vedere il tramonto e il ponte illuminato; si paga con carta, dress code smart casual."
+        }
+      }
+    },
+    {
+      "id": "sydney-doyles-watsons-bay",
+      "city": "sydney",
+      "category": "food",
+      "lat": -33.8441,
+      "lng": 151.2831,
+      "image": "I2jJd5mN07I",
+      "rating": 4.5,
+      "reviews": 6400,
+      "tags": [
+        "food",
+        "views",
+        "history"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "11:30–21:30",
+      "address": "11 Marine Parade, Watsons Bay NSW 2030",
+      "text": {
+        "ru": {
+          "name": "Doyles on the Beach",
+          "description": "Семейный рыбный ресторан в бухте Уотсонс-Бэй работает с 1885 года и подаёт рыбу с картошкой и свежие морепродукты на фоне панорамы города. Сюда добираются на пароме от Серкьюлар-Ки.",
+          "tip": "Берите фиш-энд-чипс в киоске на пляже, если не хочется ждать столик, и ешьте на песке с видом на небоскрёбы. Паром до Уотсонс-Бэй идёт от Серкьюлар-Ки около 25 минут; платите картой."
+        },
+        "en": {
+          "name": "Doyles on the Beach",
+          "description": "This family-run seafood restaurant on Watsons Bay has been serving fish and chips and fresh seafood since 1885, with the city skyline across the water. Most visitors arrive by ferry from Circular Quay.",
+          "tip": "If you don’t want to wait for a table, grab fish and chips from the takeaway kiosk and eat on the sand facing the skyline. The ferry from Circular Quay takes about 25 minutes; pay by card."
+        },
+        "es": {
+          "name": "Doyles on the Beach",
+          "description": "Este restaurante familiar de marisco en Watsons Bay sirve pescado frito con patatas y marisco fresco desde 1885, con el perfil de la ciudad al otro lado del agua. La mayoría llega en ferri desde Circular Quay.",
+          "tip": "Si no quieres esperar mesa, pide el fish and chips en el quiosco para llevar y cómelo en la arena frente a los rascacielos. El ferri desde Circular Quay tarda unos 25 minutos; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Doyles on the Beach",
+          "description": "Das familiengeführte Fischrestaurant in der Watsons Bay serviert seit 1885 Fish and Chips und frische Meeresfrüchte, mit der Skyline der Stadt gegenüber. Die meisten kommen mit der Fähre vom Circular Quay.",
+          "tip": "Willst du nicht auf einen Tisch warten, hol dir Fish and Chips am Imbissfenster und iss auf dem Sand mit Blick auf die Skyline. Die Fähre ab Circular Quay braucht etwa 25 Minuten; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Doyles on the Beach",
+          "description": "Ce restaurant de fruits de mer familial de Watsons Bay sert fish and chips et produits de la mer frais depuis 1885, avec la silhouette de la ville en face. La plupart des visiteurs arrivent en ferry depuis Circular Quay.",
+          "tip": "Pour éviter l’attente, prenez un fish and chips au kiosque à emporter et mangez sur le sable face aux gratte-ciel. Le ferry depuis Circular Quay dure environ 25 minutes ; paiement par carte."
+        },
+        "it": {
+          "name": "Doyles on the Beach",
+          "description": "Questo ristorante di pesce a conduzione familiare a Watsons Bay serve fish and chips e frutti di mare freschi dal 1885, con lo skyline della città di fronte. La maggior parte dei visitatori arriva in traghetto da Circular Quay.",
+          "tip": "Se non vuoi aspettare un tavolo, prendi il fish and chips al chiosco da asporto e mangia sulla sabbia davanti allo skyline. Il traghetto da Circular Quay impiega circa 25 minuti; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "sydney-gelato-messina",
+      "city": "sydney",
+      "category": "food",
+      "lat": -33.8786,
+      "lng": 151.2201,
+      "image": "I2jJd5mN07I",
+      "rating": 4.6,
+      "reviews": 5200,
+      "tags": [
+        "food",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "from",
+        "amount": 7,
+        "currency": "AUD"
+      },
+      "hours": "12:00–23:00",
+      "address": "241 Victoria Street, Darlinghurst NSW 2010",
+      "text": {
+        "ru": {
+          "name": "Gelato Messina",
+          "description": "Сиднейская сеть джелато выросла из крошечной лавки в Дарлингхерсте, где всё делают вручную: от пасты фисташек до карамели. Каждую неделю появляются новые «специальные» вкусы по мотивам десертов.",
+          "tip": "Придите в будний вечер — по выходным очередь выстраивается на улицу. Спросите вкус недели, а за небольшую доплату возьмите стаканчик в хрустящей вафле; оплата картой."
+        },
+        "en": {
+          "name": "Gelato Messina",
+          "description": "Sydney’s gelato chain grew out of a tiny shop in Darlinghurst where everything is made by hand, from pistachio paste to caramel. New weekly specials are modelled on classic desserts.",
+          "tip": "Come on a weekday evening, as the queue runs out the door at weekends. Ask for the flavour of the week and pay a little extra for a crisp waffle cone; card payments only need a tap."
+        },
+        "es": {
+          "name": "Gelato Messina",
+          "description": "La cadena de helados de Sídney nació en una pequeña tienda de Darlinghurst donde todo se hace a mano, desde la pasta de pistacho hasta el caramelo. Cada semana salen sabores especiales inspirados en postres clásicos.",
+          "tip": "Ve entre semana por la tarde, porque los fines de semana la cola sale a la calle. Pregunta por el sabor de la semana y paga un poco más por el cucurucho crujiente; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Gelato Messina",
+          "description": "Sydneys Eiskette ist aus einem winzigen Laden in Darlinghurst gewachsen, in dem alles von Hand entsteht, von der Pistazienpaste bis zum Karamell. Jede Woche gibt es neue Spezialsorten nach dem Vorbild klassischer Desserts.",
+          "tip": "Komm an einem Wochentagabend, am Wochenende reicht die Schlange bis auf die Straße. Frag nach der Sorte der Woche und zahl etwas mehr für die knusprige Waffel; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Gelato Messina",
+          "description": "La chaîne de glaces de Sydney est née d’une minuscule boutique de Darlinghurst où tout est fait à la main, de la pâte de pistache au caramel. Chaque semaine, de nouveaux parfums spéciaux s’inspirent de desserts classiques.",
+          "tip": "Venez en soirée en semaine, car le week-end la file déborde sur le trottoir. Demandez le parfum de la semaine et ajoutez un peu pour le cornet croustillant ; paiement par carte."
+        },
+        "it": {
+          "name": "Gelato Messina",
+          "description": "La catena di gelati di Sydney è nata da un piccolo negozio di Darlinghurst dove tutto è fatto a mano, dalla pasta di pistacchio al caramello. Ogni settimana arrivano gusti speciali ispirati ai dolci classici.",
+          "tip": "Vieni in una sera feriale: nel weekend la coda arriva fino in strada. Chiedi il gusto della settimana e paga un po’ di più per il cono croccante; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "sydney-bondi-beach",
+      "city": "sydney",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -33.8908,
+      "lng": 151.2743,
+      "image": "OHlYxAWPlZM",
+      "rating": 4.7,
+      "reviews": 41000,
+      "tags": [
+        "beaches",
+        "surf",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Campbell Parade, Bondi Beach NSW 2026",
+      "people": [
+        "dRFCsd2Q3Sc"
+      ],
+      "text": {
+        "ru": {
+          "name": "Пляж Бонди",
+          "description": "Самый известный городской пляж Австралии: золотой песок, сёрферы и спасатели в красно-жёлтой форме. Утром здесь тренируются и плавают, вечером собирается весь район.",
+          "tip": "Снимайте на рассвете у кромки воды: встаньте боком к океану, пусть волна лижет ступни, и попросите снимать с низкой точки. Берите лёгкую одежду, а флаги спасателей — хороший фон для кадра."
+        },
+        "en": {
+          "name": "Bondi Beach",
+          "description": "Australia’s most famous city beach has golden sand, surfers and lifeguards in red and yellow. In the morning people train and swim; in the evening the whole neighbourhood gathers.",
+          "tip": "Shoot at sunrise at the water’s edge: stand side-on to the ocean, let the wave touch your feet and ask your photographer to crouch low. Wear something light, and the lifeguard flags make a good backdrop."
+        },
+        "es": {
+          "name": "Playa de Bondi",
+          "description": "La playa urbana más famosa de Australia: arena dorada, surfistas y socorristas de rojo y amarillo. Por la mañana se entrena y se nada; al atardecer se reúne todo el barrio.",
+          "tip": "Fotografía al amanecer en la orilla: ponte de lado al océano, deja que la ola te roce los pies y pide que disparen desde abajo. Lleva ropa ligera; las banderas de los socorristas hacen buen fondo."
+        },
+        "de": {
+          "name": "Bondi Beach",
+          "description": "Australiens berühmtester Stadtstrand mit goldenem Sand, Surfern und Rettungsschwimmern in Rot und Gelb. Morgens wird trainiert und geschwommen, abends trifft sich das ganze Viertel.",
+          "tip": "Fotografier bei Sonnenaufgang am Wasserrand: Stell dich seitlich zum Ozean, lass die Welle deine Füße umspülen und bitte deinen Fotografen, tief in die Hocke zu gehen. Trag Leichtes; die Flaggen der Rettungsschwimmer geben einen guten Hintergrund."
+        },
+        "fr": {
+          "name": "Plage de Bondi",
+          "description": "La plage urbaine la plus célèbre d’Australie : sable doré, surfeurs et sauveteurs en rouge et jaune. Le matin, on s’entraîne et on nage ; le soir, tout le quartier s’y retrouve.",
+          "tip": "Photographiez au lever du soleil au bord de l’eau : placez-vous de profil face à l’océan, laissez la vague effleurer vos pieds et demandez une prise de vue en contre-plongée. Portez des vêtements légers ; les drapeaux des sauveteurs font un joli fond."
+        },
+        "it": {
+          "name": "Spiaggia di Bondi",
+          "description": "La spiaggia cittadina più famosa d’Australia: sabbia dorata, surfisti e bagnini in rosso e giallo. Al mattino ci si allena e si nuota, la sera si ritrova tutto il quartiere.",
+          "tip": "Scatta all’alba sul bagnasciuga: mettiti di profilo verso l’oceano, lascia che l’onda ti sfiori i piedi e chiedi di fotografare dal basso. Indossa qualcosa di leggero; le bandiere dei bagnini fanno un bello sfondo."
+        }
+      }
+    },
+    {
+      "id": "sydney-harbour-ferry",
+      "city": "sydney",
+      "category": "attraction",
+      "spot": "insta",
+      "lat": -33.8614,
+      "lng": 151.2112,
+      "image": "MVXxn9w4ofk",
+      "rating": 4.8,
+      "reviews": 22500,
+      "tags": [
+        "cruise",
+        "views",
+        "photo"
+      ],
+      "price": {
+        "kind": "from",
+        "amount": 9,
+        "currency": "AUD"
+      },
+      "hours": "06:00–23:30",
+      "address": "Circular Quay wharves, Circular Quay NSW 2000",
+      "people": [
+        "sF--9wBTWYM"
+      ],
+      "text": {
+        "ru": {
+          "name": "Паром Серкьюлар-Ки — Мэнли",
+          "description": "Обычный городской паром за цену билета на транспорт проходит мимо Оперного театра и под мостом Харбор-Бридж. Путь до Мэнли занимает около получаса.",
+          "tip": "Садитесь на правый по ходу борт на верхней палубе, чтобы Оперный театр был за спиной. Самый мягкий свет — за час до заката; оплата картой Opal или бесконтактной банковской картой."
+        },
+        "en": {
+          "name": "Circular Quay to Manly ferry",
+          "description": "An ordinary commuter ferry for the price of a transport fare glides past the Opera House and under the Harbour Bridge. The trip to Manly takes about half an hour.",
+          "tip": "Sit on the upper deck and stand at the rail as you pass the Opera House so it frames your shoulder. The softest light comes an hour before sunset; pay with an Opal card or a contactless bank card."
+        },
+        "es": {
+          "name": "Ferri de Circular Quay a Manly",
+          "description": "Un ferri de cercanías corriente, por el precio de un billete de transporte, pasa junto a la Ópera y bajo el Harbour Bridge. El trayecto a Manly dura unos treinta minutos.",
+          "tip": "Sube a la cubierta superior y colócate en la barandilla al pasar frente a la Ópera para que quede a tu espalda. La luz más suave llega una hora antes del atardecer; paga con tarjeta Opal o sin contacto."
+        },
+        "de": {
+          "name": "Fähre Circular Quay – Manly",
+          "description": "Eine gewöhnliche Pendlerfähre zum Preis eines Fahrscheins gleitet am Opernhaus vorbei und unter der Harbour Bridge hindurch. Die Fahrt nach Manly dauert rund eine halbe Stunde.",
+          "tip": "Geh aufs Oberdeck und stell dich ans Geländer, wenn ihr am Opernhaus vorbeifahrt, sodass es hinter deiner Schulter steht. Das weichste Licht gibt es eine Stunde vor Sonnenuntergang; bezahlt wird mit Opal-Karte oder kontaktloser Bankkarte."
+        },
+        "fr": {
+          "name": "Ferry Circular Quay – Manly",
+          "description": "Un simple ferry de banlieue, au prix d’un ticket de transport, passe devant l’Opéra et sous le Harbour Bridge. La traversée jusqu’à Manly dure environ une demi-heure.",
+          "tip": "Montez sur le pont supérieur et placez-vous au bastingage quand vous longez l’Opéra pour l’avoir derrière l’épaule. La lumière la plus douce arrive une heure avant le coucher du soleil ; payez avec une carte Opal ou sans contact."
+        },
+        "it": {
+          "name": "Traghetto Circular Quay – Manly",
+          "description": "Un normale traghetto per pendolari, al prezzo di un biglietto dei mezzi, passa davanti all’Opera House e sotto l’Harbour Bridge. La traversata fino a Manly dura circa mezz’ora.",
+          "tip": "Sali sul ponte superiore e mettiti alla ringhiera quando passi davanti all’Opera House, così resta dietro la tua spalla. La luce più morbida arriva un’ora prima del tramonto; paga con carta Opal o carta contactless."
+        }
+      }
+    },
+    {
+      "id": "melbourne-pellegrinis-espresso-bar",
+      "city": "melbourne",
+      "category": "food",
+      "lat": -37.812,
+      "lng": 144.9695,
+      "image": "7pq_V5KGHCc",
+      "rating": 4.6,
+      "reviews": 4300,
+      "tags": [
+        "food",
+        "history"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "08:00–20:00",
+      "address": "66 Bourke Street, Melbourne VIC 3000",
+      "text": {
+        "ru": {
+          "name": "Pellegrini’s Espresso Bar",
+          "description": "Итальянский эспрессо-бар с барными стульями и зеркальной стойкой работает на Бурк-стрит с 1954 года и почти не изменился. Здесь пьют кофе, едят домашние лазанью и болоньезе и пересказывают новости.",
+          "tip": "Закажите лазанью или пасту дня и завершите всё кофе у стойки, где можно сидеть на старых табуретах. В обед бывает очередь, поэтому приходите к 11:30; оплата только картой или наличными без чаевых."
+        },
+        "en": {
+          "name": "Pellegrini’s Espresso Bar",
+          "description": "This Italian espresso bar with its mirrored counter and bar stools has stood on Bourke Street since 1954 and has barely changed. People come for coffee, home-style lasagne and bolognese, and a bit of gossip.",
+          "tip": "Order the lasagne or the pasta of the day and finish with a coffee at the counter, on the old stools. There is a lunchtime queue, so arrive by 11:30; no tipping is expected."
+        },
+        "es": {
+          "name": "Pellegrini’s Espresso Bar",
+          "description": "Este bar de espresso italiano, con su mostrador de espejos y sus taburetes, está en Bourke Street desde 1954 y apenas ha cambiado. Se viene a tomar café, lasaña y boloñesa caseras y a charlar un rato.",
+          "tip": "Pide la lasaña o la pasta del día y termina con un café en la barra, sentado en los viejos taburetes. A mediodía hay cola, así que llega a las 11:30; no se espera propina."
+        },
+        "de": {
+          "name": "Pellegrini’s Espresso Bar",
+          "description": "Die italienische Espressobar mit Spiegeltresen und Barhockern steht seit 1954 in der Bourke Street und hat sich kaum verändert. Man kommt für Kaffee, hausgemachte Lasagne und Bolognese und ein bisschen Tratsch.",
+          "tip": "Bestell die Lasagne oder die Tagespasta und trink danach einen Kaffee am Tresen auf den alten Hockern. Mittags gibt es eine Schlange, komm also bis 11:30; Trinkgeld wird nicht erwartet."
+        },
+        "fr": {
+          "name": "Pellegrini’s Espresso Bar",
+          "description": "Ce bar à espresso italien, avec son comptoir à miroirs et ses tabourets, occupe Bourke Street depuis 1954 et a à peine changé. On y vient pour le café, la lasagne et la bolognaise maison, et pour bavarder.",
+          "tip": "Commandez la lasagne ou les pâtes du jour et finissez par un café au comptoir, sur les vieux tabourets. Il y a de la queue à midi, arrivez donc avant 11 h 30 ; le pourboire n’est pas attendu."
+        },
+        "it": {
+          "name": "Pellegrini’s Espresso Bar",
+          "description": "Questo bar espresso italiano, con il bancone a specchi e gli sgabelli, è in Bourke Street dal 1954 e non è quasi cambiato. Ci si viene per il caffè, la lasagna e il ragù fatti in casa e due chiacchiere.",
+          "tip": "Ordina la lasagna o la pasta del giorno e chiudi con un caffè al bancone, sui vecchi sgabelli. A pranzo c’è coda, quindi arriva entro le 11:30; la mancia non è attesa."
+        }
+      }
+    },
+    {
+      "id": "melbourne-brunetti-lygon-street",
+      "city": "melbourne",
+      "category": "food",
+      "lat": -37.7995,
+      "lng": 144.9667,
+      "image": "7pq_V5KGHCc",
+      "rating": 4.4,
+      "reviews": 7100,
+      "tags": [
+        "food",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "06:30–23:00",
+      "address": "380 Lygon Street, Carlton VIC 3053",
+      "text": {
+        "ru": {
+          "name": "Brunetti на Лайгон-стрит",
+          "description": "Итальянская кондитерская-кафе в «Маленькой Италии» Карлтона с витринами пирожных, канноли, джелато и свежим эспрессо. Это любимое место местных для утреннего кофе и воскресных десертов.",
+          "tip": "Возьмите канноли с рикоттой и капучино, а потом пройдитесь по Лайгон-стрит до сквера Ардсли. Лучше приходить до 10 утра или поздно вечером; можно платить картой."
+        },
+        "en": {
+          "name": "Brunetti on Lygon Street",
+          "description": "This Italian pastry café in Carlton’s Little Italy has cabinets of cakes, cannoli, gelato and fresh espresso. Locals favour it for morning coffee and Sunday sweets.",
+          "tip": "Order a ricotta cannolo and a cappuccino, then stroll down Lygon Street. Come before 10:00 or late in the evening; cards are accepted."
+        },
+        "es": {
+          "name": "Brunetti en Lygon Street",
+          "description": "Esta pastelería-café italiana en la Pequeña Italia de Carlton tiene vitrinas con pasteles, cannoli, helado y espresso recién hecho. Los vecinos la prefieren para el café de la mañana y los dulces del domingo.",
+          "tip": "Pide un cannolo de ricota y un capuchino y luego pasea por Lygon Street. Ve antes de las 10:00 o ya tarde por la noche; se acepta tarjeta."
+        },
+        "de": {
+          "name": "Brunetti an der Lygon Street",
+          "description": "Das italienische Konditorei-Café im Little Italy von Carlton hat Vitrinen voller Torten, Cannoli, Eis und frischem Espresso. Einheimische kommen für den Morgenkaffee und für Süßes am Sonntag.",
+          "tip": "Bestell ein Cannolo mit Ricotta und einen Cappuccino und spazier dann die Lygon Street entlang. Komm vor 10:00 Uhr oder spät am Abend; Karten werden akzeptiert."
+        },
+        "fr": {
+          "name": "Brunetti sur Lygon Street",
+          "description": "Ce café-pâtisserie italien du Little Italy de Carlton propose des vitrines de gâteaux, de cannoli, de glaces et un espresso tout frais. Les habitants l’adorent pour le café du matin et les douceurs du dimanche.",
+          "tip": "Commandez un cannolo à la ricotta et un cappuccino, puis flânez dans Lygon Street. Venez avant 10 h ou tard le soir ; les cartes sont acceptées."
+        },
+        "it": {
+          "name": "Brunetti in Lygon Street",
+          "description": "Questa pasticceria-caffè italiana nella Little Italy di Carlton ha vetrine di dolci, cannoli, gelato ed espresso fresco. È amata dai locali per il caffè del mattino e i dolci della domenica.",
+          "tip": "Ordina un cannolo alla ricotta e un cappuccino, poi passeggia lungo Lygon Street. Vieni prima delle 10:00 o a sera tardi; si accettano carte."
+        }
+      }
+    },
+    {
+      "id": "melbourne-degraves-street",
+      "city": "melbourne",
+      "category": "food",
+      "lat": -37.8174,
+      "lng": 144.9665,
+      "image": "7pq_V5KGHCc",
+      "rating": 4.5,
+      "reviews": 8900,
+      "tags": [
+        "food",
+        "city"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "07:00–22:00",
+      "address": "Degraves Street, Melbourne VIC 3000",
+      "text": {
+        "ru": {
+          "name": "Улица Дегрейвс",
+          "description": "Узкий крытый переулок напротив вокзала Флиндерс-стрит стал символом кофейной культуры Мельбурна. Столики стоят прямо на брусчатке, а бариста варят флэт-уайт, который местные считают лучшим в стране.",
+          "tip": "Закажите флэт-уайт и тост с авокадо и садитесь на уличные стулья; в 9 утра людно, зато после 14:00 спокойнее. Платите картой — наличные почти не нужны."
+        },
+        "en": {
+          "name": "Degraves Street",
+          "description": "This narrow laneway opposite Flinders Street Station has become a symbol of Melbourne’s coffee culture. Tables spill onto the cobbles, and baristas pour flat whites that locals rate among the best in the country.",
+          "tip": "Order a flat white and avocado toast and take a seat at the street tables; it is busy at 9:00 but calmer after 14:00. Pay by card, as cash is hardly needed."
+        },
+        "es": {
+          "name": "Degraves Street",
+          "description": "Este estrecho callejón frente a la estación Flinders Street es un símbolo de la cultura cafetera de Melbourne. Las mesas se extienden sobre los adoquines y los baristas sirven flat whites que los locales cuentan entre los mejores del país.",
+          "tip": "Pide un flat white y una tostada de aguacate y siéntate en las mesas de la calle; a las 9:00 hay mucha gente, pero después de las 14:00 se está más tranquilo. Paga con tarjeta, casi no hace falta efectivo."
+        },
+        "de": {
+          "name": "Degraves Street",
+          "description": "Die schmale Gasse gegenüber der Flinders Street Station ist zum Symbol der Kaffeekultur Melbournes geworden. Die Tische stehen auf dem Kopfsteinpflaster, und die Baristas servieren Flat Whites, die Einheimische zu den besten des Landes zählen.",
+          "tip": "Bestell einen Flat White und Avocadotoast und setz dich an die Straßentische; um 9:00 ist es voll, nach 14:00 ruhiger. Bezahl mit Karte, Bargeld braucht man kaum."
+        },
+        "fr": {
+          "name": "Degraves Street",
+          "description": "Cette étroite ruelle en face de la gare de Flinders Street est devenue un symbole de la culture du café de Melbourne. Les tables débordent sur les pavés et les baristas servent des flat whites que les habitants comptent parmi les meilleurs du pays.",
+          "tip": "Commandez un flat white et un toast à l’avocat et installez-vous aux tables de la rue ; il y a du monde à 9 h, mais c’est plus calme après 14 h. Payez par carte, les espèces servent à peine."
+        },
+        "it": {
+          "name": "Degraves Street",
+          "description": "Questo stretto vicolo di fronte alla stazione di Flinders Street è diventato il simbolo della cultura del caffè di Melbourne. I tavolini invadono i sampietrini e i barista preparano flat white che i locali considerano tra i migliori del Paese.",
+          "tip": "Ordina un flat white e un toast con avocado e siediti ai tavoli in strada; alle 9:00 c’è folla, dopo le 14:00 è più tranquillo. Paga con carta, il contante serve a poco."
+        }
+      }
+    },
+    {
+      "id": "melbourne-flower-drum",
+      "city": "melbourne",
+      "category": "food",
+      "lat": -37.8114,
+      "lng": 144.9707,
+      "image": "7pq_V5KGHCc",
+      "rating": 4.6,
+      "reviews": 2600,
+      "tags": [
+        "food",
+        "luxury"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 3
+      },
+      "hours": "12:00–15:00, 18:00–23:00",
+      "address": "17 Market Lane, Melbourne VIC 3000",
+      "text": {
+        "ru": {
+          "name": "Flower Drum",
+          "description": "Знаменитый кантонский ресторан в переулке Чайна-тауна работает с 1975 года и считается одним из лучших китайских в Австралии. Подают пекинскую утку, морепродукты и дим-самы в строгой атмосфере с белыми скатертями.",
+          "tip": "Закажите утку заранее при бронировании столика и доверьтесь советам официантов по морепродуктам. Заведите бронь за неделю и приходите в smart casual; платить можно картой."
+        },
+        "en": {
+          "name": "Flower Drum",
+          "description": "This celebrated Cantonese restaurant in a Chinatown lane has been open since 1975 and is considered one of the best Chinese restaurants in Australia. It serves Peking duck, seafood and dim sum in a formal, white-tablecloth setting.",
+          "tip": "Order the duck when you book and ask the waiters for seafood advice. Reserve a week ahead and dress smart casual; cards are accepted."
+        },
+        "es": {
+          "name": "Flower Drum",
+          "description": "Este célebre restaurante cantonés en un callejón del Chinatown abrió en 1975 y se considera uno de los mejores chinos de Australia. Sirve pato laqueado, marisco y dim sum en un ambiente formal con manteles blancos.",
+          "tip": "Pide el pato al reservar y deja que los camareros te aconsejen sobre el marisco. Reserva con una semana de antelación y vístete smart casual; se acepta tarjeta."
+        },
+        "de": {
+          "name": "Flower Drum",
+          "description": "Das berühmte kantonesische Restaurant in einer Gasse des Chinatowns gibt es seit 1975 und gilt als eines der besten chinesischen Lokale Australiens. Es serviert Pekingente, Meeresfrüchte und Dim Sum in förmlichem Ambiente mit weißen Tischdecken.",
+          "tip": "Bestell die Ente schon bei der Reservierung und lass dich bei den Meeresfrüchten vom Service beraten. Reserviere eine Woche im Voraus und kleide dich Smart Casual; Kartenzahlung ist möglich."
+        },
+        "fr": {
+          "name": "Flower Drum",
+          "description": "Ce célèbre restaurant cantonais d’une ruelle de Chinatown est ouvert depuis 1975 et passe pour l’un des meilleurs restaurants chinois d’Australie. On y sert canard laqué, fruits de mer et dim sum dans un cadre formel aux nappes blanches.",
+          "tip": "Commandez le canard dès la réservation et demandez conseil au personnel pour les fruits de mer. Réservez une semaine à l’avance, tenue smart casual ; les cartes sont acceptées."
+        },
+        "it": {
+          "name": "Flower Drum",
+          "description": "Questo celebre ristorante cantonese in un vicolo di Chinatown è aperto dal 1975 ed è considerato uno dei migliori ristoranti cinesi d’Australia. Serve anatra alla pechinese, pesce e dim sum in un ambiente formale con tovaglie bianche.",
+          "tip": "Ordina l’anatra al momento della prenotazione e fatti consigliare dai camerieri sul pesce. Prenota una settimana prima e vestiti smart casual; si accettano carte."
+        }
+      }
+    },
+    {
+      "id": "melbourne-block-arcade",
+      "city": "melbourne",
+      "category": "attraction",
+      "spot": "insta",
+      "lat": -37.8157,
+      "lng": 144.9638,
+      "image": "DymAJNbEsu4",
+      "rating": 4.7,
+      "reviews": 9300,
+      "tags": [
+        "architecture",
+        "history",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "08:00–18:00",
+      "address": "282 Collins Street, Melbourne VIC 3000",
+      "text": {
+        "ru": {
+          "name": "Пассаж Block Arcade",
+          "description": "Викторианский пассаж 1892 года с мозаичным полом, стеклянной крышей и витринами лавок. Внутри работает чайный салон Hopetoun Tea Rooms.",
+          "tip": "Снимайте под центральным куполом: встаньте на мозаику и попросите фотографа присесть, чтобы в кадр вошёл стеклянный свод. Приходите около 9 утра, пока нет толпы; вход свободный."
+        },
+        "en": {
+          "name": "Block Arcade",
+          "description": "This Victorian arcade from 1892 has a mosaic floor, a glass roof and old shop windows. The Hopetoun Tea Rooms sit inside.",
+          "tip": "Shoot under the central dome: stand on the mosaic and ask your photographer to crouch so the glass vault fills the frame. Go around 9:00, before the crowds; entry is free."
+        },
+        "es": {
+          "name": "Block Arcade",
+          "description": "Esta galería victoriana de 1892 tiene suelo de mosaico, techo de cristal y escaparates antiguos. Dentro se encuentra el salón de té Hopetoun Tea Rooms.",
+          "tip": "Fotografía bajo la cúpula central: ponte sobre el mosaico y pide que disparen desde abajo para que la bóveda de cristal llene el encuadre. Ve hacia las 9:00, antes de las multitudes; la entrada es gratuita."
+        },
+        "de": {
+          "name": "Block Arcade",
+          "description": "Die viktorianische Passage von 1892 hat einen Mosaikboden, ein Glasdach und alte Schaufenster. Im Inneren liegt der Teesalon Hopetoun Tea Rooms.",
+          "tip": "Fotografier unter der zentralen Kuppel: Stell dich auf das Mosaik und bitte deinen Fotografen, sich hinzuhocken, damit das Glasgewölbe ins Bild kommt. Geh gegen 9:00, vor dem Andrang; der Eintritt ist frei."
+        },
+        "fr": {
+          "name": "Block Arcade",
+          "description": "Cette galerie victorienne de 1892 possède un sol en mosaïque, une verrière et d’anciennes vitrines. Le salon de thé Hopetoun Tea Rooms s’y trouve.",
+          "tip": "Photographiez sous la coupole centrale : placez-vous sur la mosaïque et demandez une prise de vue en contre-plongée pour que la voûte de verre remplisse le cadre. Venez vers 9 h, avant la foule ; l’entrée est gratuite."
+        },
+        "it": {
+          "name": "Block Arcade",
+          "description": "Questa galleria vittoriana del 1892 ha un pavimento a mosaico, un tetto di vetro e vecchie vetrine. All’interno si trova la sala da tè Hopetoun Tea Rooms.",
+          "tip": "Scatta sotto la cupola centrale: mettiti sul mosaico e chiedi di fotografare dal basso così la volta di vetro riempie l’inquadratura. Vai verso le 9:00, prima della folla; l’ingresso è gratuito."
+        }
+      }
+    },
+    {
+      "id": "melbourne-brighton-beach-boxes",
+      "city": "melbourne",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -37.9139,
+      "lng": 144.9863,
+      "image": "GDBlMe5z4hc",
+      "rating": 4.6,
+      "reviews": 6100,
+      "tags": [
+        "beaches",
+        "photo",
+        "sunset"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Esplanade, Brighton VIC 3186",
+      "text": {
+        "ru": {
+          "name": "Пляжные домики Брайтона",
+          "description": "Ряд из 82 разноцветных деревянных кабинок для переодевания у залива Порт-Филлип — один из самых узнаваемых образов Мельбурна. Добраться можно на поезде и пешком от станции Брайтон-Бич.",
+          "tip": "Лучше всего приходить на закате или на рассвете, когда небо розовеет за кабинками: встаньте перед одной из дверей и повернитесь в профиль. Домики частные, так что внутрь не заходите."
+        },
+        "en": {
+          "name": "Brighton Beach Boxes",
+          "description": "A row of 82 brightly painted wooden bathing boxes on Port Phillip Bay is one of Melbourne’s most recognisable images. You can reach it by train and a short walk from Brighton Beach station.",
+          "tip": "Come at sunrise or sunset when the sky turns pink behind the huts: stand in front of one door, turned in profile. The boxes are private, so don’t step inside."
+        },
+        "es": {
+          "name": "Casetas de playa de Brighton",
+          "description": "Una hilera de 82 casetas de madera pintadas de colores en la bahía de Port Phillip es una de las imágenes más reconocibles de Melbourne. Se llega en tren y con un corto paseo desde la estación de Brighton Beach.",
+          "tip": "Ve al amanecer o al atardecer, cuando el cielo se tiñe de rosa tras las casetas: ponte delante de una puerta, de perfil. Son privadas, así que no entres."
+        },
+        "de": {
+          "name": "Brighton Beach Boxes",
+          "description": "Eine Reihe von 82 bunt bemalten Badehäuschen aus Holz an der Port Phillip Bay gehört zu den bekanntesten Bildern Melbournes. Du erreichst sie mit dem Zug und einem kurzen Fußweg von der Station Brighton Beach.",
+          "tip": "Komm bei Sonnenaufgang oder Sonnenuntergang, wenn sich der Himmel hinter den Hütten rosa färbt: Stell dich im Profil vor eine Tür. Die Boxen sind privat, geh also nicht hinein."
+        },
+        "fr": {
+          "name": "Cabines de plage de Brighton",
+          "description": "Une rangée de 82 cabines de bain en bois aux couleurs vives sur la baie de Port Phillip est l’une des images les plus reconnaissables de Melbourne. On y accède en train puis à pied depuis la gare de Brighton Beach.",
+          "tip": "Venez au lever ou au coucher du soleil, quand le ciel rosit derrière les cabines : placez-vous devant une porte, de profil. Elles sont privées, n’y entrez pas."
+        },
+        "it": {
+          "name": "Cabine di Brighton Beach",
+          "description": "Una fila di 82 cabine in legno dai colori vivaci sulla baia di Port Phillip è una delle immagini più riconoscibili di Melbourne. Si raggiunge in treno e con una breve passeggiata dalla stazione di Brighton Beach.",
+          "tip": "Vai all’alba o al tramonto, quando il cielo diventa rosa dietro le cabine: mettiti davanti a una porta, di profilo. Sono private, quindi non entrare."
+        }
+      }
+    },
+    {
+      "id": "cairns-night-markets",
+      "city": "cairns",
+      "category": "food",
+      "lat": -16.9215,
+      "lng": 145.7766,
+      "image": "0pYgTNaYeeY",
+      "rating": 4.2,
+      "reviews": 5800,
+      "tags": [
+        "market",
+        "streetfood",
+        "shopping"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "16:30–23:00",
+      "address": "71–75 The Esplanade, Cairns QLD 4870",
+      "text": {
+        "ru": {
+          "name": "Ночные рынки Кэрнса",
+          "description": "Крытый рынок на набережной с едой разных стран, массажем и сувенирами. Здесь можно перекусить азиатскими блюдами, а потом купить подарки из австралийской шерсти и опала.",
+          "tip": "Ужинайте у стоек в дальней части, где ценники ниже, чем у входа, и приходите после 18:00 — к этому времени открыто всё. Платить можно картой, но у ларьков с мелочью выручит наличность."
+        },
+        "en": {
+          "name": "Cairns Night Markets",
+          "description": "This covered market on the Esplanade has food from many countries, massage and souvenirs. You can eat Asian dishes and then buy gifts of Australian wool and opal.",
+          "tip": "Eat at the stalls at the back, where prices are lower than by the entrance, and arrive after 18:00 when everything is open. Cards work, but cash helps at the smaller stalls."
+        },
+        "es": {
+          "name": "Mercado nocturno de Cairns",
+          "description": "Este mercado cubierto del paseo marítimo reúne comida de muchos países, masajes y recuerdos. Puedes cenar platos asiáticos y luego comprar regalos de lana y ópalo australianos.",
+          "tip": "Cena en los puestos del fondo, donde los precios son más bajos que en la entrada, y llega después de las 18:00, cuando todo está abierto. Se acepta tarjeta, pero el efectivo ayuda en los puestos pequeños."
+        },
+        "de": {
+          "name": "Cairns Night Markets",
+          "description": "Der überdachte Markt an der Esplanade bietet Essen aus vielen Ländern, Massagen und Souvenirs. Du kannst asiatisch essen und danach Geschenke aus australischer Wolle und Opal kaufen.",
+          "tip": "Iss an den Ständen im hinteren Bereich, dort sind die Preise niedriger als am Eingang, und komm nach 18:00, wenn alles geöffnet hat. Karten werden akzeptiert, an kleinen Ständen hilft Bargeld."
+        },
+        "fr": {
+          "name": "Marché nocturne de Cairns",
+          "description": "Ce marché couvert de l’Esplanade propose des plats de nombreux pays, des massages et des souvenirs. On peut y dîner asiatique puis acheter des cadeaux en laine et en opale d’Australie.",
+          "tip": "Dînez aux stands du fond, où les prix sont plus bas qu’à l’entrée, et arrivez après 18 h quand tout est ouvert. Les cartes passent, mais les espèces aident aux petits stands."
+        },
+        "it": {
+          "name": "Mercato notturno di Cairns",
+          "description": "Questo mercato coperto sull’Esplanade offre cibo di molti Paesi, massaggi e souvenir. Puoi cenare con piatti asiatici e poi comprare regali di lana e opale australiani.",
+          "tip": "Mangia alle bancarelle in fondo, dove i prezzi sono più bassi che all’ingresso, e arriva dopo le 18:00 quando tutto è aperto. Le carte funzionano, ma il contante aiuta alle bancarelle più piccole."
+        }
+      }
+    },
+    {
+      "id": "cairns-prawn-star",
+      "city": "cairns",
+      "category": "food",
+      "lat": -16.923,
+      "lng": 145.7805,
+      "image": "0pYgTNaYeeY",
+      "rating": 4.5,
+      "reviews": 4700,
+      "tags": [
+        "food",
+        "views",
+        "cruise"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "12:00–21:00",
+      "address": "Marlin Marina, Pier Point Road, Cairns QLD 4870",
+      "text": {
+        "ru": {
+          "name": "Prawn Star",
+          "description": "Плавучий ресторан на старом креветочном траулере в марине Марлин: сырые и варёные креветки, лангусты и устрицы подают прямо на палубе. Вокруг на воде покачиваются яхты, а закат красит бухту.",
+          "tip": "Закажите креветки с пивом на палубе на закате и просите отваренные, но ещё тёплые. Столики заканчиваются быстро, поэтому приходите к 17:00; платить можно картой."
+        },
+        "en": {
+          "name": "Prawn Star",
+          "description": "A floating restaurant on an old prawn trawler in Marlin Marina serves cooked prawns, lobsters and oysters right on deck. Yachts bob around and the sunset paints the harbour.",
+          "tip": "Order prawns and a beer on deck at sunset and ask for the freshly cooked, still warm ones. Seats go quickly, so arrive by 17:00; cards are accepted."
+        },
+        "es": {
+          "name": "Prawn Star",
+          "description": "Un restaurante flotante en un viejo barco camaronero de la Marlin Marina sirve gambas cocidas, langostas y ostras sobre la cubierta. Los veleros se mecen alrededor y el atardecer tiñe el puerto.",
+          "tip": "Pide gambas y una cerveza en cubierta al atardecer y que sean recién cocidas y aún tibias. Las mesas vuelan, así que llega a las 17:00; se acepta tarjeta."
+        },
+        "de": {
+          "name": "Prawn Star",
+          "description": "Ein schwimmendes Restaurant auf einem alten Garnelenkutter in der Marlin Marina serviert gekochte Garnelen, Langusten und Austern direkt an Deck. Ringsum schaukeln Yachten, und der Sonnenuntergang färbt den Hafen.",
+          "tip": "Bestell Garnelen und ein Bier an Deck zum Sonnenuntergang und frag nach den frisch gekochten, noch warmen. Die Plätze sind schnell weg, komm also bis 17:00; Kartenzahlung ist möglich."
+        },
+        "fr": {
+          "name": "Prawn Star",
+          "description": "Un restaurant flottant sur un ancien chalutier à crevettes de la Marlin Marina sert crevettes cuites, langoustes et huîtres directement sur le pont. Les yachts se balancent autour et le coucher de soleil colore le port.",
+          "tip": "Commandez des crevettes et une bière sur le pont au coucher du soleil et demandez-les fraîchement cuites, encore tièdes. Les places partent vite, arrivez avant 17 h ; paiement par carte."
+        },
+        "it": {
+          "name": "Prawn Star",
+          "description": "Un ristorante galleggiante su un vecchio peschereccio di gamberi alla Marlin Marina serve gamberi cotti, aragoste e ostriche direttamente sul ponte. Intorno ondeggiano gli yacht e il tramonto tinge il porto.",
+          "tip": "Ordina gamberi e una birra sul ponte al tramonto e chiedi quelli appena cotti, ancora tiepidi. I posti finiscono presto, quindi arriva entro le 17:00; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "cairns-ochre-restaurant",
+      "city": "cairns",
+      "category": "food",
+      "lat": -16.9236,
+      "lng": 145.7799,
+      "image": "0pYgTNaYeeY",
+      "rating": 4.5,
+      "reviews": 2900,
+      "tags": [
+        "food",
+        "luxury",
+        "culture"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 3
+      },
+      "hours": "12:00–14:30, 18:00–22:00",
+      "address": "1 Pier Point Road, Cairns QLD 4870",
+      "text": {
+        "ru": {
+          "name": "Ochre Restaurant",
+          "description": "Ресторан у пристани известен тем, что готовит из местных продуктов: крокодил, кенгуру, барамунди и туземные травы и ягоды. Подают также дегустационное меню с вином.",
+          "tip": "Возьмите дегустационное меню «Австралийские вкусы», чтобы попробовать понемногу крокодила, кенгуру и рыбу. Бронируйте столик на ужин заранее; оплата картой."
+        },
+        "en": {
+          "name": "Ochre Restaurant",
+          "description": "This restaurant by the marina is known for cooking with native ingredients: crocodile, kangaroo, barramundi and bush herbs and berries. It also offers a tasting menu with wine.",
+          "tip": "Choose the tasting menu to sample a little crocodile, kangaroo and fish. Book dinner ahead; cards are accepted."
+        },
+        "es": {
+          "name": "Ochre Restaurant",
+          "description": "Este restaurante junto a la marina es conocido por cocinar con ingredientes autóctonos: cocodrilo, canguro, barramundi y hierbas y bayas del bush. También ofrece un menú degustación con vino.",
+          "tip": "Elige el menú degustación para probar un poco de cocodrilo, canguro y pescado. Reserva la cena con antelación; se acepta tarjeta."
+        },
+        "de": {
+          "name": "Ochre Restaurant",
+          "description": "Das Restaurant an der Marina ist bekannt für die Küche mit einheimischen Zutaten: Krokodil, Känguru, Barramundi sowie Kräuter und Beeren aus dem Busch. Es gibt auch ein Degustationsmenü mit Wein.",
+          "tip": "Nimm das Degustationsmenü, um ein bisschen Krokodil, Känguru und Fisch zu probieren. Reserviere das Abendessen im Voraus; Kartenzahlung ist möglich."
+        },
+        "fr": {
+          "name": "Ochre Restaurant",
+          "description": "Ce restaurant près de la marina est connu pour sa cuisine aux ingrédients locaux : crocodile, kangourou, barramundi, herbes et baies du bush. Il propose aussi un menu dégustation avec vin.",
+          "tip": "Choisissez le menu dégustation pour goûter un peu de crocodile, de kangourou et de poisson. Réservez le dîner à l’avance ; paiement par carte."
+        },
+        "it": {
+          "name": "Ochre Restaurant",
+          "description": "Il ristorante vicino alla marina è noto per cucinare con ingredienti locali: coccodrillo, canguro, barramundi, erbe e bacche del bush. Offre anche un menù degustazione con vino.",
+          "tip": "Scegli il menù degustazione per assaggiare un po’ di coccodrillo, canguro e pesce. Prenota la cena in anticipo; si accettano carte."
+        }
+      }
+    },
+    {
+      "id": "cairns-esplanade-lagoon",
+      "city": "cairns",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -16.9249,
+      "lng": 145.7781,
+      "image": "0pYgTNaYeeY",
+      "rating": 4.6,
+      "reviews": 12400,
+      "tags": [
+        "beaches",
+        "photo",
+        "sunset"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "06:00–21:00",
+      "address": "The Esplanade, Cairns QLD 4870",
+      "text": {
+        "ru": {
+          "name": "Лагуна на набережной Кэрнса",
+          "description": "Бесплатный бассейн с морской водой на берегу залива — место, где в Кэрнсе все купаются и загорают, потому что в море плавать мешают медузы и крокодилы. Вокруг пальмы, газоны и гриль-площадки.",
+          "tip": "Снимайте вечером с западной стороны, когда за лагуной заходит солнце, а в воде отражаются пальмы. Возьмите панаму и крем, а на закате приходите на набережную."
+        },
+        "en": {
+          "name": "Cairns Esplanade Lagoon",
+          "description": "This free saltwater pool on the shore of the bay is where Cairns swims and sunbathes, because the sea itself has stingers and crocodiles. Palms, lawns and barbecue areas surround it.",
+          "tip": "Shoot in the evening from the west side, when the sun sets behind the lagoon and the palms reflect in the water. Bring a sun hat and sunscreen, and come to the promenade at sunset."
+        },
+        "es": {
+          "name": "Laguna del paseo marítimo de Cairns",
+          "description": "Esta piscina de agua salada gratuita junto a la bahía es donde Cairns se baña y toma el sol, porque el mar tiene medusas y cocodrilos. La rodean palmeras, césped y zonas de barbacoa.",
+          "tip": "Fotografía por la tarde desde el lado oeste, cuando el sol se pone tras la laguna y las palmeras se reflejan en el agua. Lleva sombrero y protector solar, y ven al paseo al atardecer."
+        },
+        "de": {
+          "name": "Esplanade Lagoon Cairns",
+          "description": "Das kostenlose Salzwasserbecken am Ufer der Bucht ist der Ort, an dem Cairns badet und sonnt, denn im Meer lauern Quallen und Krokodile. Palmen, Rasenflächen und Grillplätze säumen es.",
+          "tip": "Fotografier abends von der Westseite, wenn die Sonne hinter der Lagune untergeht und sich die Palmen im Wasser spiegeln. Nimm Sonnenhut und Sonnencreme mit und komm zum Sonnenuntergang auf die Promenade."
+        },
+        "fr": {
+          "name": "Lagon de l’Esplanade de Cairns",
+          "description": "Cette piscine d’eau salée gratuite au bord de la baie est l’endroit où Cairns se baigne et bronze, car la mer abrite méduses et crocodiles. Palmiers, pelouses et zones de barbecue l’entourent.",
+          "tip": "Photographiez en soirée depuis le côté ouest, quand le soleil se couche derrière le lagon et que les palmiers se reflètent dans l’eau. Prenez chapeau et crème solaire, et venez sur la promenade au coucher du soleil."
+        },
+        "it": {
+          "name": "Laguna dell’Esplanade di Cairns",
+          "description": "Questa piscina di acqua salata gratuita in riva alla baia è il posto dove Cairns nuota e prende il sole, perché in mare ci sono meduse e coccodrilli. È circondata da palme, prati e aree barbecue.",
+          "tip": "Scatta di sera dal lato ovest, quando il sole tramonta dietro la laguna e le palme si specchiano nell’acqua. Porta cappello e crema solare, e vieni sulla passeggiata al tramonto."
+        }
+      }
+    },
+    {
+      "id": "cairns-palm-cove-jetty",
+      "city": "cairns",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -16.7475,
+      "lng": 145.67,
+      "image": "0pYgTNaYeeY",
+      "rating": 4.7,
+      "reviews": 5400,
+      "tags": [
+        "beaches",
+        "photo",
+        "sunset"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Williams Esplanade, Palm Cove QLD 4879",
+      "text": {
+        "ru": {
+          "name": "Пирс Палм-Ков",
+          "description": "Деревянный пирс в тихом курортном посёлке в 25 км к северу от Кэрнса, где по берегу растут кайепутовые деревья. На рассвете здесь пусто, а вода спокойна.",
+          "tip": "Приходите в рассветные часы: встаньте в конце пирса и поверните лицо к горизонту, а фотографу скажите снимать сзади. Из-за медуз с ноября по май купайтесь только в защитном костюме."
+        },
+        "en": {
+          "name": "Palm Cove jetty",
+          "description": "A wooden jetty in a quiet resort village 25 km north of Cairns, lined by paperbark trees. At sunrise it is empty and the water is calm.",
+          "tip": "Come at sunrise: stand at the end of the jetty facing the horizon and ask your photographer to shoot from behind. Because of jellyfish from November to May, swim only in a stinger suit."
+        },
+        "es": {
+          "name": "Embarcadero de Palm Cove",
+          "description": "Un embarcadero de madera en un tranquilo pueblo turístico a 25 km al norte de Cairns, bordeado de paperbarks. Al amanecer está vacío y el agua en calma.",
+          "tip": "Ve al amanecer: colócate al final del embarcadero mirando al horizonte y pide que te fotografíen por detrás. Por las medusas, de noviembre a mayo báñate solo con traje protector."
+        },
+        "de": {
+          "name": "Palm Cove Jetty",
+          "description": "Ein Holzsteg in einem ruhigen Urlaubsort 25 km nördlich von Cairns, gesäumt von Papierrindenbäumen. Bei Sonnenaufgang ist er leer und das Wasser glatt.",
+          "tip": "Komm zum Sonnenaufgang: Stell dich ans Ende des Stegs mit Blick zum Horizont und lass dich von hinten fotografieren. Wegen der Quallen badest du von November bis Mai nur im Schutzanzug."
+        },
+        "fr": {
+          "name": "Jetée de Palm Cove",
+          "description": "Une jetée en bois dans un village de villégiature tranquille à 25 km au nord de Cairns, bordée de mélaleuques. Au lever du soleil, elle est déserte et l’eau est calme.",
+          "tip": "Venez au lever du soleil : placez-vous au bout de la jetée face à l’horizon et demandez une photo prise de dos. À cause des méduses, de novembre à mai, ne vous baignez qu’en combinaison anti-méduses."
+        },
+        "it": {
+          "name": "Molo di Palm Cove",
+          "description": "Un molo di legno in un tranquillo villaggio turistico a 25 km a nord di Cairns, fiancheggiato da alberi di paperbark. All’alba è vuoto e l’acqua è calma.",
+          "tip": "Vieni all’alba: mettiti in fondo al molo di fronte all’orizzonte e fatti fotografare da dietro. A causa delle meduse, da novembre a maggio nuota solo con la muta anti-meduse."
+        }
+      }
+    },
+    {
+      "id": "cairns-mossman-gorge",
+      "city": "cairns",
+      "category": "nature",
+      "lat": -16.4707,
+      "lng": 145.3314,
+      "image": "X9TEqJWmM6Q",
+      "rating": 4.7,
+      "reviews": 7300,
+      "tags": [
+        "jungle",
+        "nature",
+        "culture",
+        "unesco"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "08:00–17:00",
+      "address": "Mossman Gorge Road, Mossman Gorge QLD 4873",
+      "text": {
+        "ru": {
+          "name": "Ущелье Моссман",
+          "description": "Прозрачная река среди древнего тропического леса Дейнтри к северу от Кэрнса, на земле народа кукужаланджи. Тропы уходят к смотровым площадкам и к купальням под тенью деревьев.",
+          "tip": "Оставьте машину у центра для посетителей и садитесь на шаттл до входа. Берите обувь без скольжения, плавки на тропу к реке и приходите утром, пока жарко не стало."
+        },
+        "en": {
+          "name": "Mossman Gorge",
+          "description": "A crystal-clear river runs through the ancient Daintree rainforest north of Cairns, on the land of the Kuku Yalanji people. Trails lead to lookouts and to shaded swimming spots.",
+          "tip": "Leave the car at the visitor centre and take the shuttle to the entrance. Wear shoes with grip, bring swimwear for the river track, and come in the morning before it heats up."
+        },
+        "es": {
+          "name": "Garganta de Mossman",
+          "description": "Un río cristalino atraviesa la antigua selva de Daintree al norte de Cairns, en tierras del pueblo kuku yalanji. Los senderos llevan a miradores y a pozas con sombra para bañarse.",
+          "tip": "Deja el coche en el centro de visitantes y toma el autobús lanzadera hasta la entrada. Lleva calzado con buen agarre, bañador para el sendero del río y ve por la mañana, antes del calor."
+        },
+        "de": {
+          "name": "Mossman Gorge",
+          "description": "Ein kristallklarer Fluss durchfließt den uralten Daintree-Regenwald nördlich von Cairns, auf dem Land der Kuku Yalanji. Wege führen zu Aussichtspunkten und zu schattigen Badestellen.",
+          "tip": "Lass das Auto am Besucherzentrum und nimm den Shuttle zum Eingang. Trag Schuhe mit Profil, pack Badesachen für den Flussweg ein und komm morgens, bevor es heiß wird."
+        },
+        "fr": {
+          "name": "Gorges de Mossman",
+          "description": "Une rivière cristalline traverse l’antique forêt tropicale de Daintree au nord de Cairns, sur les terres du peuple Kuku Yalanji. Des sentiers mènent à des belvédères et à des coins de baignade ombragés.",
+          "tip": "Laissez la voiture au centre d’accueil et prenez la navette jusqu’à l’entrée. Portez des chaussures antidérapantes, prenez un maillot pour le sentier de la rivière et venez le matin avant la chaleur."
+        },
+        "it": {
+          "name": "Gola di Mossman",
+          "description": "Un fiume cristallino attraversa l’antica foresta pluviale di Daintree a nord di Cairns, sulle terre del popolo Kuku Yalanji. I sentieri portano ai punti panoramici e a pozze ombreggiate dove fare il bagno.",
+          "tip": "Lascia l’auto al centro visitatori e prendi la navetta fino all’ingresso. Porta scarpe con buona aderenza, il costume per il sentiero del fiume e vai al mattino, prima del caldo."
+        }
+      }
     },
   ],
 };

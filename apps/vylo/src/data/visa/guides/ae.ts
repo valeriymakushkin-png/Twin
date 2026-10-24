@@ -26,6 +26,8 @@ const guide: VisaGuide = {
     { holds: ['resUS', 'resEU', 'resGB', 'resCA', 'resAU', 'resJP'], passports: ['ID', 'VN', 'TH', 'PH', 'KE', 'ZA'], status: 'voa', days: 14 },
     { holds: ['resGCC'], status: 'evisa', days: 30 },
   ],
+  hackScope: [['IN'], ['regime:evisa', 'regime:required'], null, null, null],
+  pitfallScope: [['regime:free'], null, null, null],
   text: {
     ru: {
       summary:

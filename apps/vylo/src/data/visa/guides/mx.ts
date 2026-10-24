@@ -32,6 +32,8 @@ const guide: VisaGuide = {
       days: 180,
     },
   ],
+  hackScope: [['regime:required', 'regime:evisa'], ['regime:free', 'regime:eta'], null, null],
+  pitfallScope: [['regime:eta', 'regime:free'], ['regime:required', 'regime:evisa'], null, null],
   text: {
     ru: {
       summary:

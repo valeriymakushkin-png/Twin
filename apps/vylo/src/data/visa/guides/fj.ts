@@ -13,6 +13,8 @@ const guide: VisaGuide = {
     { name: 'Nadi (NAN) → Port Vila', to: 'VU', lat: -17.7554, lng: 177.4431 },
     { name: 'Nausori (SUV) → Auckland', to: 'NZ', lat: -18.0433, lng: 178.5592 },
   ],
+  hackScope: [null, null, null, null],
+  pitfallScope: [['regime:free'], null, null, null],
   text: {
     ru: {
       summary:

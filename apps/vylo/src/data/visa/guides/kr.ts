@@ -25,6 +25,8 @@ const guide: VisaGuide = {
   ],
   nomad: { name: 'Workcation visa (F-1-D)', months: 12, income: { kind: 'from', amount: 85000000, currency: 'KRW' } },
   waivers: [{ holds: ['visaUS', 'visaJP', 'visaCA', 'visaAU', 'visaNZ', 'resUS', 'resJP', 'resCA', 'resAU'], status: 'free', days: 30 }],
+  hackScope: [['regime:required', 'regime:evisa', 'regime:eta'], ['regime:required', 'regime:evisa'], ['regime:free'], null, ['regime:eta']],
+  pitfallScope: [['regime:eta'], ['regime:eta'], ['regime:eta'], null],
   text: {
     ru: {
       summary:

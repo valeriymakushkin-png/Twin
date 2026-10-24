@@ -22,6 +22,8 @@ const guide: VisaGuide = {
   visaRun: 'no',
   nomad: { name: 'Digital Nomad Visa', months: 12, income: { kind: 'from', amount: 3500, currency: 'EUR' } },
   waivers: [{ holds: ['visaSchengen', 'resEU'], passports: SCHENGEN_DOC_PASSPORTS, status: 'free', days: 90 }],
+  hackScope: [['regime:free'], null, null, ['RU']],
+  pitfallScope: [null, ['regime:required'], ['TR', 'AZ']],
   text: {
     ru: {
       summary:

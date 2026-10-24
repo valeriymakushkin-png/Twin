@@ -11,6 +11,8 @@ const guide: VisaGuide = {
   rule: { days: 90, window: 180 },
   visaRun: 'no',
   nomad: { name: 'Digital nomad residence permit', months: 12 },
+  hackScope: [null, null, null, ['IN']],
+  pitfallScope: [null, ['regime:required'], ['regime:free']],
   text: {
     ru: {
       summary:

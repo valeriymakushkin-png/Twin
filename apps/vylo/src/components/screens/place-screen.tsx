@@ -147,9 +147,21 @@ export function PlaceScreen({ id }: { id: string }) {
           </button>
         </div>
 
+        {p.spot === 'insta' && p.people && p.people.length > 0 && (
+          <section>
+            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{t('spots.shotsHere')}</h2>
+            <p className="mt-0.5 text-[12px] text-muted">{t('spots.shotsHereText')}</p>
+            <div className="no-scrollbar -mx-5 mt-3 flex gap-2.5 overflow-x-auto px-5 pb-1">
+              {p.people.map((id) => (
+                <Photo key={id} id={id} alt={text.name} width={480} className="h-[260px] w-[200px] shrink-0" rounded="rounded-[22px]" tint={accent} />
+              ))}
+            </div>
+          </section>
+        )}
+
         {text.tip && (
           <section>
-            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{p.spot === 'insta' ? t('spots.photoTip') : p.spot === 'hidden' ? t('spots.findTip') : t('place.tips')}</h2>
+            <h2 className="text-[19px] font-bold tracking-[-0.02em]">{p.spot === 'insta' ? t('spots.photoTip') : p.spot === 'hidden' ? t('spots.findTip') : p.category === 'food' ? t('eat.order') : t('place.tips')}</h2>
             <div className="mt-3 flex gap-3 rounded-[20px] p-4" style={{ background: `${accent}10` }}>
               <Lightbulb className="mt-0.5 size-5 shrink-0" style={{ color: accent }} />
               <p className="text-[14px] leading-relaxed text-ink-2">{text.tip}</p>

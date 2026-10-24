@@ -28,6 +28,8 @@ const guide: VisaGuide = {
     { name: 'Perth (PER) → Denpasar', to: 'ID', lat: -31.9403, lng: 115.9669 },
   ],
   transit: { hours: 8 },
+  hackScope: [['@EU', 'GB'], null, ['regime:evisa'], ['CN'], ['regime:evisa']],
+  pitfallScope: [null, null, ['regime:eta']],
   text: {
     ru: {
       summary:

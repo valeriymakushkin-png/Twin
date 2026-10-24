@@ -16,6 +16,8 @@ const guide: VisaGuide = {
       days: 183,
     },
   ],
+  hackScope: [['regime:free'], ['regime:free'], null, ['@MERCOSUR', 'CO', 'EC', 'BO']],
+  pitfallScope: [['regime:free'], ['regime:free'], null],
   text: {
     ru: {
       summary:

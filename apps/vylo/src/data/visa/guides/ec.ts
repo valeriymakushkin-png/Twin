@@ -15,6 +15,8 @@ const guide: VisaGuide = {
   extend: { days: 90 },
   visaRun: 'no',
   nomad: { name: 'Visa de Residencia Temporal Nómada Digital', months: 24, income: { kind: 'fixed', amount: 1446, currency: 'USD' } },
+  hackScope: [null, null, null, null],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

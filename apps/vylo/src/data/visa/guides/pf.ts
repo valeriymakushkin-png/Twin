@@ -16,6 +16,8 @@ const guide: VisaGuide = {
     { name: 'Papeete Faa’a (PPT) → Auckland', to: 'NZ', lat: -17.5537, lng: -149.607 },
     { name: 'Papeete Faa’a (PPT) → Honolulu', to: 'US', lat: -17.5537, lng: -149.607 },
   ],
+  hackScope: [['regime:free'], ['regime:free'], ['regime:required'], null],
+  pitfallScope: [['regime:required'], null, null],
   text: {
     ru: {
       summary:

@@ -12,6 +12,8 @@ const guide: VisaGuide = {
   extend: { days: 90 },
   visaRun: 'limited',
   nomad: { name: 'VITEM XIV (Nômade Digital)', months: 12, income: { kind: 'fixed', amount: 1500, currency: 'USD' } },
+  hackScope: [['regime:evisa'], null, ['@MERCOSUR'], null],
+  pitfallScope: [['regime:evisa'], null, ['regime:evisa']],
   text: {
     ru: {
       summary:

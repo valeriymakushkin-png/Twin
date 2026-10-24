@@ -21,6 +21,8 @@ const guide: VisaGuide = {
     { name: 'Colombo (CMB) → Malé', to: 'MV', lat: 7.1808, lng: 79.8841 },
     { name: 'Colombo (CMB) → Chennai', to: 'IN', lat: 7.1808, lng: 79.8841 },
   ],
+  hackScope: [['regime:eta'], ['regime:eta'], null, ['regime:eta']],
+  pitfallScope: [['regime:eta', 'regime:voa'], null, ['regime:voa', 'regime:eta']],
   text: {
     ru: {
       summary:

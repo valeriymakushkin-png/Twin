@@ -10,6 +10,8 @@ const guide: VisaGuide = {
     { name: 'Altanbulag – Kyakhta', to: 'RU', lat: 50.355, lng: 106.48 },
     { name: 'Zamyn-Uud – Erenhot', to: 'CN', lat: 43.7, lng: 111.92 },
   ],
+  hackScope: [null, ['regime:evisa'], ['regime:free'], null],
+  pitfallScope: [null, null, ['regime:evisa']],
   text: {
     ru: {
       summary:

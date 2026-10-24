@@ -29,6 +29,8 @@ const guide: VisaGuide = {
     { name: 'Soekarno-Hatta, Jakarta (CGK) → Singapore', to: 'SG', lat: -6.1256, lng: 106.6559 },
   ],
   nomad: { name: 'Remote Worker KITAS (E33G)', months: 12, income: { kind: 'fixed', amount: 60000, currency: 'USD' } },
+  hackScope: [['regime:free'], ['regime:evisa', 'regime:voa'], null, null, null],
+  pitfallScope: [['regime:voa', 'regime:evisa'], null, null, null],
   text: {
     ru: {
       summary:

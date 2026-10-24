@@ -835,6 +835,11 @@ const it: Messages = {
     open: 'Apri paese',
     inCountry: 'Altro in questo paese',
   },
+  eat: {
+    title: 'Dove mangiare',
+    order: 'Cosa ordinare',
+    all: 'Tutti i posti dove mangiare',
+  },
   spots: {
     insta: 'Luogo fotogenico',
     hidden: 'Gemma nascosta',
@@ -842,6 +847,8 @@ const it: Messages = {
     sights: 'Attrazioni',
     food: 'Cibo',
     nature: 'Natura',
+    shotsHere: 'Gli scatti di chi è stato qui',
+    shotsHereText: 'Foto di viaggiatori in questo posto',
     photoTip: 'Come fotografarlo',
     findTip: 'Come trovarlo',
     gettingThere: 'Come arrivare',
@@ -854,6 +861,7 @@ const it: Messages = {
     addToRoute: 'Aggiungi al percorso',
     inRoute: 'Nel percorso',
     cityRoute: 'Passeggiata in città',
+    cityRouteIn: 'Percorso a {city}',
     cityRouteText: '{count} luoghi nell’ordine più comodo',
     showOnMap: 'Mostra sulla mappa',
   },
@@ -1076,6 +1084,9 @@ const it: Messages = {
       newCity: 'Nuova città',
     },
     edit: {
+      people: 'Foto di persone sul posto',
+      peopleHint: 'Foto di viaggiatori in questo preciso luogo: così l’app mostra il luogo fotogenico. Fino a quattro.',
+      addPeople: 'Aggiungi foto',
       basics: 'Informazioni di base',
       location: 'Indirizzo e coordinate',
       photo: 'Foto',

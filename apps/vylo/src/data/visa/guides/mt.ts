@@ -11,6 +11,8 @@ const guide: VisaGuide = {
   rule: { days: 90, window: 180 },
   visaRun: 'no',
   nomad: { name: 'Nomad Residence Permit', months: 12, income: { kind: 'from', amount: 3500, currency: 'EUR' } },
+  hackScope: [null, ['regime:free', 'regime:required'], ['regime:free', 'regime:required'], ['IN']],
+  pitfallScope: [['regime:free', 'regime:required'], ['regime:free'], ['regime:free', 'regime:required']],
   text: {
     ru: {
       summary:

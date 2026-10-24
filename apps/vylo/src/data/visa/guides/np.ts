@@ -15,6 +15,8 @@ const guide: VisaGuide = {
     { name: 'Birgunj – Raxaul', to: 'IN', lat: 27.008, lng: 84.8777 },
     { name: 'Kakarbhitta – Panitanki', to: 'IN', lat: 26.6447, lng: 88.158 },
   ],
+  hackScope: [['regime:voa'], ['BD', 'BT', 'AF', 'MV', 'LK', 'PK'], null, ['regime:voa']],
+  pitfallScope: [['regime:voa'], null, null],
   text: {
     ru: {
       summary:
