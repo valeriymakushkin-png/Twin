@@ -366,6 +366,747 @@ const pack: CountryPack = {
         it: { name: 'Distilleria Manutea', description: 'Una fabbrica sulla baia di Opunohu che trasforma ananas, pompelmi e manghi locali nei succhi Rotui, oltre che in rum e liquori. Nel negozio della fabbrica c’è una degustazione gratuita.', tip: 'Assaggia il liquore all’ananas e il rum alla vaniglia e portane a casa una bottiglia: negli hotel costano il triplo.' },
       },
     },
+    {
+      "id": "tahiti-les-trois-brasseurs",
+      "city": "tahiti",
+      "category": "food",
+      "lat": -17.5362,
+      "lng": -149.569,
+      "image": "EUFPvipu16A",
+      "rating": 4.2,
+      "reviews": 2400,
+      "tags": [
+        "food",
+        "nightlife"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "11:00–23:00",
+      "address": "Boulevard Pomare, Papeete",
+      "text": {
+        "ru": {
+          "name": "Les Trois Brasseurs",
+          "description": "Пивоваренный ресторан на набережной Папеэте с собственным пивом и сытной кухней: от рыбы до запечённых мяса и пиццы. Вечером на открытой террасе шумно и весело.",
+          "tip": "Закажите дегустационный набор пива и poisson cru (сырую рыбу в кокосовом молоке). Приходите в пятницу до 19:00, чтобы занять столик на террасе; платите картой или в тихоокеанских франках."
+        },
+        "en": {
+          "name": "Les Trois Brasseurs",
+          "description": "A brewpub on the Papeete waterfront with its own beer and hearty food, from fish to roasts and pizza. The open terrace is lively in the evening.",
+          "tip": "Order the beer tasting set and poisson cru (raw fish in coconut milk). Come on Friday before 19:00 to claim a terrace table; pay by card or in Pacific francs."
+        },
+        "es": {
+          "name": "Les Trois Brasseurs",
+          "description": "Una cervecería con restaurante en el paseo marítimo de Papeete, con cerveza propia y platos contundentes, del pescado a los asados y la pizza. Por la noche la terraza al aire libre está muy animada.",
+          "tip": "Pide la cata de cervezas y poisson cru (pescado crudo en leche de coco). Ve el viernes antes de las 19:00 para coger mesa en la terraza; se paga con tarjeta o en francos del Pacífico."
+        },
+        "de": {
+          "name": "Les Trois Brasseurs",
+          "description": "Ein Brauhaus an der Uferpromenade von Papeete mit eigenem Bier und deftiger Küche, von Fisch über Braten bis Pizza. Abends ist die offene Terrasse lebhaft.",
+          "tip": "Bestell das Bier-Probierset und Poisson cru (roher Fisch in Kokosmilch). Komm freitags vor 19:00 Uhr, um einen Terrassentisch zu bekommen; bezahlt wird mit Karte oder in Pazifik-Franc."
+        },
+        "fr": {
+          "name": "Les Trois Brasseurs",
+          "description": "Une brasserie sur le front de mer de Papeete, avec sa bière maison et une cuisine copieuse, du poisson aux rôtis en passant par la pizza. Le soir, la terrasse en plein air est animée.",
+          "tip": "Commandez la dégustation de bières et le poisson cru (poisson cru au lait de coco). Venez le vendredi avant 19 h pour avoir une table en terrasse ; paiement par carte ou en francs Pacifique."
+        },
+        "it": {
+          "name": "Les Trois Brasseurs",
+          "description": "Un brewpub sul lungomare di Papeete con birra propria e cucina sostanziosa, dal pesce agli arrosti e alla pizza. La sera la terrazza all’aperto è vivace.",
+          "tip": "Ordina l’assaggio di birre e il poisson cru (pesce crudo nel latte di cocco). Vieni il venerdì prima delle 19:00 per avere un tavolo in terrazza; si paga con carta o in franchi del Pacifico."
+        }
+      }
+    },
+    {
+      "id": "tahiti-le-belvedere",
+      "city": "tahiti",
+      "category": "food",
+      "lat": -17.5775,
+      "lng": -149.599,
+      "image": "eF1h1HP7Tvo",
+      "rating": 4.5,
+      "reviews": 1800,
+      "tags": [
+        "food",
+        "views",
+        "romance"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 3
+      },
+      "hours": "12:00–14:00, 18:30–21:30",
+      "address": "Route du Belvédère, Punaauia",
+      "text": {
+        "ru": {
+          "name": "Le Belvédère",
+          "description": "Ресторан на склоне горы над Папеэте и Пунаауйей, где подают французскую и тихоокеанскую кухню с видом на лагуну и остров Муреа. Это излюбленное место для особых вечеров и свадеб.",
+          "tip": "Закажите стол на веранде на закат за несколько дней и добирайтесь на такси или аренде: дорога серпантином. Берите куртку — вечером прохладнее, платите картой."
+        },
+        "en": {
+          "name": "Le Belvédère",
+          "description": "A hillside restaurant above Papeete and Punaauia serving French and Pacific cooking with a view over the lagoon and Moorea. It is a favourite for special evenings and weddings.",
+          "tip": "Reserve a veranda table for sunset a few days ahead and arrive by taxi or rental car, as the road winds. Bring a jacket, since evenings are cooler, and pay by card."
+        },
+        "es": {
+          "name": "Le Belvédère",
+          "description": "Un restaurante en la ladera sobre Papeete y Punaauia con cocina francesa y del Pacífico y vistas a la laguna y a Moorea. Es un clásico para veladas especiales y bodas.",
+          "tip": "Reserva con unos días una mesa en la veranda para el atardecer y llega en taxi o coche de alquiler, porque la carretera tiene muchas curvas. Lleva chaqueta, pues por la noche refresca; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Le Belvédère",
+          "description": "Ein Restaurant am Hang über Papeete und Punaauia, das französische und pazifische Küche mit Blick auf die Lagune und Moorea serviert. Es ist beliebt für besondere Abende und Hochzeiten.",
+          "tip": "Reserviere einige Tage vorher einen Veranda-Tisch zum Sonnenuntergang und komm mit Taxi oder Mietwagen, denn die Straße ist kurvig. Nimm eine Jacke mit, abends wird es kühler; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Le Belvédère",
+          "description": "Un restaurant à flanc de colline au-dessus de Papeete et de Punaauia, qui sert une cuisine française et polynésienne avec vue sur le lagon et Moorea. C’est une adresse prisée pour les soirées spéciales et les mariages.",
+          "tip": "Réservez quelques jours à l’avance une table sur la véranda pour le coucher du soleil et venez en taxi ou en voiture de location, la route est sinueuse. Prenez une veste, le soir est plus frais ; paiement par carte."
+        },
+        "it": {
+          "name": "Le Belvédère",
+          "description": "Un ristorante sul pendio sopra Papeete e Punaauia che serve cucina francese e del Pacifico con vista sulla laguna e su Moorea. È una scelta amata per le serate speciali e i matrimoni.",
+          "tip": "Prenota qualche giorno prima un tavolo in veranda per il tramonto e arriva in taxi o in auto a noleggio, perché la strada è tortuosa. Porta una giacca, la sera è più fresca; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "tahiti-arahoho-blowhole",
+      "city": "tahiti",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.519,
+      "lng": -149.39,
+      "image": "rMYNmn7PttY",
+      "rating": 4.5,
+      "reviews": 2200,
+      "tags": [
+        "nature",
+        "photo",
+        "roadtrip"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Route de ceinture, Tiarei",
+      "text": {
+        "ru": {
+          "name": "Гейзер Арахохо",
+          "description": "Природный фонтан на восточном побережье Таити: во время прибоя вода вырывается из базальтовой трубы и взлетает над дорогой. Рядом — чёрный песчаный пляж и водопады.",
+          "tip": "Приезжайте в прилив и при сильной волне и снимайте с безопасной площадки; одежда легко намокает. Не подходите к самому краю, а добираться лучше на арендованном автомобиле."
+        },
+        "en": {
+          "name": "Arahoho Blowhole",
+          "description": "A natural fountain on Tahiti’s east coast where, in heavy surf, water shoots up from a basalt tube above the road. A black-sand beach and waterfalls are nearby.",
+          "tip": "Come at high tide with a strong swell and shoot from the safe platform; clothes get wet easily. Don’t stand at the edge, and travel by rental car."
+        },
+        "es": {
+          "name": "Chorro de Arahoho",
+          "description": "Una fuente natural en la costa este de Tahití donde, con el oleaje fuerte, el agua sale disparada por un tubo de basalto sobre la carretera. Cerca hay una playa de arena negra y cascadas.",
+          "tip": "Ve con marea alta y mucho oleaje y haz las fotos desde la plataforma segura; la ropa se moja fácilmente. No te acerques al borde y viaja en coche de alquiler."
+        },
+        "de": {
+          "name": "Arahoho-Blasloch",
+          "description": "Eine natürliche Fontäne an der Ostküste Tahitis, bei der bei starker Brandung Wasser aus einer Basaltröhre über die Straße schießt. In der Nähe liegen ein Strand mit schwarzem Sand und Wasserfälle.",
+          "tip": "Komm bei Flut und starkem Wellengang und fotografier von der sicheren Plattform; die Kleidung wird leicht nass. Stell dich nicht an den Rand und reise mit dem Mietwagen an."
+        },
+        "fr": {
+          "name": "Souffleur d’Arahoho",
+          "description": "Une fontaine naturelle de la côte est de Tahiti où, par forte houle, l’eau jaillit d’un tube de basalte au-dessus de la route. Une plage de sable noir et des cascades se trouvent à proximité.",
+          "tip": "Venez à marée haute avec une forte houle et photographiez depuis la plateforme sécurisée ; les vêtements se mouillent vite. Ne vous approchez pas du bord et venez en voiture de location."
+        },
+        "it": {
+          "name": "Soffione di Arahoho",
+          "description": "Una fontana naturale sulla costa orientale di Tahiti dove, con il mare mosso, l’acqua schizza da un tubo di basalto sopra la strada. Poco distante ci sono una spiaggia di sabbia nera e cascate.",
+          "tip": "Vai con l’alta marea e il mare grosso e scatta dalla piattaforma sicura; i vestiti si bagnano facilmente. Non avvicinarti al bordo e raggiungi il posto in auto a noleggio."
+        }
+      }
+    },
+    {
+      "id": "tahiti-faarumai-waterfalls",
+      "city": "tahiti",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.5233,
+      "lng": -149.3733,
+      "image": "eF1h1HP7Tvo",
+      "rating": 4.4,
+      "reviews": 1700,
+      "tags": [
+        "waterfalls",
+        "jungle",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "08:00–17:00",
+      "address": "Route de ceinture, Arue",
+      "text": {
+        "ru": {
+          "name": "Водопады Фаарумаи",
+          "description": "Три водопада в тропическом ущелье на северо-востоке Таити: к самому высокому ведёт короткая тропа через влажный лес и ручьи. Вода падает с 80-метровой высоты.",
+          "tip": "Снимайте у основания, встав в потоке тумана. Обувь с хорошим протектором и дождевик пригодятся: тропа скользкая, а после дождя подниматься небезопасно."
+        },
+        "en": {
+          "name": "Faarumai waterfalls",
+          "description": "Three waterfalls in a tropical gorge in north-east Tahiti, with the tallest reached by a short trail through damp forest and streams. The water falls from around 80 metres.",
+          "tip": "Shoot at the base, standing in the mist. Shoes with good grip and a rain jacket help, as the trail is slippery and unsafe after rain."
+        },
+        "es": {
+          "name": "Cascadas de Faarumai",
+          "description": "Tres cascadas en un barranco tropical del noreste de Tahití; a la más alta se llega por un corto sendero a través de bosque húmedo y arroyos. El agua cae desde unos 80 metros.",
+          "tip": "Haz las fotos en la base, dentro de la bruma. Unas botas con buen agarre y un chubasquero ayudan: el sendero resbala y tras la lluvia no es seguro."
+        },
+        "de": {
+          "name": "Faarumai-Wasserfälle",
+          "description": "Drei Wasserfälle in einer tropischen Schlucht im Nordosten Tahitis; zum höchsten führt ein kurzer Weg durch feuchten Wald und über Bäche. Das Wasser fällt aus rund 80 Metern.",
+          "tip": "Fotografier am Fuß, mitten im Sprühnebel. Schuhe mit gutem Profil und eine Regenjacke sind hilfreich, der Weg ist rutschig und nach Regen unsicher."
+        },
+        "fr": {
+          "name": "Cascades de Faarumai",
+          "description": "Trois cascades dans un ravin tropical du nord-est de Tahiti ; la plus haute est accessible par un court sentier à travers la forêt humide et les ruisseaux. L’eau tombe d’environ 80 mètres.",
+          "tip": "Photographiez au pied, dans les embruns. Des chaussures antidérapantes et un imperméable aident : le sentier est glissant et dangereux après la pluie."
+        },
+        "it": {
+          "name": "Cascate di Faarumai",
+          "description": "Tre cascate in una gola tropicale nel nord-est di Tahiti; la più alta si raggiunge con un breve sentiero tra foresta umida e ruscelli. L’acqua cade da circa 80 metri.",
+          "tip": "Scatta alla base, in mezzo alla nebbia d’acqua. Scarpe con buona aderenza e un k-way aiutano: il sentiero è scivoloso e dopo la pioggia non è sicuro."
+        }
+      }
+    },
+    {
+      "id": "bora-bora-yacht-club",
+      "city": "bora-bora",
+      "category": "food",
+      "lat": -16.5185,
+      "lng": -151.7415,
+      "image": "CcoALq4fGDw",
+      "rating": 4.4,
+      "reviews": 3400,
+      "tags": [
+        "food",
+        "views",
+        "cruise"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "07:00–22:00",
+      "address": "Vaitape, Bora Bora",
+      "text": {
+        "ru": {
+          "name": "Bora Bora Yacht Club",
+          "description": "Ресторан у причала Вайтапе, куда заходят яхтсмены и приезжают местные: свежая рыба, поке и холодное пиво с видом на лагуну и гору Отеману. Это один из немногих мест на острове, где можно поесть недорого.",
+          "tip": "Закажите тунца на гриле или poisson cru и садитесь на террасе на закате. Платите картой; приезжайте до 19:00, пока есть свободные столики."
+        },
+        "en": {
+          "name": "Bora Bora Yacht Club",
+          "description": "A restaurant by the Vaitape pier where sailors and locals eat: fresh fish, poke and cold beer with a view over the lagoon and Mount Otemanu. One of the few places on the island where a meal is affordable.",
+          "tip": "Order the grilled tuna or poisson cru and sit on the terrace at sunset. Pay by card; arrive before 19:00 while tables are free."
+        },
+        "es": {
+          "name": "Bora Bora Yacht Club",
+          "description": "Un restaurante junto al muelle de Vaitape donde comen navegantes y locales: pescado fresco, poke y cerveza fría con vistas a la laguna y al monte Otemanu. Uno de los pocos sitios de la isla donde se come a buen precio.",
+          "tip": "Pide el atún a la parrilla o el poisson cru y siéntate en la terraza al atardecer. Se paga con tarjeta; llega antes de las 19:00, mientras quedan mesas."
+        },
+        "de": {
+          "name": "Bora Bora Yacht Club",
+          "description": "Ein Restaurant an der Anlegestelle von Vaitape, in dem Segler und Einheimische essen: frischer Fisch, Poke und kaltes Bier mit Blick auf die Lagune und den Mount Otemanu. Einer der wenigen Orte der Insel, an denen man günstig isst.",
+          "tip": "Bestell den gegrillten Thunfisch oder Poisson cru und setz dich zum Sonnenuntergang auf die Terrasse. Bezahlt wird mit Karte; komm vor 19:00 Uhr, solange Tische frei sind."
+        },
+        "fr": {
+          "name": "Bora Bora Yacht Club",
+          "description": "Un restaurant près de l’embarcadère de Vaitape où mangent plaisanciers et habitants : poisson frais, poke et bière fraîche avec vue sur le lagon et le mont Otemanu. L’un des rares endroits de l’île où l’on mange à prix raisonnable.",
+          "tip": "Commandez le thon grillé ou le poisson cru et installez-vous sur la terrasse au coucher du soleil. Paiement par carte ; arrivez avant 19 h tant qu’il reste des tables."
+        },
+        "it": {
+          "name": "Bora Bora Yacht Club",
+          "description": "Un ristorante vicino al molo di Vaitape dove mangiano velisti e locali: pesce fresco, poke e birra fredda con vista sulla laguna e sul monte Otemanu. Uno dei pochi posti dell’isola dove si mangia a prezzi accessibili.",
+          "tip": "Ordina il tonno alla griglia o il poisson cru e siediti in terrazza al tramonto. Si paga con carta; arriva prima delle 19:00, finché ci sono tavoli liberi."
+        }
+      }
+    },
+    {
+      "id": "bora-bora-villa-mahana",
+      "city": "bora-bora",
+      "category": "food",
+      "lat": -16.537,
+      "lng": -151.7335,
+      "image": "CcoALq4fGDw",
+      "rating": 4.7,
+      "reviews": 900,
+      "tags": [
+        "food",
+        "luxury",
+        "romance"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 3
+      },
+      "hours": "19:00–22:00",
+      "address": "Pointe Matira, Bora Bora",
+      "text": {
+        "ru": {
+          "name": "Villa Mahana",
+          "description": "Небольшой ресторан в вилле на мысе Матира, где шеф готовит современную французскую кухню с полинезийскими вкусами. В зале всего несколько столов, а сервис камерный.",
+          "tip": "Столик нужно бронировать за 2–3 недели и приходить к 19:00. Выберите дегустационное меню с рыбой и вином, платите картой; смените пляжную одежду на лёгкую вечернюю."
+        },
+        "en": {
+          "name": "Villa Mahana",
+          "description": "A small villa restaurant on Matira Point where the chef cooks modern French food with Polynesian flavours. Only a few tables are set, and the service is intimate.",
+          "tip": "Reserve two to three weeks ahead and arrive at 19:00. Pick the tasting menu with fish and wine and pay by card; swap beachwear for light evening clothes."
+        },
+        "es": {
+          "name": "Villa Mahana",
+          "description": "Un pequeño restaurante en una villa de Matira Point donde el chef prepara cocina francesa moderna con sabores polinesios. Solo hay unas pocas mesas y el servicio es íntimo.",
+          "tip": "Reserva con dos o tres semanas y llega a las 19:00. Elige el menú degustación con pescado y vino y paga con tarjeta; cambia la ropa de playa por una ligera de noche."
+        },
+        "de": {
+          "name": "Villa Mahana",
+          "description": "Ein kleines Villa-Restaurant auf Matira Point, in dem der Koch moderne französische Küche mit polynesischen Aromen zubereitet. Es sind nur wenige Tische gedeckt, der Service ist persönlich.",
+          "tip": "Reserviere zwei bis drei Wochen im Voraus und komm um 19:00 Uhr. Wähl das Degustationsmenü mit Fisch und Wein und zahl mit Karte; tausch die Strandkleidung gegen leichte Abendgarderobe."
+        },
+        "fr": {
+          "name": "Villa Mahana",
+          "description": "Un petit restaurant dans une villa de la pointe Matira, où le chef prépare une cuisine française moderne aux saveurs polynésiennes. Seules quelques tables sont dressées et le service est intime.",
+          "tip": "Réservez deux à trois semaines à l’avance et arrivez à 19 h. Choisissez le menu dégustation avec poisson et vin et payez par carte ; troquez la tenue de plage contre une tenue légère de soirée."
+        },
+        "it": {
+          "name": "Villa Mahana",
+          "description": "Un piccolo ristorante in una villa a Punta Matira dove lo chef prepara cucina francese moderna con sapori polinesiani. Ci sono pochi tavoli e il servizio è intimo.",
+          "tip": "Prenota due o tre settimane prima e arriva alle 19:00. Scegli il menù degustazione con pesce e vino e paga con carta; cambia l’abbigliamento da spiaggia con uno leggero da sera."
+        }
+      }
+    },
+    {
+      "id": "bora-bora-snack-matira",
+      "city": "bora-bora",
+      "category": "food",
+      "lat": -16.538,
+      "lng": -151.7295,
+      "image": "maJQ-Gl7E3M",
+      "rating": 4.4,
+      "reviews": 2200,
+      "tags": [
+        "food",
+        "beaches",
+        "streetfood"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "10:00–17:00",
+      "address": "Plage de Matira, Bora Bora",
+      "text": {
+        "ru": {
+          "name": "Snack Matira",
+          "description": "Пляжная закусочная на песке Матира: сэндвичи, поке, рыбные тако и тропические коктейли. Столы стоят прямо у воды, а официанты разносят заказ босиком.",
+          "tip": "Возьмите поке с тунцом и ледяной сок из свежих фруктов и садитесь в тени под пальмой. Платите наличными в тихоокеанских франках — карту принимают не всегда."
+        },
+        "en": {
+          "name": "Snack Matira",
+          "description": "A beach snack bar on the sands of Matira with sandwiches, poke, fish tacos and tropical cocktails. Tables stand at the water’s edge and servers deliver orders barefoot.",
+          "tip": "Order tuna poke and an iced fresh-fruit juice and sit in the shade of a palm. Pay cash in Pacific francs, as cards are not always accepted."
+        },
+        "es": {
+          "name": "Snack Matira",
+          "description": "Un chiringuito de playa sobre la arena de Matira con sándwiches, poke, tacos de pescado y cócteles tropicales. Las mesas están junto al agua y los camareros sirven descalzos.",
+          "tip": "Pide poke de atún y un zumo helado de fruta fresca y siéntate a la sombra de una palmera. Paga en efectivo en francos del Pacífico, porque no siempre aceptan tarjeta."
+        },
+        "de": {
+          "name": "Snack Matira",
+          "description": "Eine Strandbude am Sand von Matira mit Sandwiches, Poke, Fischtacos und tropischen Cocktails. Die Tische stehen am Wasser, und die Bedienung serviert barfuß.",
+          "tip": "Bestell Thunfisch-Poke und einen eisgekühlten Frischfruchtsaft und setz dich in den Schatten einer Palme. Zahl bar in Pazifik-Franc, Karten werden nicht immer akzeptiert."
+        },
+        "fr": {
+          "name": "Snack Matira",
+          "description": "Un snack de plage sur le sable de Matira avec sandwichs, poke, tacos de poisson et cocktails tropicaux. Les tables sont au bord de l’eau et le service se fait pieds nus.",
+          "tip": "Commandez un poke de thon et un jus de fruits frais glacé et asseyez-vous à l’ombre d’un palmier. Payez en espèces en francs Pacifique, la carte n’est pas toujours acceptée."
+        },
+        "it": {
+          "name": "Snack Matira",
+          "description": "Uno snack bar sulla sabbia di Matira con panini, poke, tacos di pesce e cocktail tropicali. I tavoli sono sulla riva e il servizio è a piedi nudi.",
+          "tip": "Ordina un poke di tonno e un succo di frutta fresca ghiacciato e siediti all’ombra di una palma. Paga in contanti in franchi del Pacifico, perché non sempre accettano carte."
+        }
+      }
+    },
+    {
+      "id": "bora-bora-mount-otemanu",
+      "city": "bora-bora",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -16.503,
+      "lng": -151.754,
+      "image": "LXNSgedt1jM",
+      "rating": 4.9,
+      "reviews": 8700,
+      "tags": [
+        "mountains",
+        "views",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Vaitape, Bora Bora",
+      "text": {
+        "ru": {
+          "name": "Гора Отеману",
+          "description": "Базальтовый пик в 727 метров — вулканическое ядро острова и главный символ Бора-Бора. Он виден почти отовсюду, а лучше всего — с воды и со стороны Матиры.",
+          "tip": "Снимайте на рассвете с пляжа Матира или с лодки в лагуне, когда пик не прячется в облаках; поднимайтесь в кадр по пояс в воде. Саму гору не штурмуйте: подъём опасен."
+        },
+        "en": {
+          "name": "Mount Otemanu",
+          "description": "A 727 m basalt peak, the volcanic core of the island and the symbol of Bora Bora. It is visible almost everywhere, best from the water and from the Matira side.",
+          "tip": "Shoot at dawn from Matira beach or from a lagoon boat, when the peak hasn’t vanished into cloud; stand waist-deep in the water for the frame. Don’t try to climb the mountain, as it is dangerous."
+        },
+        "es": {
+          "name": "Monte Otemanu",
+          "description": "Un pico basáltico de 727 m, el núcleo volcánico de la isla y el símbolo de Bora Bora. Se ve casi desde todas partes, mejor desde el agua y desde el lado de Matira.",
+          "tip": "Haz las fotos al amanecer desde la playa de Matira o desde un barco en la laguna, cuando el pico no se esconde entre nubes; métete en el agua hasta la cintura para el encuadre. No intentes escalar la montaña: es peligroso."
+        },
+        "de": {
+          "name": "Mount Otemanu",
+          "description": "Ein 727 m hoher Basaltgipfel, der vulkanische Kern der Insel und das Wahrzeichen von Bora Bora. Er ist fast überall zu sehen, am schönsten vom Wasser und von der Matira-Seite.",
+          "tip": "Fotografier bei Sonnenaufgang vom Strand Matira oder von einem Lagunenboot, wenn der Gipfel nicht in Wolken steckt; stell dich dafür bis zur Hüfte ins Wasser. Versuch nicht, den Berg zu besteigen, das ist gefährlich."
+        },
+        "fr": {
+          "name": "Mont Otemanu",
+          "description": "Un pic de basalte de 727 m, noyau volcanique de l’île et symbole de Bora Bora. Il est visible presque partout, surtout depuis l’eau et du côté de Matira.",
+          "tip": "Photographiez à l’aube depuis la plage de Matira ou depuis un bateau dans le lagon, quand le pic n’est pas dans les nuages ; mettez-vous dans l’eau jusqu’à la taille pour le cadre. N’essayez pas d’escalader la montagne, c’est dangereux."
+        },
+        "it": {
+          "name": "Monte Otemanu",
+          "description": "Un picco di basalto di 727 m, il nucleo vulcanico dell’isola e il simbolo di Bora Bora. Si vede quasi da ogni parte, meglio dall’acqua e dal lato di Matira.",
+          "tip": "Scatta all’alba dalla spiaggia di Matira o da una barca in laguna, quando la cima non è nascosta dalle nuvole; entra in acqua fino alla vita per l’inquadratura. Non tentare di scalare la montagna: è pericoloso."
+        }
+      }
+    },
+    {
+      "id": "bora-bora-matira-point",
+      "city": "bora-bora",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -16.5465,
+      "lng": -151.7289,
+      "image": "maJQ-Gl7E3M",
+      "rating": 4.7,
+      "reviews": 3800,
+      "tags": [
+        "beaches",
+        "sunset",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Pointe Matira, Bora Bora",
+      "text": {
+        "ru": {
+          "name": "Мыс Матира",
+          "description": "Южная оконечность острова с узкой песчаной косой, где с двух сторон плещется лагуна. Вдали видны бунгало на воде и силуэт Отеману.",
+          "tip": "Приходите на закате: идите по песку до самой оконечности и встаньте спиной к камере лицом к лагуне. Берите лёгкую светлую одежду и обувь для берега."
+        },
+        "en": {
+          "name": "Matira Point",
+          "description": "The southern tip of the island with a narrow sand spit and the lagoon lapping on both sides. Overwater bungalows and the silhouette of Otemanu show in the distance.",
+          "tip": "Come at sunset: walk along the sand to the very tip and stand with your back to the camera facing the lagoon. Wear light, pale clothes and shoes for the shore."
+        },
+        "es": {
+          "name": "Pointe Matira",
+          "description": "La punta sur de la isla, con una lengua de arena estrecha bañada por la laguna a ambos lados. A lo lejos se ven los bungalós sobre el agua y la silueta del Otemanu.",
+          "tip": "Ve al atardecer: camina por la arena hasta la misma punta y colócate de espaldas a la cámara mirando a la laguna. Lleva ropa clara y ligera y calzado para la orilla."
+        },
+        "de": {
+          "name": "Matira Point",
+          "description": "Die Südspitze der Insel mit einer schmalen Sandzunge, an die die Lagune von beiden Seiten schlägt. In der Ferne sieht man Überwasserbungalows und die Silhouette des Otemanu.",
+          "tip": "Komm zum Sonnenuntergang: Geh über den Sand bis zur äußersten Spitze und stell dich mit dem Rücken zur Kamera Richtung Lagune. Trag leichte, helle Kleidung und Schuhe fürs Ufer."
+        },
+        "fr": {
+          "name": "Pointe Matira",
+          "description": "L’extrémité sud de l’île, avec une étroite langue de sable léchée par le lagon des deux côtés. Au loin se dessinent les bungalows sur pilotis et la silhouette de l’Otemanu.",
+          "tip": "Venez au coucher du soleil : marchez sur le sable jusqu’au bout et placez-vous de dos face au lagon. Portez des vêtements légers et clairs et des chaussures pour le rivage."
+        },
+        "it": {
+          "name": "Punta Matira",
+          "description": "L’estremità meridionale dell’isola, con una stretta lingua di sabbia lambita dalla laguna su entrambi i lati. In lontananza si vedono i bungalow sull’acqua e la sagoma dell’Otemanu.",
+          "tip": "Vai al tramonto: cammina sulla sabbia fino alla punta e mettiti di spalle all’obiettivo, rivolto alla laguna. Indossa abiti leggeri e chiari e scarpe da riva."
+        }
+      }
+    },
+    {
+      "id": "moorea-alfredos",
+      "city": "moorea",
+      "category": "food",
+      "lat": -17.512,
+      "lng": -149.826,
+      "image": "CcoALq4fGDw",
+      "rating": 4.3,
+      "reviews": 1600,
+      "tags": [
+        "food",
+        "views"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "11:00–21:30",
+      "address": "Route de ceinture, Pao Pao (Cook’s Bay)",
+      "text": {
+        "ru": {
+          "name": "Alfredo’s",
+          "description": "Давний ресторан на берегу бухты Кука, где подают итальянскую и полинезийскую кухню — пасту, пиццу и свежую рыбу. С террасы виден хребет Муреа и яхты в заливе.",
+          "tip": "Закажите рыбу дня или пасту с морепродуктами и садитесь на террасе. Бронь не обязательна, но на закате лучше подстраховаться; платите картой."
+        },
+        "en": {
+          "name": "Alfredo’s",
+          "description": "A long-running restaurant on Cook’s Bay serving Italian and Polynesian food: pasta, pizza and fresh fish. The terrace looks out on Moorea’s ridges and the yachts in the bay.",
+          "tip": "Order the fish of the day or seafood pasta and sit on the terrace. Booking isn’t required but is wise at sunset; pay by card."
+        },
+        "es": {
+          "name": "Alfredo’s",
+          "description": "Un restaurante de siempre en la bahía de Cook que sirve cocina italiana y polinesia: pasta, pizza y pescado fresco. La terraza da a las crestas de Moorea y a los yates de la bahía.",
+          "tip": "Pide el pescado del día o la pasta con marisco y siéntate en la terraza. No hace falta reservar, pero conviene al atardecer; se paga con tarjeta."
+        },
+        "de": {
+          "name": "Alfredo’s",
+          "description": "Ein alteingesessenes Restaurant an der Cook’s Bay mit italienischer und polynesischer Küche: Pasta, Pizza und frischer Fisch. Die Terrasse blickt auf Mooreas Bergkämme und die Yachten in der Bucht.",
+          "tip": "Bestell den Fisch des Tages oder Meeresfrüchte-Pasta und setz dich auf die Terrasse. Eine Reservierung ist nicht nötig, zum Sonnenuntergang aber ratsam; bezahlt wird mit Karte."
+        },
+        "fr": {
+          "name": "Alfredo’s",
+          "description": "Un restaurant historique de la baie de Cook, qui sert une cuisine italienne et polynésienne : pâtes, pizza et poisson frais. La terrasse donne sur les crêtes de Moorea et les voiliers de la baie.",
+          "tip": "Commandez le poisson du jour ou les pâtes aux fruits de mer et installez-vous en terrasse. Pas besoin de réserver, mais mieux vaut le faire au coucher du soleil ; paiement par carte."
+        },
+        "it": {
+          "name": "Alfredo’s",
+          "description": "Un ristorante storico sulla baia di Cook che serve cucina italiana e polinesiana: pasta, pizza e pesce fresco. La terrazza guarda le creste di Moorea e le barche a vela nella baia.",
+          "tip": "Ordina il pesce del giorno o la pasta ai frutti di mare e siediti in terrazza. Non serve prenotare, ma al tramonto conviene; si paga con carta."
+        }
+      }
+    },
+    {
+      "id": "moorea-les-tipaniers",
+      "city": "moorea",
+      "category": "food",
+      "lat": -17.542,
+      "lng": -149.91,
+      "image": "CcoALq4fGDw",
+      "rating": 4.4,
+      "reviews": 1900,
+      "tags": [
+        "food",
+        "beaches",
+        "sunset"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "12:00–21:00",
+      "address": "Pointe Hauru, Moorea",
+      "text": {
+        "ru": {
+          "name": "Les Tipaniers",
+          "description": "Пляжный ресторан у мыса Хаура с итальянской и тихоокеанской кухней: пицца из дровяной печи, паста и тунец. Столы стоят прямо под пальмами, а на закате отсюда виден остров Таити.",
+          "tip": "Возьмите пиццу или тунец на гриле и займите место у воды на закате. Платите картой или наличными в тихоокеанских франках; выбирайте будни, когда тише."
+        },
+        "en": {
+          "name": "Les Tipaniers",
+          "description": "A beach restaurant at Hauru Point with Italian and Pacific cooking: wood-fired pizza, pasta and tuna. Tables sit under palms, and at sunset Tahiti shows on the horizon.",
+          "tip": "Choose pizza or grilled tuna and take a seat by the water at sunset. Pay by card or cash in Pacific francs; pick a weekday for a quieter time."
+        },
+        "es": {
+          "name": "Les Tipaniers",
+          "description": "Un restaurante de playa en Hauru Point con cocina italiana y del Pacífico: pizza al horno de leña, pasta y atún. Las mesas están bajo las palmeras y al atardecer se ve Tahití en el horizonte.",
+          "tip": "Pide pizza o atún a la parrilla y siéntate junto al agua al atardecer. Se paga con tarjeta o en efectivo en francos del Pacífico; elige un día laborable para ir con calma."
+        },
+        "de": {
+          "name": "Les Tipaniers",
+          "description": "Ein Strandrestaurant an der Hauru Point mit italienischer und pazifischer Küche: Holzofenpizza, Pasta und Thunfisch. Die Tische stehen unter Palmen, und bei Sonnenuntergang zeigt sich Tahiti am Horizont.",
+          "tip": "Nimm Pizza oder gegrillten Thunfisch und setz dich zum Sonnenuntergang ans Wasser. Bezahlt wird mit Karte oder bar in Pazifik-Franc; wähl einen Werktag für mehr Ruhe."
+        },
+        "fr": {
+          "name": "Les Tipaniers",
+          "description": "Un restaurant de plage à la pointe Hauru, avec une cuisine italienne et du Pacifique : pizza au feu de bois, pâtes et thon. Les tables sont sous les palmiers et, au coucher du soleil, Tahiti se dessine à l’horizon.",
+          "tip": "Choisissez la pizza ou le thon grillé et installez-vous au bord de l’eau au coucher du soleil. Paiement par carte ou en espèces en francs Pacifique ; préférez un jour de semaine pour plus de calme."
+        },
+        "it": {
+          "name": "Les Tipaniers",
+          "description": "Un ristorante sulla spiaggia a Punta Hauru con cucina italiana e del Pacifico: pizza al forno a legna, pasta e tonno. I tavoli sono sotto le palme e al tramonto all’orizzonte si vede Tahiti.",
+          "tip": "Scegli la pizza o il tonno alla griglia e siediti in riva all’acqua al tramonto. Si paga con carta o in contanti in franchi del Pacifico; scegli un giorno feriale per più calma."
+        }
+      }
+    },
+    {
+      "id": "moorea-vaiare-roulottes",
+      "city": "moorea",
+      "category": "food",
+      "lat": -17.526,
+      "lng": -149.784,
+      "image": "EUFPvipu16A",
+      "rating": 4.2,
+      "reviews": 1100,
+      "tags": [
+        "streetfood",
+        "food",
+        "market"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "10:00–20:00",
+      "address": "Embarcadère de Vaiare, Moorea",
+      "text": {
+        "ru": {
+          "name": "Рулотты у пристани Вайяре",
+          "description": "Несколько уличных фургончиков у причала, где паромы привозят людей с Таити. Подают жареную рыбу, китайскую лапшу, сэндвичи и сладкие блинчики за скромную цену.",
+          "tip": "Берите жареную рыбу или чоу-мейн с собой и ешьте на причале в ожидании парома. Берите наличные в тихоокеанских франках; к вечеру выбор меньше."
+        },
+        "en": {
+          "name": "Vaiare ferry quay roulottes",
+          "description": "A handful of food trucks by the quay where ferries bring people from Tahiti. They sell fried fish, Chinese noodles, sandwiches and sweet crêpes at modest prices.",
+          "tip": "Take fried fish or chow mein to go and eat on the quay while waiting for the ferry. Bring cash in Pacific francs; the choice shrinks towards evening."
+        },
+        "es": {
+          "name": "Roulottes del muelle de Vaiare",
+          "description": "Un puñado de food trucks junto al muelle donde los ferris traen gente desde Tahití. Venden pescado frito, fideos chinos, sándwiches y crepes dulces a precios modestos.",
+          "tip": "Pide pescado frito o chow mein para llevar y cómelo en el muelle mientras esperas el ferri. Lleva efectivo en francos del Pacífico; por la tarde hay menos variedad."
+        },
+        "de": {
+          "name": "Roulottes am Fähranleger Vaiare",
+          "description": "Eine Handvoll Foodtrucks am Anleger, an dem die Fähren Menschen aus Tahiti bringen. Sie verkaufen gebratenen Fisch, chinesische Nudeln, Sandwiches und süße Crêpes zu bescheidenen Preisen.",
+          "tip": "Hol dir gebratenen Fisch oder Chow Mein zum Mitnehmen und iss auf dem Kai, während du auf die Fähre wartest. Bring Bargeld in Pazifik-Franc mit; gegen Abend schrumpft die Auswahl."
+        },
+        "fr": {
+          "name": "Roulottes du quai de Vaiare",
+          "description": "Quelques food trucks près du quai où les ferries amènent des passagers de Tahiti. Ils vendent poisson frit, nouilles chinoises, sandwichs et crêpes sucrées à petit prix.",
+          "tip": "Prenez du poisson frit ou du chow mein à emporter et mangez sur le quai en attendant le ferry. Prévoyez des espèces en francs Pacifique ; le choix se réduit en fin de journée."
+        },
+        "it": {
+          "name": "Roulotte del molo di Vaiare",
+          "description": "Una manciata di food truck vicino al molo dove i traghetti portano la gente da Tahiti. Vendono pesce fritto, noodle cinesi, panini e crêpe dolci a prezzi modici.",
+          "tip": "Prendi pesce fritto o chow mein da asporto e mangia sul molo aspettando il traghetto. Porta contanti in franchi del Pacifico; verso sera la scelta si riduce."
+        }
+      }
+    },
+    {
+      "id": "moorea-opunohu-bay",
+      "city": "moorea",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.507,
+      "lng": -149.85,
+      "image": "oXucCF6tep0",
+      "rating": 4.8,
+      "reviews": 4400,
+      "tags": [
+        "mountains",
+        "views",
+        "photo",
+        "kayak"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Baie d’Opunohu, Moorea",
+      "text": {
+        "ru": {
+          "name": "Бухта Опунохо",
+          "description": "Зелёная бухта с острыми вулканическими пиками Роти и Мауа Роа, одна из самых красивых панорам Муреа. На берегу — пальмовые рощи, полуразрушенные марае и тихая вода для каяков.",
+          "tip": "Приезжайте на рассвете или в сумерки, когда пики мягко освещены; фотографу лучше встать на берегу и снимать с воды. Берите каяк или стоячую доску для отражений."
+        },
+        "en": {
+          "name": "Opunohu Bay",
+          "description": "A green bay beneath the sharp volcanic peaks of Rotui and Mauaroa, one of the loveliest panoramas on Moorea. Palm groves, ruined marae and calm water for kayaks fill the shore.",
+          "tip": "Come at dawn or dusk when the peaks are softly lit; the photographer should stand on the shore and shoot from the water’s edge. Bring a kayak or paddleboard for reflections."
+        },
+        "es": {
+          "name": "Bahía de Opunohu",
+          "description": "Una bahía verde bajo los afilados picos volcánicos de Rotui y Mauaroa, uno de los panoramas más bellos de Moorea. En la orilla hay palmerales, marae en ruinas y agua tranquila para kayaks.",
+          "tip": "Ve al amanecer o al anochecer, cuando los picos están suavemente iluminados; quien fotografía debe ponerse en la orilla y disparar al borde del agua. Lleva un kayak o una tabla de paddle para los reflejos."
+        },
+        "de": {
+          "name": "Opunohu-Bucht",
+          "description": "Eine grüne Bucht unter den scharfen Vulkangipfeln von Rotui und Mauaroa, eines der schönsten Panoramen Mooreas. Palmenhaine, Marae-Ruinen und ruhiges Wasser für Kajaks säumen das Ufer.",
+          "tip": "Komm bei Morgen- oder Abenddämmerung, wenn die Gipfel sanft beleuchtet sind; der Fotograf sollte am Ufer stehen und vom Wasserrand aus fotografieren. Nimm ein Kajak oder Paddleboard für Spiegelungen mit."
+        },
+        "fr": {
+          "name": "Baie d’Opunohu",
+          "description": "Une baie verte au pied des pics volcaniques acérés du Rotui et du Mauaroa, l’un des plus beaux panoramas de Moorea. Palmeraies, marae en ruine et eaux calmes pour les kayaks bordent le rivage.",
+          "tip": "Venez à l’aube ou au crépuscule quand les pics sont doucement éclairés ; le photographe se place sur la rive et tire depuis le bord de l’eau. Prenez un kayak ou un paddle pour les reflets."
+        },
+        "it": {
+          "name": "Baia di Opunohu",
+          "description": "Una baia verde ai piedi degli aguzzi picchi vulcanici di Rotui e Mauaroa, uno dei panorami più belli di Moorea. Sulla riva ci sono palmeti, marae in rovina e acque calme per i kayak.",
+          "tip": "Vieni all’alba o al crepuscolo, quando i picchi sono illuminati dolcemente; il fotografo dovrebbe stare sulla riva e scattare dal bordo dell’acqua. Porta un kayak o una tavola da paddle per i riflessi."
+        }
+      }
+    },
+    {
+      "id": "moorea-temae-beach",
+      "city": "moorea",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.505,
+      "lng": -149.761,
+      "image": "oXucCF6tep0",
+      "rating": 4.6,
+      "reviews": 2600,
+      "tags": [
+        "beaches",
+        "sunset",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Plage de Temae, Moorea",
+      "text": {
+        "ru": {
+          "name": "Пляж Темае",
+          "description": "Длинный публичный пляж с белым песком и мелкой лагуной рядом с аэропортом Муреа. Отсюда на закате виден силуэт острова Таити, а в воде отражаются облака.",
+          "tip": "Приходите на закате и встаньте по щиколотку в воду лицом к Таити, пока самолёты не заходят на посадку. Берите полотенце и сандалии — дно местами каменистое."
+        },
+        "en": {
+          "name": "Temae Beach",
+          "description": "A long public beach with white sand and a shallow lagoon beside Moorea airport. At sunset the silhouette of Tahiti shows from here and clouds reflect in the water.",
+          "tip": "Come at sunset and stand ankle-deep in the water facing Tahiti, while no planes are landing. Bring a towel and sandals, as the bottom is rocky in places."
+        },
+        "es": {
+          "name": "Playa de Temae",
+          "description": "Una larga playa pública de arena blanca y laguna poco profunda junto al aeropuerto de Moorea. Al atardecer desde aquí se ve la silueta de Tahití y las nubes se reflejan en el agua.",
+          "tip": "Ve al atardecer y colócate con el agua a los tobillos mirando a Tahití, cuando no aterricen aviones. Lleva toalla y sandalias, porque el fondo es rocoso en algunos tramos."
+        },
+        "de": {
+          "name": "Temae Beach",
+          "description": "Ein langer öffentlicher Strand mit weißem Sand und flacher Lagune neben dem Flughafen von Moorea. Bei Sonnenuntergang zeichnet sich hier die Silhouette Tahitis ab, und Wolken spiegeln sich im Wasser.",
+          "tip": "Komm zum Sonnenuntergang und stell dich knöcheltief ins Wasser mit Blick auf Tahiti, solange keine Flugzeuge landen. Nimm Handtuch und Sandalen mit, der Grund ist stellenweise steinig."
+        },
+        "fr": {
+          "name": "Plage de Temae",
+          "description": "Une longue plage publique de sable blanc et de lagon peu profond, à côté de l’aéroport de Moorea. Au coucher du soleil, on y voit la silhouette de Tahiti et les nuages se reflètent dans l’eau.",
+          "tip": "Venez au coucher du soleil et placez-vous dans l’eau jusqu’aux chevilles face à Tahiti, quand aucun avion n’atterrit. Prenez serviette et sandales, le fond est rocheux par endroits."
+        },
+        "it": {
+          "name": "Spiaggia di Temae",
+          "description": "Una lunga spiaggia pubblica di sabbia bianca e laguna poco profonda accanto all’aeroporto di Moorea. Al tramonto da qui si vede la sagoma di Tahiti e le nuvole si riflettono nell’acqua.",
+          "tip": "Vieni al tramonto e mettiti con l’acqua alle caviglie rivolto verso Tahiti, quando non atterrano aerei. Porta un telo e dei sandali, perché il fondo in certi punti è roccioso."
+        }
+      }
+    },
   ],
 };
 
