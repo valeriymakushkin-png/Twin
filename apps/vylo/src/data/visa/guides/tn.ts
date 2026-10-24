@@ -9,6 +9,8 @@ const guide: VisaGuide = {
   passportMonths: 3,
   visaRun: 'limited',
   borders: [{ name: 'Tunis–Carthage (TUN) → Istanbul', to: 'TR', lat: 36.851, lng: 10.2272 }],
+  hackScope: [['regime:required', 'regime:evisa'], ['US', 'CA', 'DE'], null, null],
+  pitfallScope: [['@EU'], null, null],
   text: {
     ru: {
       summary:

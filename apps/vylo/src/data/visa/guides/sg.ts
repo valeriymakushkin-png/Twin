@@ -17,6 +17,8 @@ const guide: VisaGuide = {
     { name: 'Tanah Merah → Bintan', to: 'ID', lat: 1.315, lng: 103.99 },
   ],
   transit: { hours: 96, passports: ['AM', 'AZ', 'BY', 'KZ', 'KG', 'MD', 'RU', 'TJ', 'UZ', 'GE', 'TM', 'UA', 'IN', 'CN'] },
+  hackScope: [['regime:evisa', 'regime:required'], null, null, null],
+  pitfallScope: [null, null, ['regime:evisa', 'regime:required']],
   text: {
     ru: {
       summary:

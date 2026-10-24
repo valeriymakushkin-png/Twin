@@ -14,6 +14,8 @@ const guide: VisaGuide = {
     { name: 'Lao Bao – Dansavanh', to: 'LA', lat: 16.6255, lng: 106.5916 },
     { name: 'Tan Son Nhat (SGN) → Kuala Lumpur', to: 'MY', lat: 10.8185, lng: 106.6588 },
   ],
+  hackScope: [['regime:evisa', 'regime:required'], ['regime:evisa'], ['regime:free'], ['regime:evisa']],
+  pitfallScope: [['regime:evisa'], ['regime:evisa'], ['regime:free']],
   text: {
     ru: {
       summary:

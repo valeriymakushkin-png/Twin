@@ -864,7 +864,7 @@ const ru = {
     inRoute: 'В маршруте',
     cityRoute: 'Маршрут по городу',
     cityRouteIn: 'Маршрут по городу: {city}',
-    cityRouteText: '{count} мест в удобном порядке',
+    cityRouteText: { one: '{count} место в удобном порядке', few: '{count} места в удобном порядке', many: '{count} мест в удобном порядке', other: '{count} места в удобном порядке' },
     showOnMap: 'Показать на карте',
   },
   route: {

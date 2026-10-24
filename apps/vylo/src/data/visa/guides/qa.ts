@@ -24,6 +24,8 @@ const guide: VisaGuide = {
     },
     { holds: ['resGCC'], status: 'voa', days: 30 },
   ],
+  hackScope: [['regime:eta', 'regime:evisa', 'regime:required'], ['regime:free', 'regime:voa'], null, null],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

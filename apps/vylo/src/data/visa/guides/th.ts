@@ -40,6 +40,8 @@ const guide: VisaGuide = {
     { name: 'Suvarnabhumi (BKK) → Kuala Lumpur', to: 'MY', lat: 13.69, lng: 100.7501 },
   ],
   nomad: { name: 'Destination Thailand Visa (DTV)', months: 60 },
+  hackScope: [['regime:free', 'regime:evisa'], ['regime:free'], null, null, null],
+  pitfallScope: [null, ['regime:free'], null, ['regime:free']],
   text: {
     ru: {
       summary:

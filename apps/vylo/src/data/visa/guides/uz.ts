@@ -13,6 +13,8 @@ const guide: VisaGuide = {
   visaRun: 'yes',
   borders: [{ name: 'Tashkent (TAS) → Almaty / Bishkek', to: 'KZ', lat: 41.2579, lng: 69.2812 }],
   transit: { hours: 120 },
+  hackScope: [null, null, null, ['regime:evisa', 'regime:required']],
+  pitfallScope: [null, ['regime:evisa'], null],
   text: {
     ru: {
       summary:

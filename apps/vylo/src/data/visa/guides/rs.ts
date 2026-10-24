@@ -15,6 +15,8 @@ const guide: VisaGuide = {
     { name: 'Belgrade (BEG) → Sarajevo', to: 'BA', lat: 44.8184, lng: 20.3091 },
   ],
   waivers: [{ holds: ['visaSchengen', 'visaUS', 'visaGB', 'resEU', 'resUS', 'resGB'], status: 'free', days: 90 }],
+  hackScope: [['regime:required', 'regime:evisa'], ['RU'], ['RU'], ['US', 'GB', 'CA']],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

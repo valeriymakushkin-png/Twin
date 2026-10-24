@@ -338,7 +338,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'istanbul-balat-colourful-houses', city: 'istanbul', category: 'attraction', lat: 41.0295, lng: 28.9484, image: 'u_PuOVTTfOg',
+      id: 'istanbul-balat-colourful-houses', city: 'istanbul', category: 'attraction', spot: 'insta', lat: 41.0295, lng: 28.9484, image: 'u_PuOVTTfOg',
       rating: 4.6, reviews: 12400, tags: ['photo', 'oldtown', 'culture'], hours: 'always',
       address: 'Kiremit Caddesi, Balat, Fatih, İstanbul',
       text: {
@@ -351,7 +351,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'istanbul-ortakoy-mosque', city: 'istanbul', category: 'attraction', lat: 41.0476, lng: 29.0271, image: 'u_PuOVTTfOg',
+      id: 'istanbul-ortakoy-mosque', city: 'istanbul', category: 'attraction', spot: 'insta', lat: 41.0476, lng: 29.0271, image: 'u_PuOVTTfOg',
       rating: 4.7, reviews: 26900, tags: ['photo', 'architecture', 'sunset'], hours: '09:00–19:00',
       address: 'Mecidiye Köprüsü Sk. 1, Ortaköy, Beşiktaş, İstanbul',
       text: {
@@ -364,7 +364,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'istanbul-galata-bridge', city: 'istanbul', category: 'attraction', lat: 41.0202, lng: 28.9738, image: 'KB1tO3RPZN8',
+      id: 'istanbul-galata-bridge', city: 'istanbul', category: 'attraction', spot: 'insta', lat: 41.0202, lng: 28.9738, image: 'KB1tO3RPZN8',
       rating: 4.6, reviews: 31200, tags: ['photo', 'views', 'sunset'], hours: 'always',
       address: 'Galata Köprüsü, Karaköy–Eminönü, İstanbul',
       text: {
@@ -442,7 +442,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'cappadocia-uchisar-castle', city: 'cappadocia', category: 'attraction', lat: 38.6307, lng: 34.8052, image: 'SagXn7H6HFg',
+      id: 'cappadocia-uchisar-castle', city: 'cappadocia', category: 'attraction', spot: 'insta', lat: 38.6307, lng: 34.8052, image: 'SagXn7H6HFg',
       rating: 4.7, reviews: 14800, tags: ['photo', 'views', 'castles'], price: { kind: 'from', amount: 300, currency: 'TRY' }, hours: '08:00–19:30',
       address: 'Uçhisar Kalesi, Uçhisar, Nevşehir',
       text: {
@@ -455,7 +455,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'cappadocia-red-valley-sunset', city: 'cappadocia', category: 'nature', lat: 38.645, lng: 34.853, image: 'OIbcmFyMDbo',
+      id: 'cappadocia-red-valley-sunset', city: 'cappadocia', category: 'nature', spot: 'insta', lat: 38.645, lng: 34.853, image: 'OIbcmFyMDbo',
       rating: 4.8, reviews: 9700, tags: ['photo', 'sunset', 'hiking'], hours: 'always',
       address: 'Kızıl Çukur Vadisi, Göreme, Nevşehir',
       text: {
@@ -468,7 +468,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'cappadocia-devrent-valley', city: 'cappadocia', category: 'nature', lat: 38.669, lng: 34.993, image: 'GnqpSlWOO0A',
+      id: 'cappadocia-devrent-valley', city: 'cappadocia', category: 'nature', spot: 'insta', lat: 38.669, lng: 34.993, image: 'GnqpSlWOO0A',
       rating: 4.7, reviews: 6200, tags: ['photo', 'nature', 'adventure'], hours: 'always',
       address: 'Devrent Vadisi, Ürgüp, Nevşehir',
       text: {
@@ -546,7 +546,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'antalya-old-harbour', city: 'antalya', category: 'attraction', lat: 36.8847, lng: 30.705, image: 'CyTamGYrdM8',
+      id: 'antalya-old-harbour', city: 'antalya', category: 'attraction', spot: 'insta', lat: 36.8847, lng: 30.705, image: 'CyTamGYrdM8',
       rating: 4.7, reviews: 12600, tags: ['photo', 'oldtown', 'views'], hours: 'always',
       address: 'Kaleiçi Yat Limanı, Kaleiçi, Muratpaşa, Antalya',
       text: {
@@ -559,7 +559,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'antalya-karaalioglu-park', city: 'antalya', category: 'nature', lat: 36.8815, lng: 30.699, image: '6UXm3LwNm5g',
+      id: 'antalya-karaalioglu-park', city: 'antalya', category: 'nature', spot: 'insta', lat: 36.8815, lng: 30.699, image: '6UXm3LwNm5g',
       rating: 4.6, reviews: 8800, tags: ['photo', 'gardens', 'sunset'], hours: 'always',
       address: 'Karaalioğlu Parkı, Muratpaşa, Antalya',
       text: {
@@ -624,7 +624,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'pamukkale-hierapolis-theatre', city: 'pamukkale', category: 'attraction', lat: 37.9317, lng: 29.1318, image: 'kjhFH33MrRA',
+      id: 'pamukkale-hierapolis-theatre', city: 'pamukkale', category: 'attraction', spot: 'insta', lat: 37.9317, lng: 29.1318, image: 'kjhFH33MrRA',
       rating: 4.7, reviews: 7300, tags: ['photo', 'history', 'unesco'], price: { kind: 'from', amount: 550, currency: 'TRY' }, hours: '08:00–19:30',
       address: 'Hierapolis Antik Kenti, Pamukkale, Denizli',
       text: {
@@ -637,7 +637,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'pamukkale-salda-lake', city: 'pamukkale', category: 'nature', lat: 37.548, lng: 29.684, image: 'uYThZZmJFik',
+      id: 'pamukkale-salda-lake', city: 'pamukkale', category: 'nature', spot: 'insta', lat: 37.548, lng: 29.684, image: 'uYThZZmJFik',
       rating: 4.7, reviews: 6400, tags: ['photo', 'lakes', 'beaches'], hours: 'always',
       address: 'Salda Gölü, Yeşilova, Burdur',
       text: {

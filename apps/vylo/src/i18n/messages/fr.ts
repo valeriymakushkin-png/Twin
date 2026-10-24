@@ -862,7 +862,7 @@ const fr: Messages = {
     inRoute: 'Dans l’itinéraire',
     cityRoute: 'Balade en ville',
     cityRouteIn: 'Balade dans {city}',
-    cityRouteText: '{count} lieux dans un ordre pratique',
+    cityRouteText: { one: '{count} lieu dans un ordre pratique', many: '{count} lieux dans un ordre pratique', other: '{count} lieux dans un ordre pratique' },
     showOnMap: 'Voir sur la carte',
   },
   route: {

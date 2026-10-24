@@ -364,7 +364,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'dubai-dubai-frame', city: 'dubai', category: 'attraction', lat: 25.2355, lng: 55.3009, image: '9n7rZJLWY7o',
+      id: 'dubai-dubai-frame', city: 'dubai', category: 'attraction', spot: 'insta', lat: 25.2355, lng: 55.3009, image: '9n7rZJLWY7o',
       rating: 4.6, reviews: 36900, tags: ['photo', 'views', 'architecture'], price: { kind: 'from', amount: 50, currency: 'AED' }, hours: '09:00–21:00',
       address: 'Zabeel Park, Sheikh Rashid Rd, Dubai',
       text: {
@@ -377,7 +377,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'dubai-burj-al-arab-beach-view', city: 'dubai', category: 'nature', lat: 25.1413, lng: 55.1857, image: 'lRCWtOEPwiY',
+      id: 'dubai-burj-al-arab-beach-view', city: 'dubai', category: 'nature', spot: 'insta', lat: 25.1413, lng: 55.1857, image: 'lRCWtOEPwiY',
       rating: 4.7, reviews: 22400, tags: ['photo', 'beaches', 'sunset'], hours: 'always',
       address: 'Umm Suqeim Beach, Jumeirah Rd, Dubai',
       text: {
@@ -390,7 +390,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'dubai-al-fahidi-historical-neighbourhood', city: 'dubai', category: 'attraction', lat: 25.264, lng: 55.2986, image: 'YXFw9L-0DKo',
+      id: 'dubai-al-fahidi-historical-neighbourhood', city: 'dubai', category: 'attraction', spot: 'insta', lat: 25.264, lng: 55.2986, image: 'YXFw9L-0DKo',
       rating: 4.6, reviews: 15800, tags: ['photo', 'oldtown', 'culture'], hours: 'always',
       address: 'Al Fahidi Historical Neighbourhood, Bur Dubai, Dubai',
       text: {
@@ -468,7 +468,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'abu-dhabi-corniche-beach', city: 'abu-dhabi', category: 'nature', lat: 24.4726, lng: 54.3314, image: 'v612XDUDlQc',
+      id: 'abu-dhabi-corniche-beach', city: 'abu-dhabi', category: 'nature', spot: 'insta', lat: 24.4726, lng: 54.3314, image: 'v612XDUDlQc',
       rating: 4.7, reviews: 19600, tags: ['photo', 'beaches', 'views'], price: { kind: 'from', amount: 10, currency: 'AED' }, hours: '08:00–22:00',
       address: 'Corniche Beach, Corniche Rd West, Abu Dhabi',
       text: {
@@ -481,7 +481,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'abu-dhabi-etihad-towers-observation-deck', city: 'abu-dhabi', category: 'attraction', lat: 24.4547, lng: 54.3226, image: 'zjpI5Dfm7ng',
+      id: 'abu-dhabi-etihad-towers-observation-deck', city: 'abu-dhabi', category: 'attraction', spot: 'insta', lat: 24.4547, lng: 54.3226, image: 'zjpI5Dfm7ng',
       rating: 4.5, reviews: 9400, tags: ['photo', 'views', 'luxury'], price: { kind: 'from', amount: 110, currency: 'AED' }, hours: '10:00–22:00',
       address: 'Observation Deck at 300, Etihad Towers, Corniche Rd West, Abu Dhabi',
       text: {
@@ -546,7 +546,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'ras-al-khaimah-corniche-sunset-walk', city: 'ras-al-khaimah', category: 'nature', lat: 25.791, lng: 55.949, image: 'gqWomsqUDzU',
+      id: 'ras-al-khaimah-corniche-sunset-walk', city: 'ras-al-khaimah', category: 'nature', spot: 'insta', lat: 25.791, lng: 55.949, image: 'gqWomsqUDzU',
       rating: 4.4, reviews: 3100, tags: ['photo', 'sunset', 'views'], hours: 'always',
       address: 'Al Qawasim Corniche, Ras Al Khaimah',
       text: {
@@ -556,6 +556,19 @@ const pack: CountryPack = {
         de: { name: 'Corniche von Ras al-Chaima bei Sonnenuntergang', description: 'Ein Abendspaziergang an der Bucht mit Blick auf Dhaus und die Lichter der Altstadt. Auf der anderen Seite des Wassers sieht man ein Minarett und die Silhouette des Hadschar-Gebirges.', tip: 'Sei 40 Minuten vor Sonnenuntergang da und fotografiere eine Person vor den Booten und Bergen; Spiegelungen im Wasser verstärken die Farben. Am besten von November bis März, im Sommer sind die Abende heiß.' },
         fr: { name: 'Corniche de Ras el-Khaïmah au coucher du soleil', description: 'Une promenade du soir le long de la baie avec vue sur les boutres et les lumières de la vieille ville. De l’autre côté de l’eau se découpent un minaret et la silhouette des monts Hajar.', tip: 'Arrivez 40 minutes avant le coucher du soleil et photographiez une personne devant les bateaux et les montagnes ; les reflets sur l’eau renforcent les couleurs. Idéal de novembre à mars, les soirées d’été sont chaudes.' },
         it: { name: 'Corniche di Ras al-Khaimah al tramonto', description: 'Una passeggiata serale lungo la baia con vista sui dhow e sulle luci della città vecchia. Dall’altra parte dell’acqua si vedono un minareto e la sagoma dei monti Hajar.', tip: 'Arriva 40 minuti prima del tramonto e fotografa una persona davanti alle barche e alle montagne; i riflessi sull’acqua esaltano i colori. Meglio da novembre a marzo, d’estate le sere sono calde.' },
+      },
+    },
+    {
+      id: 'ras-al-khaimah-khor-flamingos', city: 'ras-al-khaimah', category: 'nature', spot: 'insta', lat: 25.758, lng: 55.956, image: 'gqWomsqUDzU',
+      rating: 4.5, reviews: 2900, tags: ['photo', 'wildlife', 'nature'], price: { kind: 'free' }, hours: 'always',
+      address: 'Khor Ras Al Khaimah, Al Dhait, Ras Al Khaimah',
+      text: {
+        ru: { name: 'Фламинго у лагуны Рас-эль-Хаймы', description: 'Мелководная лагуна Хор-Рас-эль-Хайма, где зимой кормятся стаи розовых фламинго на фоне гор Хаджар. Рядом можно пройтись по тропе вдоль мангровых зарослей.', tip: 'Приходите на рассвете или перед закатом с телеобъективом и снимайте птиц на фоне гор; подходить близко нельзя, птицы улетают. Лучший сезон — с декабря по февраль; возьмите воду и средство от комаров.' },
+        en: { name: 'Ras Al Khaimah lagoon flamingos', description: 'The shallow Khor Ras Al Khaimah lagoon, where flocks of pink flamingos feed in winter against the Hajar Mountains. A path runs alongside the mangroves nearby.', tip: 'Come at dawn or before sunset with a telephoto lens and frame the birds against the mountains; do not approach, or they will fly off. Best season is December to February; bring water and mosquito repellent.' },
+        es: { name: 'Flamencos de la laguna de Ras Al Jaima', description: 'La laguna poco profunda de Khor Ras Al Jaima, donde en invierno se alimentan bandadas de flamencos rosados con las montañas Hajar al fondo. Cerca hay un sendero junto a los manglares.', tip: 'Ve al amanecer o antes del ocaso con un teleobjetivo y encuadra las aves contra las montañas; no te acerques, porque huyen. La mejor época es de diciembre a febrero; lleva agua y repelente de mosquitos.' },
+        de: { name: 'Flamingos an der Lagune von Ras al-Chaima', description: 'Die flache Lagune Khor Ras al-Chaima, in der im Winter Schwärme rosa Flamingos vor dem Hadschar-Gebirge fressen. In der Nähe verläuft ein Pfad entlang der Mangroven.', tip: 'Komm im Morgengrauen oder vor Sonnenuntergang mit Teleobjektiv und rahme die Vögel vor den Bergen; geh nicht zu nah heran, sonst fliegen sie davon. Beste Zeit ist Dezember bis Februar; nimm Wasser und Mückenschutz mit.' },
+        fr: { name: 'Flamants roses de la lagune de Ras el-Khaïmah', description: 'La lagune peu profonde de Khor Ras el-Khaïmah, où des bandes de flamants roses se nourrissent en hiver devant les monts Hajar. Un sentier longe les mangroves à proximité.', tip: 'Venez à l’aube ou avant le coucher du soleil avec un téléobjectif et cadrez les oiseaux devant les montagnes ; ne vous approchez pas, ils s’envoleraient. La meilleure saison va de décembre à février ; prenez de l’eau et un répulsif anti-moustiques.' },
+        it: { name: 'Fenicotteri della laguna di Ras al-Khaimah', description: 'La laguna poco profonda di Khor Ras al-Khaimah, dove in inverno stormi di fenicotteri rosa si nutrono con i monti Hajar sullo sfondo. Vicino corre un sentiero lungo le mangrovie.', tip: 'Vai all’alba o prima del tramonto con un teleobiettivo e inquadra gli uccelli contro le montagne; non avvicinarti, altrimenti volano via. La stagione migliore va da dicembre a febbraio; porta acqua e repellente per zanzare.' },
       },
     },
   ],

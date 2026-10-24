@@ -12,6 +12,8 @@ const guide: VisaGuide = {
   extend: {},
   visaRun: 'no',
   nomad: { name: 'Workcation Retreat Programme', months: 12 },
+  hackScope: [null, null, null, null],
+  pitfallScope: [null, null, null],
   text: {
     ru: {
       summary:

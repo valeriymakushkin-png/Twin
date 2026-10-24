@@ -862,7 +862,7 @@ const es: Messages = {
     inRoute: 'En la ruta',
     cityRoute: 'Paseo por la ciudad',
     cityRouteIn: 'Ruta por {city}',
-    cityRouteText: '{count} lugares en un orden práctico',
+    cityRouteText: { one: '{count} lugar en un orden cómodo', many: '{count} lugares en un orden cómodo', other: '{count} lugares en un orden cómodo' },
     showOnMap: 'Ver en el mapa',
   },
   route: {

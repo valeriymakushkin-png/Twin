@@ -14,6 +14,8 @@ const guide: VisaGuide = {
   passportMonths: 6,
   visaRun: 'limited',
   transit: { hours: 24 },
+  hackScope: [null, null, null, null, null],
+  pitfallScope: [['regime:evisa'], null, null, ['regime:free']],
   text: {
     ru: {
       summary:

@@ -19,6 +19,8 @@ const guide: VisaGuide = {
     { name: 'Namanga', to: 'KE', lat: -2.5458, lng: 36.7897 },
     { name: 'Holili – Taveta', to: 'KE', lat: -3.3756, lng: 37.6539 },
   ],
+  hackScope: [null, null, ['regime:voa', 'regime:evisa'], null, null],
+  pitfallScope: [['regime:voa', 'regime:evisa'], ['regime:voa', 'regime:evisa'], null],
   text: {
     ru: {
       summary:

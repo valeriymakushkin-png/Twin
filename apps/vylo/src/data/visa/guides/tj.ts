@@ -9,6 +9,8 @@ const guide: VisaGuide = {
   forms: [{ name: 'GBAO permit', url: 'https://www.evisa.tj', fee: { kind: 'fixed', amount: 20, currency: 'USD' } }],
   passportMonths: 6,
   visaRun: 'limited',
+  hackScope: [null, null, null, null],
+  pitfallScope: [null, null, ['regime:evisa']],
   text: {
     ru: {
       summary:

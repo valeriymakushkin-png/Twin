@@ -286,6 +286,536 @@ const pack: CountryPack = {
         it: { name: 'Isola di Beachcomber', description: 'Un’isoletta di sabbia che si gira a piedi in dieci minuti, uno degli angoli più accessibili delle Mamanuca e una facile gita in giornata da Denarau. Ci si viene per nuotare, fare snorkeling, andare in kayak e guardare il tramonto dal bar sulla spiaggia.', tip: 'Prenota una gita di un giorno intero con pranzo e resta fino all’ultimo catamarano: i tramonti qui sono tra i più belli dell’arcipelago.' },
       },
     },
+    {
+      "id": "nadi-bulaccino",
+      "city": "nadi",
+      "category": "food",
+      "lat": -17.8036,
+      "lng": 177.416,
+      "image": "rlhiN-6dxyo",
+      "rating": 4.4,
+      "reviews": 1900,
+      "tags": [
+        "food",
+        "city"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "07:00–17:00",
+      "address": "Queens Road, Nadi",
+      "text": {
+        "ru": {
+          "name": "Bulaccino",
+          "description": "Любимое кафе местных и экспатов в центре Нади: свежий кофе, завтраки, сэндвичи и торты. Заходят сюда передохнуть от жары и подзарядить телефон.",
+          "tip": "Закажите кофе со льдом и сэндвич на лёгкий завтрак и приходите до обеда — после 12:00 бывает людно. Платите картой или наличными в фиджийских долларах."
+        },
+        "en": {
+          "name": "Bulaccino",
+          "description": "A café in central Nadi popular with locals and expats, with fresh coffee, breakfasts, sandwiches and cakes. People drop in to cool off and recharge their phones.",
+          "tip": "Order an iced coffee and a sandwich for a light breakfast, and come before lunch, as it gets busy after 12:00. Pay by card or in Fijian dollars."
+        },
+        "es": {
+          "name": "Bulaccino",
+          "description": "Una cafetería del centro de Nadi muy querida por locales y expatriados, con café recién hecho, desayunos, sándwiches y tartas. La gente entra a refrescarse y a cargar el móvil.",
+          "tip": "Pide un café con hielo y un sándwich para un desayuno ligero, y ve antes de comer, porque después de las 12:00 se llena. Se paga con tarjeta o en dólares fiyianos."
+        },
+        "de": {
+          "name": "Bulaccino",
+          "description": "Ein Café im Zentrum von Nadi, beliebt bei Einheimischen und Expats, mit frischem Kaffee, Frühstück, Sandwiches und Kuchen. Man kommt, um sich abzukühlen und das Handy aufzuladen.",
+          "tip": "Bestell einen Eiskaffee und ein Sandwich als leichtes Frühstück und komm vor dem Mittag, ab 12:00 Uhr wird es voll. Bezahlt wird mit Karte oder in Fidschi-Dollar."
+        },
+        "fr": {
+          "name": "Bulaccino",
+          "description": "Un café du centre de Nadi apprécié des habitants et des expatriés, avec café frais, petits-déjeuners, sandwichs et gâteaux. On y entre pour se rafraîchir et recharger son téléphone.",
+          "tip": "Commandez un café glacé et un sandwich pour un petit-déjeuner léger, et venez avant le déjeuner, car c’est plein après 12 h. Paiement par carte ou en dollars fidjiens."
+        },
+        "it": {
+          "name": "Bulaccino",
+          "description": "Un caffè nel centro di Nadi amato da locali ed espatriati, con caffè fresco, colazioni, panini e torte. Ci si ferma per rinfrescarsi e ricaricare il telefono.",
+          "tip": "Ordina un caffè freddo e un panino per una colazione leggera, e vieni prima di pranzo, perché dopo le 12:00 c’è affollamento. Si paga con carta o in dollari figiani."
+        }
+      }
+    },
+    {
+      "id": "nadi-port-denarau-dining",
+      "city": "nadi",
+      "category": "food",
+      "lat": -17.77,
+      "lng": 177.383,
+      "image": "sqrD447aTGw",
+      "rating": 4.3,
+      "reviews": 3100,
+      "tags": [
+        "food",
+        "views",
+        "cruise"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "07:00–22:00",
+      "address": "Port Denarau Marina, Denarau Island, Nadi",
+      "text": {
+        "ru": {
+          "name": "Рестораны Порт-Денарау",
+          "description": "Набережная марины, откуда уходят катамараны на острова, заставлена кафе и ресторанами: от рыбы на гриле до пиццы и кокосового мороженого. Вечером здесь собираются, чтобы посмотреть на закат над яхтами.",
+          "tip": "Закажите свежий кокоду (сырая рыба в кокосовом молоке) и столик у воды за час до заката. Платите картой; на закате лучше бронировать."
+        },
+        "en": {
+          "name": "Port Denarau dining strip",
+          "description": "The marina waterfront, from where catamarans leave for the islands, is lined with cafés and restaurants serving grilled fish, pizza and coconut ice cream. In the evening people gather to watch the sunset over the yachts.",
+          "tip": "Order fresh kokoda (raw fish in coconut milk) and a table by the water an hour before sunset. Pay by card; booking is wise at sunset."
+        },
+        "es": {
+          "name": "Restaurantes de Port Denarau",
+          "description": "El paseo de la marina, de donde salen los catamaranes a las islas, está lleno de cafés y restaurantes con pescado a la parrilla, pizza y helado de coco. Por la noche la gente viene a ver la puesta de sol sobre los yates.",
+          "tip": "Pide kokoda fresco (pescado crudo en leche de coco) y una mesa junto al agua una hora antes del atardecer. Se paga con tarjeta; conviene reservar para el atardecer."
+        },
+        "de": {
+          "name": "Restaurantmeile Port Denarau",
+          "description": "Die Marina-Promenade, von der die Katamarane zu den Inseln ablegen, ist gesäumt von Cafés und Restaurants mit gegrilltem Fisch, Pizza und Kokoseis. Abends kommen die Leute zum Sonnenuntergang über den Yachten.",
+          "tip": "Bestell frisches Kokoda (roher Fisch in Kokosmilch) und einen Tisch am Wasser eine Stunde vor Sonnenuntergang. Bezahlt wird mit Karte; zum Sonnenuntergang lohnt eine Reservierung."
+        },
+        "fr": {
+          "name": "Restaurants de Port Denarau",
+          "description": "Le front de mer de la marina, d’où partent les catamarans vers les îles, est bordé de cafés et de restaurants servant poisson grillé, pizza et glace à la noix de coco. Le soir, on vient voir le coucher de soleil sur les yachts.",
+          "tip": "Commandez un kokoda frais (poisson cru au lait de coco) et une table au bord de l’eau une heure avant le coucher du soleil. Paiement par carte ; mieux vaut réserver au coucher du soleil."
+        },
+        "it": {
+          "name": "Ristoranti di Port Denarau",
+          "description": "Il lungomare della marina, da cui partono i catamarani per le isole, è fiancheggiato da caffè e ristoranti con pesce alla griglia, pizza e gelato al cocco. La sera la gente viene a vedere il tramonto sugli yacht.",
+          "tip": "Ordina un kokoda fresco (pesce crudo nel latte di cocco) e un tavolo sull’acqua un’ora prima del tramonto. Si paga con carta; al tramonto conviene prenotare."
+        }
+      }
+    },
+    {
+      "id": "nadi-main-street-curry-houses",
+      "city": "nadi",
+      "category": "food",
+      "lat": -17.8035,
+      "lng": 177.417,
+      "image": "rlhiN-6dxyo",
+      "rating": 4.3,
+      "reviews": 2100,
+      "tags": [
+        "streetfood",
+        "food",
+        "culture"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 1
+      },
+      "hours": "08:00–20:00",
+      "address": "Main Street, Nadi",
+      "text": {
+        "ru": {
+          "name": "Карри-хаусы на Мейн-стрит",
+          "description": "Центральная улица Нади — сердце индо-фиджийской кухни: в небольших столовых подают острые карри с роти, дхал и сладкие индийские десерты. Тут обедают местные работники и водители.",
+          "tip": "Закажите карри с курицей или козлятиной с роти и чаем масала. Приходите на обед около 12:00, пока всё свежее, и берите наличные: чаще принимают только их."
+        },
+        "en": {
+          "name": "Main Street curry houses",
+          "description": "Nadi’s main street is the heart of Indo-Fijian cooking, with small canteens serving spicy curries with roti, dhal and sweet Indian desserts. Local workers and drivers lunch here.",
+          "tip": "Order chicken or goat curry with roti and masala tea. Come for lunch around 12:00 while everything is fresh, and bring cash, as it is often the only option."
+        },
+        "es": {
+          "name": "Casas de curry de Main Street",
+          "description": "La calle principal de Nadi es el corazón de la cocina indofiyiana, con pequeños comedores que sirven curris picantes con roti, dhal y dulces indios. Aquí comen trabajadores y conductores locales.",
+          "tip": "Pide curri de pollo o cabra con roti y té masala. Ve a comer hacia las 12:00, cuando todo está fresco, y lleva efectivo, porque a menudo es lo único que aceptan."
+        },
+        "de": {
+          "name": "Curry-Lokale an der Main Street",
+          "description": "Die Hauptstraße von Nadi ist das Herz der indo-fidschianischen Küche, mit kleinen Kantinen, die scharfe Currys mit Roti, Dhal und indische Süßigkeiten servieren. Einheimische Arbeiter und Fahrer essen hier zu Mittag.",
+          "tip": "Bestell Hähnchen- oder Ziegencurry mit Roti und Masala-Tee. Komm gegen 12:00 zum Mittagessen, solange alles frisch ist, und hab Bargeld dabei, oft wird nur das akzeptiert."
+        },
+        "fr": {
+          "name": "Restaurants de curry de Main Street",
+          "description": "La rue principale de Nadi est le cœur de la cuisine indo-fidjienne, avec de petites cantines qui servent currys épicés avec roti, dhal et douceurs indiennes. Ouvriers et chauffeurs du coin y déjeunent.",
+          "tip": "Commandez un curry de poulet ou de chèvre avec roti et un thé masala. Venez déjeuner vers 12 h, quand tout est frais, et gardez des espèces, car c’est souvent le seul moyen de paiement."
+        },
+        "it": {
+          "name": "Locali di curry di Main Street",
+          "description": "La via principale di Nadi è il cuore della cucina indo-figiana, con piccole mense che servono curry piccanti con roti, dhal e dolci indiani. Qui pranzano operai e autisti del posto.",
+          "tip": "Ordina curry di pollo o di capra con roti e tè masala. Vieni a pranzo verso le 12:00, quando è tutto fresco, e porta contanti, perché spesso è l’unico metodo accettato."
+        }
+      }
+    },
+    {
+      "id": "nadi-wailoaloa-beach",
+      "city": "nadi",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.759,
+      "lng": 177.428,
+      "image": "sqrD447aTGw",
+      "rating": 4.3,
+      "reviews": 1400,
+      "tags": [
+        "beaches",
+        "sunset",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Wailoaloa Beach Road, Nadi",
+      "text": {
+        "ru": {
+          "name": "Пляж Вайлоалоа",
+          "description": "Длинный пляж с тёмным песком у города, где по вечерам играют в футбол и регби, а закат красит залив в розовый и оранжевый. Рядом — небольшие кафе и бары.",
+          "tip": "Приходите за час до заката и снимайте на мокром песке, когда отражается небо; фотографу лучше присесть. Купаться тут не рекомендуют — отлив мелкий и дно илистое."
+        },
+        "en": {
+          "name": "Wailoaloa Beach",
+          "description": "A long dark-sand beach by town where people play football and rugby in the evening and the sunset turns the bay pink and orange. Small cafés and bars line the road.",
+          "tip": "Come an hour before sunset and shoot on the wet sand when it mirrors the sky; the photographer should crouch. Swimming is not recommended, as the tide is shallow and the bottom muddy."
+        },
+        "es": {
+          "name": "Playa de Wailoaloa",
+          "description": "Una larga playa de arena oscura junto a la ciudad donde por la tarde se juega al fútbol y al rugby y el atardecer tiñe la bahía de rosa y naranja. Hay pequeños cafés y bares junto a la carretera.",
+          "tip": "Ve una hora antes del atardecer y haz las fotos sobre la arena mojada cuando refleja el cielo; quien fotografía debe agacharse. No se recomienda bañarse: con la marea baja el agua es poco profunda y el fondo fangoso."
+        },
+        "de": {
+          "name": "Wailoaloa Beach",
+          "description": "Ein langer dunkler Sandstrand am Stadtrand, an dem abends Fußball und Rugby gespielt werden und der Sonnenuntergang die Bucht rosa und orange färbt. Kleine Cafés und Bars säumen die Straße.",
+          "tip": "Komm eine Stunde vor Sonnenuntergang und fotografier auf dem nassen Sand, wenn er den Himmel spiegelt; dein Fotograf sollte sich hinhocken. Zum Baden eignet sich der Strand nicht, bei Ebbe ist es flach und der Grund schlammig."
+        },
+        "fr": {
+          "name": "Plage de Wailoaloa",
+          "description": "Une longue plage de sable sombre près de la ville, où l’on joue au foot et au rugby le soir et où le coucher de soleil teinte la baie de rose et d’orange. De petits cafés et bars bordent la route.",
+          "tip": "Venez une heure avant le coucher du soleil et photographiez sur le sable mouillé quand il reflète le ciel ; le photographe doit s’accroupir. La baignade n’est pas recommandée : à marée basse, l’eau est peu profonde et le fond vaseux."
+        },
+        "it": {
+          "name": "Spiaggia di Wailoaloa",
+          "description": "Una lunga spiaggia di sabbia scura vicino alla città dove la sera si gioca a calcio e a rugby e il tramonto tinge la baia di rosa e arancione. Piccoli caffè e bar costeggiano la strada.",
+          "tip": "Vieni un’ora prima del tramonto e scatta sulla sabbia bagnata quando riflette il cielo; il fotografo dovrebbe accovacciarsi. Il bagno non è consigliato: con la bassa marea l’acqua è poco profonda e il fondo fangoso."
+        }
+      }
+    },
+    {
+      "id": "nadi-vuda-lookout",
+      "city": "nadi",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.669,
+      "lng": 177.379,
+      "image": "rlhiN-6dxyo",
+      "rating": 4.4,
+      "reviews": 900,
+      "tags": [
+        "views",
+        "sunset",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Queens Road, Vuda",
+      "text": {
+        "ru": {
+          "name": "Смотровая Вуда",
+          "description": "Обзорная площадка рядом с портом Вуда-Пойнт: виден участок побережья, острова Маманука и закат. Люди останавливаются здесь по дороге на север.",
+          "tip": "Приезжайте за час до заката и снимайте с видом на острова за спиной. Рядом есть небольшая стоянка; берите воду и защитный крем."
+        },
+        "en": {
+          "name": "Vuda Lookout",
+          "description": "A viewpoint near Vuda Point Marina with a stretch of coast, the Mamanuca islands and the sunset. People stop here on the way north.",
+          "tip": "Come an hour before sunset and shoot with the islands behind you. There is a small parking spot nearby; bring water and sunscreen."
+        },
+        "es": {
+          "name": "Mirador de Vuda",
+          "description": "Un mirador cerca de la marina de Vuda Point con un tramo de costa, las islas Mamanuca y el atardecer. La gente se detiene aquí de camino al norte.",
+          "tip": "Ve una hora antes del atardecer y haz las fotos con las islas a tu espalda. Hay un pequeño aparcamiento cerca; lleva agua y protector solar."
+        },
+        "de": {
+          "name": "Vuda Lookout",
+          "description": "Ein Aussichtspunkt nahe der Vuda Point Marina mit einem Küstenabschnitt, den Mamanuca-Inseln und dem Sonnenuntergang. Viele halten hier auf der Fahrt nach Norden.",
+          "tip": "Komm eine Stunde vor Sonnenuntergang und fotografier mit den Inseln im Rücken. In der Nähe gibt es einen kleinen Parkplatz; nimm Wasser und Sonnencreme mit."
+        },
+        "fr": {
+          "name": "Belvédère de Vuda",
+          "description": "Un point de vue près de la marina de Vuda Point, avec un bout de côte, les îles Mamanuca et le coucher de soleil. On s’y arrête en allant vers le nord.",
+          "tip": "Venez une heure avant le coucher du soleil et photographiez avec les îles dans le dos. Un petit parking se trouve à proximité ; prenez eau et crème solaire."
+        },
+        "it": {
+          "name": "Belvedere di Vuda",
+          "description": "Un punto panoramico vicino alla marina di Vuda Point con un tratto di costa, le isole Mamanuca e il tramonto. Ci si ferma qui andando verso nord.",
+          "tip": "Vieni un’ora prima del tramonto e scatta con le isole alle spalle. Poco distante c’è un piccolo parcheggio; porta acqua e crema solare."
+        }
+      }
+    },
+    {
+      "id": "mamanuca-yasawa-musket-cove-yacht-club",
+      "city": "mamanuca-yasawa",
+      "category": "food",
+      "lat": -17.7737,
+      "lng": 177.192,
+      "image": "Xk0IA1QNomI",
+      "rating": 4.5,
+      "reviews": 1700,
+      "tags": [
+        "food",
+        "islands",
+        "cruise"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "08:00–22:00",
+      "address": "Musket Cove Island Resort, Malolo Lailai",
+      "text": {
+        "ru": {
+          "name": "Musket Cove Yacht Club",
+          "description": "Бар и ресторан при старейшем яхт-клубе острова Малоло-Лаилаи, где собираются яхтсмены со всего мира. Подают свежую рыбу, бургеры и холодное пиво, а столики стоят у самой воды.",
+          "tip": "Закажите рыбу дня и местное пиво Fiji Bitter в баре на причале, особенно на закате. Платите картой; на острове есть лодки до материка с вечера."
+        },
+        "en": {
+          "name": "Musket Cove Yacht Club",
+          "description": "The bar and restaurant of Malolo Lailai’s yacht club, where sailors from around the world gather. It serves fresh fish, burgers and cold beer, with tables right at the water.",
+          "tip": "Order the fish of the day and a local Fiji Bitter at the jetty bar, especially at sunset. Pay by card; boats back to the mainland run in the evening."
+        },
+        "es": {
+          "name": "Musket Cove Yacht Club",
+          "description": "El bar y restaurante del club náutico de Malolo Lailai, donde se reúnen navegantes de todo el mundo. Sirve pescado fresco, hamburguesas y cerveza fría, con mesas junto al agua.",
+          "tip": "Pide el pescado del día y una cerveza local Fiji Bitter en el bar del muelle, sobre todo al atardecer. Se paga con tarjeta; hay barcos de vuelta al continente por la tarde."
+        },
+        "de": {
+          "name": "Musket Cove Yacht Club",
+          "description": "Bar und Restaurant des Yachtclubs auf Malolo Lailai, wo sich Segler aus aller Welt treffen. Es gibt frischen Fisch, Burger und kaltes Bier, die Tische stehen direkt am Wasser.",
+          "tip": "Bestell den Fisch des Tages und ein lokales Fiji Bitter an der Bar am Steg, besonders zum Sonnenuntergang. Bezahlt wird mit Karte; am Abend fahren Boote zurück zum Festland."
+        },
+        "fr": {
+          "name": "Musket Cove Yacht Club",
+          "description": "Le bar et restaurant du yacht-club de Malolo Lailai, où se retrouvent des plaisanciers du monde entier. On y sert poisson frais, burgers et bière fraîche, avec des tables au bord de l’eau.",
+          "tip": "Commandez le poisson du jour et une Fiji Bitter locale au bar de la jetée, surtout au coucher du soleil. Paiement par carte ; des bateaux repartent vers le continent en soirée."
+        },
+        "it": {
+          "name": "Musket Cove Yacht Club",
+          "description": "Il bar e ristorante dello yacht club di Malolo Lailai, dove si ritrovano velisti da tutto il mondo. Serve pesce fresco, hamburger e birra fredda, con i tavoli proprio sull’acqua.",
+          "tip": "Ordina il pesce del giorno e una birra locale Fiji Bitter al bar sul molo, soprattutto al tramonto. Si paga con carta; la sera partono barche per la terraferma."
+        }
+      }
+    },
+    {
+      "id": "mamanuca-yasawa-blue-lagoon-lovo",
+      "city": "mamanuca-yasawa",
+      "category": "food",
+      "lat": -16.943,
+      "lng": 177.361,
+      "image": "MkSlXoYg0Vo",
+      "rating": 4.6,
+      "reviews": 1300,
+      "tags": [
+        "food",
+        "culture",
+        "islands"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "18:00–21:30",
+      "address": "Blue Lagoon Beach Resort, Nacula Island, Yasawa",
+      "text": {
+        "ru": {
+          "name": "Ужин лово на Накуле",
+          "description": "Вечерний фиджийский ужин лово, приготовленный в земляной печи, с песнями и танцем мека. Мясо, рыба, таро и кассава томятся несколько часов под листьями банана.",
+          "tip": "Бронируйте ужин при заселении и приходите к началу — тогда увидите, как вынимают еду из печи. Платите картой в курорте; на остров идёт катамаран Yasawa Flyer."
+        },
+        "en": {
+          "name": "Lovo night on Nacula",
+          "description": "A Fijian lovo dinner cooked in an earth oven, with songs and a meke dance. Meat, fish, taro and cassava steam for hours under banana leaves.",
+          "tip": "Book the dinner at check-in and arrive at the start to watch the food being lifted from the oven. Pay by card at the resort; the Yasawa Flyer catamaran serves the island."
+        },
+        "es": {
+          "name": "Cena lovo en Nacula",
+          "description": "Una cena fiyiana lovo cocinada en horno de tierra, con canciones y danza meke. La carne, el pescado, el taro y la yuca se cuecen durante horas bajo hojas de plátano.",
+          "tip": "Reserva la cena al registrarte y llega al principio para ver cómo se saca la comida del horno. Se paga con tarjeta en el resort; a la isla llega el catamarán Yasawa Flyer."
+        },
+        "de": {
+          "name": "Lovo-Abend auf Nacula",
+          "description": "Ein fidschianisches Lovo-Abendessen aus dem Erdofen mit Gesang und Meke-Tanz. Fleisch, Fisch, Taro und Maniok garen stundenlang unter Bananenblättern.",
+          "tip": "Buche das Abendessen beim Einchecken und sei pünktlich, um zu sehen, wie das Essen aus dem Ofen geholt wird. Bezahlt wird mit Karte im Resort; die Insel wird vom Katamaran Yasawa Flyer angefahren."
+        },
+        "fr": {
+          "name": "Soirée lovo à Nacula",
+          "description": "Un dîner fidjien lovo cuit au four en terre, avec chants et danse meke. Viande, poisson, taro et manioc mijotent des heures sous des feuilles de bananier.",
+          "tip": "Réservez le dîner à l’arrivée et soyez là dès le début pour voir sortir les plats du four. Paiement par carte au resort ; le catamaran Yasawa Flyer dessert l’île."
+        },
+        "it": {
+          "name": "Cena lovo a Nacula",
+          "description": "Una cena figiana lovo cotta nel forno di terra, con canti e danza meke. Carne, pesce, taro e manioca cuociono per ore sotto foglie di banano.",
+          "tip": "Prenota la cena al check-in e arriva all’inizio per vedere il cibo estratto dal forno. Si paga con carta al resort; l’isola è servita dal catamarano Yasawa Flyer."
+        }
+      }
+    },
+    {
+      "id": "mamanuca-yasawa-beachcomber-buffet",
+      "city": "mamanuca-yasawa",
+      "category": "food",
+      "lat": -17.6725,
+      "lng": 177.2845,
+      "image": "Xk0IA1QNomI",
+      "rating": 4.2,
+      "reviews": 1500,
+      "tags": [
+        "food",
+        "islands",
+        "beaches"
+      ],
+      "price": {
+        "kind": "level",
+        "level": 2
+      },
+      "hours": "12:00–14:00, 18:00–20:30",
+      "address": "Beachcomber Island Resort, Mamanuca",
+      "text": {
+        "ru": {
+          "name": "Общий обед на Beachcomber",
+          "description": "Большая столовая на острове-курорте Бичкомбер, где за длинными столами подают фиджийские блюда: кокоду, рыбу на гриле, карри и тропические фрукты. Днём сюда приезжают на пляж и остаются на обед.",
+          "tip": "Возьмите кокоду и фрукты и садитесь за общий стол, чтобы познакомиться с другими. Заказ обычно входит в дневной пакет; приезжайте утренним катамараном."
+        },
+        "en": {
+          "name": "Beachcomber Island buffet",
+          "description": "A big dining hall on the resort island of Beachcomber, with long tables serving Fijian dishes: kokoda, grilled fish, curry and tropical fruit. Day visitors come for the beach and stay for lunch.",
+          "tip": "Take kokoda and fruit and sit at a shared table to meet other travellers. Lunch is usually included in the day pass; arrive on the morning catamaran."
+        },
+        "es": {
+          "name": "Buffet de Beachcomber Island",
+          "description": "Un gran comedor en la isla-resort de Beachcomber, con largas mesas y platos fiyianos: kokoda, pescado a la parrilla, curri y fruta tropical. Los visitantes de un día vienen a la playa y se quedan a comer.",
+          "tip": "Pide kokoda y fruta y siéntate en una mesa compartida para conocer a otros viajeros. El almuerzo suele incluirse en el pase de día; llega en el catamarán de la mañana."
+        },
+        "de": {
+          "name": "Buffet auf Beachcomber Island",
+          "description": "Ein großer Speisesaal auf der Resortinsel Beachcomber, an langen Tischen gibt es fidschianische Gerichte: Kokoda, gegrillten Fisch, Curry und tropische Früchte. Tagesgäste kommen zum Strand und bleiben zum Mittagessen.",
+          "tip": "Nimm Kokoda und Obst und setz dich an einen Gemeinschaftstisch, um andere Reisende kennenzulernen. Das Mittagessen ist meist im Tagespass enthalten; komm mit dem Vormittagskatamaran."
+        },
+        "fr": {
+          "name": "Buffet de Beachcomber Island",
+          "description": "Une grande salle à manger sur l’île-resort de Beachcomber, où de longues tables servent des plats fidjiens : kokoda, poisson grillé, curry et fruits tropicaux. Les visiteurs d’un jour viennent pour la plage et restent déjeuner.",
+          "tip": "Prenez du kokoda et des fruits et asseyez-vous à une table partagée pour rencontrer d’autres voyageurs. Le déjeuner est en général inclus dans le pass journée ; arrivez par le catamaran du matin."
+        },
+        "it": {
+          "name": "Buffet di Beachcomber Island",
+          "description": "Una grande sala da pranzo sull’isola-resort di Beachcomber, con lunghi tavoli e piatti figiani: kokoda, pesce alla griglia, curry e frutta tropicale. I visitatori in giornata vengono per la spiaggia e restano a pranzo.",
+          "tip": "Prendi kokoda e frutta e siediti a un tavolo condiviso per conoscere altri viaggiatori. Il pranzo di solito è incluso nel pass giornaliero; arriva con il catamarano del mattino."
+        }
+      }
+    },
+    {
+      "id": "mamanuca-yasawa-mana-island-beach",
+      "city": "mamanuca-yasawa",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.66,
+      "lng": 177.099,
+      "image": "MkSlXoYg0Vo",
+      "rating": 4.7,
+      "reviews": 2600,
+      "tags": [
+        "beaches",
+        "islands",
+        "photo"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Mana Island, Mamanuca",
+      "text": {
+        "ru": {
+          "name": "Пляж острова Мана",
+          "description": "Белый песок и бирюзовая лагуна на одном из самых красивых островов Маманука, где видны коралловые рифы и пальмы. Лучший вид открывается с западной части острова.",
+          "tip": "Приезжайте утром, пока на пляже тихо, и снимайте по кромке воды в лёгкой одежде. Не забудьте маску для снорклинга — рифы начинаются в нескольких шагах от берега."
+        },
+        "en": {
+          "name": "Mana Island beach",
+          "description": "White sand and a turquoise lagoon on one of the loveliest Mamanuca islands, with coral reef and palms. The best views come from the west side of the island.",
+          "tip": "Come in the morning while the beach is quiet and shoot along the waterline in light clothes. Pack a snorkel mask, as the reef starts a few steps from shore."
+        },
+        "es": {
+          "name": "Playa de la isla Mana",
+          "description": "Arena blanca y laguna turquesa en una de las islas más bonitas de las Mamanuca, con arrecife de coral y palmeras. Las mejores vistas están en el lado oeste de la isla.",
+          "tip": "Ve por la mañana, cuando la playa está tranquila, y haz las fotos a lo largo de la orilla con ropa ligera. Lleva máscara de snorkel: el arrecife empieza a pocos pasos de la costa."
+        },
+        "de": {
+          "name": "Strand auf Mana Island",
+          "description": "Weißer Sand und eine türkisfarbene Lagune auf einer der schönsten Mamanuca-Inseln, mit Korallenriff und Palmen. Die besten Ausblicke bietet die Westseite der Insel.",
+          "tip": "Komm morgens, solange der Strand ruhig ist, und fotografier in leichter Kleidung entlang der Wasserlinie. Pack eine Schnorchelmaske ein, das Riff beginnt wenige Schritte vom Ufer."
+        },
+        "fr": {
+          "name": "Plage de l’île de Mana",
+          "description": "Sable blanc et lagon turquoise sur l’une des plus belles îles Mamanuca, avec récif corallien et palmiers. Les plus beaux points de vue se trouvent du côté ouest de l’île.",
+          "tip": "Venez le matin, quand la plage est calme, et photographiez le long de la ligne d’eau en tenue légère. Prenez un masque de snorkeling : le récif commence à quelques pas du rivage."
+        },
+        "it": {
+          "name": "Spiaggia dell’isola di Mana",
+          "description": "Sabbia bianca e laguna turchese su una delle isole più belle delle Mamanuca, con barriera corallina e palme. I punti di vista migliori sono sul lato ovest dell’isola.",
+          "tip": "Vieni al mattino, quando la spiaggia è tranquilla, e scatta lungo il bagnasciuga con abiti leggeri. Porta la maschera da snorkeling: la barriera inizia a pochi passi dalla riva."
+        }
+      }
+    },
+    {
+      "id": "mamanuca-yasawa-musket-cove-beach",
+      "city": "mamanuca-yasawa",
+      "category": "nature",
+      "spot": "insta",
+      "lat": -17.7745,
+      "lng": 177.1905,
+      "image": "Xk0IA1QNomI",
+      "rating": 4.5,
+      "reviews": 1100,
+      "tags": [
+        "beaches",
+        "sunset",
+        "photo",
+        "islands"
+      ],
+      "price": {
+        "kind": "free"
+      },
+      "hours": "always",
+      "address": "Malolo Lailai, Mamanuca",
+      "text": {
+        "ru": {
+          "name": "Пляж Маскет-Ков",
+          "description": "Спокойный пляж на острове Малоло-Лаилаи с белым песком, пальмами и яхтами на якоре. На закате вода становится золотой, а на горизонте видны силуэты соседних островов.",
+          "tip": "Приходите за час до заката и снимайте с причала с видом на яхты. Лучше всего выглядят светлая одежда и босые ноги на песке; вода на мели тёплая."
+        },
+        "en": {
+          "name": "Musket Cove beach",
+          "description": "A calm beach on Malolo Lailai with white sand, palms and yachts at anchor. At sunset the water turns golden and the neighbouring islands stand out as silhouettes.",
+          "tip": "Come an hour before sunset and shoot from the jetty with the yachts behind you. Light clothes and bare feet on the sand look best; the shallows are warm."
+        },
+        "es": {
+          "name": "Playa de Musket Cove",
+          "description": "Una playa tranquila en Malolo Lailai con arena blanca, palmeras y yates fondeados. Al atardecer el agua se vuelve dorada y las islas vecinas se recortan como siluetas.",
+          "tip": "Ve una hora antes del atardecer y haz las fotos desde el muelle con los yates detrás. Ropa clara y pies descalzos en la arena quedan mejor; el agua poco profunda es cálida."
+        },
+        "de": {
+          "name": "Musket Cove Beach",
+          "description": "Ein ruhiger Strand auf Malolo Lailai mit weißem Sand, Palmen und ankernden Yachten. Zum Sonnenuntergang wird das Wasser golden, und die Nachbarinseln zeichnen sich als Silhouetten ab.",
+          "tip": "Komm eine Stunde vor Sonnenuntergang und fotografier vom Steg mit den Yachten im Hintergrund. Helle Kleidung und nackte Füße im Sand wirken am besten; das flache Wasser ist warm."
+        },
+        "fr": {
+          "name": "Plage de Musket Cove",
+          "description": "Une plage calme de Malolo Lailai, avec sable blanc, palmiers et yachts au mouillage. Au coucher du soleil, l’eau se dore et les îles voisines se découpent en silhouettes.",
+          "tip": "Venez une heure avant le coucher du soleil et photographiez depuis la jetée avec les yachts derrière vous. Vêtements clairs et pieds nus sur le sable rendent mieux ; l’eau peu profonde est chaude."
+        },
+        "it": {
+          "name": "Spiaggia di Musket Cove",
+          "description": "Una spiaggia tranquilla a Malolo Lailai con sabbia bianca, palme e yacht all’ancora. Al tramonto l’acqua diventa dorata e le isole vicine si stagliano come sagome.",
+          "tip": "Vieni un’ora prima del tramonto e scatta dal molo con gli yacht alle spalle. Abiti chiari e piedi nudi sulla sabbia rendono meglio; l’acqua bassa è calda."
+        }
+      }
+    },
   ],
 };
 

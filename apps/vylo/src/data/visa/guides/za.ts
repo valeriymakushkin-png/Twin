@@ -19,6 +19,8 @@ const guide: VisaGuide = {
     { name: 'Lebombo – Ressano Garcia', to: 'MZ', lat: -25.4440, lng: 31.9880 },
   ],
   nomad: { name: 'Remote Work Visa', months: 36, income: { kind: 'from', amount: 54248, currency: 'ZAR' } },
+  hackScope: [null, null, null, ['IN', 'CN', 'ID', 'MX']],
+  pitfallScope: [null, null, null, null],
   text: {
     ru: {
       summary:
