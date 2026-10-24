@@ -320,6 +320,7 @@ const es: Messages = {
       domestic: 'Las zonas remotas, como las fronterizas, pueden requerir un permiso.',
       isConsulate: 'Las solicitudes se tramitan a través de la representación de otro país Schengen: consulta el procedimiento vigente.',
     },
+    othersTitle: 'Cómo entran otros pasaportes',
     yourPassport: 'Tu pasaporte',
     withPassport: 'pasaporte {flag}',
     change: 'Cambiar',

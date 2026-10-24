@@ -4,7 +4,7 @@ import { baseDestinations } from './destinations';
 import { basePlaces } from './places';
 import type { Destination, Place, VisaInfo } from './types';
 import { baseVisa } from './visa';
-import { worldCities, worldCountries, worldPlaces, worldVisa } from './world.generated';
+import { worldCities, worldCountries, worldPeople, worldPlaces, worldVisa } from './world.generated';
 import type { MatrixCell } from './visa/types';
 import type { CityText, CountryFacts, CountryText, PlaceText, Region } from './world/types';
 
@@ -57,6 +57,9 @@ const byCountry = new Map<string, CountryFacts>();
 const placesByCity = new Map<string, Place[]>();
 const citiesByCountry = new Map<string, Destination[]>();
 
+/** Places that ship with the app (data/places.ts) plus the world packs; photo-spot `people` photos for the former live in the packs. */
+const shippedPlaces: Place[] = [...basePlaces.map((p) => (worldPeople[p.id] ? { ...p, people: worldPeople[p.id] } : p)), ...worldPlaces];
+
 const BUNDLED = new Set<string>([...baseDestinations.map((d) => d.id), ...worldCities.map((d) => d.id), ...basePlaces.map((p) => p.id), ...worldPlaces.map((p) => p.id)]);
 
 let current: CatalogOverrides = emptyOverrides();
@@ -89,7 +92,7 @@ function derivedCountry(d: Destination): CountryFacts {
 function rebuild() {
   const o = current;
   const ds = merge<Destination>([...baseDestinations, ...worldCities], o.destinations, (p) => !!(p.countryCode && p.lat !== undefined && p.lng !== undefined));
-  const ps = merge<Place>([...basePlaces, ...worldPlaces], o.places, (p) => !!(p.destinationId && p.lat !== undefined && p.lng !== undefined));
+  const ps = merge<Place>(shippedPlaces, o.places, (p) => !!(p.destinationId && p.lat !== undefined && p.lng !== undefined));
   destinations.splice(0, destinations.length, ...ds);
   places.splice(0, places.length, ...ps);
 
@@ -177,7 +180,7 @@ export { isEasyRegime, regimeTone } from './visa';
 
 /** The catalogue as shipped, before any admin edits (the admin console diffs against it). */
 export const bundledDestinations: Destination[] = [...baseDestinations, ...worldCities];
-export const bundledPlaces: Place[] = [...basePlaces, ...worldPlaces];
+export const bundledPlaces: Place[] = shippedPlaces;
 export const bundledDestination = (id: string) => bundledDestinations.find((d) => d.id === id);
 export const bundledPlace = (id: string) => bundledPlaces.find((p) => p.id === id);
 export const bundledCountry = (code: string) => worldCountries.find((c) => c.code === code);

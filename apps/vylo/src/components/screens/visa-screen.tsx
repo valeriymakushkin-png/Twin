@@ -7,6 +7,7 @@ import {
   CalendarClock,
   CalendarRange,
   Check,
+  ChevronDown,
   CircleDollarSign,
   ExternalLink,
   FileCheck2,
@@ -29,7 +30,7 @@ import { Button, TopBar } from '@/components/ui';
 import { useVisaFormat, useVisaTitle } from '@/components/visa-badge';
 import { useVisaText } from '@/content/visa';
 import { destinationHref, destinations, regimeTone } from '@/data/catalog';
-import { guideFacts, MATRIX_DATE, SCHENGEN, visaFor } from '@/data/visa/rules';
+import { appliesTo, guideFacts, MATRIX_DATE, SCHENGEN, visaFor } from '@/data/visa/rules';
 import { LOCALE_META } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
 import { flag } from '@/lib/countries';
@@ -125,6 +126,10 @@ export function VisaScreen({ code }: { code: string }) {
   const docs = visa.regime === 'domestic' || visa.regime === 'eu' ? visa.docs : ['passport', ...visa.docs.filter((x) => x !== 'passport')];
   const passportNote = text?.passports?.[passport];
   const tone = regimeTone[visa.regime];
+  /** Applying (e-visa, ETA, visa on arrival, embassy) only matters for passports that cannot simply walk in. */
+  const hacks = (text?.hacks ?? []).filter((_, i) => appliesTo(g?.hackScope?.[i], visa));
+  const pitfalls = (text?.pitfalls ?? []).filter((_, i) => appliesTo(g?.pitfallScope?.[i], visa));
+  const needsApplication = visa.regime === 'voa' || visa.regime === 'eta' || visa.regime === 'evisa' || visa.regime === 'required' || visa.regime === 'schengen';
 
   return (
     <div className="scroll-area absolute inset-0 bg-canvas pb-16">
@@ -184,8 +189,7 @@ export function VisaScreen({ code }: { code: string }) {
         )}
 
         <Section icon={<Plane className="size-5 text-brand" />} title={t('visa.how')}>
-          <Prose>{text?.summary ?? tk(`visa.howText.${visa.regime}`)}</Prose>
-          {text?.summary && <p className="mt-2 text-[13px] leading-relaxed text-muted">{tk(`visa.howText.${visa.regime}`)}</p>}
+          <Prose>{tk(`visa.howText.${visa.regime}`)}</Prose>
           <div className="mt-3 flex items-start gap-2 rounded-2xl bg-surface-2/70 p-3 text-[13px] text-ink-2">
             <Info className="mt-0.5 size-4 shrink-0 text-muted" />
             {t('visa.passportLabel')}: {tk(`visa.validity.${visa.validity}`)}
@@ -227,7 +231,7 @@ export function VisaScreen({ code }: { code: string }) {
           </Section>
         )}
 
-        {(text?.apply || g?.links) && visa.regime !== 'eu' && visa.regime !== 'domestic' && (
+        {(text?.apply || g?.links) && needsApplication && (
           <Section icon={<FileCheck2 className="size-5 text-brand" />} title={t('visa.applyTitle')}>
             {text?.apply && <Prose>{text.apply}</Prose>}
             {g?.links && (
@@ -377,10 +381,10 @@ export function VisaScreen({ code }: { code: string }) {
           </Section>
         )}
 
-        {text?.hacks && text.hacks.length > 0 && (
+        {hacks.length > 0 && (
           <Section icon={<Lightbulb className="size-5 text-amber" />} title={t('visa.hacksTitle')}>
             <ul className="grid gap-2.5">
-              {text.hacks.map((h, i) => (
+              {hacks.map((h, i) => (
                 <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-ink-2">
                   <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-amber-50 text-[11px] font-bold text-amber">{i + 1}</span>
                   {h}
@@ -390,10 +394,10 @@ export function VisaScreen({ code }: { code: string }) {
           </Section>
         )}
 
-        {text?.pitfalls && text.pitfalls.length > 0 && (
+        {pitfalls.length > 0 && (
           <Section icon={<TriangleAlert className="size-5 text-rose" />} title={t('visa.pitfallsTitle')}>
             <ul className="grid gap-2.5">
-              {text.pitfalls.map((p, i) => (
+              {pitfalls.map((p, i) => (
                 <li key={i} className="flex gap-3 text-[14px] leading-relaxed text-ink-2">
                   <span className="mt-2 size-1.5 shrink-0 rounded-full bg-rose" />
                   {p}
@@ -437,6 +441,16 @@ export function VisaScreen({ code }: { code: string }) {
               ))}
             </div>
           </section>
+        )}
+
+        {text?.summary && (
+          <details className="group mt-6 rounded-[20px] bg-white/70 px-4 py-3 text-[13px] leading-relaxed text-muted">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-2 font-semibold text-ink-2 [&::-webkit-details-marker]:hidden">
+              {t('visa.othersTitle')}
+              <ChevronDown className="size-4 shrink-0 text-faint transition-transform group-open:rotate-180" />
+            </summary>
+            <p className="mt-2">{text.summary}</p>
+          </details>
         )}
 
         <div className="mt-8 grid gap-1 text-center text-[12px] leading-relaxed text-faint">

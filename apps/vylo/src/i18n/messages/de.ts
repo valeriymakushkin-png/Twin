@@ -320,6 +320,7 @@ const de: Messages = {
       domestic: 'Für abgelegene Gebiete wie Grenzzonen kann eine Genehmigung nötig sein.',
       isConsulate: 'Anträge laufen über die Vertretung eines anderen Schengen-Staats – informiere dich über die aktuelle Regelung.',
     },
+    othersTitle: 'Wie andere Pässe einreisen',
     yourPassport: 'Dein Reisepass',
     withPassport: 'Reisepass {flag}',
     change: 'Ändern',

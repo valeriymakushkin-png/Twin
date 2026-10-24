@@ -102,6 +102,14 @@ export interface VisaGuideFacts {
   /** Digital-nomad or remote-work visa */
   nomad?: { name: string; months: number; income?: Price };
   waivers?: Waiver[];
+  /**
+   * Who each `text.<lang>.hacks[i]` / `pitfalls[i]` is for (index-aligned; `null` = everyone). A scope is a list of
+   * tokens: a passport ISO code ("IN"), a regime for this destination ("regime:free" | "regime:voa" | "regime:eta" |
+   * "regime:evisa" | "regime:required" | "regime:banned") or a group ("@EU", "@SCHENGEN", "@EAEU", "@GCC", "@CIS",
+   * "@ASEAN", "@MERCOSUR"). A line shows when the traveller's passport matches any token.
+   */
+  hackScope?: (string[] | null)[];
+  pitfallScope?: (string[] | null)[];
 }
 
 export interface VisaGuideText {

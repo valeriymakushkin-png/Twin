@@ -171,6 +171,31 @@ export function visaFor(passport: string, dest: string, holdings: readonly Holdi
   };
 }
 
+const GROUP_MEMBERS: Record<string, ReadonlySet<string>> = {
+  '@EU': FREE_MOVEMENT,
+  '@SCHENGEN': SCHENGEN,
+  '@EAEU': new Set(['RU', 'BY', 'KZ', 'AM', 'KG']),
+  '@GCC': new Set(['AE', 'SA', 'QA', 'KW', 'BH', 'OM']),
+  '@CIS': new Set(['RU', 'BY', 'KZ', 'AM', 'KG', 'UZ', 'TJ', 'AZ', 'MD', 'UA', 'GE', 'TM']),
+  '@ASEAN': new Set(['TH', 'VN', 'ID', 'MY', 'SG', 'PH', 'KH', 'LA', 'MM', 'BN']),
+  '@MERCOSUR': new Set(['AR', 'BR', 'PY', 'UY', 'BO', 'CL', 'CO', 'EC', 'PE']),
+};
+
+const regimeClass = (r: VisaRegime) => (r === 'eu' || r === 'domestic' ? 'free' : r === 'schengen' ? 'required' : r);
+
+/**
+ * Whether a hack or pitfall (scoped in the guide) is relevant to this traveller. Regime tokens are checked against both
+ * the regime before and after any visa/permit waiver, so "if you need a visa" tips still reach holders of a waiver.
+ */
+export function appliesTo(scope: readonly string[] | null | undefined, v: Pick<VisaResult, 'passport' | 'regime' | 'baseRegime'>): boolean {
+  if (!scope?.length) return true;
+  return scope.some((t) => {
+    if (t === v.passport) return true;
+    if (t.startsWith('regime:')) return t === `regime:${regimeClass(v.regime)}` || t === `regime:${regimeClass(v.baseRegime)}`;
+    return GROUP_MEMBERS[t]?.has(v.passport) ?? false;
+  });
+}
+
 /** Easier of two passports for one destination (dual citizens). */
 export function bestPassport(passports: readonly string[], dest: string, holdings: readonly Holding[] = []) {
   let best: VisaResult | undefined;

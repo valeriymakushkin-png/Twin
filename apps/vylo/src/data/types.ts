@@ -67,6 +67,8 @@ export interface Place {
   hours?: string;
   /** Photo spot or a lesser-known gem */
   spot?: 'insta' | 'hidden';
+  /** Unsplash photos of travellers posing at this very spot — what the shot looks like in real life (photo spots) */
+  people?: string[];
   /** Street address in the local Latin spelling */
   address?: string;
 }

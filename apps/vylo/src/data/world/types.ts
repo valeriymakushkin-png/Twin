@@ -54,7 +54,7 @@ export interface PlaceText {
   name: string;
   /** 1–2 sentences */
   description: string;
-  /** Best time or angle for photos, how to find a hidden spot, what to order… */
+  /** Best time or angle for photos, how to find a hidden spot; for food — what to order. Required for `food`. */
   tip?: string;
 }
 
@@ -111,8 +111,15 @@ export interface CountryPack {
     hours?: string;
     /** Street address in the local Latin spelling */
     address?: string;
+    /**
+     * Photo spots (`spot: 'insta'`) only: 1–4 Unsplash ids of photos of people posing at this exact place —
+     * the way travellers actually shoot it. Different from `image`.
+     */
+    people?: string[];
     text: L<PlaceText>;
   }[];
+  /** `people` for photo spots that already ship with the app (data/places.ts), keyed by place id */
+  peopleFor?: Record<string, string[]>;
 }
 
 /** What the app bundles about a country; its texts are loaded per language. */

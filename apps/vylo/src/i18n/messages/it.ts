@@ -320,6 +320,7 @@ const it: Messages = {
       domestic: 'Per le aree remote, come le zone di frontiera, può servire un permesso.',
       isConsulate: 'Le domande passano dalla rappresentanza di un altro paese Schengen: verifica la procedura attuale.',
     },
+    othersTitle: 'Come entrano gli altri passaporti',
     yourPassport: 'Il tuo passaporto',
     withPassport: 'passaporto {flag}',
     change: 'Cambia',

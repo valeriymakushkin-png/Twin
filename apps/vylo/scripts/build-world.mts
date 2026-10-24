@@ -31,6 +31,10 @@ const CYRILLIC = /[А-Яа-яЁё]/;
 
 const args = process.argv.slice(2);
 const checkOnly = args.includes('--check');
+/** Coverage targets (food, photo spots, SEA depth) fail the check only with --strict; otherwise they are reported. */
+const strict = args.includes('--strict');
+const shortfalls: string[] = [];
+const target = (msg: string) => (strict ? errors : shortfalls).push(msg);
 const only = args.filter((a) => !a.startsWith('--')).map((a) => basename(a));
 const errors: string[] = [];
 const warnings: string[] = [];
@@ -149,7 +153,7 @@ for (const pack of packs) {
   }
   if (cityCoords.size < 2) errors.push(`${w}: needs at least 2 cities in total`);
 
-  const perCity = new Map<string, { n: number; insta: number; hidden: number }>();
+  const perCity = new Map<string, { n: number; insta: number; hidden: number; food: number }>();
   for (const p of pack.places) {
     const pw = `place ${p.id}`;
     if (!SLUG.test(p.id)) errors.push(`${pw}: id must be a slug`);
@@ -164,18 +168,46 @@ for (const pack of packs) {
     if (!(p.rating >= 3.5 && p.rating <= 5)) errors.push(`${pw}: rating 3.5–5`);
     if (!Number.isInteger(p.reviews)) errors.push(`${pw}: reviews must be an integer`);
     for (const t of p.tags ?? []) if (!TAGS.has(t)) errors.push(`${pw}: unknown tag "${t}"`);
-    checkText(pw, p.text, { name: 'string', description: 'string', tip: 'opt' });
-    const s = perCity.get(p.city) ?? { n: 0, insta: 0, hidden: 0 };
+    checkText(pw, p.text, { name: 'string', description: 'string', tip: p.category === 'food' ? 'string' : 'opt' });
+    if (p.people !== undefined) {
+      if (p.spot !== 'insta') errors.push(`${pw}: "people" photos belong to photo spots (spot: 'insta') only`);
+      if (!Array.isArray(p.people) || p.people.length < 1 || p.people.length > 4 || p.people.some((x) => !PHOTO.test(x)) || new Set(p.people).size !== p.people.length) errors.push(`${pw}: people must be 1–4 distinct Unsplash ids`);
+      else if (p.people.includes(p.image)) errors.push(`${pw}: people photos must differ from image`);
+    } else if (p.spot === 'insta') target(`${pw}: photo spot without "people" photos`);
+    const s = perCity.get(p.city) ?? { n: 0, insta: 0, hidden: 0, food: 0 };
     s.n++;
     if (p.spot === 'insta') s.insta++;
     if (p.spot === 'hidden') s.hidden++;
+    if (p.category === 'food') s.food++;
     perCity.set(p.city, s);
   }
-  for (const city of pack.cities) {
-    const s = perCity.get(city.id) ?? { n: 0, insta: 0, hidden: 0 };
-    if (s.n < 4) errors.push(`city ${city.id}: needs ≥ 4 places (has ${s.n})`);
-    if (!s.insta) errors.push(`city ${city.id}: needs an insta spot`);
-    if (!s.hidden) errors.push(`city ${city.id}: needs a hidden spot`);
+  // Places already shipped in data/places.ts count towards their city; their photo-spot "people" come from peopleFor.
+  const shipped = basePlaces.filter((p) => cityCoords.has(p.destinationId) && baseIds.has(p.id));
+  for (const [id, ids] of Object.entries(pack.peopleFor ?? {})) {
+    const base = shipped.find((p) => p.id === id);
+    if (!base) errors.push(`country ${c.code}: peopleFor "${id}" is not an existing place of this country`);
+    else if (base.spot !== 'insta') errors.push(`country ${c.code}: peopleFor "${id}" is not a photo spot`);
+    else if (!Array.isArray(ids) || ids.length < 1 || ids.length > 4 || ids.some((x) => !PHOTO.test(x)) || ids.includes(base.image)) errors.push(`country ${c.code}: peopleFor "${id}" needs 1–4 Unsplash ids different from its image`);
+  }
+  for (const b of shipped) {
+    const s = perCity.get(b.destinationId) ?? { n: 0, insta: 0, hidden: 0, food: 0 };
+    s.n++;
+    if (b.spot === 'insta') s.insta++;
+    if (b.spot === 'hidden') s.hidden++;
+    if (b.category === 'food') s.food++;
+    perCity.set(b.destinationId, s);
+    if (b.spot === 'insta' && !pack.peopleFor?.[b.id]) target(`place ${b.id}: photo spot without "people" photos (add it to peopleFor)`);
+  }
+  const depth = c.region === 'sea' ? 10 : 6;
+  for (const cityId of cityCoords.keys()) {
+    const s = perCity.get(cityId) ?? { n: 0, insta: 0, hidden: 0, food: 0 };
+    const isNew = pack.cities.some((x) => x.id === cityId);
+    if (isNew && s.n < 4) errors.push(`city ${cityId}: needs ≥ 4 places (has ${s.n})`);
+    if (isNew && !s.insta) errors.push(`city ${cityId}: needs an insta spot`);
+    if (isNew && !s.hidden) errors.push(`city ${cityId}: needs a hidden spot`);
+    if (s.food < 4) target(`city ${cityId}: needs ≥ 4 places to eat (has ${s.food})`);
+    if (s.insta < 3) target(`city ${cityId}: needs ≥ 3 photo spots (has ${s.insta})`);
+    if (s.n < depth) target(`city ${cityId}: needs ≥ ${depth} places (has ${s.n})`);
   }
 }
 
@@ -186,6 +218,7 @@ if (errors.length) {
 const cityCount = packs.reduce((n, p) => n + p.cities.length, 0);
 const placeCount = packs.reduce((n, p) => n + p.places.length, 0);
 for (const w of warnings) console.warn(w);
+if (shortfalls.length) console.warn(`⚠ ${shortfalls.length} coverage target(s) not met yet (check with --strict), e.g.:\n  ${shortfalls.slice(0, 5).join('\n  ')}`);
 if (checkOnly) {
   console.log(`✓ ${packs.length} countries, ${cityCount} cities, ${placeCount} places are valid`);
   process.exit(0);
@@ -198,6 +231,7 @@ const facts = {
   cities: packs.flatMap((p) => p.cities.map(({ text: _t, ...f }) => ({ ...f, countryCode: p.country.code }))),
   places: packs.flatMap((p) => p.places.map(({ text: _t, city, ...f }) => ({ ...f, destinationId: city }))),
   visa: packs.filter((p) => p.country.visa).map((p) => ({ code: p.country.code, ...p.country.visa })),
+  people: Object.assign({}, ...packs.map((p) => p.peopleFor ?? {})) as Record<string, string[]>,
 };
 writeFileSync(
   join(root, 'src/data/world.generated.ts'),
@@ -207,7 +241,8 @@ writeFileSync(
     `export const worldCountries = JSON.parse(${JSON.stringify(JSON.stringify(facts.countries))}) as CountryFacts[];\n` +
     `export const worldCities = JSON.parse(${JSON.stringify(JSON.stringify(facts.cities))}) as Destination[];\n` +
     `export const worldPlaces = JSON.parse(${JSON.stringify(JSON.stringify(facts.places))}) as Place[];\n` +
-    `export const worldVisa = JSON.parse(${JSON.stringify(JSON.stringify(facts.visa))}) as VisaInfo[];\n`,
+    `export const worldVisa = JSON.parse(${JSON.stringify(JSON.stringify(facts.visa))}) as VisaInfo[];\n` +
+    `export const worldPeople = JSON.parse(${JSON.stringify(JSON.stringify(facts.people))}) as Record<string, string[]>;\n`,
 );
 mkdirSync(join(root, 'src/content/world'), { recursive: true });
 for (const l of LOCALES) {

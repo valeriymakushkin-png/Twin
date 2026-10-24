@@ -20,6 +20,9 @@ const DOCS = ['insurance', 'returnTicket', 'booking', 'finance', 'yellowFever'];
 const PRICE_KINDS = ['free', 'fixed', 'from'];
 const ISO = new Set(CODES.match(/../g));
 const holdings = new Set<string>(HOLDINGS);
+const GROUPS = new Set(['@EU', '@SCHENGEN', '@EAEU', '@GCC', '@CIS', '@ASEAN', '@MERCOSUR']);
+const REGIME_TOKENS = new Set(['free', 'voa', 'eta', 'evisa', 'required', 'banned'].map((r) => `regime:${r}`));
+const validScope = (t: unknown) => typeof t === 'string' && (ISO.has(t) || GROUPS.has(t) || REGIME_TOKENS.has(t));
 
 const args = process.argv.slice(2);
 const checkOnly = args.includes('--check');
@@ -66,6 +69,14 @@ function checkFacts(g: VisaGuide, where: string) {
   if (g.borders?.length && !g.visaRun) errors.push(`${where}: borders without visaRun`);
   if (g.transit && (!(g.transit.hours > 0) || g.transit.passports?.some((p) => !ISO.has(p)))) errors.push(`${where}.transit: bad hours or passports`);
   if (g.nomad && (!g.nomad.name?.trim() || !(g.nomad.months > 0) || (g.nomad.income && !isPrice(g.nomad.income)))) errors.push(`${where}.nomad: name, months, income`);
+  for (const [key, count] of [['hackScope', g.text?.en?.hacks?.length], ['pitfallScope', g.text?.en?.pitfalls?.length]] as const) {
+    const scope = g[key];
+    if (scope === undefined) continue;
+    if (!Array.isArray(scope) || scope.length !== count) errors.push(`${where}.${key}: needs one entry per ${key === 'hackScope' ? 'hack' : 'pitfall'} (${count})`);
+    else scope.forEach((s, i) => {
+      if (s !== null && (!Array.isArray(s) || !s.length || !s.every(validScope))) errors.push(`${where}.${key}[${i}]: null or a list of ISO codes, regime:<status> or @GROUP tokens`);
+    });
+  }
   for (const [i, w] of (g.waivers ?? []).entries()) {
     if (!w.holds?.length || w.holds.some((h) => !holdings.has(h))) errors.push(`${where}.waivers[${i}]: holds must be from ${[...holdings].join(', ')}`);
     if (w.passports?.some((p) => !ISO.has(p))) errors.push(`${where}.waivers[${i}]: unknown passport`);

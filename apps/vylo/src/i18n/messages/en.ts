@@ -320,6 +320,7 @@ const en: Messages = {
       domestic: 'Remote areas such as border zones may require a permit.',
       isConsulate: 'Applications go through another Schengen country’s mission — check the current arrangement.',
     },
+    othersTitle: 'How other passports get in',
     yourPassport: 'Your passport',
     withPassport: '{flag} passport',
     change: 'Change',

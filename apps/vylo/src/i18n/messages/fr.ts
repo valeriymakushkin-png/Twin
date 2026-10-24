@@ -320,6 +320,7 @@ const fr: Messages = {
       domestic: 'Les zones reculées, comme les zones frontalières, peuvent nécessiter un permis.',
       isConsulate: 'Les demandes passent par la représentation d’un autre pays de l’espace Schengen : vérifiez les modalités en vigueur.',
     },
+    othersTitle: 'Comment entrent les autres passeports',
     yourPassport: 'Votre passeport',
     withPassport: 'passeport {flag}',
     change: 'Modifier',
