@@ -110,7 +110,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const loadText = useWorldText((s) => s.load);
-  const textReady = useWorldText((s) => !!s.texts[locale] && !!s.texts.en);
+  // The reader's language is enough to render: every bundled place is written in all six languages.
+  const textReady = useWorldText((s) => !!s.texts[locale]);
   const mounted = ready && textReady;
   const isAdmin = pathname.startsWith('/admin');
 
@@ -121,9 +122,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // English is the fallback for anything not yet written in the reader's language.
+  // One language at a time keeps the download small; text added in the admin console without a translation falls back to Russian.
   useEffect(() => {
-    void loadText('en');
     void loadText(locale);
   }, [locale, loadText]);
 
