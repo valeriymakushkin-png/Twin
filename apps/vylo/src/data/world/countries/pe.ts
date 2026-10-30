@@ -430,7 +430,7 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'machupicchu-mirador-postal', city: 'machupicchu', category: 'attraction', spot: 'insta', lat: -13.1637, lng: -72.5457, image: 'bDaqeARFTkA',
+      id: 'machupicchu-mirador-postal', people: ['3DvIZQ0q7hM', 'KD9AsSBYz3Q'], city: 'machupicchu', category: 'attraction', spot: 'insta', lat: -13.1637, lng: -72.5457, image: 'bDaqeARFTkA',
       rating: 4.9, reviews: 31000, tags: ['views', 'photo', 'history', 'unesco'], price: { kind: 'fixed', amount: 152, currency: 'PEN' }, hours: '06:00–17:30',
       address: 'Casa del Guardián, Machu Picchu',
       text: {
