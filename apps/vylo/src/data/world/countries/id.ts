@@ -328,6 +328,7 @@ const pack: CountryPack = {
       id: 'lombok-gili-sunset-swings', city: 'lombok', category: 'attraction', spot: 'insta', lat: -8.3545, lng: 116.028, image: 'DgWl11vRzfs',
       rating: 4.7, reviews: 7400, tags: ['sunset', 'photo', 'beaches'], price: { kind: 'free' }, hours: 'always',
       address: 'West coast, Gili Trawangan, North Lombok',
+      people: ['rF_Z8KbUFTs'],
       text: {
         ru: { name: 'Качели на закат, Гили-Траванган', description: 'Деревянные качели, установленные прямо в воде на западном берегу острова, — главный кадр Гили, особенно когда солнце садится за вулкан Агунг на Бали.', tip: 'Приходите за час до заката, когда вода ещё по колено: снимайте с уровня воды, чтобы качели оказались на фоне силуэта Агунга.' },
         en: { name: 'Sunset swings, Gili Trawangan', description: 'Wooden swings set right in the water on the island’s west coast — the signature Gili shot, especially as the sun sinks behind Bali’s Mount Agung.', tip: 'Come an hour before sunset while the water is knee-deep and shoot from water level so the swing frames the silhouette of Agung.' },
@@ -954,6 +955,7 @@ const pack: CountryPack = {
       id: 'ubud-campuhan-ridge', city: 'ubud', category: 'nature', spot: 'insta', lat: -8.4999, lng: 115.2503, image: 'mkaYBa6KfaU',
       rating: 4.6, reviews: 12700, tags: ['hiking', 'views', 'photo', 'sunset'], price: { kind: 'free' }, hours: 'always',
       address: 'Jl. Raya Campuhan, Ubud',
+      people: ['VcqoaqKpNYw', 'cAcQU25GlHg'],
       text: {
         ru: { name: 'Хребет Кампухан', description: 'Тропа по травянистому гребню над долиной двух рек, в двух километрах от центра Убуда. Видно холмы, пальмы и рисовые поля, а на закате трава светится золотом.', tip: 'Идите на рассвете или за час до заката, когда мягкий свет. Классический кадр — шагать по тропе спиной к камере в соломенной шляпе и светлой одежде; по дороге есть кафе, а вернуться можно по асфальту.' },
         en: { name: 'Campuhan Ridge Walk', description: 'A trail along a grassy ridge above the valley of two rivers, two kilometres from the centre of Ubud. You see hills, palms and rice fields, and the grass glows gold at sunset.', tip: 'Go at sunrise or an hour before sunset for soft light. The classic shot is walking away along the path in a straw hat and pale clothes; there are cafés on the way and you can return by the paved road.' },
