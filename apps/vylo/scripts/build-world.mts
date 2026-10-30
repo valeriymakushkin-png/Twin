@@ -31,8 +31,8 @@ const CYRILLIC = /[А-Яа-яЁё]/;
 
 const args = process.argv.slice(2);
 const checkOnly = args.includes('--check');
-/** Coverage targets (food, photo spots, SEA depth) fail the check only with --strict; otherwise they are reported. */
-const strict = args.includes('--strict');
+/** Coverage targets (≥ 4 places to eat, ≥ 3 photo spots, ≥ 6 places per city, ≥ 10 in Southeast Asia) fail the build; pass --lenient to only report them. */
+const strict = !args.includes('--lenient');
 const shortfalls: string[] = [];
 /** Photo spots still showing the place photo instead of a photo of people there: optional, filled only with verified ids. */
 let peopleGaps = 0;
