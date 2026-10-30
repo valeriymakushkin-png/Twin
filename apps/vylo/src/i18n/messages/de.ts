@@ -1172,6 +1172,7 @@ const de: Messages = {
     photos: {
       broken: 'Laden fehlgeschlagen',
       onlyBroken: 'Nur Probleme',
+      reused: 'Doppelt',
       replace: 'Ersetzen',
       ok: 'Geladen',
     },

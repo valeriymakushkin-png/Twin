@@ -7,7 +7,7 @@ import { countries, destinations, places } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { photoUrl } from '@/lib/photos';
 
-type Filter = 'all' | 'broken' | 'ok';
+type Filter = 'all' | 'broken' | 'ok' | 'reused';
 
 /** Every image in the catalogue; the browser tells us which ones fail to load. */
 export default function AdminPhotos() {
@@ -25,14 +25,24 @@ export default function AdminPhotos() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [version, place, dest, country],
   );
+  // Places that show the same photo as another place: usually stand-ins that should get their own picture.
+  const uses = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const i of items) if (i.key.startsWith('p:') && i.image) m.set(i.image, (m.get(i.image) ?? 0) + 1);
+    return m;
+  }, [items]);
+  const reused = (i: { key: string; image: string }) => i.key.startsWith('p:') && (uses.get(i.image) ?? 0) > 1;
   const broken = items.filter((i) => !i.image || state[i.key] === 'broken').length;
-  const shown = items.filter((i) => filter === 'all' || (filter === 'broken' ? !i.image || state[i.key] === 'broken' : state[i.key] === 'ok'));
+  const shown = items
+    .filter((i) => filter === 'all' || (filter === 'reused' ? reused(i) : filter === 'broken' ? !i.image || state[i.key] === 'broken' : state[i.key] === 'ok'))
+    // Group places that share a photo next to each other.
+    .sort((a, b) => (filter === 'reused' ? (b.image === a.image ? 0 : (uses.get(b.image) ?? 0) - (uses.get(a.image) ?? 0) || a.image.localeCompare(b.image)) : 0));
 
   return (
     <>
       <PageHeader
         title={t('admin.nav.photos')}
-        subtitle={`${items.length} · ${t('admin.photos.broken')}: ${broken}`}
+        subtitle={`${items.length} · ${t('admin.photos.broken')}: ${broken} · ${t('admin.photos.reused')}: ${items.filter(reused).length}`}
         actions={
           <Segmented
             value={filter}
@@ -41,6 +51,7 @@ export default function AdminPhotos() {
               { value: 'all', label: t('admin.common.all') },
               { value: 'broken', label: t('admin.photos.onlyBroken') },
               { value: 'ok', label: t('admin.photos.ok') },
+              { value: 'reused', label: t('admin.photos.reused') },
             ]}
           />
         }

@@ -1172,6 +1172,7 @@ const es: Messages = {
     photos: {
       broken: 'No se ha podido cargar',
       onlyBroken: 'Solo con problemas',
+      reused: 'Repetidas',
       replace: 'Sustituir',
       ok: 'Cargada',
     },

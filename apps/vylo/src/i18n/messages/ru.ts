@@ -1174,6 +1174,7 @@ const ru = {
     photos: {
       broken: 'Не загрузились',
       onlyBroken: 'Только проблемные',
+      reused: 'Повторы',
       replace: 'Заменить',
       ok: 'Загрузились',
     },

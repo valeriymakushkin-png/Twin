@@ -1172,6 +1172,7 @@ const fr: Messages = {
     photos: {
       broken: 'Échec du chargement',
       onlyBroken: 'Problèmes uniquement',
+      reused: 'En double',
       replace: 'Remplacer',
       ok: 'Chargée',
     },
