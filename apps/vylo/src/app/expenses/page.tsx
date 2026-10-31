@@ -206,6 +206,11 @@ function Expenses() {
           </Button>
         )}
         <p className="mt-5 text-[11.5px] leading-snug text-faint">{t('expenses.disclaimer')}</p>
+        <p className="mt-1.5 text-[11.5px] leading-snug text-faint">
+          <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer" className="underline">
+            {t('expenses.credit')}
+          </a>
+        </p>
       </div>
     </div>
   );

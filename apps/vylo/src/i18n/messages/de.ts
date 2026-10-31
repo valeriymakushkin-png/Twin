@@ -1434,6 +1434,7 @@ const de: Messages = {
     emptyText: 'Erfasse Ausgaben in Landeswährung – wir rechnen in deine um.',
     export: 'CSV herunterladen',
     disclaimer: 'Ausgaben werden nur auf diesem Gerät gespeichert. Die Kurse sind Richtwerte; Bank oder Wechselstube rechnen anders.',
+    credit: 'Wechselkurse: ExchangeRate-API; Reservequelle: EZB-Referenzkurse über Frankfurter.',
   },
   phrases: {
     gloss: {
@@ -1573,6 +1574,27 @@ const de: Messages = {
       phrase: 'Sprachführer',
       misc: 'Sonstiges',
     },
+  },
+  shared: {
+    title: 'Gemeinsame Reise',
+    notFound: 'Die Reise wurde nicht gefunden oder der Link ist beschädigt.',
+    failed: 'Etwas ist schiefgelaufen. Prüfe deine Verbindung und versuche es erneut.',
+    snapshot: 'Dies ist eine Momentaufnahme der Reise aus dem Link: Du kannst sie ansehen und kopieren, Abstimmen braucht aber den Vylo-Server.',
+    ownerHint: 'Das ist deine gemeinsame Reise. Freunde stimmen über Orte ab und schlagen eigene vor – nimm sie mit dem Haken an.',
+    guestHint: 'Stimme über Orte ab und schlage eigene vor. Die Entscheidung trifft, wer die Reise erstellt hat.',
+    like: 'Dafür',
+    dislike: 'Dagegen',
+    suggestions: 'Vorschläge der Freunde',
+    noSuggestions: 'Noch hat niemand etwas vorgeschlagen.',
+    suggest: 'Ort vorschlagen…',
+    add: 'Vorschlagen',
+    accept: 'Zur Reise hinzufügen',
+    copy: 'In meine Reisen kopieren',
+    copied: 'Reise kopiert',
+    emptyTitle: 'Noch keine Orte in dieser Reise',
+    share: 'Reise teilen',
+    linkCopied: 'Link kopiert',
+    shareFailed: 'Link konnte nicht erstellt werden',
   },
 };
 

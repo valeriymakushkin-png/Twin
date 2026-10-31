@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check, ChevronLeft, ChevronRight, Map as MapIcon, Moon, Plus, Sparkles, Trash2, Wallet, X } from 'lucide-react';
+import { Check, ChevronLeft, Share2, ChevronRight, Map as MapIcon, Moon, Plus, Sparkles, Trash2, Wallet, X } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ import { VisaBadge } from '@/components/visa-badge';
 import { categoryColor, destinationById, placeById, placeHref, placesIn } from '@/data/catalog';
 import { useI18n } from '@/i18n/use';
 import { cn, daysBetween } from '@/lib/utils';
+import { shareTrip } from '@/lib/shared-trips';
 import { useApp, type ChecklistItem } from '@/store/app';
 
 function useCountdown(iso: string) {
@@ -53,6 +54,18 @@ function TripInner() {
   const accent = d.theme.accent;
   const label = (c: ChecklistItem) =>
     c.key ? tk(`trip.item.${c.key}`) : c.doc ? tk(`visa.doc.${c.doc}`) : c.apply ? t('trip.item.apply', { visa: tk(`visa.regime.${c.apply}`) }) : (c.text ?? '');
+  const share = async () => {
+    try {
+      const { link } = await shareTrip(trip.id, { name: trip.name, destinationId: trip.destinationId, start: trip.start, end: trip.end, items: trip.items.map((i) => ({ placeId: i.placeId, day: i.day, slot: i.slot })) });
+      if (navigator.share) await navigator.share({ title: trip.name, url: link }).catch(() => {});
+      else {
+        await navigator.clipboard?.writeText(link);
+        toast.success(t('shared.linkCopied'));
+      }
+    } catch {
+      toast.error(t('shared.shareFailed'));
+    }
+  };
   const autoPlan = () =>
     plus.gate(() => {
       const n = autoPlanTrip(trip.id);
@@ -67,6 +80,10 @@ function TripInner() {
         <div className="photo-scrim-top absolute inset-0" />
         <div className="pt-safe absolute inset-x-0 top-0 flex h-14 items-center justify-between px-4">
           <BackButton tone="glass" />
+          <div className="flex items-center gap-2">
+          <IconButton label={t('shared.share')} tone="glass" onClick={() => void share()}>
+            <Share2 className="size-[18px]" />
+          </IconButton>
           <IconButton
             label={t('trip.delete')}
             tone="glass"
@@ -79,6 +96,7 @@ function TripInner() {
           >
             <Trash2 className="size-[18px]" />
           </IconButton>
+          </div>
         </div>
         <div className="absolute inset-x-5 bottom-10 text-white">
           <p className="text-[13px] font-medium text-white/85">

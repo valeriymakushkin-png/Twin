@@ -1434,6 +1434,7 @@ const es: Messages = {
     emptyText: 'Anota los gastos en moneda local: los convertimos a la tuya.',
     export: 'Descargar CSV',
     disclaimer: 'Los gastos se guardan solo en este dispositivo. Los cambios son orientativos; tu banco o casa de cambio aplicará otros.',
+    credit: 'Tipos de cambio: ExchangeRate-API; fuente de respaldo: tipos de referencia del BCE vía Frankfurter.',
   },
   phrases: {
     gloss: {
@@ -1573,6 +1574,27 @@ const es: Messages = {
       phrase: 'Frases',
       misc: 'Otro',
     },
+  },
+  shared: {
+    title: 'Viaje compartido',
+    notFound: 'No se encontró el viaje o el enlace está dañado.',
+    failed: 'Algo salió mal. Revisa tu conexión e inténtalo de nuevo.',
+    snapshot: 'Esto es una instantánea del viaje incluida en el enlace: puedes verla y copiarla, pero votar requiere el servidor de Vylo.',
+    ownerHint: 'Este es tu viaje compartido. Tus amigos votan lugares y proponen otros: acéptalos con la marca.',
+    guestHint: 'Vota lugares y propón los tuyos. Decide quien creó el viaje.',
+    like: 'A favor',
+    dislike: 'En contra',
+    suggestions: 'Propuestas de amigos',
+    noSuggestions: 'Aún nadie ha propuesto nada.',
+    suggest: 'Proponer un lugar…',
+    add: 'Proponer',
+    accept: 'Añadir al viaje',
+    copy: 'Copiar a mis viajes',
+    copied: 'Viaje copiado',
+    emptyTitle: 'Aún no hay lugares en este viaje',
+    share: 'Compartir viaje',
+    linkCopied: 'Enlace copiado',
+    shareFailed: 'No se pudo crear el enlace',
   },
 };
 

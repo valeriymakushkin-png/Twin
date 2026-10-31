@@ -1434,6 +1434,7 @@ const en: Messages = {
     emptyText: 'Record spending in local currency — we convert it into yours.',
     export: 'Download CSV',
     disclaimer: 'Expenses are stored only on this device. Rates are indicative; your bank or exchange office will differ.',
+    credit: 'Exchange rates: ExchangeRate-API; backup source: ECB reference rates via Frankfurter.',
   },
   phrases: {
     gloss: {
@@ -1573,6 +1574,27 @@ const en: Messages = {
       phrase: 'Phrasebook',
       misc: 'Other',
     },
+  },
+  shared: {
+    title: 'Shared trip',
+    notFound: 'This trip was not found or the link is damaged.',
+    failed: 'Something went wrong. Check your connection and try again.',
+    snapshot: 'This is a snapshot of the trip taken from the link: you can view it and copy it, but voting needs the Vylo server.',
+    ownerHint: 'This is your shared trip. Friends vote on places and suggest their own — accept them with the tick.',
+    guestHint: 'Vote on places and suggest your own. The trip’s creator decides.',
+    like: 'For',
+    dislike: 'Against',
+    suggestions: 'Friends’ suggestions',
+    noSuggestions: 'Nobody has suggested anything yet.',
+    suggest: 'Suggest a place…',
+    add: 'Suggest',
+    accept: 'Add to the trip',
+    copy: 'Copy to my trips',
+    copied: 'Trip copied',
+    emptyTitle: 'No places in this trip yet',
+    share: 'Share trip',
+    linkCopied: 'Link copied',
+    shareFailed: 'Could not create the link',
   },
 };
 

@@ -48,4 +48,12 @@ NEXT_PUBLIC_VYLO_API=https://api.example.com pnpm --filter @vylo/app build
 `POST /users/:id/reset-password` · `POST /owner/transfer` · `GET /audit` · `POST /audit/:id/revert` ·
 `POST /uploads` (jpeg/png/webp/avif до 8 МБ) · `GET /uploads/:file`.
 
+Публичные (без входа, с ограничением частоты по адресу): `POST /public/reports` (жалоба на ошибку) ·
+`POST /public/photos` (фото путешественника до 4 МБ: заголовки `x-place-id`, `x-consent: 1`, `x-credit`; файл получает
+непредсказуемое имя и остаётся неопубликованным до одобрения) · `POST /public/trips` (создать общую поездку, в ответе
+код и ключ редактирования) · `GET /public/trips/:code` · `PUT /public/trips/:code` (заголовок `x-edit-key`) ·
+`POST /public/trips/:code/vote|suggest`. Модерация (роль «модератор»): `GET /submissions?status=` ·
+`PATCH /submissions/:id` (одобрить, исправлено, отклонить; отклонённое фото удаляется). За обратным прокси передавайте
+реальный адрес клиента, иначе лимиты считаются по адресу прокси.
+
 Для production поставьте сервер за HTTPS-прокси (nginx, Caddy) и делайте резервные копии папки `data/`.
