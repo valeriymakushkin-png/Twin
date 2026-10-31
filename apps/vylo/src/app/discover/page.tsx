@@ -10,6 +10,7 @@ import { DailyPickCard, QuestStrip } from '@/components/daily';
 import { SearchOverlay } from '@/components/map/search-overlay';
 import { Photo } from '@/components/photo';
 import { RegionExplorer } from '@/components/region-explorer';
+import { ToolsStrip } from '@/components/tools-strip';
 import { Avatar, Chip, SectionHeader, UserName } from '@/components/ui';
 import { countryHref, destinationById, destinationHref, destinations, isHiddenReview, overrides, placeHref, places } from '@/data/catalog';
 import { guides, reviews, stories, users } from '@/data/social';
@@ -96,6 +97,8 @@ export default function DiscoverPage() {
           </button>
         ))}
       </div>
+
+      <ToolsStrip />
 
       <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto px-5 pb-2">
         {tabs.map((tb) => (

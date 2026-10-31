@@ -9,6 +9,7 @@ import { HeroPage } from '@/components/hero';
 import { Photo } from '@/components/photo';
 import { useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
+import { SunCard } from '@/components/sun-card';
 import { Rating, Tag } from '@/components/ui';
 import { categoryColor, countryHref, destinationById, destinationHref, isHiddenReview, placeById, placesIn } from '@/data/catalog';
 import { reviews } from '@/data/social';
@@ -168,6 +169,8 @@ export function PlaceScreen({ id }: { id: string }) {
             </div>
           </section>
         )}
+
+        {(p.spot === 'insta' || p.category === 'nature') && <SunCard lat={p.lat} lng={p.lng} country={d.countryCode} fixedTimezone={d.timezone} accent={accent} />}
 
         <Link href={destinationHref(d.id)} className="press relative block h-28 overflow-hidden rounded-[24px]">
           <Photo id={d.image} alt={dest(d.id).name} width={800} className="absolute inset-0" tint={accent} />
