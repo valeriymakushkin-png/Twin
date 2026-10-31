@@ -8,6 +8,9 @@ import { PlaceRow, ReviewCard } from '@/components/cards';
 import { HeroPage } from '@/components/hero';
 import { Photo } from '@/components/photo';
 import { useRouteActions } from '@/components/route-actions';
+import { ReportButton } from '@/components/report';
+import { ShareShot } from '@/components/share-shot';
+import { LOCALE_META } from '@/i18n/config';
 import { SpotBadge } from '@/components/spot-badge';
 import { SunCard } from '@/components/sun-card';
 import { Rating, Tag } from '@/components/ui';
@@ -25,7 +28,7 @@ export function PlaceScreen({ id }: { id: string }) {
   const myReviews = useApp((s) => s.myReviews);
   const markViewed = useApp((s) => s.markViewed);
   const openSheet = useUI((s) => s.openSheet);
-  const { t, tk, f, place, dest, country } = useI18n();
+  const { t, tk, f, place, dest, country, locale } = useI18n();
   const text = place(id);
   const { addToRoute, routeHere, inRoute } = useRouteActions();
   const accent = d.theme.accent;
@@ -160,6 +163,8 @@ export function PlaceScreen({ id }: { id: string }) {
           </section>
         )}
 
+        {p.spot === 'insta' && <ShareShot placeId={p.id} accent={accent} />}
+
         {text.tip && (
           <section>
             <h2 className="text-[19px] font-bold tracking-[-0.02em]">{p.spot === 'insta' ? t('spots.photoTip') : p.spot === 'hidden' ? t('spots.findTip') : p.category === 'food' ? t('eat.order') : t('place.tips')}</h2>
@@ -171,6 +176,11 @@ export function PlaceScreen({ id }: { id: string }) {
         )}
 
         {(p.spot === 'insta' || p.category === 'nature') && <SunCard lat={p.lat} lng={p.lng} country={d.countryCode} fixedTimezone={d.timezone} accent={accent} />}
+
+        <div className="flex items-center justify-between gap-3 text-[12px] text-faint">
+          <span>{p.verified ? t('verify.on', { date: new Date(`${p.verified}T00:00:00`).toLocaleDateString(LOCALE_META[locale].bcp47, { day: 'numeric', month: 'long', year: 'numeric' }) }) : t('verify.off')}</span>
+          <ReportButton kind="place" target={p.id} />
+        </div>
 
         <Link href={destinationHref(d.id)} className="press relative block h-28 overflow-hidden rounded-[24px]">
           <Photo id={d.image} alt={dest(d.id).name} width={800} className="absolute inset-0" tint={accent} />

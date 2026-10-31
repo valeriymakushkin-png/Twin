@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarRange, Compass, Hourglass, Route, type LucideIcon } from 'lucide-react';
+import { CalendarRange, CloudDownload, Compass, Hourglass, MessageSquareText, Route, Wallet, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useI18n } from '@/i18n/use';
 import type { MessageKey } from '@/i18n';
@@ -17,6 +17,9 @@ const TOOLS: Tool[] = [
   { href: '/where/', icon: Compass, title: 'tools.where', text: 'tools.whereText', color: 'from-[#2dd4bf] to-[#0891b2]' },
   { href: '/visa/stay/', icon: Hourglass, title: 'stay.title', text: 'stay.cardText', color: 'from-[#fb7185] to-[#e11d48]' },
   { href: '/visa/chain/', icon: Route, title: 'chain.title', text: 'chain.cardText', color: 'from-[#34d399] to-[#0d9488]' },
+  { href: '/expenses/', icon: Wallet, title: 'expenses.title', text: 'expenses.cardText', color: 'from-[#818cf8] to-[#0ea5e9]' },
+  { href: '/phrases/', icon: MessageSquareText, title: 'phrases.title', text: 'phrases.cardText', color: 'from-[#f472b6] to-[#8b5cf6]' },
+  { href: '/offline/', icon: CloudDownload, title: 'offlineMgr.manageTitle', text: 'offlineMgr.cardText', color: 'from-[#64748b] to-[#334155]' },
   { href: '/plan/', icon: CalendarRange, title: 'tools.plan', text: 'tools.planText', color: 'from-[#f59e0b] to-[#e11d48]' },
 ];
 

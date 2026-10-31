@@ -35,6 +35,12 @@ export interface CatalogSettings {
   /** Destinations pinned to the top of "Popular" */
   featured?: string[];
   /** Day planner: how many places a day holds at each pace (meals and the sunset photo stop included) */
+  /** Phrasebook wording the team corrected, by language and phrase id */
+  phrases?: Record<string, Record<string, { text?: string; roman?: string }>>;
+  /** Languages whose phrasebook a native speaker has checked, with the date (YYYY-MM-DD) */
+  phrasesReviewed?: Record<string, string>;
+  /** Exchange rates the team pinned (units per 1 USD); they override the live rates */
+  rates?: { perUSD: Record<string, number>; asOf?: string };
   planner?: { perDay?: Partial<Record<'relaxed' | 'balanced' | 'packed', number>> };
 }
 

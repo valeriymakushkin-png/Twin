@@ -108,11 +108,11 @@ function TripInner() {
             <p className="mt-1.5 text-[18px] font-bold">{f.number(nights)}</p>
             <p className="text-[11px] text-muted">{t('trip.nightsWord', { count: nights })}</p>
           </div>
-          <div className="rounded-[20px] bg-white p-3 shadow-soft">
+          <Link href={`/expenses/?trip=${trip.id}`} className="press rounded-[20px] bg-white p-3 shadow-soft">
             <Wallet className="size-[18px] text-mint" />
             <p className="mt-1.5 text-[18px] font-bold">~{f.money(d.budgetPerDay * days, 'USD')}</p>
             <p className="text-[11px] text-muted">{t('trip.budget')}</p>
-          </div>
+          </Link>
           <div className="rounded-[20px] bg-white p-3 shadow-soft">
             <Check className="size-[18px] text-amber" />
             <p className="mt-1.5 text-[18px] font-bold">{f.percent(done / Math.max(1, trip.checklist.length), 0)}</p>

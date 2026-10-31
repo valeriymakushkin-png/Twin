@@ -145,6 +145,7 @@ interface State {
   stopPlus: () => void;
   setPassportCover: (c: PassportCover) => void;
   markOffline: (destinationId: string) => void;
+  unmarkOffline: (destinationId: string) => void;
   reset: () => void;
 }
 
@@ -479,6 +480,7 @@ export const useApp = create<State>()(
         stopPlus: () => set((s) => ({ plus: { active: false, plan: null, since: 0 }, passportCover: 'classic', profile: { ...s.profile, avatar: { ...s.profile.avatar, accessory: Math.min(s.profile.avatar.accessory, 5) } } })),
         setPassportCover: (passportCover) => set({ passportCover }),
         markOffline: (id) => set((s) => ({ offline: s.offline.includes(id) ? s.offline : [...s.offline, id] })),
+        unmarkOffline: (id) => set((s) => ({ offline: s.offline.filter((x) => x !== id) })),
 
         reset: () => set({ ...initial(), locale: get().locale }),
       };

@@ -44,6 +44,8 @@ export interface Destination {
   timezone: string;
   zoom: number;
   theme: Theme;
+  /** Date (YYYY-MM-DD) the team last checked this city's facts against a primary source */
+  verified?: string;
 }
 
 export type Price =
@@ -65,6 +67,8 @@ export interface Place {
   price?: Price;
   /** "HH:MM–HH:MM" or "always" */
   hours?: string;
+  /** Date (YYYY-MM-DD) the team last checked name, location, hours and price against a primary source */
+  verified?: string;
   /** Photo spot or a lesser-known gem */
   spot?: 'insta' | 'hidden';
   /** Unsplash photos of travellers posing at this very spot — what the shot looks like in real life (photo spots) */

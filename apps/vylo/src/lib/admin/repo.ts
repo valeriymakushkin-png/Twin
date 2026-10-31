@@ -4,6 +4,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { emptyOverrides, overrides as currentOverrides, type CatalogOverrides, type CatalogSettings } from '@/data/catalog';
 import { api, hasApi } from '@/lib/api';
+import { localReports } from '@/lib/community';
 import { useCatalog } from '@/store/catalog';
 import { can, canManage, type Role } from './roles';
 
@@ -36,6 +37,19 @@ export interface AuditEntry {
   after?: unknown;
 }
 
+/** Something a traveller sent: an error report or a photo, waiting for a moderator. */
+export interface Submission {
+  id: string;
+  /** "photo" or "report:<kind>" */
+  kind: string;
+  target: string;
+  status: 'new' | 'approved' | 'rejected' | 'done';
+  createdAt: number;
+  payload: { message?: string; contact?: string; credit?: string; locale?: string };
+  /** Photos: where the pending picture can be viewed */
+  url?: string;
+}
+
 export type EntityKind = 'destinations' | 'places' | 'countries';
 export interface Session {
   token: string;
@@ -62,6 +76,8 @@ export interface AdminRepo {
   audit(token: string): Promise<AuditEntry[]>;
   undo(token: string, id: number): Promise<void>;
   upload(token: string, file: Blob): Promise<string>;
+  submissions(token: string, status: Submission['status']): Promise<{ list: Submission[]; counts: Record<string, number> }>;
+  reviewSubmission(token: string, id: string, status: Submission['status'], note?: string): Promise<void>;
 }
 
 export class AdminError extends Error {}
@@ -91,6 +107,11 @@ const remote: AdminRepo = {
   audit: async (token) => (await api<{ entries: AuditEntry[] }>('/audit?limit=200', { token })).entries,
   undo: async (token, id) => applyRemote(await api(`/audit/${id}/revert`, { method: 'POST', token })),
   upload: async (token, file) => (await api<{ url: string }>('/uploads', { method: 'POST', token, body: file, headers: { 'content-type': file.type } })).url,
+  submissions: async (token, status) => {
+    const r = await api<{ submissions: Submission[]; counts: Record<string, number> }>(`/submissions?status=${status}`, { token });
+    return { list: r.submissions, counts: r.counts };
+  },
+  reviewSubmission: async (token, id, status, note) => void (await api(`/submissions/${id}`, { method: 'PATCH', token, body: JSON.stringify({ status, note }) })),
 };
 
 // ---------------------------------------------------------------------------------------------
@@ -328,7 +349,30 @@ const local: AdminRepo = {
     requireRole(sessionOf(loadDb(), token), 'upload');
     return toDataUrl(file);
   },
+  // Without a server, reports are kept in this browser (see lib/community); photos cannot be sent at all.
+  submissions: async (token, status) => {
+    requireRole(sessionOf(loadDb(), token), 'moderate');
+    const reports = localReports();
+    const state = reviewState();
+    const all: Submission[] = reports.map((r) => ({ id: r.id, kind: `report:${r.kind}`, target: r.target, status: state[r.id] ?? 'new', createdAt: r.at, payload: { message: r.message, contact: r.contact } }));
+    const counts: Record<string, number> = {};
+    for (const x of all) counts[x.status] = (counts[x.status] ?? 0) + 1;
+    return { list: all.filter((x) => x.status === status), counts };
+  },
+  reviewSubmission: async (token, id, status) => {
+    requireRole(sessionOf(loadDb(), token), 'moderate');
+    localStorage.setItem(REVIEW_KEY, JSON.stringify({ ...reviewState(), [id]: status }));
+  },
 };
+
+const REVIEW_KEY = 'vylo-reports-review-v1';
+function reviewState(): Record<string, Submission['status']> {
+  try {
+    return JSON.parse(localStorage.getItem(REVIEW_KEY) ?? '{}');
+  } catch {
+    return {};
+  }
+}
 
 export const adminRepo: AdminRepo = hasApi() ? remote : local;
 

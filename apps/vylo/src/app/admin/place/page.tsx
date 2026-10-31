@@ -146,6 +146,9 @@ function PlaceEditor() {
         <Row label={t('admin.edit.hours')} hint={t('admin.edit.hoursHint')}>
           <TextInput disabled={!canEdit} value={p.hours ?? ''} onChange={(e) => set('hours', e.target.value || undefined)} placeholder="09:00–18:00" />
         </Row>
+        <Row label={t('verify.label')} hint={t('verify.hint')}>
+          <TextInput disabled={!canEdit} type="date" value={p.verified ?? ''} onChange={(e) => set('verified', e.target.value || undefined)} className="w-44" />
+        </Row>
         <Row label={t('admin.edit.tags')}>
           <TagPicker value={p.tags} onChange={(v) => set('tags', v)} disabled={!canEdit} />
         </Row>

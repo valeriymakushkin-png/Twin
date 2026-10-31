@@ -19,6 +19,7 @@ import {
   Route,
   Share2,
   Wallet,
+  MessageSquareText,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -32,6 +33,7 @@ import { cityRouteIds, useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
 import { Button, Chip, Rating, SectionHeader, Tag, UnderlineTabs } from '@/components/ui';
 import { VisaBadge } from '@/components/visa-badge';
+import { phraseLanguages } from '@/data/phrases';
 import { categoryColor, countryHref, destinationById, isHiddenReview, placeHref, placesIn } from '@/data/catalog';
 import { useVisa } from '@/store/visa';
 import { reviews } from '@/data/social';
@@ -366,6 +368,11 @@ export function DestinationScreen({ id }: { id: string }) {
                   </div>
                 ))}
               </div>
+              {(phraseLanguages as readonly string[]).includes(d.language) && (
+                <Link href={`/phrases/?lang=${d.language}`} className="press mt-2.5 flex h-12 items-center justify-center gap-2 rounded-full text-[14px] font-semibold" style={{ background: `${accent}14`, color: accent }}>
+                  <MessageSquareText className="size-4" /> {t('phrases.forDestination', { language: f.language(d.language) })}
+                </Link>
+              )}
             </section>
 
             <section>

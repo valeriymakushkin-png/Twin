@@ -122,6 +122,9 @@ function CityEditor() {
         <Row label={t('admin.edit.tags')}>
           <TagPicker value={d.tags} onChange={(v) => set('tags', v)} disabled={!canEdit} />
         </Row>
+        <Row label={t('verify.label')} hint={t('verify.hint')}>
+          <TextInput disabled={!canEdit} type="date" value={d.verified ?? ''} onChange={(e) => set('verified', e.target.value || undefined)} className="w-44" />
+        </Row>
         <Row label={t('admin.edit.months')}>
           <MonthPicker value={d.months} onChange={(v) => set('months', v)} disabled={!canEdit} />
         </Row>

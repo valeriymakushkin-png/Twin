@@ -100,6 +100,65 @@ describe('Vylo API', () => {
     assert.equal((await call('POST', '/uploads', png, editor, { 'content-type': 'text/html' })).status, 415);
   });
 
+  it('collects error reports from anyone and lets moderators work the queue', async () => {
+    assert.equal((await call('POST', '/public/reports', { kind: 'place', target: 'berlin-tv-tower', message: 'Closed on Mondays, not Tuesdays' })).status, 200);
+    assert.equal((await call('POST', '/public/reports', { kind: 'nonsense', target: 'x', message: 'hello there' })).status, 400);
+    assert.equal((await call('POST', '/public/reports', { kind: 'visa', target: 'TH', message: 'ab' })).status, 400);
+    assert.equal((await call('GET', '/submissions', undefined)).status, 401);
+    const list = await call<{ submissions: { id: string; kind: string; target: string; payload: { message: string } }[]; counts: Record<string, number> }>('GET', '/submissions?status=new', undefined, moderator);
+    assert.equal(list.status, 200);
+    const report = list.data.submissions.find((x) => x.kind === 'report:place')!;
+    assert.equal(report.payload.message, 'Closed on Mondays, not Tuesdays');
+    assert.equal((await call('PATCH', `/submissions/${report.id}`, { status: 'done', note: 'Fixed' }, moderator)).status, 200);
+    assert.equal((await call<{ submissions: unknown[] }>('GET', '/submissions?status=new', undefined, moderator)).data.submissions.filter((x) => (x as { id: string }).id === report.id).length, 0);
+  });
+
+  it('takes traveller photos only with consent, keeps them private until approved and deletes rejected ones', async () => {
+    const png = Uint8Array.from(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64'));
+    const head = { 'content-type': 'image/png', 'x-place-id': 'berlin-tv-tower' };
+    assert.equal((await call('POST', '/public/photos', png, undefined, head)).data.error, 'consent_required');
+    assert.equal((await call('POST', '/public/photos', Uint8Array.from(Buffer.from('<html>not an image</html>')), undefined, { ...head, 'x-consent': '1' })).status, 415);
+    assert.equal((await call('POST', '/public/photos', png, undefined, { ...head, 'x-consent': '1', 'x-place-id': '../etc' })).status, 400);
+    assert.equal((await call('POST', '/public/photos', png, undefined, { ...head, 'x-consent': '1', 'x-credit': encodeURIComponent('Anna K.') })).status, 200);
+    const list = await call<{ submissions: { id: string; kind: string; target: string; url: string; payload: { credit: string } }[] }>('GET', '/submissions?status=new', undefined, moderator);
+    const photo = list.data.submissions.find((x) => x.kind === 'photo')!;
+    assert.equal(photo.target, 'berlin-tv-tower');
+    assert.equal(photo.payload.credit, 'Anna K.');
+    assert.equal((await fetch(photo.url.replace(/^http:\/\/[^/]+/, base))).status, 200);
+    assert.equal((await call('PATCH', `/submissions/${photo.id}`, { status: 'rejected' }, moderator)).status, 200);
+    assert.equal((await fetch(photo.url.replace(/^http:\/\/[^/]+/, base))).status, 404);
+  });
+
+  it('shares a trip by link: read, vote and suggest for everyone, edit with the key', async () => {
+    const trip = { name: 'Berlin', destinationId: 'berlin', start: '2027-05-01', end: '2027-05-03', items: [{ placeId: 'berlin-tv-tower', day: 0, slot: 'morning' }, { placeId: 'berlin-brandenburg-gate', day: 1 }] };
+    const made = await call<{ code: string; key: string }>('POST', '/public/trips', trip);
+    assert.equal(made.status, 200);
+    const { code, key } = made.data;
+    assert.equal((await call('POST', '/public/trips', { ...trip, items: [{ placeId: '../x', day: 0 }] })).status, 400);
+
+    const voter = 'voter-aaaa-1111';
+    const seen = await call<{ trip: { name: string }; votes: Record<string, { up: number }> }>('GET', `/public/trips/${code}?voter=${voter}`);
+    assert.equal(seen.data.trip.name, 'Berlin');
+    const v1 = await call<{ votes: Record<string, { up: number; down: number; mine: number }> }>('POST', `/public/trips/${code}/vote`, { voter, item: 'berlin-tv-tower', value: 1 });
+    assert.deepEqual(v1.data.votes['berlin-tv-tower'], { up: 1, down: 0, mine: 1 });
+    await call('POST', `/public/trips/${code}/vote`, { voter: 'voter-bbbb-2222', item: 'berlin-tv-tower', value: -1 });
+    const v2 = await call<{ votes: Record<string, { up: number; down: number }> }>('POST', `/public/trips/${code}/vote`, { voter, item: 'berlin-tv-tower', value: 1 });
+    assert.equal(v2.data.votes['berlin-tv-tower']!.up, 1);
+    assert.equal(v2.data.votes['berlin-tv-tower']!.down, 1);
+    assert.equal((await call('POST', `/public/trips/${code}/vote`, { voter, item: 'not-in-trip', value: 1 })).status, 404);
+
+    const sug = await call<{ suggestions: { placeId: string }[] }>('POST', `/public/trips/${code}/suggest`, { voter, placeId: 'berlin-museum-island' });
+    assert.equal(sug.data.suggestions.length, 1);
+
+    assert.equal((await call('PUT', `/public/trips/${code}`, { trip }, undefined, { 'x-edit-key': 'wrong' })).status, 403);
+    const taken = { ...trip, items: [...trip.items, { placeId: 'berlin-museum-island', day: 1 }] };
+    const edited = await call<{ trip: { items: unknown[] }; suggestions: unknown[] }>('PUT', `/public/trips/${code}`, { trip: taken }, undefined, { 'x-edit-key': key });
+    assert.equal(edited.status, 200);
+    assert.equal(edited.data.trip.items.length, 3);
+    assert.equal(edited.data.suggestions.length, 0);
+    assert.equal((await call('GET', '/public/trips/nope1234')).status, 404);
+  });
+
   it('revokes sessions when a role changes and transfers ownership', async () => {
     assert.equal((await call('PATCH', `/users/${editorId}`, { role: 'admin' }, owner)).status, 200);
     assert.equal((await call('GET', '/auth/me', undefined, editor)).status, 401);

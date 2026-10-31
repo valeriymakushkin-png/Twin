@@ -1,5 +1,5 @@
-import { createHash, randomUUID } from 'node:crypto';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { createHash, randomBytes, randomUUID } from 'node:crypto';
+import { mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { extname, join } from 'node:path';
 import { hashPassword, readToken, signToken, tempPassword, verifyPassword } from './auth.ts';
@@ -28,6 +28,7 @@ const ID = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/;
 const TOKEN_TTL = 30 * 24 * 3600 * 1000;
 const MAX_JSON = 512 * 1024;
 const MAX_UPLOAD = 8 * 1024 * 1024;
+const MAX_PUBLIC_PHOTO = 4 * 1024 * 1024;
 const IMAGE_TYPES: Record<string, string> = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/avif': '.avif' };
 
 class HttpError extends Error {
@@ -343,6 +344,213 @@ export function createApp(config: Config) {
     return { url: `${base.replace(/\/$/, '')}/uploads/${file}` };
   });
 
+  // --- Traveller submissions: error reports and photos ----------------------------------------
+  // Anyone may send these; nothing is published until a moderator approves it. Per-address limits keep
+  // the queue usable (an address behind a proxy needs the proxy to pass the real one on).
+  const buckets = new Map<string, number[]>();
+  const limit = (req: IncomingMessage, name: string, max: number, windowMs: number) => {
+    const key = `${name}:${req.socket.remoteAddress ?? '?'}`;
+    const now = Date.now();
+    const recent = (buckets.get(key) ?? []).filter((t) => now - t < windowMs);
+    if (recent.length >= max) throw new HttpError(429, 'too_many_requests');
+    recent.push(now);
+    buckets.set(key, recent);
+  };
+  const text = (v: unknown, min: number, max: number, code: string) => {
+    if (typeof v !== 'string') throw new HttpError(400, code);
+    const t = v.trim();
+    if (t.length < min || t.length > max) throw new HttpError(400, code);
+    return t;
+  };
+  const REPORT_KINDS = ['place', 'city', 'country', 'visa', 'phrase', 'other'];
+
+  route('POST', '/public/reports', async ({ req, body }) => {
+    limit(req, 'report', 8, 3600_000);
+    const b = (await body()) as Record<string, unknown>;
+    if (typeof b.kind !== 'string' || !REPORT_KINDS.includes(b.kind)) throw new HttpError(400, 'invalid_kind');
+    const target = text(b.target, 1, 80, 'invalid_target');
+    const message = text(b.message, 5, 1000, 'invalid_message');
+    const contact = b.contact === undefined || b.contact === '' ? undefined : text(b.contact, 3, 120, 'invalid_contact');
+    const id = randomUUID();
+    db.prepare('INSERT INTO submissions (id, kind, target, payload, created_at) VALUES (?, ?, ?, ?, ?)').run(id, `report:${b.kind}`, target, JSON.stringify({ message, contact, locale: typeof b.locale === 'string' ? b.locale.slice(0, 5) : undefined }), Date.now());
+    return { ok: true, id };
+  });
+
+  const sniff = (d: Buffer) => {
+    if (d.length > 12 && d[0] === 0xff && d[1] === 0xd8 && d[2] === 0xff) return 'image/jpeg';
+    if (d.length > 12 && d.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return 'image/png';
+    if (d.length > 12 && d.subarray(0, 4).toString() === 'RIFF' && d.subarray(8, 12).toString() === 'WEBP') return 'image/webp';
+    return undefined;
+  };
+
+  route('POST', '/public/photos', async ({ req, raw }) => {
+    limit(req, 'photo', 6, 3600_000);
+    const place = String(req.headers['x-place-id'] ?? '');
+    if (!ID.test(place)) throw new HttpError(400, 'invalid_place');
+    // The traveller must confirm they took the picture and agree to its use in the app.
+    if (req.headers['x-consent'] !== '1') throw new HttpError(400, 'consent_required');
+    const credit = decodeURIComponent(String(req.headers['x-credit'] ?? '')).trim().slice(0, 80);
+    const data = await raw();
+    const type = sniff(data);
+    if (!type) throw new HttpError(415, 'unsupported_type');
+    // Unguessable name: the file is reachable only by whoever holds the link until a moderator publishes it.
+    const file = `${randomBytes(12).toString('hex')}${IMAGE_TYPES[type]}`;
+    writeFileSync(join(config.uploadDir, file), data);
+    db.prepare('INSERT INTO uploads (file, mime, size, user_id, at) VALUES (?, ?, ?, NULL, ?)').run(file, type, data.length, Date.now());
+    const id = randomUUID();
+    db.prepare('INSERT INTO submissions (id, kind, target, payload, file, created_at) VALUES (?, ?, ?, ?, ?, ?)').run(id, 'photo', place, JSON.stringify({ credit: credit || undefined, size: data.length }), file, Date.now());
+    return { ok: true, id };
+  });
+
+  const submissionRow = (r: Record<string, unknown>, base: string) => ({
+    id: r.id,
+    kind: r.kind,
+    target: r.target,
+    status: r.status,
+    createdAt: r.created_at,
+    reviewedAt: r.reviewed_at,
+    note: r.note,
+    payload: JSON.parse(String(r.payload)),
+    url: r.file ? `${base}/uploads/${r.file}` : undefined,
+  });
+
+  route('GET', '/submissions', ({ req, query }) => {
+    require(req, 'moderate');
+    const status = query.get('status') ?? 'new';
+    const base = (config.publicUrl ?? `http://${req.headers.host}`).replace(/\/$/, '');
+    const rows = db.prepare('SELECT * FROM submissions WHERE status = ? ORDER BY created_at DESC LIMIT 200').all(status) as Record<string, unknown>[];
+    const counts = db.prepare("SELECT status, COUNT(*) AS n FROM submissions GROUP BY status").all() as { status: string; n: number }[];
+    return { submissions: rows.map((r) => submissionRow(r, base)), counts: Object.fromEntries(counts.map((c) => [c.status, c.n])) };
+  });
+
+  route('PATCH', '/submissions/:id', async ({ req, body, params }) => {
+    const u = require(req, 'moderate');
+    const b = (await body()) as Record<string, unknown>;
+    if (b.status !== 'approved' && b.status !== 'rejected' && b.status !== 'done' && b.status !== 'new') throw new HttpError(400, 'invalid_status');
+    const row = db.prepare('SELECT * FROM submissions WHERE id = ?').get(params[0]!) as Record<string, unknown> | undefined;
+    if (!row) throw new HttpError(404, 'not_found');
+    const note = b.note === undefined ? null : text(b.note, 0, 300, 'invalid_note');
+    db.prepare('UPDATE submissions SET status = ?, note = ?, reviewed_by = ?, reviewed_at = ? WHERE id = ?').run(b.status, note, u.id, Date.now(), row.id as string);
+    // A rejected photo is deleted: it was never published and the traveller owns it.
+    if (b.status === 'rejected' && row.file) {
+      try {
+        unlinkSync(join(config.uploadDir, String(row.file)));
+      } catch {
+        /* already gone */
+      }
+      db.prepare('DELETE FROM uploads WHERE file = ?').run(row.file as string);
+    }
+    audit(u, `submission.${b.status}`, 'submissions', String(row.id), { status: row.status }, { status: b.status, target: row.target });
+    return { ok: true };
+  });
+
+  // --- Shared trips -----------------------------------------------------------------------------
+  // A link with a short code opens the trip for anyone: read, vote on places and suggest more. Changing the
+  // trip itself needs the edit key the creator received, stored here only as a hash.
+  const CODE_ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789';
+  const newCode = () => Array.from(randomBytes(8), (b) => CODE_ALPHABET[b % CODE_ALPHABET.length]).join('');
+  const hashKey = (k: string) => createHash('sha256').update(k).digest('hex');
+  const tripBody = (v: unknown) => {
+    const t = v as Record<string, unknown> | null;
+    if (!t || typeof t !== 'object') throw new HttpError(400, 'invalid_trip');
+    const items = Array.isArray(t.items) ? t.items : [];
+    if (items.length > 200) throw new HttpError(400, 'too_many_items');
+    return {
+      name: text(t.name, 1, 80, 'invalid_name'),
+      destinationId: text(t.destinationId, 1, 64, 'invalid_destination'),
+      start: text(t.start, 10, 10, 'invalid_date'),
+      end: text(t.end, 10, 10, 'invalid_date'),
+      items: items.map((i) => {
+        const it = i as Record<string, unknown>;
+        if (typeof it.placeId !== 'string' || !ID.test(it.placeId) || typeof it.day !== 'number' || !Number.isInteger(it.day) || it.day < 0 || it.day > 60) throw new HttpError(400, 'invalid_item');
+        return { placeId: it.placeId, day: it.day, slot: typeof it.slot === 'string' ? it.slot.slice(0, 12) : undefined };
+      }),
+    };
+  };
+  type TripRow = { code: string; key_hash: string; data: string; votes: string; suggestions: string; updated_at: number };
+  const tripRow = (code: string) => {
+    const r = db.prepare('SELECT * FROM shared_trips WHERE code = ?').get(code) as TripRow | undefined;
+    if (!r) throw new HttpError(404, 'not_found');
+    return r;
+  };
+  type Votes = Record<string, Record<string, 1 | -1>>;
+  const tripView = (r: TripRow, voter: string | null) => {
+    const votes = JSON.parse(r.votes) as Votes;
+    return {
+      code: r.code,
+      trip: JSON.parse(r.data),
+      suggestions: JSON.parse(r.suggestions) as { placeId: string; by: string; at: number }[],
+      votes: Object.fromEntries(Object.entries(votes).map(([item, v]) => [item, { up: Object.values(v).filter((x) => x === 1).length, down: Object.values(v).filter((x) => x === -1).length, mine: voter ? (v[voter] ?? 0) : 0 }])),
+      updatedAt: r.updated_at,
+    };
+  };
+  const voterId = (v: unknown) => {
+    if (typeof v !== 'string' || !/^[A-Za-z0-9_-]{8,64}$/.test(v)) throw new HttpError(400, 'invalid_voter');
+    return v;
+  };
+
+  route('POST', '/public/trips', async ({ req, body }) => {
+    limit(req, 'trip', 10, 3600_000);
+    const trip = tripBody(await body());
+    const code = newCode();
+    const key = randomBytes(18).toString('hex');
+    const now = Date.now();
+    db.prepare('INSERT INTO shared_trips (code, key_hash, data, created_at, updated_at) VALUES (?, ?, ?, ?, ?)').run(code, hashKey(key), JSON.stringify(trip), now, now);
+    return { code, key };
+  });
+
+  route('GET', '/public/trips/:code', ({ params, query }) => {
+    const voter = query.get('voter');
+    return tripView(tripRow(params[0]!), voter && /^[A-Za-z0-9_-]{8,64}$/.test(voter) ? voter : null);
+  });
+
+  route('PUT', '/public/trips/:code', async ({ req, body, params }) => {
+    limit(req, 'trip-edit', 60, 3600_000);
+    const r = tripRow(params[0]!);
+    if (hashKey(String(req.headers['x-edit-key'] ?? '')) !== r.key_hash) throw new HttpError(403, 'forbidden');
+    const b = (await body()) as Record<string, unknown>;
+    const trip = tripBody(b.trip);
+    // Suggestions the owner has taken up (now part of the trip) are dropped; the rest stay.
+    const taken = new Set(trip.items.map((i) => i.placeId));
+    const suggestions = (JSON.parse(r.suggestions) as { placeId: string }[]).filter((s) => !taken.has(s.placeId));
+    db.prepare('UPDATE shared_trips SET data = ?, suggestions = ?, updated_at = ? WHERE code = ?').run(JSON.stringify(trip), JSON.stringify(suggestions), Date.now(), r.code);
+    return tripView(tripRow(r.code), null);
+  });
+
+  route('POST', '/public/trips/:code/vote', async ({ req, body, params }) => {
+    limit(req, 'vote', 120, 3600_000);
+    const r = tripRow(params[0]!);
+    const b = (await body()) as Record<string, unknown>;
+    const voter = voterId(b.voter);
+    const item = text(b.item, 1, 64, 'invalid_item');
+    if (b.value !== 1 && b.value !== -1 && b.value !== 0) throw new HttpError(400, 'invalid_value');
+    const trip = JSON.parse(r.data) as { items: { placeId: string }[] };
+    const sugg = JSON.parse(r.suggestions) as { placeId: string }[];
+    if (!trip.items.some((i) => i.placeId === item) && !sugg.some((s) => s.placeId === item)) throw new HttpError(404, 'unknown_item');
+    const votes = JSON.parse(r.votes) as Votes;
+    votes[item] ??= {};
+    if (b.value === 0) delete votes[item]![voter];
+    else votes[item]![voter] = b.value;
+    db.prepare('UPDATE shared_trips SET votes = ?, updated_at = ? WHERE code = ?').run(JSON.stringify(votes), Date.now(), r.code);
+    return tripView(tripRow(r.code), voter);
+  });
+
+  route('POST', '/public/trips/:code/suggest', async ({ req, body, params }) => {
+    limit(req, 'suggest', 30, 3600_000);
+    const r = tripRow(params[0]!);
+    const b = (await body()) as Record<string, unknown>;
+    const voter = voterId(b.voter);
+    const placeId = text(b.placeId, 1, 64, 'invalid_item');
+    if (!ID.test(placeId)) throw new HttpError(400, 'invalid_item');
+    const trip = JSON.parse(r.data) as { items: { placeId: string }[] };
+    const sugg = JSON.parse(r.suggestions) as { placeId: string; by: string; at: number }[];
+    if (trip.items.some((i) => i.placeId === placeId) || sugg.some((s) => s.placeId === placeId)) return tripView(r, voter);
+    if (sugg.length >= 50 || sugg.filter((s) => s.by === voter).length >= 5) throw new HttpError(429, 'too_many_suggestions');
+    sugg.push({ placeId, by: voter, at: Date.now() });
+    db.prepare('UPDATE shared_trips SET suggestions = ?, updated_at = ? WHERE code = ?').run(JSON.stringify(sugg), Date.now(), r.code);
+    return tripView(tripRow(r.code), voter);
+  });
+
   // --- HTTP plumbing --------------------------------------------------------------------------
   const readBody = (req: IncomingMessage, limit: number) =>
     new Promise<Buffer>((resolve, reject) => {
@@ -365,7 +573,7 @@ export function createApp(config: Config) {
     if (config.allowedOrigins.includes('*') || config.allowedOrigins.includes(origin)) {
       res.setHeader('access-control-allow-origin', origin);
       res.setHeader('vary', 'origin');
-      res.setHeader('access-control-allow-headers', 'authorization, content-type');
+      res.setHeader('access-control-allow-headers', 'authorization, content-type, x-edit-key, x-place-id, x-consent, x-credit');
       res.setHeader('access-control-allow-methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
       res.setHeader('access-control-max-age', '600');
     } else if (req.method === 'GET' && req.url?.startsWith('/content')) {
@@ -397,7 +605,7 @@ export function createApp(config: Config) {
         const m = url.pathname.match(r.pattern);
         if (!m) continue;
         let cached: Buffer | undefined;
-        const raw = async () => (cached ??= await readBody(req, r.method === 'POST' && url.pathname === '/uploads' ? MAX_UPLOAD : MAX_JSON));
+        const raw = async () => (cached ??= await readBody(req, r.method === 'POST' && url.pathname === '/uploads' ? MAX_UPLOAD : r.method === 'POST' && url.pathname === '/public/photos' ? MAX_PUBLIC_PHOTO : MAX_JSON));
         const body = async () => {
           const b = await raw();
           try {

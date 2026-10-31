@@ -7,6 +7,19 @@ self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim(
 
 self.addEventListener('message', (event) => {
   const { type, urls, photos, id } = event.data || {};
+  if (type === 'evict') {
+    event.waitUntil(
+      (async () => {
+        const runtime = await caches.open(RUNTIME);
+        const photoCache = await caches.open(PHOTOS);
+        for (const url of urls || []) await runtime.delete(url);
+        for (const url of photos || []) await photoCache.delete(url);
+        const clients = await self.clients.matchAll();
+        for (const c of clients) c.postMessage({ type: 'evicted', id });
+      })(),
+    );
+    return;
+  }
   if (type !== 'cache') return;
   event.waitUntil(
     (async () => {

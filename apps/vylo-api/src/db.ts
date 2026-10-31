@@ -39,6 +39,28 @@ export function openDb(file: string): Db {
       after TEXT
     );
     CREATE INDEX IF NOT EXISTS audit_at ON audit (at DESC);
+    CREATE TABLE IF NOT EXISTS submissions (
+      id TEXT PRIMARY KEY,
+      kind TEXT NOT NULL,
+      target TEXT,
+      payload TEXT NOT NULL,
+      file TEXT,
+      status TEXT NOT NULL DEFAULT 'new',
+      created_at INTEGER NOT NULL,
+      reviewed_by TEXT,
+      reviewed_at INTEGER,
+      note TEXT
+    );
+    CREATE INDEX IF NOT EXISTS submissions_status ON submissions (status, created_at DESC);
+    CREATE TABLE IF NOT EXISTS shared_trips (
+      code TEXT PRIMARY KEY,
+      key_hash TEXT NOT NULL,
+      data TEXT NOT NULL,
+      votes TEXT NOT NULL DEFAULT '{}',
+      suggestions TEXT NOT NULL DEFAULT '[]',
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL
+    );
     CREATE TABLE IF NOT EXISTS uploads (
       file TEXT PRIMARY KEY,
       mime TEXT NOT NULL,
