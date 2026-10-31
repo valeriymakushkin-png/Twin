@@ -8,6 +8,7 @@ import { Toaster } from 'sonner';
 import { LOCALE_META } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
 import { registerServiceWorker } from '@/lib/offline';
+import { fireStayAlerts } from '@/lib/stay-alerts';
 import { useApp } from '@/store/app';
 import { useCatalog } from '@/store/catalog';
 import { Celebrations, RewardToasts } from './celebrations';
@@ -121,6 +122,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     void useCatalog.getState().sync();
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => fireStayAlerts(locale), [locale]);
 
   // One language at a time keeps the download small; text added in the admin console without a translation falls back to Russian.
   useEffect(() => {

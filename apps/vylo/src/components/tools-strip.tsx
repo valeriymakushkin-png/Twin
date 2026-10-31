@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarRange, Compass, type LucideIcon } from 'lucide-react';
+import { CalendarRange, Compass, Hourglass, Route, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useI18n } from '@/i18n/use';
 import type { MessageKey } from '@/i18n';
@@ -15,6 +15,8 @@ interface Tool {
 
 const TOOLS: Tool[] = [
   { href: '/where/', icon: Compass, title: 'tools.where', text: 'tools.whereText', color: 'from-[#2dd4bf] to-[#0891b2]' },
+  { href: '/visa/stay/', icon: Hourglass, title: 'stay.title', text: 'stay.cardText', color: 'from-[#fb7185] to-[#e11d48]' },
+  { href: '/visa/chain/', icon: Route, title: 'chain.title', text: 'chain.cardText', color: 'from-[#34d399] to-[#0d9488]' },
   { href: '/plan/', icon: CalendarRange, title: 'tools.plan', text: 'tools.planText', color: 'from-[#f59e0b] to-[#e11d48]' },
 ];
 

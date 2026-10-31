@@ -2,13 +2,17 @@
 
 import { dailyPick } from '@/components/daily';
 import { guides, userById } from '@/data/social';
+import { LOCALE_META } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
+import { visaFor } from '@/data/visa/rules';
 import { meetupStart, useAllMeetups, useApp } from '@/store/app';
+import { guessPassport, useVisaPrefs } from '@/store/visa';
+import { stayStatus, REMIND_AT } from './stay';
 import { hash, todayKey } from './utils';
 
 export interface Notice {
   id: string;
-  kind: 'meetup' | 'chat' | 'guide' | 'like' | 'pick' | 'streak' | 'follow';
+  kind: 'meetup' | 'chat' | 'guide' | 'like' | 'pick' | 'streak' | 'follow' | 'visa';
   title: string;
   text: string;
   href: string;
@@ -18,10 +22,25 @@ export interface Notice {
 }
 
 /** Activity feed rebuilt from local state; it refreshes daily so there is always something new. */
+/** Stays that are ending: on a reminder day (14, 7, 3 days left, or the last day) or already over. */
+export function dueStays(prefs: Pick<ReturnType<typeof useVisaPrefs.getState>, 'stays' | 'passport' | 'holdings'>, locale: Parameters<typeof guessPassport>[0], today = todayKey()) {
+  const passport = prefs.passport ?? guessPassport(locale);
+  const out: { id: string; country: string; left: number; leaveBy: string }[] = [];
+  for (const s of prefs.stays) {
+    const visa = visaFor(passport, s.country, prefs.holdings);
+    const allowance = s.days ?? (visa?.days || 0);
+    if (!allowance || visa?.regime === 'domestic' || visa?.regime === 'eu') continue;
+    const st = stayStatus(s.entry, allowance, today);
+    if (st.state !== 'upcoming' && (REMIND_AT.includes(st.left) || st.state === 'overstay')) out.push({ id: s.id, country: s.country, left: st.left, leaveBy: st.leaveBy });
+  }
+  return out;
+}
+
 export function useNotifications() {
   const state = useApp();
   const meetups = useAllMeetups();
-  const { t, dest, user, guide, meetupText } = useI18n();
+  const { t, dest, user, guide, meetupText, country, locale } = useI18n();
+  const visaPrefs = useVisaPrefs();
   const dayStart = new Date(`${todayKey()}T00:00:00`).getTime();
   const now = Date.now();
   const list: Notice[] = [];
@@ -36,6 +55,17 @@ export function useNotifications() {
       const u = userById(last.userId);
       list.push({ id: `ch-${last.id}`, kind: 'chat', title: t('notifications.chatIn', { name: u ? user(u.id).name : t('notifications.participant'), title }), text: last.text, href: `/meetup/?id=${m.id}&chat=1`, at: last.at, userId: last.userId });
     }
+  }
+
+  for (const d of dueStays(visaPrefs, locale)) {
+    list.push({
+      id: `visa-${d.id}-${todayKey()}`,
+      kind: 'visa',
+      title: t(d.left < 1 ? 'stay.noticeOver' : 'stay.noticeTitle', { country: country(d.country) }),
+      text: d.left < 1 ? t('stay.noticeOverText') : t('stay.noticeText', { count: d.left, date: new Date(`${d.leaveBy}T00:00:00`).toLocaleDateString(LOCALE_META[locale].bcp47, { day: 'numeric', month: 'long' }) }),
+      href: '/visa/stay/',
+      at: dayStart + 60_000 * 3,
+    });
   }
 
   const pick = dailyPick();

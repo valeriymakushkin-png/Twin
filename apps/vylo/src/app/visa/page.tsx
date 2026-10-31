@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarRange, ChevronRight, Search, Sparkles } from 'lucide-react';
+import { CalendarRange, ChevronRight, Hourglass, Route, Search, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { Chip, TopBar } from '@/components/ui';
@@ -103,6 +103,24 @@ export default function VisaIndexPage() {
               <span className="block truncate text-[12px] text-muted">{holdings.length ? t('visa.holdingsCount', { count: holdings.length }) : t('visa.holdingsNone')}</span>
             </span>
           </button>
+          <Link href="/visa/stay/" className="press flex items-center gap-2.5 rounded-[20px] bg-white p-3 shadow-soft">
+            <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-rose/10 text-rose">
+              <Hourglass className="size-[18px]" />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-[13px] font-semibold leading-tight">{t('stay.title')}</span>
+              <span className="block truncate text-[12px] text-muted">{t('stay.cardText')}</span>
+            </span>
+          </Link>
+          <Link href="/visa/chain/" className="press flex items-center gap-2.5 rounded-[20px] bg-white p-3 shadow-soft">
+            <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-mint/10 text-mint">
+              <Route className="size-[18px]" />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-[13px] font-semibold leading-tight">{t('chain.title')}</span>
+              <span className="block truncate text-[12px] text-muted">{t('chain.cardText')}</span>
+            </span>
+          </Link>
           <Link href="/visa/calc/" className="press flex items-center gap-2.5 rounded-[20px] bg-white p-3 shadow-soft">
             <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-sky-50 text-sky">
               <CalendarRange className="size-[18px]" />

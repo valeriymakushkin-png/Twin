@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Bell, CalendarClock, Compass, Heart, MessageCircle, Newspaper, Sparkles, UserPlus } from 'lucide-react';
+import { Bell, CalendarClock, Compass, Stamp, Heart, MessageCircle, Newspaper, Sparkles, UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Photo } from '@/components/photo';
@@ -20,6 +20,7 @@ const icons: Record<Notice['kind'], { icon: typeof Bell; cls: string }> = {
   pick: { icon: Sparkles, cls: 'bg-amber text-white' },
   streak: { icon: Compass, cls: 'bg-[#0d9488] text-white' },
   follow: { icon: UserPlus, cls: 'bg-mint text-white' },
+  visa: { icon: Stamp, cls: 'bg-rose text-white' },
 };
 
 export default function NotificationsPage() {

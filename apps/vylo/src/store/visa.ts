@@ -19,12 +19,38 @@ export interface StayTrip {
   to: string;
 }
 
+/** A stay the traveller is on or planning, tracked against the entry allowance. */
+export interface Stay {
+  id: string;
+  country: string;
+  /** Entry date, YYYY-MM-DD */
+  entry: string;
+  /** Allowance from the stamp or e-visa; falls back to the passport's rule for the country */
+  days?: number;
+}
+
+/** One country of a multi-country trip. */
+export interface ChainLeg {
+  id: string;
+  country: string;
+  nights: number;
+}
+
 interface VisaPrefs {
   /** null until the traveller picks one — then we guess from the language */
   passport: string | null;
   second: string | null;
   holdings: Holding[];
   trips: StayTrip[];
+  stays: Stay[];
+  /** Show a system notification when the app opens and a stay is about to end */
+  remind: boolean;
+  chain: { start: string | null; legs: ChainLeg[]; passportExpires: string | null };
+  addStay: (s: Omit<Stay, 'id'>) => void;
+  updateStay: (id: string, patch: Partial<Omit<Stay, 'id'>>) => void;
+  removeStay: (id: string) => void;
+  setRemind: (on: boolean) => void;
+  setChain: (patch: Partial<VisaPrefs['chain']>) => void;
   setPassport: (code: string) => void;
   setSecond: (code: string | null) => void;
   toggleHolding: (h: Holding) => void;
@@ -40,6 +66,14 @@ export const useVisaPrefs = create<VisaPrefs>()(
       second: null,
       holdings: [],
       trips: [],
+      stays: [],
+      remind: false,
+      chain: { start: null, legs: [], passportExpires: null },
+      addStay: (st) => set((s) => ({ stays: [...s.stays, { ...st, id: uid() }] })),
+      updateStay: (id, patch) => set((s) => ({ stays: s.stays.map((x) => (x.id === id ? { ...x, ...patch } : x)) })),
+      removeStay: (id) => set((s) => ({ stays: s.stays.filter((x) => x.id !== id) })),
+      setRemind: (remind) => set({ remind }),
+      setChain: (patch) => set((s) => ({ chain: { ...s.chain, ...patch } })),
       setPassport: (code) => set((s) => ({ passport: code, second: s.second === code ? null : s.second })),
       setSecond: (code) => set({ second: code }),
       toggleHolding: (h) => set((s) => ({ holdings: s.holdings.includes(h) ? s.holdings.filter((x) => x !== h) : [...s.holdings, h] })),
