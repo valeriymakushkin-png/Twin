@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Building2, Cloud, Flag, HardDrive, History, Image as ImageIcon, Languages, LayoutDashboard, LogOut, Map as MapIcon, MapPin, Menu, Settings, ShieldCheck, Smartphone, Users, X, type LucideIcon } from 'lucide-react';
+import { Building2, Cloud, Flag, HardDrive, History, Image as ImageIcon, Languages, LayoutDashboard, LogOut, Map as MapIcon, MapPin, Menu, Settings, ShieldCheck, Smartphone, Users, Wrench, X, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
@@ -35,6 +35,7 @@ function useNav() {
         { href: '/admin/map/', icon: MapIcon, label: t('admin.nav.map') },
         { href: '/admin/photos/', icon: ImageIcon, label: t('admin.nav.photos') },
         { href: '/admin/translations/', icon: Languages, label: t('admin.nav.translations') },
+        { href: '/admin/tools/', icon: Wrench, label: t('adminTools.nav') },
       ],
     },
     { title: t('admin.nav.groupCommunity'), items: [{ href: '/admin/moderation/', icon: ShieldCheck, label: t('admin.nav.moderation'), need: 'moderate' }] },

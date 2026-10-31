@@ -72,3 +72,20 @@ export function offsetMinutes(zone: string, at: Date): number {
   ) as Record<string, number>;
   return Math.round((Date.UTC(p.year!, p.month! - 1, p.day!, p.hour!, p.minute!, p.second!) - Math.floor(at.getTime() / 1000) * 1000) / 60000);
 }
+
+/** "UTC+5:30" → minutes; 0 if unparseable. Standard time only — used where no IANA zone is known. */
+export function fixedOffsetMinutes(utc?: string): number {
+  const m = utc ? /^UTC([+\-−])(\d+)(?::(\d+))?$/.exec(utc) : null;
+  return m ? (m[1] === '+' ? 1 : -1) * (Number(m[2]) * 60 + Number(m[3] ?? 0)) : 0;
+}
+
+/** Offset (minutes) of the place at an instant: IANA zone with daylight saving, else the catalogue's fixed offset. */
+export function placeOffset(country: string, lat: number, lng: number, fixedTimezone: string | undefined, at: Date): number {
+  const zone = zoneFor(country, lat, lng);
+  return zone ? offsetMinutes(zone, at) : fixedOffsetMinutes(fixedTimezone);
+}
+
+/** "19:42" in the place's clock. */
+export function clockTime(at: Date, offset: number, bcp47: string): string {
+  return new Intl.DateTimeFormat(bcp47, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' }).format(new Date(at.getTime() + offset * 60_000));
+}

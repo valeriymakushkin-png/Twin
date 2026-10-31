@@ -174,6 +174,7 @@ function TripInner() {
                           <div className="min-w-0">
                             <p className="truncate text-[14px] font-semibold">{place(p.id).name}</p>
                             <p className="text-[11px] font-semibold" style={{ color: categoryColor[p.category] }}>
+                              {item.slot ? `${tk(`plan.slot.${item.slot}`)} · ` : ''}
                               {tk(`categories.${p.category}Short`)}
                               {p.hours ? ` · ${f.hours(p.hours)}` : ''}
                             </p>

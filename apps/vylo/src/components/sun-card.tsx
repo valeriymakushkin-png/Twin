@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { LOCALE_META } from '@/i18n/config';
 import { useI18n } from '@/i18n/use';
 import { sunDay } from '@/lib/sun';
-import { offsetMinutes, zoneFor } from '@/lib/tz';
+import { clockTime, fixedOffsetMinutes, placeOffset, zoneFor } from '@/lib/tz';
 import { addDays } from '@/lib/utils';
 
 interface Props {
@@ -17,10 +17,7 @@ interface Props {
   accent?: string;
 }
 
-const fixedMinutes = (s?: string) => {
-  const m = s ? /^UTC([+\-−])(\d+)(?::(\d+))?$/.exec(s) : null;
-  return m ? (m[1] === '+' ? 1 : -1) * (Number(m[2]) * 60 + Number(m[3] ?? 0)) : 0;
-};
+const fixedMinutes = fixedOffsetMinutes;
 
 const isoIn = (zone: string | undefined, offset: number, now = new Date()) =>
   zone ? new Intl.DateTimeFormat('en-CA', { timeZone: zone }).format(now) : new Date(now.getTime() + offset * 60_000).toISOString().slice(0, 10);
@@ -35,13 +32,12 @@ export function SunCard({ lat, lng, country, fixedTimezone, accent = '#f59e0b' }
   const view = useMemo(() => {
     const [y, m, d] = date.split('-').map(Number) as [number, number, number];
     const sun = sunDay(y, m, d, lat, lng);
-    const offset = zone ? offsetMinutes(zone, sun.solarNoon) : fixedMinutes(fixedTimezone);
-    const time = (x: Date) =>
-      new Intl.DateTimeFormat(bcp47, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' }).format(new Date(x.getTime() + offset * 60_000));
+    const offset = placeOffset(country, lat, lng, fixedTimezone, sun.solarNoon);
+    const time = (x: Date) => clockTime(x, offset, bcp47);
     const range = (r?: [Date, Date]) => (r ? `${time(r[0])} – ${time(r[1])}` : undefined);
     const label = `UTC${offset >= 0 ? '+' : '−'}${Math.floor(Math.abs(offset) / 60)}${Math.abs(offset) % 60 ? `:${String(Math.abs(offset) % 60).padStart(2, '0')}` : ''}`;
     return { sun, time, range, label };
-  }, [date, lat, lng, zone, fixedTimezone, bcp47]);
+  }, [date, lat, lng, country, fixedTimezone, bcp47]);
   const { sun, time, range, label } = view;
   const polar = !sun.sunrise || !sun.sunset;
   const row = 'flex items-center justify-between gap-3 py-2.5 text-[14px]';

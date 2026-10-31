@@ -1,14 +1,15 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { destinationById, isHiddenMeetup, placeById, placesIn } from '@/data/catalog';
+import { destinationById, isHiddenMeetup, overrides, placeById, placesIn } from '@/data/catalog';
 import { currentVisa } from './visa';
 import { meetups as seedMeetups, userById } from '@/data/social';
 import type { Meetup, Review, VisaDoc, VisaRegime } from '@/data/types';
 import { detectLocale, type Locale } from '@/i18n/config';
 import { translate } from '@/i18n';
 import { avatarFromSeed, type AvatarConfig } from '@/lib/avatar';
+import { planDays, type PlanItem, type PlanOptions, type Slot } from '@/lib/planner';
 import { earnedPatches, MILES, patches, questsFor, statusFor, type Progress, type QuestKey } from '@/lib/gamification';
-import { daysBetween, distanceKm, todayKey, uid } from '@/lib/utils';
+import { daysBetween, todayKey, uid } from '@/lib/utils';
 import { useUI } from './ui';
 
 export interface Collection {
@@ -25,6 +26,8 @@ export interface TripItem {
   id: string;
   placeId: string;
   day: number;
+  /** Part of the day the auto-planner chose it for */
+  slot?: Slot;
 }
 
 export type ChecklistKey = 'passport' | 'insurance' | 'tickets' | 'booking' | 'chargers' | 'firstAid';
@@ -121,7 +124,7 @@ interface State {
   addToTrip: (tripId: string, placeId: string, day?: number) => void;
   removeFromTrip: (tripId: string, itemId: string) => void;
   moveTripItem: (tripId: string, itemId: string, day: number) => void;
-  autoPlanTrip: (tripId: string) => number;
+  autoPlanTrip: (tripId: string, opts?: PlanOptions) => number;
   toggleChecklist: (tripId: string, itemId: string) => void;
   addChecklist: (tripId: string, text: string) => void;
   deleteTrip: (id: string) => void;
@@ -216,25 +219,9 @@ function defaultChecklist(destinationId: string): ChecklistItem[] {
   return items;
 }
 
-/** Spread a destination's places over the trip's days, nearest-neighbour by day, max four a day. */
-function planRoute(destinationId: string, days: number): string[][] {
-  const pool = placesIn(destinationId).filter((p) => p.category !== 'hotel');
-  const plan: string[][] = Array.from({ length: days }, () => []);
-  const remaining = [...pool];
-  let day = 0;
-  let cursor = destinationById(destinationId)!;
-  let from: { lat: number; lng: number } = cursor;
-  while (remaining.length && day < days) {
-    remaining.sort((a, b) => distanceKm(from, a) - distanceKm(from, b));
-    const next = remaining.shift()!;
-    plan[day]!.push(next.id);
-    from = next;
-    if (plan[day]!.length >= Math.max(2, Math.ceil(pool.length / days)) || plan[day]!.length >= 4) {
-      day++;
-      from = cursor;
-    }
-  }
-  return plan;
+/** A day-by-day plan for the destination from the planner, using the pace limits set in the admin panel. */
+function planRoute(destinationId: string, days: number, opts: PlanOptions): PlanItem[][] {
+  return planDays(placesIn(destinationId), days, { ...opts, perDay: overrides().settings.planner?.perDay });
 }
 
 export const useApp = create<State>()(
@@ -409,12 +396,12 @@ export const useApp = create<State>()(
         moveTripItem: (tripId, itemId, day) =>
           set((s) => ({ trips: s.trips.map((tr) => (tr.id !== tripId ? tr : { ...tr, items: tr.items.map((i) => (i.id === itemId ? { ...i, day } : i)) })) })),
 
-        autoPlanTrip: (tripId) => {
+        autoPlanTrip: (tripId, opts = { pace: 'balanced', interests: [] }) => {
           const trip = get().trips.find((x) => x.id === tripId);
           if (!trip) return 0;
           const days = Math.max(1, daysBetween(trip.start, trip.end) + 1);
-          const plan = planRoute(trip.destinationId, days);
-          const items = plan.flatMap((ids, day) => ids.map((placeId) => ({ id: uid(), placeId, day })));
+          const plan = planRoute(trip.destinationId, days, opts);
+          const items = plan.flatMap((list, day) => list.map(({ placeId, slot }) => ({ id: uid(), placeId, day, slot })));
           set((s) => ({ trips: s.trips.map((x) => (x.id === tripId ? { ...x, items } : x)) }));
           return items.length;
         },

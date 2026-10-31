@@ -34,6 +34,8 @@ export interface CatalogSettings {
   hiddenMeetups?: string[];
   /** Destinations pinned to the top of "Popular" */
   featured?: string[];
+  /** Day planner: how many places a day holds at each pace (meals and the sunset photo stop included) */
+  planner?: { perDay?: Partial<Record<'relaxed' | 'balanced' | 'packed', number>> };
 }
 
 export interface CatalogOverrides {
