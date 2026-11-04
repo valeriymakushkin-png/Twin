@@ -141,7 +141,7 @@ export const ru = {
   settings: {
     title: 'Настройки',
     theme: 'Тема',
-    themeSystem: 'Как в телефоне',
+    themeSystem: 'Системная',
     themeLight: 'Светлая',
     themeDark: 'Тёмная',
     privacyTitle: 'Ваши данные',

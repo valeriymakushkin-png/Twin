@@ -107,7 +107,7 @@ export function ExpensesTab({ trip }: { trip: Trip }) {
 
       {summary.byCategory.length > 0 && (
         <section className="section">
-          <h3 style={{ marginBottom: 10 }}>{ru.expenses.byCategory}</h3>
+          <h2 style={{ marginBottom: 10 }}>{ru.expenses.byCategory}</h2>
           {summary.byCategory.map((c) => (
             <div key={c.category} className="cat-bar">
               <div className="cat-bar-head">
@@ -126,7 +126,7 @@ export function ExpensesTab({ trip }: { trip: Trip }) {
         </section>
       )}
 
-      {summary.byDay.length > 0 && <h3 style={{ margin: '18px 4px 8px' }}>{ru.expenses.byDay}</h3>}
+      {summary.byDay.length > 0 && <h2 style={{ margin: '18px 4px 8px' }}>{ru.expenses.byDay}</h2>}
       {summary.byDay.map((day) => (
         <section key={day.date} className="expense-day">
           <div className="expense-day-head">

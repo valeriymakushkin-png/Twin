@@ -21,7 +21,7 @@ function TripCard({ trip, places }: { trip: Trip; places: number }) {
         {countryFlag(trip.countryCode)}
       </span>
       <div className="trip-card-body">
-        <h3>{trip.name}</h3>
+        <h2>{trip.name}</h2>
         <p>
           {countryName(trip.countryCode)} · {formatRange(trip.startDate, trip.endDate)}
         </p>

@@ -77,11 +77,37 @@ export const ENDPOINTS: RateEndpoint[] = [
 
 export class RatesError extends Error {}
 
+/** Крупные валюты для проверки на правдоподобие: их курсы обычно не меняются больше чем на 30 % за два месяца. */
+const MAJORS = ['EUR', 'GBP', 'JPY', 'CNY', 'CHF', 'CAD', 'AUD', 'TRY', 'THB', 'INR', 'BRL', 'MXN', 'KRW', 'PLN', 'CZK', 'SEK', 'NOK', 'AED', 'SGD', 'HKD'];
+
+/**
+ * Защита от испорченных данных источника (другая база, неверный масштаб): если у заметной части крупных валют курс
+ * разошёлся с ранее сохранённым больше чем в 1,3 раза — ответ отбрасывается и берётся следующий источник. Если сохранённым
+ * курсам больше двух месяцев (или их нет), сравнивать не с чем — ответ принимается. Часы устройства при этом не используются
+ * как мерило «правильной» даты: у телефона с неверной датой курсы всё равно должны загружаться.
+ */
+export function isPlausible(next: { rates: Record<string, number> }, previous: RatesCache | undefined, now: number): boolean {
+  if (!previous || now - previous.fetchedAt > 60 * 86_400_000) return true;
+  let compared = 0;
+  let off = 0;
+  for (const code of MAJORS) {
+    const a = previous.rates[code];
+    const b = next.rates[code];
+    if (a === undefined || b === undefined || !(a > 0) || !(b > 0)) continue;
+    compared++;
+    const ratio = b / a;
+    if (ratio > 1.3 || ratio < 1 / 1.3) off++;
+  }
+  return compared < 5 || off < Math.max(2, Math.ceil(compared * 0.4));
+}
+
 export interface FetchOptions {
   fetch?: typeof fetch;
   now?: () => number;
   timeoutMs?: number;
   endpoints?: RateEndpoint[];
+  /** Ранее сохранённые курсы — для проверки новых на правдоподобие */
+  previous?: RatesCache;
 }
 
 /** Пробует источники по очереди; первый, чей ответ прошёл проверку, побеждает. Все недоступны → RatesError. */
@@ -95,7 +121,7 @@ export async function fetchRates(options: FetchOptions = {}): Promise<RatesCache
       const res = await doFetch(ep.url, { signal: controller.signal, cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer' });
       if (!res.ok) continue;
       const parsed = ep.parse(await res.json());
-      if (parsed) return { base: 'USD', rates: parsed.rates, publishedAt: parsed.publishedAt, fetchedAt: now(), source: ep.name };
+      if (parsed && isPlausible(parsed, options.previous, now())) return { base: 'USD', rates: parsed.rates, publishedAt: parsed.publishedAt, fetchedAt: now(), source: ep.name };
     } catch {
       /* нет сети, таймаут или не JSON — пробуем следующий источник */
     } finally {
@@ -156,7 +182,7 @@ export function refreshRates(options: RefreshOptions = {}): Promise<RefreshResul
     if (!options.force && !isStale(cache, now)) return 'fresh';
     if (!options.force && !options.ignoreThrottle && now - lastFailure < RETRY_AFTER_FAILURE_MS) return 'failed';
     try {
-      const fresh = await fetchRates(options);
+      const fresh = await fetchRates({ ...options, previous: cache });
       await database.settings.put({ key: 'rates', value: mergeCaches(cache, fresh) });
       return 'updated';
     } catch {

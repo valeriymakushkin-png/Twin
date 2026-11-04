@@ -47,7 +47,7 @@ export function DiaryTab({ trip }: { trip: Trip }) {
     return (
       <>
         <section className="section">
-          <h3>{ru.diary.title}</h3>
+          <h2>{ru.diary.title}</h2>
           <p className="muted" style={{ marginTop: 6 }}>{ru.diary.intro}</p>
           {input.facts.items === 0 && <p className="notice" style={{ marginTop: 10 }}>{ru.diary.emptyTrip}</p>}
           <p style={{ fontWeight: 650, margin: '16px 0 8px' }}>{ru.diary.chooseStyle}</p>
@@ -117,7 +117,7 @@ export function DiaryTab({ trip }: { trip: Trip }) {
         </Button>
       </div>
 
-      <h3 style={{ margin: '4px 4px 8px' }}>{ru.diary.pages}</h3>
+      <h2 style={{ margin: '4px 4px 8px' }}>{ru.diary.pages}</h2>
       <div className="page-grid">
         {diary.pages.map((p, i) => (
           <div key={p.id} className={`page-card ${p.hidden ? 'is-hidden' : ''}`}>

@@ -1,7 +1,7 @@
 import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { VyloDb } from '../../core/db';
-import { _resetRatesState, fetchRates, getRatesCache, isOutdated, isStale, mergeCaches, parseCurrencyApi, parseErApi, parseFrankfurter, refreshRates, type RatesCache } from './rates';
+import { _resetRatesState, fetchRates, getRatesCache, isOutdated, isPlausible, isStale, mergeCaches, parseCurrencyApi, parseErApi, parseFrankfurter, refreshRates, type RatesCache } from './rates';
 
 // Образцы ответов в форматах, которые публикуют сервисы (проверены по их документации; сами сервисы из среды разработки недоступны).
 const many = Object.fromEntries('AUD BGN BRL CAD CHF CNY CZK DKK EUR GBP HKD HUF IDR ILS INR ISK JPY KRW MXN MYR NOK NZD PHP PLN RON SEK SGD THB TRY ZAR'.split(' ').map((c, i) => [c, 1 + i / 10]));
@@ -41,8 +41,9 @@ describe('разбор ответов сервисов', () => {
 describe('загрузка курсов', () => {
   it('берёт первый работающий источник', async () => {
     const f = vi.fn().mockImplementation(() => json(erApi));
-    const c = await fetchRates({ fetch: f, now: () => 5, endpoints: endpoints(['a.test', 'b.test']) });
-    expect(c).toMatchObject({ source: 'a.test', fetchedAt: 5, base: 'USD' });
+    const NOW = Date.UTC(2026, 10, 3);
+    const c = await fetchRates({ fetch: f, now: () => NOW, endpoints: endpoints(['a.test', 'b.test']) });
+    expect(c).toMatchObject({ source: 'a.test', fetchedAt: NOW, base: 'USD' });
     expect(f).toHaveBeenCalledTimes(1);
     expect(f.mock.calls[0]![1]).toMatchObject({ credentials: 'omit', referrerPolicy: 'no-referrer' }); // ничего лишнего в запросе
   });
@@ -58,6 +59,36 @@ describe('загрузка курсов', () => {
   it('зависший источник обрывается по таймауту', async () => {
     const hang = vi.fn().mockImplementation((_u: string, init: RequestInit) => new Promise((_, rej) => init.signal!.addEventListener('abort', () => rej(new Error('aborted')))));
     await expect(fetchRates({ fetch: hang as unknown as typeof fetch, timeoutMs: 20, endpoints: endpoints(['a']) })).rejects.toThrow();
+  });
+});
+
+describe('защита от испорченных данных источника', () => {
+  const NOW = Date.UTC(2026, 10, 3);
+  const prev: RatesCache = { base: 'USD', rates: { USD: 1, ...many }, publishedAt: NOW - 3_600_000, fetchedAt: NOW - 3_600_000, source: 'prev' };
+  const next = (rates: Record<string, number>, publishedAt = NOW) => ({ rates, publishedAt });
+  it('обычные колебания принимаются', () => {
+    const moved = Object.fromEntries(Object.entries(many).map(([k, v]) => [k, v * 1.02]));
+    expect(isPlausible(next(moved), prev, NOW)).toBe(true);
+  });
+  it('другой масштаб/база у многих валют — отказ', () => {
+    const wrongScale = Object.fromEntries(Object.entries(many).map(([k, v]) => [k, v * 100]));
+    expect(isPlausible(next(wrongScale), prev, NOW)).toBe(false);
+    const swapped = Object.fromEntries(Object.entries(many).map(([k, v]) => [k, 1 / v]));
+    expect(isPlausible(next(swapped), prev, NOW)).toBe(false);
+  });
+  it('резкое изменение одной валюты (кризис) не отвергает весь набор', () => {
+    expect(isPlausible(next({ ...many, TRY: many.TRY! * 1.6 }), prev, NOW)).toBe(true);
+  });
+  it('нечего сравнивать (нет кэша или он старше двух месяцев) — принимается', () => {
+    const wrong = Object.fromEntries(Object.entries(many).map(([k, v]) => [k, v * 100]));
+    expect(isPlausible(next(wrong), undefined, NOW)).toBe(true);
+    expect(isPlausible(next(wrong), { ...prev, fetchedAt: NOW - 90 * 86_400_000 }, NOW)).toBe(true);
+  });
+  it('испорченный источник пропускается, берётся следующий', async () => {
+    const bad = { ...erApi, rates: { USD: 1, ...Object.fromEntries(Object.entries(many).map(([k, v]) => [k, v * 100])) } };
+    const f = vi.fn().mockImplementationOnce(() => json(bad)).mockImplementation(() => json(frankfurter));
+    const c = await fetchRates({ fetch: f, now: () => NOW, previous: prev, endpoints: endpoints(['bad.test', 'good.test']).map((e, i) => (i === 1 ? { ...e, parse: parseFrankfurter } : e)) });
+    expect(c.source).toBe('good.test');
   });
 });
 

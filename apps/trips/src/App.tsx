@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { ErrorBoundary } from './core/ErrorBoundary';
 import { useOnline } from './core/hooks';
@@ -7,10 +7,12 @@ import { Toaster } from './core/toast';
 import { Icon } from './core/ui';
 import { VaultProvider } from './modules/documents/vault';
 import { startRatesAutoRefresh } from './modules/expenses/rates';
-import { MapPage } from './modules/map/MapPage';
-import { SettingsPage } from './modules/settings/SettingsPage';
 import { TripPage } from './modules/trips/TripPage';
 import { TripsPage } from './modules/trips/TripsPage';
+
+// Карта и настройки грузятся отдельными кусками — при открытии приложения они не нужны (после первой загрузки всё есть офлайн).
+const MapPage = lazy(() => import('./modules/map/MapPage').then((m) => ({ default: m.MapPage })));
+const SettingsPage = lazy(() => import('./modules/settings/SettingsPage').then((m) => ({ default: m.SettingsPage })));
 
 /** Индикатор сети: приложению интернет не нужен, но пользователю спокойнее видеть, что «офлайн — это нормально». */
 export function NetPill() {
@@ -45,6 +47,7 @@ function Screens() {
   const { pathname } = useLocation();
   return (
     <ErrorBoundary resetKey={pathname}>
+      <Suspense fallback={<p className="muted" style={{ textAlign: 'center', padding: 40 }}>{ru.loading}</p>}>
       <Routes>
         <Route path="/" element={<TripsPage />} />
         <Route path="/trip/:id" element={<TripPage />} />
@@ -52,6 +55,7 @@ function Screens() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<TripsPage />} />
       </Routes>
+      </Suspense>
     </ErrorBoundary>
   );
 }

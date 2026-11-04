@@ -106,10 +106,10 @@ function DayZone({
   return (
     <section ref={setNodeRef} className={`day ${isOver ? 'over' : ''}`} aria-label={label}>
       <div className="day-head">
-        <h3>
+        <h2>
           {label}
           <small>{sub}</small>
-        </h3>
+        </h2>
         {timed > 1 && <IconButton icon="sort" label={ru.itinerary.sortByTime} onClick={onSort} />}
         {canAdd && <IconButton icon="plus" label={ru.itinerary.addToDay} onClick={onAdd} />}
       </div>

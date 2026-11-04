@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { NetPill } from '../../App';
 import { countryFlag, countryName } from '../../data/countries';
@@ -9,13 +9,15 @@ import { useObjectUrl } from '../../core/hooks';
 import { fill, plural, ru } from '../../core/strings';
 import { toast } from '../../core/toast';
 import { Empty, IconButton } from '../../core/ui';
-import { DiaryTab } from '../diary/DiaryTab';
 import { DocumentsTab } from '../documents/DocumentsTab';
 import { ExpensesTab } from '../expenses/ExpensesTab';
 import { ItineraryTab } from '../itinerary/ItineraryTab';
 import { TripCheck } from './TripCheck';
 import { TripForm } from './TripForm';
 import { deleteTrip } from './tripRepo';
+
+// Дневник (рисование страниц, PDF, карта) — отдельный кусок: открывается только на своей вкладке.
+const DiaryTab = lazy(() => import('../diary/DiaryTab').then((m) => ({ default: m.DiaryTab })));
 
 type Tab = 'itinerary' | 'expenses' | 'diary' | 'documents';
 
@@ -101,7 +103,7 @@ export function TripPage() {
             </button>
           ))}
         </div>
-        {tab === 'itinerary' ? <ItineraryTab trip={trip} /> : tab === 'expenses' ? <ExpensesTab trip={trip} /> : tab === 'diary' ? <DiaryTab trip={trip} /> : <DocumentsTab trip={trip} />}
+        {tab === 'itinerary' ? <ItineraryTab trip={trip} /> : tab === 'expenses' ? <ExpensesTab trip={trip} /> : tab === 'diary' ? <Suspense fallback={<p className="muted" style={{ textAlign: 'center', padding: 30 }}>{ru.loading}</p>}><DiaryTab trip={trip} /></Suspense> : <DocumentsTab trip={trip} />}
       </main>
       <TripForm open={editing} onClose={() => setEditing(false)} trip={trip} currentCover={cover?.blob} />
     </>

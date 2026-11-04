@@ -114,7 +114,7 @@ export function SettingsPage() {
       </header>
       <main className="content">
         <section className="section">
-          <h3>{ru.settings.theme}</h3>
+          <h2>{ru.settings.theme}</h2>
           <div className="segmented" style={{ marginTop: 10 }} role="group" aria-label={ru.settings.theme}>
             {themes.map(([value, label]) => (
               <button key={value} type="button" aria-pressed={theme === value} onClick={() => setTheme(value)}>
@@ -125,12 +125,12 @@ export function SettingsPage() {
         </section>
 
         <section className="section">
-          <h3 style={{ marginBottom: 8 }}>{ru.settings.homeTitle}</h3>
+          <h2 style={{ marginBottom: 8 }}>{ru.settings.homeTitle}</h2>
           <HomeCityField />
         </section>
 
         <section className="section">
-          <h3>{ru.settings.geoTitle}</h3>
+          <h2>{ru.settings.geoTitle}</h2>
           <label className="switch-row">
             <span>
               <b>{ru.settings.geoOnline}</b>
@@ -149,12 +149,12 @@ export function SettingsPage() {
         </section>
 
         <section className="section">
-          <h3 style={{ marginBottom: 8 }}>{ru.settings.rates}</h3>
+          <h2 style={{ marginBottom: 8 }}>{ru.settings.rates}</h2>
           <RatesPanel />
         </section>
 
         <section className="section">
-          <h3>{ru.settings.backupTitle}</h3>
+          <h2>{ru.settings.backupTitle}</h2>
           <p className="muted" style={{ marginBottom: 12 }}>{ru.settings.backupText}</p>
           <Field label={ru.settings.backupPassword} hint={ru.settings.backupPasswordHint}>
             <input className="input" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -170,7 +170,7 @@ export function SettingsPage() {
 
         {vault.status !== 'none' && vault.status !== 'loading' && (
           <section className="section">
-            <h3>{ru.docs.title}</h3>
+            <h2>{ru.docs.title}</h2>
             <Button className="btn-block" variant="secondary" style={{ marginTop: 10 }} onClick={() => setPinSheet(true)}>
               <Icon name="lock" /> {ru.docs.changePin}
             </Button>
@@ -178,7 +178,7 @@ export function SettingsPage() {
         )}
 
         <section className="section">
-          <h3>{ru.settings.storage}</h3>
+          <h2>{ru.settings.storage}</h2>
           {storage ? (
             <>
               <p className="muted">{fill(ru.settings.storageUsed, { used: mb(storage.used), quota: mb(storage.quota) })}</p>
@@ -190,7 +190,7 @@ export function SettingsPage() {
         </section>
 
         <section className="section">
-          <h3>{ru.settings.privacyTitle}</h3>
+          <h2>{ru.settings.privacyTitle}</h2>
           <p className="muted">{ru.settings.privacy}</p>
           <p className="muted" style={{ marginTop: 10 }}>
             {ru.settings.version}: 0.3.0 (этап 3)
@@ -198,7 +198,7 @@ export function SettingsPage() {
         </section>
 
         <section className="section">
-          <h3>{ru.settings.sourcesTitle}</h3>
+          <h2>{ru.settings.sourcesTitle}</h2>
           <ul className="sources">
             {ru.settings.sources.map((x) => (
               <li key={x.name}>

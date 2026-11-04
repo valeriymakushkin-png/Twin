@@ -118,9 +118,9 @@ export function MapPage() {
                 )}
                 {country && (
                   <>
-                    <h3>
+                    <h2>
                       {countryFlag(country)} {countryName(country)}
-                    </h3>
+                    </h2>
                     {inCountry.length === 0 ? (
                       <p className="muted">—</p>
                     ) : (
@@ -163,7 +163,7 @@ export function MapPage() {
 
             {stats.countries.length > 0 && (
               <section className="section" style={{ marginTop: 14 }}>
-                <h3 style={{ marginBottom: 8 }}>{ru.map.visited}</h3>
+                <h2 style={{ marginBottom: 8 }}>{ru.map.visited}</h2>
                 <div className="chips">
                   {stats.countries.map((c) => (
                     <button key={c} type="button" className="chip" style={{ border: 0 }} onClick={() => setCountry(c === country ? null : c)}>

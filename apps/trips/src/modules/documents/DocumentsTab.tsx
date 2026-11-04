@@ -57,7 +57,7 @@ export function VaultGate() {
       <div className="empty-icon">
         <Icon name="lock" size={30} />
       </div>
-      <h3>{creating ? ru.docs.setupTitle : ru.docs.unlockTitle}</h3>
+      <h2>{creating ? ru.docs.setupTitle : ru.docs.unlockTitle}</h2>
       <p>{creating ? ru.docs.setupText : ru.docs.intro}</p>
       <div style={{ textAlign: 'left', maxWidth: 360, margin: '0 auto' }}>
         <Field label={ru.docs.pin} hint={creating ? ru.docs.pinHint : undefined} error={creating ? undefined : error}>
