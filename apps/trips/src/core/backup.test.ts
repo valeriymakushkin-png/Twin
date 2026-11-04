@@ -14,7 +14,7 @@ async function seed(db: VyloDb) {
   await db.photos.add({ id: 'p1', tripId: 't1', itemId: 'i1', blob: new Blob([new Uint8Array([255, 216, 255, 1, 2, 3])], { type: 'image/jpeg' }), width: 10, height: 10, createdAt: 1 });
   await db.expenses.add({ id: 'x1', tripId: 't1', date: '2026-05-02', amount: 12.5, currency: 'EUR', category: 'food', note: 'пастел-де-ната', createdAt: 1, updatedAt: 1 });
   await db.diaries.add({ tripId: 't1', style: 'magazine', seed: 7, fingerprint: 'f', createdAt: 1, updatedAt: 1, pages: [{ id: 'cover', key: 'cover', kind: 'cover', title: 'Лиссабон', subtitle: 'Португалия', photo: { source: 'p1', override: 'p9', fx: 0.3, fy: 0.6, zoom: 1.5 } }] });
-  await db.settings.bulkPut([{ key: 'manualRates', value: { 'THB>EUR': 0.026 } }, { key: 'rates', value: { stale: true } }]);
+  await db.settings.bulkPut([{ key: 'manualRates', value: { 'THB>EUR': 0.026 } }, { key: 'rates', value: { stale: true } }, { key: 'homeCity', value: { name: 'Москва', countryCode: 'RU', lat: 55.75, lng: 37.62 } }]);
   const dek = await setupVault('482915', db, 1000);
   await addDocument(dek, 't1', new Blob(['билет на самолёт'], { type: 'text/plain' }), { name: 'Билет.txt', kind: 'ticket' }, db);
 }
@@ -32,6 +32,7 @@ describe('резервная копия', () => {
     expect(await target.expenses.get('x1')).toMatchObject({ amount: 12.5, currency: 'EUR', note: 'пастел-де-ната' });
     expect((await target.settings.get('manualRates'))!.value).toEqual({ 'THB>EUR': 0.026 }); // свои курсы переносятся
     expect(await target.settings.get('rates')).toBeUndefined(); // кэш курсов — нет
+    expect((await target.settings.get('homeCity'))!.value).toMatchObject({ name: 'Москва', countryCode: 'RU' }); // домашний город переносится
     const diary = await target.diaries.get('t1');
     expect(diary).toMatchObject({ style: 'magazine', seed: 7 });
     expect((diary!.pages[0] as { photo: { override: string } }).photo.override).toBe('p9'); // замена фото в дневнике переносится

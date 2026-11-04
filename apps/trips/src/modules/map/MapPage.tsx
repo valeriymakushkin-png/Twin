@@ -9,6 +9,7 @@ import { useLocator } from '../../core/useCities';
 import { Button, Chip, Empty, Icon } from '../../core/ui';
 import { countryFlag, countryName } from '../../data/countries';
 import { computeTravel, tripYears } from './stats';
+import { useHomeCity } from './home';
 import { ShareCardSheet } from './ShareCardSheet';
 import { WorldMapView } from './WorldMapView';
 import { loadWorld, type World } from './world';
@@ -20,6 +21,7 @@ export function MapPage() {
   const trips = useLiveQuery(() => db.trips.orderBy('startDate').reverse().toArray(), []);
   const items = useLiveQuery(() => db.items.toArray(), []);
   const locate = useLocator();
+  const homeCity = useHomeCity();
   const [world, setWorld] = useState<World | null>(null);
   const [year, setYear] = useState<number | 'all'>('all');
   const [country, setCountry] = useState<string | null>(null);
@@ -34,8 +36,8 @@ export function MapPage() {
   }, [items]);
 
   const stats = useMemo(
-    () => computeTravel(trips ?? [], (id) => byTrip.get(id) ?? [], locate ?? (() => undefined), todayIso(), { year: year === 'all' ? undefined : year }),
-    [trips, byTrip, locate, year],
+    () => computeTravel(trips ?? [], (id) => byTrip.get(id) ?? [], locate ?? (() => undefined), todayIso(), { year: year === 'all' ? undefined : year, home: homeCity ?? undefined }),
+    [trips, byTrip, locate, year, homeCity],
   );
   const years = useMemo(() => tripYears(trips ?? []), [trips]);
   const visited = useMemo(() => new Set(stats.countries), [stats.countries]);
@@ -147,7 +149,10 @@ export function MapPage() {
                 <span>{ru.map.km}</span>
               </div>
             </div>
-            <p className="muted" style={{ fontSize: 12.5 }}>{ru.map.kmNote}</p>
+            <p className="muted" style={{ fontSize: 12.5 }}>
+              {homeCity ? fill(ru.map.kmNoteHome, { city: homeCity.name, home: nf.format(stats.homeKm) }) : ru.map.kmNote}{' '}
+              {homeCity === null && <Link to="/settings">{ru.map.homeLink}</Link>}
+            </p>
             {withoutPoint > 0 && <p className="muted" style={{ fontSize: 12.5, marginTop: 6 }}>{fill(ru.map.noCoordsNote, {})}</p>}
 
             {stats.countries.length > 0 && world && (

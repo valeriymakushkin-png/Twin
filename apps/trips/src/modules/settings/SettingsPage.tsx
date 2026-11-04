@@ -9,6 +9,7 @@ import { toast } from '../../core/toast';
 import { Button, Field, Icon, Sheet } from '../../core/ui';
 import { MIN_PIN } from '../documents/DocumentsTab';
 import { RatesPanel } from '../expenses/RatesPanel';
+import { HomeCityField } from './HomeCityField';
 import { useVault } from '../documents/vault';
 
 const mb = (n: number) => (n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} КБ` : n < 1024 ** 3 ? `${(n / 1024 / 1024).toFixed(1)} МБ` : `${(n / 1024 ** 3).toFixed(1)} ГБ`);
@@ -118,6 +119,11 @@ export function SettingsPage() {
               </button>
             ))}
           </div>
+        </section>
+
+        <section className="section">
+          <h3 style={{ marginBottom: 8 }}>{ru.settings.homeTitle}</h3>
+          <HomeCityField />
         </section>
 
         <section className="section">

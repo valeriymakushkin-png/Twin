@@ -22,6 +22,31 @@ const items: Record<string, ItineraryItem[]> = {
 };
 const itemsOf = (id: string) => items[id] ?? [];
 
+describe('домашний город и километры', () => {
+  const MOSCOW = { lat: 55.7558, lng: 37.6173 };
+  it('без дома километры только внутри поездок', () => {
+    const s = computeTravel([pt], itemsOf, locate, '2026-06-01');
+    expect(s.homeKm).toBe(0);
+    expect(s.km).toBeCloseTo(haversineKm(LISBON, PORTO), 3);
+  });
+  it('с домом добавляются дорога туда и обратно (по прямой)', () => {
+    const s = computeTravel([pt], itemsOf, locate, '2026-06-01', { home: MOSCOW });
+    const legs = haversineKm(MOSCOW, LISBON) + haversineKm(PORTO, MOSCOW);
+    expect(s.homeKm).toBeCloseTo(legs, 3);
+    expect(s.km).toBeCloseTo(legs + haversineKm(LISBON, PORTO), 3);
+    expect(s.homeKm).toBeGreaterThan(7000); // Москва–Лиссабон ≈ 3 900 км, Порту–Москва ≈ 3 700 км
+  });
+  it('считает каждую начавшуюся поездку отдельно, будущие и поездки без координат — нет', () => {
+    const s = computeTravel([pt, fr, old, trip('z', 'XX', '2026-01-01', '2026-01-02', ['Нигденск'])], itemsOf, locate, '2026-06-01', { home: MOSCOW });
+    const expected = haversineKm(MOSCOW, LISBON) + haversineKm(PORTO, MOSCOW) + 2 * haversineKm(MOSCOW, LISBON); // pt + old (одна точка)
+    expect(s.homeKm).toBeCloseTo(expected, 3);
+  });
+  it('фильтр по году применяется и к дороге из дома', () => {
+    const s = computeTravel([pt, old], itemsOf, locate, '2026-12-31', { year: 2025, home: MOSCOW });
+    expect(s.homeKm).toBeCloseTo(2 * haversineKm(MOSCOW, LISBON), 3);
+  });
+});
+
 describe('маршрут поездки', () => {
   it('берёт места записей по порядку и склеивает одинаковые подряд', () => {
     const route = tripRoute(pt, items.pt!, locate);

@@ -30,8 +30,10 @@ export interface TravelStats {
   cities: PlacedCity[];
   trips: number;
   places: number;
-  /** Километры по прямой вдоль маршрутов начавшихся поездок */
+  /** Километры по прямой вдоль маршрутов начавшихся поездок (и дороги из дома и обратно, если задан домашний город) */
   km: number;
+  /** Из них — дорога из дома и обратно; 0, если домашний город не задан */
+  homeKm: number;
   pins: Pin[];
 }
 
@@ -65,6 +67,8 @@ export function tripRoute(trip: Trip, items: ItineraryItem[], locate: CityLocato
 export interface TravelFilter {
   /** Только поездки, начавшиеся в этом году; undefined — за всё время */
   year?: number;
+  /** Домашний город: если задан, к каждой начавшейся поездке добавляется дорога из дома до первой точки маршрута и обратно */
+  home?: LatLng;
 }
 
 export function computeTravel(trips: Trip[], itemsOf: (tripId: string) => ItineraryItem[], locate: CityLocator, today: string, filter: TravelFilter = {}): TravelStats {
@@ -78,6 +82,7 @@ export function computeTravel(trips: Trip[], itemsOf: (tripId: string) => Itiner
   const cityMap = new Map<string, PlacedCity>();
   const pins: Pin[] = [];
   let km = 0;
+  let homeKm = 0;
   let places = 0;
 
   for (const [list, planned] of [[visitedTrips, false], [plannedTrips, true]] as const) {
@@ -85,7 +90,14 @@ export function computeTravel(trips: Trip[], itemsOf: (tripId: string) => Itiner
       const items = itemsOf(trip.id);
       if (!planned) {
         places += items.filter((i) => i.kind === 'place').length;
-        km += routeLengthKm(tripRoute(trip, items, locate));
+        const route = tripRoute(trip, items, locate);
+        km += routeLengthKm(route);
+        if (filter.home && route.length > 0) {
+          // Прямая от дома до первой точки и от последней обратно (поездка = «туда и обратно»).
+          const legs = haversineKm(filter.home, route[0]!) + haversineKm(route[route.length - 1]!, filter.home);
+          km += legs;
+          homeKm += legs;
+        }
         for (const c of trip.cities) {
           const key = cityKey(c.name, trip.countryCode);
           if (!cityMap.has(key)) cityMap.set(key, { key, name: c.name, countryCode: trip.countryCode, point: cityPoint(c.name, trip, locate) });
@@ -101,7 +113,7 @@ export function computeTravel(trips: Trip[], itemsOf: (tripId: string) => Itiner
     }
   }
 
-  return { countries, plannedCountries, cities: [...cityMap.values()], trips: visitedTrips.length, places, km, pins };
+  return { countries, plannedCountries, cities: [...cityMap.values()], trips: visitedTrips.length, places, km, homeKm, pins };
 }
 
 /** Годы, за которые есть поездки (для переключателя «год / всё время»), новые первыми. */
