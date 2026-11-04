@@ -9,13 +9,14 @@ import { useObjectUrl } from '../../core/hooks';
 import { fill, plural, ru } from '../../core/strings';
 import { toast } from '../../core/toast';
 import { Empty, IconButton } from '../../core/ui';
+import { DiaryTab } from '../diary/DiaryTab';
 import { DocumentsTab } from '../documents/DocumentsTab';
 import { ExpensesTab } from '../expenses/ExpensesTab';
 import { ItineraryTab } from '../itinerary/ItineraryTab';
 import { TripForm } from './TripForm';
 import { deleteTrip } from './tripRepo';
 
-type Tab = 'itinerary' | 'expenses' | 'documents';
+type Tab = 'itinerary' | 'expenses' | 'diary' | 'documents';
 
 export function TripPage() {
   const { id = '' } = useParams();
@@ -78,11 +79,14 @@ export function TripPage() {
           <button role="tab" aria-selected={tab === 'expenses'} onClick={() => setTab('expenses')}>
             {ru.trips.tabExpenses}
           </button>
+          <button role="tab" aria-selected={tab === 'diary'} onClick={() => setTab('diary')}>
+            {ru.trips.tabDiary}
+          </button>
           <button role="tab" aria-selected={tab === 'documents'} onClick={() => setTab('documents')}>
             {ru.trips.tabDocuments}
           </button>
         </div>
-        {tab === 'itinerary' ? <ItineraryTab trip={trip} /> : tab === 'expenses' ? <ExpensesTab trip={trip} /> : <DocumentsTab trip={trip} />}
+        {tab === 'itinerary' ? <ItineraryTab trip={trip} /> : tab === 'expenses' ? <ExpensesTab trip={trip} /> : tab === 'diary' ? <DiaryTab trip={trip} /> : <DocumentsTab trip={trip} />}
       </main>
       <TripForm open={editing} onClose={() => setEditing(false)} trip={trip} currentCover={cover?.blob} />
     </>

@@ -98,6 +98,53 @@ export interface Expense {
   updatedAt: number;
 }
 
+export type DiaryStyle = 'minimal' | 'magazine' | 'postcard';
+
+/**
+ * Место под фото на странице дневника. `source` — фото из маршрута (оригинал), `override` — фото, которое пользователь
+ * выбрал вместо него; `fx`/`fy` — точка кадра (0…1), `zoom` ≥ 1 — приближение при кадрировании.
+ */
+export interface PhotoSlot {
+  source?: string;
+  override?: string;
+  fx: number;
+  fy: number;
+  zoom: number;
+}
+
+interface PageBase {
+  /** Уникален внутри дневника */
+  id: string;
+  /** Постоянное «имя» страницы: по нему страницы узнаются при пересборке (cover, overview, day:2026-05-01, stats, map, closing) */
+  key: string;
+  hidden?: boolean;
+  /** Пользователь правил текст — при пересборке он сохраняется */
+  edited?: boolean;
+}
+
+export type DiaryPage =
+  | (PageBase & { kind: 'cover'; title: string; subtitle: string; photo: PhotoSlot | null })
+  | (PageBase & { kind: 'overview'; text: string })
+  | (PageBase & { kind: 'day'; date: string; heading: string; text: string; photos: PhotoSlot[] })
+  | (PageBase & { kind: 'stats'; text: string; lines: string[] })
+  | (PageBase & { kind: 'map'; text: string })
+  | (PageBase & { kind: 'closing'; text: string });
+
+export type DiaryPageKind = DiaryPage['kind'];
+
+/** Дневник поездки (по одному на поездку). Тексты можно править, а страницы — переставлять и скрывать. */
+export interface Diary {
+  tripId: string;
+  style: DiaryStyle;
+  /** Зерно случайности: тот же дневник с тем же зерном всегда собирается одинаково */
+  seed: number;
+  pages: DiaryPage[];
+  /** Отпечаток данных поездки на момент сборки — чтобы заметить, что поездка изменилась */
+  fingerprint: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
 export interface Setting {
   key: string;
   value: unknown;
@@ -109,6 +156,7 @@ export class VyloDb extends Dexie {
   photos!: Table<Photo, string>;
   docs!: Table<DocRecord, string>;
   expenses!: Table<Expense, string>;
+  diaries!: Table<Diary, string>;
   settings!: Table<Setting, string>;
 
   constructor(name = 'vylo-trips') {
@@ -123,6 +171,10 @@ export class VyloDb extends Dexie {
     // Версия 2 (Этап 2): добавилась таблица расходов. Старые данные не затрагиваются.
     this.version(2).stores({
       expenses: 'id, tripId, date, [tripId+date]',
+    });
+    // Версия 3 (Этап 3): дневники поездок.
+    this.version(3).stores({
+      diaries: 'tripId',
     });
   }
 }

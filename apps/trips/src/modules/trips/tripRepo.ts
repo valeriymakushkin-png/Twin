@@ -41,8 +41,9 @@ export async function updateTrip(id: string, input: TripInput, cover?: File | nu
 
 /** Поездка удаляется вместе со всем, что к ней относится: записями, фото и документами. */
 export async function deleteTrip(id: string): Promise<void> {
-  await db.transaction('rw', [db.trips, db.items, db.photos, db.docs, db.expenses], async () => {
+  await db.transaction('rw', [db.trips, db.items, db.photos, db.docs, db.expenses, db.diaries], async () => {
     await db.expenses.where('tripId').equals(id).delete();
+    await db.diaries.delete(id);
     await db.items.where('tripId').equals(id).delete();
     await db.photos.where('tripId').equals(id).delete();
     await db.docs.where('tripId').equals(id).delete();

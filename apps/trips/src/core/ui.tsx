@@ -84,11 +84,14 @@ export function Sheet({ open, onClose, title, children, footer }: { open: boolea
 
 export function Field({ label, children, hint, error }: { label: string; children: ReactNode; hint?: string; error?: string }) {
   return (
-    <label className="field">
-      <span className="field-label">{label}</span>
-      {children}
+    <div className="field">
+      {/* Подсказка и ошибка — вне <label>, чтобы не попадать в «имя» поля для экранных дикторов */}
+      <label className="field-main">
+        <span className="field-label">{label}</span>
+        {children}
+      </label>
       {error ? <span className="field-error">{error}</span> : hint ? <span className="field-hint">{hint}</span> : null}
-    </label>
+    </div>
   );
 }
 

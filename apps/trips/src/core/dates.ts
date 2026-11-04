@@ -41,3 +41,6 @@ export function formatRange(start: string, end: string): string {
   const right = b.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
   return `${left} — ${right}`;
 }
+
+/** «пятница, 8 мая» — слова в нужном падеже даёт сам браузер. */
+export const formatDayFull = (iso: string): string => fromIso(iso).toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });

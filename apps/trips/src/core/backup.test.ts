@@ -13,6 +13,7 @@ async function seed(db: VyloDb) {
   await db.items.add({ id: 'i1', tripId: 't1', date: '2026-05-01', time: '10:00', kind: 'place', title: 'Белен', order: 0, createdAt: 1, updatedAt: 1 });
   await db.photos.add({ id: 'p1', tripId: 't1', itemId: 'i1', blob: new Blob([new Uint8Array([255, 216, 255, 1, 2, 3])], { type: 'image/jpeg' }), width: 10, height: 10, createdAt: 1 });
   await db.expenses.add({ id: 'x1', tripId: 't1', date: '2026-05-02', amount: 12.5, currency: 'EUR', category: 'food', note: 'пастел-де-ната', createdAt: 1, updatedAt: 1 });
+  await db.diaries.add({ tripId: 't1', style: 'magazine', seed: 7, fingerprint: 'f', createdAt: 1, updatedAt: 1, pages: [{ id: 'cover', key: 'cover', kind: 'cover', title: 'Лиссабон', subtitle: 'Португалия', photo: { source: 'p1', override: 'p9', fx: 0.3, fy: 0.6, zoom: 1.5 } }] });
   await db.settings.bulkPut([{ key: 'manualRates', value: { 'THB>EUR': 0.026 } }, { key: 'rates', value: { stale: true } }]);
   const dek = await setupVault('482915', db, 1000);
   await addDocument(dek, 't1', new Blob(['билет на самолёт'], { type: 'text/plain' }), { name: 'Билет.txt', kind: 'ticket' }, db);
@@ -27,10 +28,13 @@ describe('резервная копия', () => {
     const target = freshDb();
     await target.trips.add({ id: 'old', name: 'Старое', countryCode: 'FR', cities: [], startDate: '2025-01-01', endDate: '2025-01-02', createdAt: 1, updatedAt: 1 });
     const summary = await restoreBackup(target, file);
-    expect(summary).toEqual({ trips: 1, items: 1, photos: 1, docs: 1, expenses: 1 });
+    expect(summary).toEqual({ trips: 1, items: 1, photos: 1, docs: 1, expenses: 1, diaries: 1 });
     expect(await target.expenses.get('x1')).toMatchObject({ amount: 12.5, currency: 'EUR', note: 'пастел-де-ната' });
     expect((await target.settings.get('manualRates'))!.value).toEqual({ 'THB>EUR': 0.026 }); // свои курсы переносятся
     expect(await target.settings.get('rates')).toBeUndefined(); // кэш курсов — нет
+    const diary = await target.diaries.get('t1');
+    expect(diary).toMatchObject({ style: 'magazine', seed: 7 });
+    expect((diary!.pages[0] as { photo: { override: string } }).photo.override).toBe('p9'); // замена фото в дневнике переносится
     expect((await target.trips.toArray()).map((t) => t.id)).toEqual(['t1']); // старые данные заменены
 
     const photo = await target.photos.get('p1');
@@ -87,6 +91,6 @@ describe('совместимость копий', () => {
       'data.json': new TextEncoder().encode(JSON.stringify({ trips: [{ id: 't1', name: 'Старая', countryCode: 'FR', cities: [], startDate: '2025-01-01', endDate: '2025-01-02', createdAt: 1, updatedAt: 1 }], items: [], photos: [], docs: [], settings: [] })),
     });
     const target = freshDb();
-    expect(await restoreBackup(target, old)).toEqual({ trips: 1, items: 0, photos: 0, docs: 0, expenses: 0 });
+    expect(await restoreBackup(target, old)).toEqual({ trips: 1, items: 0, photos: 0, docs: 0, expenses: 0, diaries: 0 });
   });
 });

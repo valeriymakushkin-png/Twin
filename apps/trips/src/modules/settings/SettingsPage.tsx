@@ -165,8 +165,22 @@ export function SettingsPage() {
           <h3>{ru.settings.privacyTitle}</h3>
           <p className="muted">{ru.settings.privacy}</p>
           <p className="muted" style={{ marginTop: 10 }}>
-            {ru.settings.version}: 0.2.0 (этап 2)
+            {ru.settings.version}: 0.3.0 (этап 3)
           </p>
+        </section>
+
+        <section className="section">
+          <h3>{ru.settings.sourcesTitle}</h3>
+          <ul className="sources">
+            {ru.settings.sources.map((x) => (
+              <li key={x.name}>
+                <a href={x.url} target="_blank" rel="noopener noreferrer">
+                  {x.name}
+                </a>
+                <span className="muted"> — {x.what}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
 

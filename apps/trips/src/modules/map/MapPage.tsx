@@ -6,9 +6,10 @@ import { todayIso } from '../../core/dates';
 import { db, type ItineraryItem } from '../../core/db';
 import { fill, plural, pluralWord, ru } from '../../core/strings';
 import { useLocator } from '../../core/useCities';
-import { Chip, Empty } from '../../core/ui';
+import { Button, Chip, Empty, Icon } from '../../core/ui';
 import { countryFlag, countryName } from '../../data/countries';
 import { computeTravel, tripYears } from './stats';
+import { ShareCardSheet } from './ShareCardSheet';
 import { WorldMapView } from './WorldMapView';
 import { loadWorld, type World } from './world';
 
@@ -23,6 +24,7 @@ export function MapPage() {
   const [year, setYear] = useState<number | 'all'>('all');
   const [country, setCountry] = useState<string | null>(null);
   const [pinId, setPinId] = useState<string | null>(null);
+  const [sharing, setSharing] = useState(false);
   useEffect(() => void loadWorld().then(setWorld), []);
 
   const byTrip = useMemo(() => {
@@ -41,6 +43,22 @@ export function MapPage() {
   const pin = stats.pins.find((p) => p.id === pinId);
   const inCountry = (trips ?? []).filter((t) => t.countryCode === country && (year === 'all' || t.startDate.startsWith(String(year))));
   const withoutPoint = stats.cities.filter((c) => !c.point).length;
+  const shareData = useMemo(
+    () =>
+      world
+        ? {
+            world,
+            visited,
+            cities: stats.pins.filter((p) => p.kind === 'city' && !p.planned).map((p) => ({ lat: p.lat, lng: p.lng })),
+            countries: stats.countries.length,
+            cityCount: stats.cities.length,
+            km: stats.km,
+            period: year === 'all' ? ru.map.allTime : String(year),
+            eyebrow: year === 'all' ? ru.map.eyebrowAll : ru.map.eyebrowYear,
+          }
+        : null,
+    [world, visited, stats, year],
+  );
 
   return (
     <>
@@ -132,6 +150,12 @@ export function MapPage() {
             <p className="muted" style={{ fontSize: 12.5 }}>{ru.map.kmNote}</p>
             {withoutPoint > 0 && <p className="muted" style={{ fontSize: 12.5, marginTop: 6 }}>{fill(ru.map.noCoordsNote, {})}</p>}
 
+            {stats.countries.length > 0 && world && (
+              <Button className="btn-block" style={{ marginTop: 12 }} onClick={() => setSharing(true)}>
+                <Icon name="share" /> {ru.map.share}
+              </Button>
+            )}
+
             {stats.countries.length > 0 && (
               <section className="section" style={{ marginTop: 14 }}>
                 <h3 style={{ marginBottom: 8 }}>{ru.map.visited}</h3>
@@ -147,6 +171,14 @@ export function MapPage() {
           </>
         )}
       </main>
+      {shareData && (
+        <ShareCardSheet
+          open={sharing}
+          onClose={() => setSharing(false)}
+          fileTag={String(year)}
+          data={shareData}
+        />
+      )}
     </>
   );
 }
