@@ -8,6 +8,10 @@ export interface TripInput {
   cities: TripCity[];
   startDate: string;
   endDate: string;
+  /** Валюта отчётов и бюджета */
+  currency?: string;
+  /** Бюджет в этой валюте; пусто — без бюджета */
+  budget?: number;
 }
 
 /** Обложка: старая запись заменяется новой; `null` — убрать обложку. */
@@ -37,7 +41,8 @@ export async function updateTrip(id: string, input: TripInput, cover?: File | nu
 
 /** Поездка удаляется вместе со всем, что к ней относится: записями, фото и документами. */
 export async function deleteTrip(id: string): Promise<void> {
-  await db.transaction('rw', [db.trips, db.items, db.photos, db.docs], async () => {
+  await db.transaction('rw', [db.trips, db.items, db.photos, db.docs, db.expenses], async () => {
+    await db.expenses.where('tripId').equals(id).delete();
     await db.items.where('tripId').equals(id).delete();
     await db.photos.where('tripId').equals(id).delete();
     await db.docs.where('tripId').equals(id).delete();

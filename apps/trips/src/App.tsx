@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useOnline } from './core/hooks';
 import { ru } from './core/strings';
 import { Toaster } from './core/toast';
 import { Icon } from './core/ui';
 import { VaultProvider } from './modules/documents/vault';
+import { startRatesAutoRefresh } from './modules/expenses/rates';
 import { SettingsPage } from './modules/settings/SettingsPage';
 import { TripPage } from './modules/trips/TripPage';
 import { TripsPage } from './modules/trips/TripsPage';
@@ -33,6 +35,8 @@ function TabBar() {
 }
 
 export function App() {
+  // Когда есть интернет, курсы валют подгружаются сами (при запуске, при появлении сети, при возвращении в приложение).
+  useEffect(() => startRatesAutoRefresh(), []);
   return (
     <HashRouter>
       <VaultProvider>

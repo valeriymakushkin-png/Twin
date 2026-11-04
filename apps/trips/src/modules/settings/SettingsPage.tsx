@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { NetPill } from '../../App';
 import { BackupError, BACKUP_EXTENSION, createBackup, needsPassword, restoreBackup } from '../../core/backup';
 import { db } from '../../core/db';
+import { saveFile } from '../../core/files';
 import { setTheme, useTheme, type ThemeChoice } from '../../core/theme';
 import { fill, ru } from '../../core/strings';
 import { toast } from '../../core/toast';
 import { Button, Field, Icon, Sheet } from '../../core/ui';
 import { MIN_PIN } from '../documents/DocumentsTab';
+import { RatesPanel } from '../expenses/RatesPanel';
 import { useVault } from '../documents/vault';
 
 const mb = (n: number) => (n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} КБ` : n < 1024 ** 3 ? `${(n / 1024 / 1024).toFixed(1)} МБ` : `${(n / 1024 ** 3).toFixed(1)} ГБ`);
@@ -25,25 +27,6 @@ function useStorage() {
     })();
   }, []);
   return info;
-}
-
-/** Сохранение файла: на телефоне открывается системное меню «Поделиться/Сохранить в Файлы», на компьютере — обычная загрузка. */
-async function saveFile(bytes: Uint8Array, name: string) {
-  const file = new File([bytes as BlobPart], name, { type: 'application/octet-stream' });
-  if (navigator.canShare?.({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file], title: name });
-      return;
-    } catch (e) {
-      if ((e as Error).name === 'AbortError') return; // пользователь закрыл меню — это не ошибка
-    }
-  }
-  const url = URL.createObjectURL(file);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 export function SettingsPage() {
@@ -138,6 +121,11 @@ export function SettingsPage() {
         </section>
 
         <section className="section">
+          <h3 style={{ marginBottom: 8 }}>{ru.settings.rates}</h3>
+          <RatesPanel />
+        </section>
+
+        <section className="section">
           <h3>{ru.settings.backupTitle}</h3>
           <p className="muted" style={{ marginBottom: 12 }}>{ru.settings.backupText}</p>
           <Field label={ru.settings.backupPassword} hint={ru.settings.backupPasswordHint}>
@@ -177,7 +165,7 @@ export function SettingsPage() {
           <h3>{ru.settings.privacyTitle}</h3>
           <p className="muted">{ru.settings.privacy}</p>
           <p className="muted" style={{ marginTop: 10 }}>
-            {ru.settings.version}: 0.1.0 (этап 1)
+            {ru.settings.version}: 0.2.0 (этап 2)
           </p>
         </section>
       </main>

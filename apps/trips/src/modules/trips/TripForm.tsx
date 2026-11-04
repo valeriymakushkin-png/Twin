@@ -6,6 +6,11 @@ import { useObjectUrl } from '../../core/hooks';
 import { ru } from '../../core/strings';
 import { toast } from '../../core/toast';
 import { Button, Field, Icon, Sheet } from '../../core/ui';
+import { currencyForCountry } from '../../data/currencies';
+import { CurrencySelect } from '../expenses/CurrencySelect';
+import { parseAmount } from '../expenses/calc';
+import { setHomeCurrency } from '../expenses/expenseRepo';
+import { useHomeCurrency } from '../expenses/useRates';
 import { createTrip, updateTrip } from './tripRepo';
 
 /** Форма создания и правки поездки (шторка). `trip` задан — правка, иначе создание. */
@@ -17,7 +22,10 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [cover, setCover] = useState<File | null | undefined>(undefined); // undefined — не менять, null — убрать
-  const [errors, setErrors] = useState<{ name?: string; dates?: string }>({});
+  const home = useHomeCurrency();
+  const [currency, setCurrency] = useState('');
+  const [budget, setBudget] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; dates?: string; budget?: string }>({});
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -31,7 +39,11 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
     setStart(trip?.startDate ?? todayIso());
     setEnd(trip?.endDate ?? addDays(todayIso(), 6));
     setCover(undefined);
+    setCurrency(trip?.currency ?? home);
+    setBudget(trip?.budget ? String(trip.budget).replace('.', ',') : '');
     setErrors({});
+    // home читаем только при открытии формы: если он подгрузится позже, уже введённое не затираем
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, trip]);
 
   const shownCover = cover === undefined ? currentCover : (cover ?? undefined);
@@ -48,6 +60,8 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
     const next: typeof errors = {};
     if (!name.trim()) next.name = ru.trips.needName;
     if (!start || !end || daysBetween(start, end) < 0) next.dates = ru.trips.badDates;
+    const budgetValue = budget.trim() ? parseAmount(budget) : undefined;
+    if (budgetValue === null) next.budget = ru.trips.badBudget;
     setErrors(next);
     if (Object.keys(next).length) return;
     setBusy(true);
@@ -55,7 +69,8 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
       // Город, введённый, но не добавленный клавишей Enter, не должен пропасть.
       const draft = cityDraft.trim();
       const allCities = draft && !cities.some((c) => c.name.toLowerCase() === draft.toLowerCase()) ? [...cities, { name: draft }] : cities;
-      const input = { name: name.trim(), countryCode: country, cities: allCities, startDate: start, endDate: end };
+      const input = { name: name.trim(), countryCode: country, cities: allCities, startDate: start, endDate: end, currency, budget: budgetValue ?? undefined };
+      await setHomeCurrency(currency); // следующая поездка по умолчанию — в той же валюте отчётов
       const id = trip ? (await updateTrip(trip.id, input, cover), trip.id) : await createTrip(input, cover ?? null);
       toast(ru.saved);
       onClose();
@@ -137,6 +152,14 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
         </Field>
         <Field label={ru.trips.end} error={errors.dates}>
           <input className="input" type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
+        </Field>
+      </div>
+      <div className="row">
+        <Field label={ru.trips.currency} hint={ru.trips.currencyHint}>
+          <CurrencySelect value={currency} onChange={setCurrency} pinned={[home, currencyForCountry(country) ?? '', 'USD', 'EUR']} label={ru.trips.currency} />
+        </Field>
+        <Field label={ru.trips.budget} error={errors.budget}>
+          <input className="input" inputMode="decimal" value={budget} placeholder={ru.trips.budgetPlaceholder} onChange={(e) => setBudget(e.target.value)} />
         </Field>
       </div>
       <Field label={ru.trips.cover}>

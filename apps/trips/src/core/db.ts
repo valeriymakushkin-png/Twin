@@ -22,6 +22,10 @@ export interface Trip {
   endDate: string;
   /** Фото-обложка (запись в таблице photos) */
   coverPhotoId?: string;
+  /** Валюта отчётов и бюджета (ISO 4217). Если не задана — берётся из настроек (`homeCurrency`) */
+  currency?: string;
+  /** Бюджет поездки в валюте `currency` */
+  budget?: number;
   createdAt: number;
   updatedAt: number;
 }
@@ -77,6 +81,23 @@ export interface DocRecord {
   data: Sealed;
 }
 
+export type ExpenseCategory = 'food' | 'transport' | 'stay' | 'activities' | 'shopping' | 'other';
+
+export interface Expense {
+  id: string;
+  tripId: string;
+  /** День траты, "ГГГГ-ММ-ДД" */
+  date: string;
+  /** Сумма в валюте, в которой платили */
+  amount: number;
+  /** ISO 4217, например "EUR" */
+  currency: string;
+  category: ExpenseCategory;
+  note?: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
 export interface Setting {
   key: string;
   value: unknown;
@@ -87,6 +108,7 @@ export class VyloDb extends Dexie {
   items!: Table<ItineraryItem, string>;
   photos!: Table<Photo, string>;
   docs!: Table<DocRecord, string>;
+  expenses!: Table<Expense, string>;
   settings!: Table<Setting, string>;
 
   constructor(name = 'vylo-trips') {
@@ -97,6 +119,10 @@ export class VyloDb extends Dexie {
       photos: 'id, tripId, itemId',
       docs: 'id, tripId',
       settings: 'key',
+    });
+    // Версия 2 (Этап 2): добавилась таблица расходов. Старые данные не затрагиваются.
+    this.version(2).stores({
+      expenses: 'id, tripId, date, [tripId+date]',
     });
   }
 }

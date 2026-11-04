@@ -1,6 +1,6 @@
 import { unzip, zip, type Zippable } from 'fflate';
 import { decryptWithPassword, encryptWithPassword, isPasswordEncrypted } from './crypto';
-import type { DocRecord, ItineraryItem, Photo, Sealed, Setting, Trip, VyloDb } from './db';
+import type { DocRecord, Expense, ItineraryItem, Photo, Sealed, Setting, Trip, VyloDb } from './db';
 
 /**
  * Резервная копия — один файл `.vylo` (это обычный zip). Внутри:
@@ -11,7 +11,8 @@ import type { DocRecord, ItineraryItem, Photo, Sealed, Setting, Trip, VyloDb } f
  * По желанию весь файл дополнительно шифруется паролем. Куда сохранять файл, решает пользователь (никуда не отправляется).
  */
 
-export const BACKUP_VERSION = 1;
+/** 2 — с Этапа 2 в копию входят расходы. Копии версии 1 (без расходов) по-прежнему читаются. */
+export const BACKUP_VERSION = 2;
 export const BACKUP_EXTENSION = '.vylo';
 
 export type BackupErrorCode = 'password-required' | 'wrong-password' | 'invalid' | 'newer-version';
@@ -26,7 +27,11 @@ export interface BackupSummary {
   items: number;
   photos: number;
   docs: number;
+  expenses: number;
 }
+
+/** Служебные настройки, которые в копию не кладём: курсы валют загрузятся заново. */
+const VOLATILE_SETTINGS = new Set(['rates']);
 
 // --- JSON с бинарными полями ----------------------------------------------------------------------------------------
 
@@ -49,7 +54,8 @@ const zipAsync = (files: Zippable) => new Promise<Uint8Array>((res, rej) => zip(
 const unzipAsync = (data: Uint8Array) => new Promise<Record<string, Uint8Array>>((res, rej) => unzip(data, (e, d) => (e ? rej(e) : res(d))));
 
 export async function createBackup(db: VyloDb, options: { password?: string; iterations?: number } = {}): Promise<Uint8Array> {
-  const [trips, items, photos, docs, settings] = await Promise.all([db.trips.toArray(), db.items.toArray(), db.photos.toArray(), db.docs.toArray(), db.settings.toArray()]);
+  const [trips, items, photos, docs, expenses, allSettings] = await Promise.all([db.trips.toArray(), db.items.toArray(), db.photos.toArray(), db.docs.toArray(), db.expenses.toArray(), db.settings.toArray()]);
+  const settings = allSettings.filter((s) => !VOLATILE_SETTINGS.has(s.key));
 
   const files: Zippable = {};
   for (const p of photos) files[`photos/${p.id}`] = [await bytesOf(p.blob), { level: 0 }]; // JPEG уже сжат
@@ -60,12 +66,13 @@ export async function createBackup(db: VyloDb, options: { password?: string; ite
   const data = {
     trips,
     items,
+    expenses,
     photos: photos.map(({ blob, ...rest }) => ({ ...rest, mime: blob.type || 'image/jpeg' })),
     docs: docs.map((d) => ({ id: d.id, tripId: d.tripId, kind: d.kind, createdAt: d.createdAt, metaIv: d.meta.iv, dataIv: d.data.iv })),
     settings,
   };
   files['data.json'] = text(JSON.stringify(data, replacer));
-  files['manifest.json'] = text(JSON.stringify({ app: 'vylo-trips', version: BACKUP_VERSION, createdAt: Date.now(), counts: { trips: trips.length, items: items.length, photos: photos.length, docs: docs.length } }));
+  files['manifest.json'] = text(JSON.stringify({ app: 'vylo-trips', version: BACKUP_VERSION, createdAt: Date.now(), counts: { trips: trips.length, items: items.length, photos: photos.length, docs: docs.length, expenses: expenses.length } }));
 
   const archive = await zipAsync(files);
   return options.password ? encryptWithPassword(archive, options.password, options.iterations) : archive;
@@ -121,7 +128,9 @@ export async function restoreBackup(db: VyloDb, input: Uint8Array, password?: st
 
   const trips = list(data.trips) as unknown as Trip[];
   const items = list(data.items) as unknown as ItineraryItem[];
-  const settings = (Array.isArray(data.settings) ? data.settings : []) as Setting[];
+  // В копиях версии 1 расходов ещё не было.
+  const expenses = (data.expenses === undefined ? [] : list(data.expenses)) as unknown as Expense[];
+  const settings = ((Array.isArray(data.settings) ? data.settings : []) as Setting[]).filter((s) => !VOLATILE_SETTINGS.has(s.key));
 
   const photos: Photo[] = (list(data.photos) as unknown as PhotoMeta[]).map(({ mime, ...rest }) => {
     const raw = entries[`photos/${rest.id}`];
@@ -136,13 +145,15 @@ export async function restoreBackup(db: VyloDb, input: Uint8Array, password?: st
     return { id: d.id, tripId: d.tripId, kind: d.kind, createdAt: d.createdAt, meta: sealed(d.metaIv, meta), data: sealed(d.dataIv, body) };
   });
 
-  await db.transaction('rw', [db.trips, db.items, db.photos, db.docs, db.settings], async () => {
-    await Promise.all([db.trips.clear(), db.items.clear(), db.photos.clear(), db.docs.clear(), db.settings.clear()]);
+  await db.transaction('rw', [db.trips, db.items, db.photos, db.docs, db.expenses, db.settings], async () => {
+    // Курсы валют (служебный кэш) не удаляем: они не из копии и пригодятся сразу.
+    await Promise.all([db.trips.clear(), db.items.clear(), db.photos.clear(), db.docs.clear(), db.expenses.clear(), db.settings.where('key').notEqual('rates').delete()]);
     await db.trips.bulkAdd(trips);
     await db.items.bulkAdd(items);
     await db.photos.bulkAdd(photos);
     await db.docs.bulkAdd(docs);
+    await db.expenses.bulkAdd(expenses);
     await db.settings.bulkAdd(settings);
   });
-  return { trips: trips.length, items: items.length, photos: photos.length, docs: docs.length };
+  return { trips: trips.length, items: items.length, photos: photos.length, docs: docs.length, expenses: expenses.length };
 }
