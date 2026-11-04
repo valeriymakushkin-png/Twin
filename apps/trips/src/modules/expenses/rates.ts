@@ -108,6 +108,10 @@ export async function fetchRates(options: FetchOptions = {}): Promise<RatesCache
 export const MAX_AGE_MS = 12 * 3_600_000;
 export const RETRY_AFTER_FAILURE_MS = 15 * 60_000;
 
+/** Данные считаются устаревшими, если дата, которую публикует сам источник, старше трёх суток (даже если загружены только что). */
+export const OUTDATED_AFTER_MS = 3 * 86_400_000;
+export const isOutdated = (cache: RatesCache | undefined | null, now: number) => !!cache && now - cache.publishedAt > OUTDATED_AFTER_MS;
+
 export const isStale = (cache: RatesCache | undefined, now: number, maxAge = MAX_AGE_MS) => !cache || now - cache.fetchedAt > maxAge;
 
 /**

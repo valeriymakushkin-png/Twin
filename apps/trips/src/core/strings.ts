@@ -198,6 +198,9 @@ export const ru = {
     ratesCredit: 'Курсы: ExchangeRate-API (open.er-api.com); запасные источники — currency-api и курсы ЕЦБ (Frankfurter). Курсы справочные: банк или обменник посчитает иначе.',
     daysBefore: 'до поездки',
     hideDetails: 'Скрыть',
+    ratesLine: 'Курсы на {date} · {source}',
+    ratesOutdated: 'Курсы от {date} — давно не обновлялись. Подключитесь к интернету или задайте курс вручную.',
+    ratesMissingLine: 'Курсы ещё не загружены — подключитесь к интернету или задайте курс вручную.',
   },
 } as const;
 

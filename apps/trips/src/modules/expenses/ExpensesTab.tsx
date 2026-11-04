@@ -1,9 +1,9 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo, useState } from 'react';
-import { formatDayLong, todayIso } from '../../core/dates';
+import { formatDayLong, formatDayShort, toIso, todayIso } from '../../core/dates';
 import { db, type Expense, type Trip } from '../../core/db';
 import { saveFile, safeFileName } from '../../core/files';
-import { plural, ru } from '../../core/strings';
+import { fill, plural, ru } from '../../core/strings';
 import { toast } from '../../core/toast';
 import { Button, Empty, Icon } from '../../core/ui';
 import { currencyForCountry, formatMoney } from '../../data/currencies';
@@ -15,6 +15,7 @@ import { CATEGORY_META } from './categories';
 import { summarize } from './calc';
 import { expensesToCsv } from './csv';
 import { lastCurrencyKey } from './expenseRepo';
+import { isOutdated } from './rates';
 import { tripCurrency, useHomeCurrency, useRatesData } from './useRates';
 
 const percent = (r: number) => `${Math.round(r * 100)}%`;
@@ -23,7 +24,7 @@ const percent = (r: number) => `${Math.round(r * 100)}%`;
 export function ExpensesTab({ trip }: { trip: Trip }) {
   const home = useHomeCurrency();
   const currency = tripCurrency(trip, home);
-  const { rates, ready } = useRatesData();
+  const { rates, cache, ready } = useRatesData();
   const expenses = useLiveQuery(() => db.expenses.where('tripId').equals(trip.id).toArray(), [trip.id]);
   const last = useLiveQuery(async () => (await db.settings.get(lastCurrencyKey(trip.id)))?.value as string | undefined, [trip.id]);
   const [editing, setEditing] = useState<Expense | null>(null);
@@ -44,6 +45,11 @@ export function ExpensesTab({ trip }: { trip: Trip }) {
 
   // Пока база читается, ничего не показываем: иначе на миг мелькнули бы «нет курса» и нулевые суммы.
   if (!ready || !expenses) return <p className="muted" style={{ textAlign: 'center', padding: 30 }}>{ru.loading}</p>;
+
+  // Строка про курсы нужна, только когда есть траты в валюте, отличной от валюты отчётов: тогда итог зависит от курса.
+  const hasForeign = (expenses ?? []).some((e) => e.currency !== currency);
+  const outdated = isOutdated(cache, Date.now());
+  const dateOf = (ms: number) => formatDayShort(toIso(new Date(ms)));
 
   const b = summary.budget;
   return (
@@ -82,6 +88,12 @@ export function ExpensesTab({ trip }: { trip: Trip }) {
           {b ? ru.expenses.editBudget : ru.expenses.setBudget}
         </button>
       </section>
+
+      {hasForeign && (
+        <p className={`rates-line ${cache && !outdated ? '' : 'warn'}`}>
+          {!cache ? ru.expenses.ratesMissingLine : outdated ? fill(ru.expenses.ratesOutdated, { date: dateOf(cache.publishedAt) }) : fill(ru.expenses.ratesLine, { date: dateOf(cache.publishedAt), source: cache.source })}
+        </p>
+      )}
 
       {summary.missing.length > 0 && (
         <button type="button" className="notice" onClick={() => setRatesOpen(true)}>

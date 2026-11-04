@@ -1,7 +1,7 @@
 import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { VyloDb } from '../../core/db';
-import { _resetRatesState, fetchRates, getRatesCache, isStale, mergeCaches, parseCurrencyApi, parseErApi, parseFrankfurter, refreshRates, type RatesCache } from './rates';
+import { _resetRatesState, fetchRates, getRatesCache, isOutdated, isStale, mergeCaches, parseCurrencyApi, parseErApi, parseFrankfurter, refreshRates, type RatesCache } from './rates';
 
 // Образцы ответов в форматах, которые публикуют сервисы (проверены по их документации; сами сервисы из среды разработки недоступны).
 const many = Object.fromEntries('AUD BGN BRL CAD CHF CNY CZK DKK EUR GBP HKD HUF IDR ILS INR ISK JPY KRW MXN MYR NOK NZD PHP PLN RON SEK SGD THB TRY ZAR'.split(' ').map((c, i) => [c, 1 + i / 10]));
@@ -127,6 +127,14 @@ describe('автообновление', () => {
     expect(mergeCaches(wide, narrow).rates).toEqual({ USD: 1, EUR: 0.95, VND: 25000 });
     expect(mergeCaches(wide, { ...narrow, fetchedAt: 9 * 86_400_000 }).rates).toEqual({ USD: 1, EUR: 0.95 }); // старое (>7 дней) не тянем
     expect(mergeCaches(undefined, narrow)).toBe(narrow);
+  });
+
+  it('устаревшими считаются данные, дата которых старше трёх суток — по дате источника, а не по времени загрузки', () => {
+    const day = 86_400_000;
+    const c: RatesCache = { base: 'USD', rates: {}, publishedAt: 10 * day, fetchedAt: 14 * day, source: 's' };
+    expect(isOutdated(c, 12 * day)).toBe(false);
+    expect(isOutdated(c, 14 * day)).toBe(true); // загрузили только что, но источник отдаёт курсы четырёхдневной давности
+    expect(isOutdated(null, 99 * day)).toBe(false);
   });
 
   it('isStale', () => {
