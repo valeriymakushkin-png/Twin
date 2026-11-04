@@ -74,19 +74,32 @@ export function TripPage() {
           </div>
         </div>
         <TripCheck trip={trip} />
-        <div className="tabs" role="tablist">
-          <button role="tab" aria-selected={tab === 'itinerary'} onClick={() => setTab('itinerary')}>
-            {ru.trips.tabItinerary}
-          </button>
-          <button role="tab" aria-selected={tab === 'expenses'} onClick={() => setTab('expenses')}>
-            {ru.trips.tabExpenses}
-          </button>
-          <button role="tab" aria-selected={tab === 'diary'} onClick={() => setTab('diary')}>
-            {ru.trips.tabDiary}
-          </button>
-          <button role="tab" aria-selected={tab === 'documents'} onClick={() => setTab('documents')}>
-            {ru.trips.tabDocuments}
-          </button>
+        <div
+          className="tabs"
+          role="tablist"
+          onKeyDown={(e) => {
+            // Стрелки переключают вкладки (так принято для вкладок с клавиатуры и экранным диктором)
+            const order: Tab[] = ['itinerary', 'expenses', 'diary', 'documents'];
+            const i = order.indexOf(tab);
+            const next = e.key === 'ArrowRight' ? order[(i + 1) % order.length] : e.key === 'ArrowLeft' ? order[(i + order.length - 1) % order.length] : e.key === 'Home' ? order[0] : e.key === 'End' ? order[order.length - 1] : undefined;
+            if (!next) return;
+            e.preventDefault();
+            setTab(next);
+            requestAnimationFrame(() => document.getElementById(`tab-${next}`)?.focus());
+          }}
+        >
+          {(
+            [
+              ['itinerary', ru.trips.tabItinerary],
+              ['expenses', ru.trips.tabExpenses],
+              ['diary', ru.trips.tabDiary],
+              ['documents', ru.trips.tabDocuments],
+            ] as [Tab, string][]
+          ).map(([id, label]) => (
+            <button key={id} id={`tab-${id}`} role="tab" aria-selected={tab === id} tabIndex={tab === id ? 0 : -1} onClick={() => setTab(id)}>
+              {label}
+            </button>
+          ))}
         </div>
         {tab === 'itinerary' ? <ItineraryTab trip={trip} /> : tab === 'expenses' ? <ExpensesTab trip={trip} /> : tab === 'diary' ? <DiaryTab trip={trip} /> : <DocumentsTab trip={trip} />}
       </main>

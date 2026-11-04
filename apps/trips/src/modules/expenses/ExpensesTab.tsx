@@ -11,7 +11,7 @@ import { BudgetSheet } from './BudgetSheet';
 import { ExpenseEditor } from './ExpenseEditor';
 import { QuickAdd } from './QuickAdd';
 import { RatesSheet } from './RatesPanel';
-import { CATEGORY_META } from './categories';
+import { CATEGORY_META, categoryOf } from './categories';
 import { summarize } from './calc';
 import { expensesToCsv } from './csv';
 import { lastCurrencyKey } from './expenseRepo';
@@ -112,14 +112,14 @@ export function ExpensesTab({ trip }: { trip: Trip }) {
             <div key={c.category} className="cat-bar">
               <div className="cat-bar-head">
                 <span>
-                  <span aria-hidden="true">{CATEGORY_META[c.category].emoji}</span> {ru.expenses.categories[c.category]}
+                  <span aria-hidden="true">{CATEGORY_META[categoryOf(c.category)].emoji}</span> {ru.expenses.categories[categoryOf(c.category)]}
                 </span>
                 <span>
                   <b>{money(c.total)}</b> <small>{percent(c.share)}</small>
                 </span>
               </div>
               <div className="bar thin">
-                <span className="bar-fill" style={{ width: `${c.share * 100}%`, background: CATEGORY_META[c.category].color }} />
+                <span className="bar-fill" style={{ width: `${c.share * 100}%`, background: CATEGORY_META[categoryOf(c.category)].color }} />
               </div>
             </div>
           ))}
@@ -139,11 +139,11 @@ export function ExpensesTab({ trip }: { trip: Trip }) {
           {day.items.map(({ expense: e, value }) => (
             <button key={e.id} type="button" className="expense" onClick={() => setEditing(e)}>
               <span className="expense-icon" aria-hidden="true">
-                {CATEGORY_META[e.category].emoji}
+                {CATEGORY_META[categoryOf(e.category)].emoji}
               </span>
               <span className="expense-main">
-                <b>{e.note || ru.expenses.categories[e.category]}</b>
-                {e.note && <small>{ru.expenses.categories[e.category]}</small>}
+                <b>{e.note || ru.expenses.categories[categoryOf(e.category)]}</b>
+                {e.note && <small>{ru.expenses.categories[categoryOf(e.category)]}</small>}
               </span>
               <span className="expense-amount">
                 <b>{formatMoney(e.amount, e.currency)}</b>

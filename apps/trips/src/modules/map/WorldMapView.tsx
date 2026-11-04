@@ -52,7 +52,34 @@ export function WorldMapView({
   }, [world, projection]);
   const placed = useMemo(() => pins.flatMap((p) => { const xy = projection([p.lng, p.lat]); return xy ? [{ ...p, x: xy[0], y: xy[1] }] : []; }), [pins, projection]);
 
+  // Границы (в координатах карты) основной территории каждой страны — для приближения к поездкам и для «ореола» мелких стран.
+  const boxes = useMemo(() => {
+    const path = geoPath(projection);
+    const out = new Map<string, [number, number, number, number]>();
+    for (const c of world.countries) {
+      if (!c.code || !(visited.has(c.code) || planned.has(c.code))) continue;
+      const [[x0, y0], [x1, y1]] = path.bounds(mainLand(c.feature));
+      if ([x0, y0, x1, y1].every(Number.isFinite)) out.set(c.code, [x0, y0, x1, y1]);
+    }
+    return out;
+  }, [world, projection, visited, planned]);
+  const halos = useMemo(() => [...boxes].filter(([code, b]) => visited.has(code) && Math.max(b[2] - b[0], b[3] - b[1]) < 14).map(([code, b]) => ({ code, x: (b[0] + b[2]) / 2, y: (b[1] + b[3]) / 2 })), [boxes, visited]);
+
   const [view, setView] = useState<View>({ k: 1, x: 0, y: 0 });
+  // Сразу показываем ту часть мира, где вы были (если поездки не охватывают полмира); при смене фильтра года — заново.
+  const fitKey = [...visited, '|', ...planned].sort().join(',');
+  useEffect(() => {
+    const list = [...boxes].filter(([code]) => (visited.size ? visited.has(code) : true));
+    if (!list.length) return setView({ k: 1, x: 0, y: 0 });
+    const x0 = Math.min(...list.map(([, b]) => b[0]));
+    const y0 = Math.min(...list.map(([, b]) => b[1]));
+    const x1 = Math.max(...list.map(([, b]) => b[2]));
+    const y1 = Math.max(...list.map(([, b]) => b[3]));
+    const k = Math.min(8, Math.min((0.7 * W) / Math.max(x1 - x0, 24), (0.7 * H) / Math.max(y1 - y0, 24)));
+    setView(k < 1.4 ? { k: 1, x: 0, y: 0 } : clamp({ k, x: W / 2 - ((x0 + x1) / 2) * k, y: H / 2 - ((y0 + y1) / 2) * k }));
+    // Только при смене набора стран: иначе карта «прыгала» бы под пальцем при любом обновлении данных.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fitKey, world]);
   const svgRef = useRef<SVGSVGElement>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const moved = useRef(false);
@@ -162,6 +189,7 @@ export function WorldMapView({
               <title>{p.name}</title>
             </path>
           ))}
+          {view.k < 6 && halos.map((h) => <circle key={`halo-${h.code}`} className="halo" cx={h.x} cy={h.y} r={9 / view.k ** 0.6} />)}
           {placed.map((p) => (
             <circle
               key={p.id}

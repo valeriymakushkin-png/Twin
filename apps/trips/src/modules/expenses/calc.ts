@@ -1,5 +1,6 @@
 import { daysBetween } from '../../core/dates';
 import type { Expense, ExpenseCategory } from '../../core/db';
+import { normalizeCategory } from '../../core/sanitize';
 
 /**
  * Расчёты по расходам — чистые функции без базы и экрана (поэтому они покрыты тестами).
@@ -90,7 +91,7 @@ export function summarize(expenses: Expense[], trip: TripBasis, rates: Rates, to
   const priced = converted.filter((c): c is Converted & { value: number } => c.value !== undefined);
   const total = priced.reduce((s, c) => s + c.value, 0);
 
-  const byCategory = CATEGORIES.map((category) => ({ category, total: priced.filter((c) => c.expense.category === category).reduce((s, c) => s + c.value, 0) }))
+  const byCategory = CATEGORIES.map((category) => ({ category, total: priced.filter((c) => normalizeCategory(c.expense.category) === category).reduce((s, c) => s + c.value, 0) }))
     .filter((c) => c.total > 0)
     .map((c) => ({ ...c, share: total > 0 ? c.total / total : 0 }))
     .sort((a, b) => b.total - a.total);

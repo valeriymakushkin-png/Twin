@@ -1,6 +1,7 @@
 import { unzip, zip, type Zippable } from 'fflate';
 import { decryptWithPassword, encryptWithPassword, isPasswordEncrypted } from './crypto';
 import type { Diary, DocRecord, Expense, ItineraryItem, Photo, Sealed, Setting, Trip, VyloDb } from './db';
+import { sanitizeExpense, sanitizeItem, sanitizeTrip } from './sanitize';
 
 /**
  * Резервная копия — один файл `.vylo` (это обычный zip). Внутри:
@@ -128,20 +129,22 @@ export async function restoreBackup(db: VyloDb, input: Uint8Array, password?: st
   if (typeof manifest.version !== 'number' || manifest.version < 1) throw new BackupError('invalid');
   if (manifest.version > BACKUP_VERSION) throw new BackupError('newer-version');
 
-  const trips = list(data.trips) as unknown as Trip[];
-  const items = list(data.items) as unknown as ItineraryItem[];
+  // Каждая запись проверяется и по возможности чинится (copy из другой версии или правленная вручную не должна ронять экраны).
+  const trips = list(data.trips).flatMap((t) => sanitizeTrip(t) ?? []);
+  const tripIds = new Set(trips.map((t) => t.id));
+  const items = list(data.items).flatMap((i) => sanitizeItem(i, tripIds) ?? []);
   // В копиях версии 1 расходов ещё не было.
-  const expenses = (data.expenses === undefined ? [] : list(data.expenses)) as unknown as Expense[];
+  const expenses = (data.expenses === undefined ? [] : list(data.expenses)).flatMap((e) => sanitizeExpense(e, tripIds) ?? []);
   // Дневник хранится по ключу tripId (а не id), поэтому проверяем его отдельно.
-  const diaries = (Array.isArray(data.diaries) ? data.diaries : []).filter((d): d is Diary => isObj(d) && typeof d.tripId === 'string' && Array.isArray(d.pages));
+  const diaries = (Array.isArray(data.diaries) ? data.diaries : []).filter((d): d is Diary => isObj(d) && typeof d.tripId === 'string' && tripIds.has(d.tripId) && Array.isArray(d.pages));
   const settings = ((Array.isArray(data.settings) ? data.settings : []) as Setting[]).filter((s) => !VOLATILE_SETTINGS.has(s.key));
 
-  const photos: Photo[] = (list(data.photos) as unknown as PhotoMeta[]).map(({ mime, ...rest }) => {
+  const photos: Photo[] = (list(data.photos) as unknown as PhotoMeta[]).filter((p) => tripIds.has(p.tripId)).map(({ mime, ...rest }) => {
     const raw = entries[`photos/${rest.id}`];
     if (!raw) throw new BackupError('invalid');
     return { ...rest, blob: new Blob([raw as BlobPart], { type: mime }) };
   });
-  const docs: DocRecord[] = (list(data.docs) as unknown as DocMeta[]).map((d) => {
+  const docs: DocRecord[] = (list(data.docs) as unknown as DocMeta[]).filter((d) => tripIds.has(d.tripId)).map((d) => {
     const meta = entries[`docs/${d.id}.meta`];
     const body = entries[`docs/${d.id}.data`];
     if (!meta || !body) throw new BackupError('invalid');

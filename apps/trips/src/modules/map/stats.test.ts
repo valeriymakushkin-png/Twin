@@ -47,6 +47,28 @@ describe('домашний город и километры', () => {
   });
 });
 
+describe('карта, километры и дневник считают одно и то же', () => {
+  it('километры карты = сумма километров дневников; города карты = города дневников (включая города из записей)', () => {
+    const extra = [item('pt', '2026-05-04', 0, 'Лувр?', { city: 'Париж' }), ...items.pt!]; // «Париж» есть только в записи, не в списке городов поездки
+    const itemsFor = (id: string) => (id === 'pt' ? extra : itemsOf(id));
+    const trips = [pt, old];
+    const map = computeTravel(trips, itemsFor, locate, '2026-12-31');
+    const facts = trips.map((t) => tripFacts(t, itemsFor(t.id), locate, 0, 5));
+    expect(map.km).toBeCloseTo(facts.reduce((s, f) => s + f.km, 0), 6);
+    // города карты (уникальные по поездкам) = объединение городов дневников
+    const names = new Set(facts.flatMap((f) => f.cities.map((c) => c.toLowerCase())));
+    expect(new Set(map.cities.map((c) => c.name.toLowerCase()))).toEqual(names);
+    expect(names.has('париж')).toBe(true);
+  });
+  it('страна, выбранная у города явно, попадает в страны карты; без явного выбора страна остаётся страной поездки', () => {
+    const multi = trip('multi', 'PT', '2026-05-01', '2026-05-05', []);
+    multi.cities = [{ name: 'Лиссабон' }, { name: 'Париж', lat: PARIS.lat, lng: PARIS.lng, cc: 'FR' }];
+    expect(computeTravel([multi], itemsOf, locate, '2026-12-31').countries.sort()).toEqual(['FR', 'PT']);
+    const plain = trip('plain', 'PT', '2026-05-01', '2026-05-05', ['Лиссабон', 'Париж']);
+    expect(computeTravel([plain], itemsOf, locate, '2026-12-31').countries).toEqual(['PT']);
+  });
+});
+
 describe('маршрут поездки', () => {
   it('берёт места записей по порядку и склеивает одинаковые подряд', () => {
     const route = tripRoute(pt, items.pt!, locate);

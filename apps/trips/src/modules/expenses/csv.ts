@@ -1,3 +1,4 @@
+import { normalizeCategory } from '../../core/sanitize';
 import type { Summary } from './calc';
 
 /**
@@ -24,6 +25,6 @@ export function expensesToCsv(summary: Summary, categoryLabel: (c: string) => st
   // От старых трат к новым — так таблица читается как журнал поездки.
   const all = summary.byDay.flatMap((d) => d.items).sort((a, b) => (a.expense.date === b.expense.date ? a.expense.createdAt - b.expense.createdAt : a.expense.date < b.expense.date ? -1 : 1));
   for (const { expense: e, value } of all)
-    rows.push(csvLine([e.date, categoryLabel(e.category), round2(e.amount), e.currency, value === undefined ? undefined : round2(value), summary.currency, e.note]));
+    rows.push(csvLine([e.date, categoryLabel(normalizeCategory(e.category)), round2(e.amount), e.currency, value === undefined ? undefined : round2(value), summary.currency, e.note]));
   return CSV_BOM + rows.join('\r\n') + '\r\n';
 }

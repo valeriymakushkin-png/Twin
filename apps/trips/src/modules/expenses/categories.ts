@@ -9,3 +9,5 @@ export const CATEGORY_META: Record<ExpenseCategory, { emoji: string; color: stri
   shopping: { emoji: '🛍️', color: '#ec4899' },
   other: { emoji: '📌', color: '#64748b' },
 };
+
+export { normalizeCategory as categoryOf } from '../../core/sanitize';

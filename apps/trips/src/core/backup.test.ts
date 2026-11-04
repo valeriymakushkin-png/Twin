@@ -78,10 +78,37 @@ describe('резервная копия', () => {
     await expect(restoreBackup(target, newer)).rejects.toMatchObject({ code: 'newer-version' });
     const missingPhoto = zipSync({
       'manifest.json': new TextEncoder().encode('{"app":"vylo-trips","version":1}'),
-      'data.json': new TextEncoder().encode(JSON.stringify({ trips: [], items: [], photos: [{ id: 'zz', tripId: 't', mime: 'image/jpeg' }], docs: [], settings: [] })),
+      'data.json': new TextEncoder().encode(JSON.stringify({ trips: [{ id: 't', name: 'Т', countryCode: 'PT', cities: [], startDate: '2026-05-01', endDate: '2026-05-02', createdAt: 1, updatedAt: 1 }], items: [], photos: [{ id: 'zz', tripId: 't', mime: 'image/jpeg' }], docs: [], settings: [] })),
     });
     await expect(restoreBackup(target, missingPhoto)).rejects.toMatchObject({ code: 'invalid' });
     expect(await target.trips.count()).toBe(1); // прежние данные целы
+  });
+});
+
+describe('повреждённые записи в копии', () => {
+  it('чинит то, что можно, и отбрасывает остальное — вместо падения экранов', async () => {
+    const data = {
+      trips: [
+        { id: 't1', name: 'Поездка', countryCode: 'pt', startDate: '2026-05-05', endDate: '2026-05-01', createdAt: 1, updatedAt: 1 },
+        { id: 't2', name: 'Битая дата', countryCode: 'FR', startDate: 'вчера', endDate: '2026-05-01', createdAt: 1, updatedAt: 1 },
+      ],
+      items: [
+        { id: 'i1', tripId: 't1', date: '2026-05-02', title: 'Белен', kind: 'place', order: 0, createdAt: 1, updatedAt: 1 },
+        { id: 'i2', tripId: 't2', date: '2026-05-02', title: 'Сирота', kind: 'place', order: 0, createdAt: 1, updatedAt: 1 },
+      ],
+      expenses: [
+        { id: 'e1', tripId: 't1', date: '2026-05-02', amount: 10, currency: 'EUR', category: 'fun', createdAt: 1, updatedAt: 1 },
+        { id: 'e2', tripId: 't1', date: '2026-05-02', amount: 'много', currency: 'EUR', category: 'food', createdAt: 1, updatedAt: 1 },
+      ],
+      photos: [],
+      docs: [],
+      settings: [],
+    };
+    const file = zipSync({ 'manifest.json': new TextEncoder().encode('{"app":"vylo-trips","version":3}'), 'data.json': new TextEncoder().encode(JSON.stringify(data)) });
+    const target = freshDb();
+    expect(await restoreBackup(target, file)).toMatchObject({ trips: 1, items: 1, expenses: 1 });
+    expect(await target.trips.get('t1')).toMatchObject({ countryCode: 'PT', startDate: '2026-05-01', endDate: '2026-05-05', cities: [] });
+    expect((await target.expenses.get('e1'))!.category).toBe('other');
   });
 });
 

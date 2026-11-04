@@ -130,7 +130,7 @@ export function SettingsPage() {
         </section>
 
         <section className="section">
-          <h3>{ru.settings.geoOnline}</h3>
+          <h3>{ru.settings.geoTitle}</h3>
           <label className="switch-row">
             <span>
               <b>{ru.settings.geoOnline}</b>

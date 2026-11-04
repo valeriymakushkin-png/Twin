@@ -54,23 +54,95 @@ export function IconButton({ icon, label, className = '', ...props }: ButtonHTML
 }
 
 /** Нижняя шторка. Закрывается по Esc, по тапу на затемнение и кнопкой. */
+/** Открытые шторки: сверху стека — та, что получает «Назад» и Esc. */
+const sheetStack: number[] = [];
+const sheetClosers = new Map<number, () => void>();
+let sheetSeq = 0;
+/** После `history.back()`, которым мы сами убрали запись шторки, одно событие «popstate» нужно пропустить. */
+let skipPop = 0;
+let popInstalled = false;
+
+/**
+ * Один обработчик «Назад» на все шторки. Нажали «Назад» при открытой шторке — закрываем верхнюю (адрес остаётся прежним).
+ * Попали на запись истории от уже закрытой шторки (например, после перехода на другой экран) — сразу шагаем дальше назад.
+ */
+function onPopState() {
+  if (skipPop > 0) {
+    skipPop--;
+    return;
+  }
+  const top = sheetStack[sheetStack.length - 1];
+  const marked: number | undefined = window.history.state?.vyloSheet;
+  if (top !== undefined && marked !== top) sheetClosers.get(top)?.();
+  else if (marked !== undefined && !sheetStack.includes(marked)) window.history.back();
+}
+
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type=hidden]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * Шторка поверх страницы. Закрывается крестиком, Esc, тапом по затемнению и кнопкой «Назад» телефона (шторка добавляет запись
+ * в историю браузера, поэтому «Назад» закрывает её, а не уводит с экрана). Фокус при открытии уходит в шторку, внутри неё
+ * Tab ходит по кругу, при закрытии фокус возвращается туда, откуда шторку открыли.
+ */
 export function Sheet({ open, onClose, title, children, footer }: { open: boolean; onClose: () => void; title: string; children: ReactNode; footer?: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  // Свежий onClose без пересоздания подписок: родители передают новую функцию на каждый рендер, а переподписка
+  // каждый раз возвращала бы фокус на окно и мешала набирать текст.
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
-    document.addEventListener('keydown', onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden'; // страница под шторкой не прокручивается
+    if (!popInstalled) {
+      window.addEventListener('popstate', onPopState);
+      popInstalled = true;
+    }
+    const id = ++sheetSeq;
+    sheetStack.push(id);
+    sheetClosers.set(id, () => closeRef.current());
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     ref.current?.focus();
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden'; // страница под шторкой не прокручивается
+    try {
+      window.history.pushState({ ...(window.history.state ?? {}), vyloSheet: id }, '');
+    } catch {
+      /* без истории шторка просто не реагирует на «Назад» */
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (sheetStack[sheetStack.length - 1] !== id) return;
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        closeRef.current();
+      } else if (e.key === 'Tab' && ref.current) {
+        const items = [...ref.current.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((el) => el.offsetParent !== null);
+        if (!items.length) return;
+        const first = items[0]!;
+        const last = items[items.length - 1]!;
+        const active = document.activeElement;
+        if (e.shiftKey && (active === first || active === ref.current)) (e.preventDefault(), last.focus());
+        else if (!e.shiftKey && active === last) (e.preventDefault(), first.focus());
+      }
+    };
+    document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = prev;
+      const i = sheetStack.indexOf(id);
+      if (i >= 0) sheetStack.splice(i, 1);
+      sheetClosers.delete(id);
+      document.body.style.overflow = prevOverflow;
+      // Закрыли не кнопкой «Назад» — убираем свою запись из истории, чтобы «Назад» не оставался «пустым» шагом.
+      if (window.history.state?.vyloSheet === id) {
+        skipPop++;
+        window.history.back();
+      }
+      if (opener?.isConnected) opener.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
+
   if (!open) return null;
   return (
-    <div className="sheet-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="sheet-backdrop" onMouseDown={(e) => e.target === e.currentTarget && closeRef.current()}>
       <div className="sheet" role="dialog" aria-modal="true" aria-label={title} ref={ref} tabIndex={-1}>
         <div className="sheet-head">
           <h2>{title}</h2>

@@ -67,7 +67,22 @@ export function ItemEditor({ open, onClose, trip, item, defaultDate }: { open: b
     setError('');
     setCoordsError('');
     setPending([]);
-  }, [open, item, defaultDate]);
+    // Новая запись: город по умолчанию — как у предыдущей записи этого дня (или единственный город поездки).
+    if (!item) {
+      let live = true;
+      void db.items
+        .where('[tripId+date]')
+        .equals([trip.id, defaultDate])
+        .sortBy('order')
+        .then((list) => {
+          const guess = list[list.length - 1]?.city || (trip.cities.length === 1 ? trip.cities[0]!.name : '');
+          if (live && guess && trip.cities.some((c) => c.name === guess)) setCity((c) => c || guess);
+        });
+      return () => {
+        live = false;
+      };
+    }
+  }, [open, item, defaultDate, trip.id, trip.cities]);
 
   const photos = useLiveQuery(async (): Promise<Photo[]> => (item ? db.photos.where('itemId').equals(item.id).sortBy('createdAt') : []), [item?.id]);
   const days = eachDay(trip.startDate, trip.endDate);

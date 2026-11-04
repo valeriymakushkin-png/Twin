@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { ErrorBoundary } from './core/ErrorBoundary';
 import { useOnline } from './core/hooks';
 import { ru } from './core/strings';
 import { Toaster } from './core/toast';
@@ -39,6 +40,22 @@ function TabBar() {
   );
 }
 
+/** Экраны приложения под страховкой от ошибок: сбой одного экрана не «роняет» всё приложение. */
+function Screens() {
+  const { pathname } = useLocation();
+  return (
+    <ErrorBoundary resetKey={pathname}>
+      <Routes>
+        <Route path="/" element={<TripsPage />} />
+        <Route path="/trip/:id" element={<TripPage />} />
+        <Route path="/map" element={<MapPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="*" element={<TripsPage />} />
+      </Routes>
+    </ErrorBoundary>
+  );
+}
+
 export function App() {
   // Когда есть интернет, курсы валют подгружаются сами (при запуске, при появлении сети, при возвращении в приложение).
   useEffect(() => startRatesAutoRefresh(), []);
@@ -46,13 +63,7 @@ export function App() {
     <HashRouter>
       <VaultProvider>
         <div className="app">
-          <Routes>
-            <Route path="/" element={<TripsPage />} />
-            <Route path="/trip/:id" element={<TripPage />} />
-            <Route path="/map" element={<MapPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="*" element={<TripsPage />} />
-          </Routes>
+          <Screens />
           <TabBar />
           <Toaster />
         </div>
