@@ -23,6 +23,12 @@ const PATHS = {
   sort: 'M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3',
   check: 'M5 12l5 5 9-10',
   calendar: 'M5 6h14v14H5V6zM5 10h14M9 3v4M15 3v4',
+  globe: 'M12 21a9 9 0 100-18 9 9 0 000 18zM3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9z',
+  book: 'M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4zM5 17a3 3 0 013-3h11',
+  share: 'M12 15V4M8 8l4-4 4 4M5 13v6h14v-6',
+  up: 'M12 19V5M6 11l6-6 6 6',
+  down: 'M12 5v14M6 13l6 6 6-6',
+  refresh: 'M20 11a8 8 0 10-2.3 5.7M20 5v6h-6',
 } as const;
 export type IconName = keyof typeof PATHS;
 
@@ -96,5 +102,14 @@ export function Empty({ icon, title, text, action }: { icon: IconName; title: st
       {text && <p>{text}</p>}
       {action}
     </div>
+  );
+}
+
+/** Переключаемая «таблетка» для фильтров. */
+export function Chip({ active, onClick, children }: { active?: boolean; onClick: () => void; children: ReactNode }) {
+  return (
+    <button type="button" className="cat-chip" aria-pressed={!!active} onClick={onClick}>
+      {children}
+    </button>
   );
 }

@@ -6,6 +6,7 @@ import { Toaster } from './core/toast';
 import { Icon } from './core/ui';
 import { VaultProvider } from './modules/documents/vault';
 import { startRatesAutoRefresh } from './modules/expenses/rates';
+import { MapPage } from './modules/map/MapPage';
 import { SettingsPage } from './modules/settings/SettingsPage';
 import { TripPage } from './modules/trips/TripPage';
 import { TripsPage } from './modules/trips/TripsPage';
@@ -26,6 +27,10 @@ function TabBar() {
         <Icon name="suitcase" />
         {ru.tabs.trips}
       </NavLink>
+      <NavLink to="/map">
+        <Icon name="globe" />
+        {ru.tabs.map}
+      </NavLink>
       <NavLink to="/settings">
         <Icon name="gear" />
         {ru.tabs.settings}
@@ -44,6 +49,7 @@ export function App() {
           <Routes>
             <Route path="/" element={<TripsPage />} />
             <Route path="/trip/:id" element={<TripPage />} />
+            <Route path="/map" element={<MapPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="*" element={<TripsPage />} />
           </Routes>

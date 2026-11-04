@@ -6,6 +6,7 @@ import { useObjectUrl } from '../../core/hooks';
 import { fill, ru } from '../../core/strings';
 import { toast } from '../../core/toast';
 import { Button, Field, Icon, Sheet } from '../../core/ui';
+import { formatCoordinates, parseCoordinates } from '../map/geo';
 import { addItem, addItemPhoto, deleteItem, deletePhoto, updateItem } from './itemRepo';
 
 function PhotoTile({ blob, onOpen, onRemove }: { blob: Blob; onOpen: () => void; onRemove: () => void }) {
@@ -47,6 +48,8 @@ export function ItemEditor({ open, onClose, trip, item, defaultDate }: { open: b
   const [time, setTime] = useState('');
   const [city, setCity] = useState('');
   const [notes, setNotes] = useState('');
+  const [coords, setCoords] = useState('');
+  const [coordsError, setCoordsError] = useState('');
   const [error, setError] = useState('');
   const [pending, setPending] = useState<File[]>([]); // фото, выбранные до первого сохранения новой записи
   const [lightbox, setLightbox] = useState<Blob | null>(null);
@@ -60,7 +63,9 @@ export function ItemEditor({ open, onClose, trip, item, defaultDate }: { open: b
     setTime(item?.time ?? '');
     setCity(item?.city ?? '');
     setNotes(item?.notes ?? '');
+    setCoords(item?.lat !== undefined && item.lng !== undefined ? formatCoordinates({ lat: item.lat, lng: item.lng }) : '');
     setError('');
+    setCoordsError('');
     setPending([]);
   }, [open, item, defaultDate]);
 
@@ -71,7 +76,9 @@ export function ItemEditor({ open, onClose, trip, item, defaultDate }: { open: b
 
   const save = async () => {
     if (!title.trim()) return setError(ru.itinerary.needTitle);
-    const input = { date, time: time || undefined, kind, title: title.trim(), notes: notes.trim() || undefined, city: city || undefined };
+    const point = coords.trim() ? parseCoordinates(coords) : undefined;
+    if (point === null) return setCoordsError(ru.itinerary.badCoords);
+    const input = { date, time: time || undefined, kind, title: title.trim(), notes: notes.trim() || undefined, city: city || undefined, lat: point?.lat, lng: point?.lng };
     try {
       if (item) await updateItem(item.id, input);
       else {
@@ -159,6 +166,9 @@ export function ItemEditor({ open, onClose, trip, item, defaultDate }: { open: b
         )}
         <Field label={ru.itinerary.notes}>
           <textarea className="input" value={notes} onChange={(e) => setNotes(e.target.value)} maxLength={2000} />
+        </Field>
+        <Field label={ru.itinerary.coords} error={coordsError} hint={coords.trim() && parseCoordinates(coords) ? `✓ ${formatCoordinates(parseCoordinates(coords)!)}` : ru.itinerary.coordsHint}>
+          <input className="input" value={coords} onChange={(e) => (setCoords(e.target.value), setCoordsError(''))} placeholder="38.6916, -9.2160" inputMode="text" autoComplete="off" />
         </Field>
         <Field label={ru.itinerary.photos}>
           <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => void pickFiles(e.target.files).then(() => (e.target.value = ''))} />

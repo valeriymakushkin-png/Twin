@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { COUNTRIES } from '../../data/countries';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCityIndex } from '../../core/useCities';
+import { cityCountryName, findCity, searchCities } from '../../data/cities';
+import { COUNTRIES, countryName } from '../../data/countries';
 import { todayIso, addDays, daysBetween } from '../../core/dates';
 import type { Trip, TripCity } from '../../core/db';
 import { useObjectUrl } from '../../core/hooks';
@@ -28,6 +30,9 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
   const [errors, setErrors] = useState<{ name?: string; dates?: string; budget?: string }>({});
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [countryTouched, setCountryTouched] = useState(false);
+  const index = useCityIndex(open);
 
   // При каждом открытии форма заполняется заново (данные поездки или значения по умолчанию).
   useEffect(() => {
@@ -39,6 +44,7 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
     setStart(trip?.startDate ?? todayIso());
     setEnd(trip?.endDate ?? addDays(todayIso(), 6));
     setCover(undefined);
+    setCountryTouched(!!trip);
     setCurrency(trip?.currency ?? home);
     setBudget(trip?.budget ? String(trip.budget).replace('.', ',') : '');
     setErrors({});
@@ -49,10 +55,24 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
   const shownCover = cover === undefined ? currentCover : (cover ?? undefined);
   const coverUrl = useObjectUrl(shownCover);
 
-  const addCity = () => {
+  /** Подсказки: города из встроенного списка (русские и латинские названия), города выбранной страны — первыми. */
+  const hits = useMemo(() => (index && cityDraft.trim().length >= 2 ? searchCities(index, cityDraft, { country, limit: 6 }) : []), [index, cityDraft, country]);
+
+  const addNamed = (name: string, point?: { lat: number; lng: number }, cc?: string) => {
+    setCities((list) => (list.some((c) => c.name.toLowerCase() === name.toLowerCase()) ? list : [...list, { name, ...point }]));
+    // Первый город новой поездки подсказывает страну, если пользователь сам её ещё не выбирал.
+    if (cc && !countryTouched && cities.length === 0 && COUNTRIES.some((c) => c.code === cc)) setCountry(cc);
+    setCityDraft('');
+  };
+
+  /** Ввод вручную: если название точно совпало с городом из списка — координаты подставляются сами. */
+  const addTyped = () => {
     const parts = cityDraft.split(',').map((s) => s.trim()).filter(Boolean);
     if (!parts.length) return;
-    setCities((list) => [...list, ...parts.filter((p) => !list.some((c) => c.name.toLowerCase() === p.toLowerCase())).map((name) => ({ name }))]);
+    for (const name of parts) {
+      const found = index ? findCity(index, name, country) : undefined;
+      addNamed(name, found ? { lat: found.lat, lng: found.lng } : undefined, found?.cc);
+    }
     setCityDraft('');
   };
 
@@ -68,7 +88,8 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
     try {
       // Город, введённый, но не добавленный клавишей Enter, не должен пропасть.
       const draft = cityDraft.trim();
-      const allCities = draft && !cities.some((c) => c.name.toLowerCase() === draft.toLowerCase()) ? [...cities, { name: draft }] : cities;
+      const typed = draft && !cities.some((c) => c.name.toLowerCase() === draft.toLowerCase()) ? (() => { const f = index ? findCity(index, draft, country) : undefined; return [{ name: draft, ...(f ? { lat: f.lat, lng: f.lng } : {}) }]; })() : [];
+      const allCities = [...cities, ...typed];
       const input = { name: name.trim(), countryCode: country, cities: allCities, startDate: start, endDate: end, currency, budget: budgetValue ?? undefined };
       await setHomeCurrency(currency); // следующая поездка по умолчанию — в той же валюте отчётов
       const id = trip ? (await updateTrip(trip.id, input, cover), trip.id) : await createTrip(input, cover ?? null);
@@ -102,7 +123,7 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
         <input className="input" value={name} placeholder={ru.trips.namePlaceholder} onChange={(e) => setName(e.target.value)} maxLength={80} />
       </Field>
       <Field label={ru.trips.country}>
-        <select className="input" value={country} onChange={(e) => setCountry(e.target.value)}>
+        <select className="input" value={country} onChange={(e) => (setCountry(e.target.value), setCountryTouched(true))}>
           {COUNTRIES.map((c) => (
             <option key={c.code} value={c.code}>
               {c.name}
@@ -111,23 +132,42 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
         </select>
       </Field>
       <Field label={ru.trips.cities} hint={ru.trips.citiesHint}>
-        <input
-          className="input"
-          value={cityDraft}
-          onChange={(e) => setCityDraft(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              addCity();
-            }
-          }}
-          onBlur={addCity}
-          maxLength={60}
-        />
+        <div ref={listRef} className="city-box">
+          <input
+            className="input"
+            value={cityDraft}
+            onChange={(e) => setCityDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                addTyped();
+              }
+            }}
+            onBlur={(e) => {
+              // Тап по подсказке не должен «добавлять» недописанный текст раньше самой подсказки.
+              if (!listRef.current?.contains(e.relatedTarget as Node | null)) addTyped();
+            }}
+            maxLength={60}
+            autoComplete="off"
+          />
+          {hits.length > 0 && (
+            <ul className="suggest" role="listbox">
+              {hits.map(({ city, label }) => (
+                <li key={`${city.cc}${city.lat}${city.lng}`}>
+                  <button type="button" role="option" onMouseDown={(e) => e.preventDefault()} onClick={() => addNamed(label, { lat: city.lat, lng: city.lng }, city.cc)}>
+                    <b>{label}</b>
+                    <small>{cityCountryName(city)}</small>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         {cities.length > 0 && (
           <div className="chips">
             {cities.map((c) => (
-              <span key={c.name} className="chip">
+              <span key={c.name} className="chip" title={c.lat === undefined ? ru.trips.noCoords : undefined}>
+                {c.lat !== undefined ? '📍 ' : ''}
                 {c.name}
                 <button type="button" aria-label={ru.delete} onClick={() => setCities((l) => l.filter((x) => x.name !== c.name))}>
                   <Icon name="close" size={14} />

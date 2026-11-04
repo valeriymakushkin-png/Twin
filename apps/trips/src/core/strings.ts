@@ -16,7 +16,7 @@ export const ru = {
   add: 'Добавить',
   back: 'Назад',
   loading: 'Загрузка…',
-  tabs: { trips: 'Поездки', settings: 'Настройки' },
+  tabs: { trips: 'Поездки', map: 'Карта', settings: 'Настройки' },
   money: 'Деньги',
   trips: {
     title: 'Мои поездки',
@@ -28,7 +28,8 @@ export const ru = {
     namePlaceholder: 'Например, Осень в Лиссабоне',
     country: 'Страна',
     cities: 'Города',
-    citiesHint: 'Введите город и нажмите Enter',
+    citiesHint: 'Начните вводить название и выберите город из подсказок — так он попадёт на карту и в километры. Без подсказки город сохранится просто названием.',
+    noCoords: 'Без координат: на карте не покажется',
     start: 'Начало',
     end: 'Конец',
     cover: 'Обложка',
@@ -69,6 +70,9 @@ export const ru = {
     anyCity: '— не указан —',
     notes: 'Заметки',
     photos: 'Фото',
+    coords: 'Точка на карте (необязательно)',
+    coordsHint: 'Вставьте координаты или ссылку из Google, Apple или Яндекс Карт («Поделиться» → скопировать). Без точки место привязывается к городу.',
+    badCoords: 'Не удалось разобрать координаты. Пример: 38.6916, -9.2160 или ссылка из карт',
     addPhoto: 'Добавить фото',
     removePhoto: 'Удалить фото',
     sortByTime: 'Упорядочить по времени',
@@ -202,6 +206,28 @@ export const ru = {
     ratesOutdated: 'Курсы от {date} — давно не обновлялись. Подключитесь к интернету или задайте курс вручную.',
     ratesMissingLine: 'Курсы ещё не загружены — подключитесь к интернету или задайте курс вручную.',
   },
+  map: {
+    title: 'Моя карта',
+    countries: ['{n} страна', '{n} страны', '{n} стран'],
+    cities: ['{n} город', '{n} города', '{n} городов'],
+    km: 'км по прямой',
+    trips: ['{n} поездка', '{n} поездки', '{n} поездок'],
+    allTime: 'Всё время',
+    visited: 'Были',
+    planned: 'В планах',
+    legendCities: 'Города',
+    empty: 'Карта пока пустая',
+    emptyText: 'Создайте поездку — страна закрасится на карте, а города и километры посчитаются сами.',
+    zoomIn: 'Приблизить',
+    zoomOut: 'Отдалить',
+    reset: 'Весь мир',
+    loading: 'Загружаем карту…',
+    countryTrips: 'Поездки в этой стране',
+    noCoordsNote: 'Города без координат на карте не показываются и в километры не входят. Выбирайте города из подсказок в форме поездки.',
+    shareCard: 'Итоговая карточка',
+    kmNote: 'Километры считаются по прямой вдоль маршрута внутри поездок; перелёты из дома не входят.',
+    places: ['{n} место', '{n} места', '{n} мест'],
+  },
 } as const;
 
 /** Русские числительные: 1 день, 2 дня, 5 дней. */
@@ -211,6 +237,9 @@ export function plural(n: number, forms: readonly [string, string, string]): str
   const form = abs > 10 && abs < 20 ? forms[2] : last === 1 ? forms[0] : last >= 2 && last <= 4 ? forms[1] : forms[2];
   return form.replace('{n}', String(n));
 }
+
+/** Только слово без числа: «страны» для 2. Нужно там, где число показано отдельно крупным шрифтом. */
+export const pluralWord = (n: number, forms: readonly [string, string, string]): string => plural(n, forms).replace(String(n), '').trim();
 
 /** Подстановка {name} в строку. */
 export const fill = (s: string, vars: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? ''));
