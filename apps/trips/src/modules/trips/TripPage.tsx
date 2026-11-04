@@ -13,6 +13,7 @@ import { DiaryTab } from '../diary/DiaryTab';
 import { DocumentsTab } from '../documents/DocumentsTab';
 import { ExpensesTab } from '../expenses/ExpensesTab';
 import { ItineraryTab } from '../itinerary/ItineraryTab';
+import { TripCheck } from './TripCheck';
 import { TripForm } from './TripForm';
 import { deleteTrip } from './tripRepo';
 
@@ -72,6 +73,7 @@ export function TripPage() {
             </p>
           </div>
         </div>
+        <TripCheck trip={trip} />
         <div className="tabs" role="tablist">
           <button role="tab" aria-selected={tab === 'itinerary'} onClick={() => setTab('itinerary')}>
             {ru.trips.tabItinerary}

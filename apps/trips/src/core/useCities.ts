@@ -21,12 +21,12 @@ export function useLocator(enabled = true): CityLocator | null {
   const index = useCityIndex(enabled);
   return useMemo<CityLocator | null>(() => {
     if (!index) return null;
-    const cache = new Map<string, { lat: number; lng: number } | undefined>();
+    const cache = new Map<string, { lat: number; lng: number; cc: string } | undefined>();
     return (name, country) => {
       const key = `${country}:${name}`;
       if (!cache.has(key)) {
         const c = findCity(index, name, country);
-        cache.set(key, c ? { lat: c.lat, lng: c.lng } : undefined);
+        cache.set(key, c ? { lat: c.lat, lng: c.lng, cc: c.cc } : undefined);
       }
       return cache.get(key);
     };

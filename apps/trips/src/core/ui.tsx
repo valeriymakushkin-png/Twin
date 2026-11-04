@@ -29,6 +29,7 @@ const PATHS = {
   up: 'M12 19V5M6 11l6-6 6 6',
   down: 'M12 5v14M6 13l6 6 6-6',
   refresh: 'M20 11a8 8 0 10-2.3 5.7M20 5v6h-6',
+  info: 'M12 21a9 9 0 100-18 9 9 0 000 18zM12 11v6M12 7.5v.01',
 } as const;
 export type IconName = keyof typeof PATHS;
 

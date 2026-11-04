@@ -1401,3 +1401,43 @@ textarea.input {
 .sources a {
   font-weight: 600;
 }
+.suggest-note {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-3);
+}
+.notice.info {
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+}
+.notice svg {
+  vertical-align: -4px;
+  margin-right: 4px;
+}
+.issues {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.issues li {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border-left: 4px solid var(--warn);
+}
+.issues li.info {
+  border-left-color: var(--brand);
+}
+.issues li p {
+  margin: 0;
+  line-height: 1.4;
+}
+.suggest.static {
+  position: static;
+  margin-top: 4px;
+  box-shadow: none;
+  border: 1px solid var(--line);
+}

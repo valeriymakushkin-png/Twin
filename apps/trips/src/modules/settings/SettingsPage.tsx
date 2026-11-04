@@ -9,6 +9,7 @@ import { toast } from '../../core/toast';
 import { Button, Field, Icon, Sheet } from '../../core/ui';
 import { MIN_PIN } from '../documents/DocumentsTab';
 import { RatesPanel } from '../expenses/RatesPanel';
+import { setGeoOnline, useGeoOnline } from '../../core/geocode';
 import { HomeCityField } from './HomeCityField';
 import { useVault } from '../documents/vault';
 
@@ -34,6 +35,8 @@ export function SettingsPage() {
   const theme = useTheme();
   const vault = useVault();
   const storage = useStorage();
+  const geoOn = useGeoOnline();
+  const [geoPending, setGeoPending] = useState<boolean | null>(null);
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [restoreBytes, setRestoreBytes] = useState<Uint8Array | null>(null);
@@ -124,6 +127,25 @@ export function SettingsPage() {
         <section className="section">
           <h3 style={{ marginBottom: 8 }}>{ru.settings.homeTitle}</h3>
           <HomeCityField />
+        </section>
+
+        <section className="section">
+          <h3>{ru.settings.geoOnline}</h3>
+          <label className="switch-row">
+            <span>
+              <b>{ru.settings.geoOnline}</b>
+              <small>{ru.settings.geoOnlineHint}</small>
+            </span>
+            <input
+              type="checkbox"
+              role="switch"
+              checked={geoPending ?? geoOn}
+              onChange={(e) => {
+                setGeoPending(e.target.checked);
+                void setGeoOnline(e.target.checked).then(() => setGeoPending(null));
+              }}
+            />
+          </label>
         </section>
 
         <section className="section">

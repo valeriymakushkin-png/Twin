@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useCityIndex } from '../../core/useCities';
-import { cityCountryName, findCity, searchCities } from '../../data/cities';
+import { findCity } from '../../data/cities';
 import { COUNTRIES, countryName } from '../../data/countries';
 import { todayIso, addDays, daysBetween } from '../../core/dates';
 import type { Trip, TripCity } from '../../core/db';
@@ -14,6 +14,7 @@ import { parseAmount } from '../expenses/calc';
 import { setHomeCurrency } from '../expenses/expenseRepo';
 import { useHomeCurrency } from '../expenses/useRates';
 import { createTrip, updateTrip } from './tripRepo';
+import { useCityCandidates } from './useCityCandidates';
 
 /** Форма создания и правки поездки (шторка). `trip` задан — правка, иначе создание. */
 export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open: boolean; onClose: () => void; trip?: Trip; currentCover?: Blob; onSaved?: (id: string) => void }) {
@@ -56,23 +57,33 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
   const coverUrl = useObjectUrl(shownCover);
 
   /** Подсказки: города из встроенного списка (русские и латинские названия), города выбранной страны — первыми. */
-  const hits = useMemo(() => (index && cityDraft.trim().length >= 2 ? searchCities(index, cityDraft, { country, limit: 6 }) : []), [index, cityDraft, country]);
+  const cand = useCityCandidates(cityDraft, { enabled: open, country, limit: 6 });
 
   const addNamed = (name: string, point?: { lat: number; lng: number }, cc?: string) => {
-    setCities((list) => (list.some((c) => c.name.toLowerCase() === name.toLowerCase()) ? list : [...list, { name, ...point }]));
+    setCities((list) => (list.some((c) => c.name.toLowerCase() === name.toLowerCase()) ? list : [...list, { name, ...point, ...(point && cc ? { cc } : {}) }]));
     // Первый город новой поездки подсказывает страну, если пользователь сам её ещё не выбирал.
     if (cc && !countryTouched && cities.length === 0 && COUNTRIES.some((c) => c.code === cc)) setCountry(cc);
     setCityDraft('');
+  };
+
+  /**
+   * Город, введённый вручную: координаты подставляются, только если он найден в стране поездки (или это первый город и страну
+   * ещё не выбирали). Одноимённый город другой страны сам не подставляется — его нужно выбрать из подсказки, иначе легко
+   * получить не ту страну.
+   */
+  const resolveTyped = (name: string, firstCity: boolean) => {
+    const found = index ? findCity(index, name, country) : undefined;
+    return found && (found.cc === country || (firstCity && !countryTouched)) ? found : undefined;
   };
 
   /** Ввод вручную: если название точно совпало с городом из списка — координаты подставляются сами. */
   const addTyped = () => {
     const parts = cityDraft.split(',').map((s) => s.trim()).filter(Boolean);
     if (!parts.length) return;
-    for (const name of parts) {
-      const found = index ? findCity(index, name, country) : undefined;
+    parts.forEach((name, i) => {
+      const found = resolveTyped(name, cities.length === 0 && i === 0);
       addNamed(name, found ? { lat: found.lat, lng: found.lng } : undefined, found?.cc);
-    }
+    });
     setCityDraft('');
   };
 
@@ -88,7 +99,7 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
     try {
       // Город, введённый, но не добавленный клавишей Enter, не должен пропасть.
       const draft = cityDraft.trim();
-      const typed = draft && !cities.some((c) => c.name.toLowerCase() === draft.toLowerCase()) ? (() => { const f = index ? findCity(index, draft, country) : undefined; return [{ name: draft, ...(f ? { lat: f.lat, lng: f.lng } : {}) }]; })() : [];
+      const typed = draft && !cities.some((c) => c.name.toLowerCase() === draft.toLowerCase()) ? (() => { const f = resolveTyped(draft, cities.length === 0); return [{ name: draft, ...(f ? { lat: f.lat, lng: f.lng, cc: f.cc } : {}) }]; })() : [];
       const allCities = [...cities, ...typed];
       const input = { name: name.trim(), countryCode: country, cities: allCities, startDate: start, endDate: end, currency, budget: budgetValue ?? undefined };
       await setHomeCurrency(currency); // следующая поездка по умолчанию — в той же валюте отчётов
@@ -150,16 +161,20 @@ export function TripForm({ open, onClose, trip, currentCover, onSaved }: { open:
             maxLength={60}
             autoComplete="off"
           />
-          {hits.length > 0 && (
+          {(cand.items.length > 0 || cand.searching) && (
             <ul className="suggest" role="listbox">
-              {hits.map(({ city, label }) => (
-                <li key={`${city.cc}${city.lat}${city.lng}`}>
-                  <button type="button" role="option" onMouseDown={(e) => e.preventDefault()} onClick={() => addNamed(label, { lat: city.lat, lng: city.lng }, city.cc)}>
-                    <b>{label}</b>
-                    <small>{cityCountryName(city)}</small>
+              {cand.items.map((c) => (
+                <li key={c.key}>
+                  <button type="button" role="option" onMouseDown={(e) => e.preventDefault()} onClick={() => addNamed(c.label, { lat: c.lat, lng: c.lng }, c.cc)}>
+                    <b>{c.label}</b>
+                    <small>
+                      {c.sub}
+                      {c.source === 'web' ? ` · ${ru.trips.fromWeb}` : ''}
+                    </small>
                   </button>
                 </li>
               ))}
+              {cand.searching && <li className="suggest-note">{ru.trips.searchingWeb}</li>}
             </ul>
           )}
         </div>

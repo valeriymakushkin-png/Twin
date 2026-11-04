@@ -2,12 +2,16 @@ import type { ItineraryItem, Trip } from '../../core/db';
 import { normalizeName } from '../../data/cities';
 import { dedupeConsecutive, haversineKm, routeLengthKm, type LatLng } from './geo';
 
-/** Находит координаты города по названию и стране (из встроенного списка); `undefined`, если неизвестен. */
-export type CityLocator = (name: string, countryCode: string) => LatLng | undefined;
+/**
+ * Находит город по названию и стране (из встроенного списка); `undefined`, если неизвестен. Если в стране поездки такого
+ * города нет, но есть в другой — вернёт тот, с его настоящей страной в `cc` (так видно, что город «не из этой страны»).
+ */
+export type CityLocator = (name: string, countryCode: string) => (LatLng & { cc?: string }) | undefined;
 
 export interface PlacedCity {
   key: string;
   name: string;
+  /** Страна города: выбранная явно (из подсказки) или страна поездки */
   countryCode: string;
   point?: LatLng;
 }
@@ -48,10 +52,30 @@ export function itemPoint(item: ItineraryItem, trip: Trip, locate: CityLocator):
 export function cityPoint(name: string, trip: Trip, locate: CityLocator): LatLng | undefined {
   const own = trip.cities.find((c) => normalizeName(c.name) === normalizeName(name));
   if (own?.lat !== undefined && own.lng !== undefined) return { lat: own.lat, lng: own.lng };
-  return locate(name, trip.countryCode);
+  const found = locate(name, own?.cc ?? trip.countryCode);
+  return found ? { lat: found.lat, lng: found.lng } : undefined;
 }
 
 const chronological = (items: ItineraryItem[]) => [...items].sort((a, b) => (a.date === b.date ? a.order - b.order : a.date < b.date ? -1 : 1));
+
+/**
+ * Города поездки — единый источник для карты, километров, счётчиков и дневника: сначала города, перечисленные в поездке, затем
+ * города записей маршрута, которых в списке нет (в порядке дат). Так «города» и «километры» не расходятся.
+ */
+export function tripCities(trip: Trip, items: ItineraryItem[], locate: CityLocator): PlacedCity[] {
+  const out: PlacedCity[] = [];
+  const seen = new Set<string>();
+  const add = (name: string, cc?: string) => {
+    const n = normalizeName(name);
+    if (!n || seen.has(n)) return;
+    seen.add(n);
+    const countryCode = cc ?? trip.countryCode;
+    out.push({ key: cityKey(name, countryCode), name, countryCode, point: cityPoint(name, trip, locate) });
+  };
+  for (const c of trip.cities) add(c.name, c.cc);
+  for (const i of chronological(items)) if (i.city) add(i.city);
+  return out;
+}
 
 /**
  * Точки маршрута поездки по порядку. Берём места записей (свои координаты или города); если их меньше двух разных,
@@ -60,7 +84,7 @@ const chronological = (items: ItineraryItem[]) => [...items].sort((a, b) => (a.d
 export function tripRoute(trip: Trip, items: ItineraryItem[], locate: CityLocator): LatLng[] {
   const fromItems = dedupeConsecutive(chronological(items).flatMap((i) => itemPoint(i, trip, locate) ?? []));
   if (fromItems.length >= 2) return fromItems;
-  const fromCities = dedupeConsecutive(trip.cities.flatMap((c) => cityPoint(c.name, trip, locate) ?? []));
+  const fromCities = dedupeConsecutive(tripCities(trip, items, locate).flatMap((c) => c.point ?? []));
   return fromCities.length >= 2 ? fromCities : fromItems.length ? fromItems : fromCities;
 }
 
@@ -76,9 +100,8 @@ export function computeTravel(trips: Trip[], itemsOf: (tripId: string) => Itiner
   const visitedTrips = selected.filter((t) => t.startDate <= today);
   const plannedTrips = selected.filter((t) => t.startDate > today);
 
-  const countries = [...new Set(visitedTrips.map((t) => t.countryCode))];
-  const plannedCountries = [...new Set(plannedTrips.map((t) => t.countryCode))].filter((c) => !countries.includes(c));
-
+  const countrySet = new Set<string>();
+  const plannedSet = new Set<string>();
   const cityMap = new Map<string, PlacedCity>();
   const pins: Pin[] = [];
   let km = 0;
@@ -88,6 +111,9 @@ export function computeTravel(trips: Trip[], itemsOf: (tripId: string) => Itiner
   for (const [list, planned] of [[visitedTrips, false], [plannedTrips, true]] as const) {
     for (const trip of list) {
       const items = itemsOf(trip.id);
+      const placed = tripCities(trip, items, locate);
+      // Страна поездки и страны городов, выбранных явно (поездка через несколько стран)
+      for (const code of [trip.countryCode, ...placed.map((c) => c.countryCode)]) (planned ? plannedSet : countrySet).add(code);
       if (!planned) {
         places += items.filter((i) => i.kind === 'place').length;
         const route = tripRoute(trip, items, locate);
@@ -98,21 +124,21 @@ export function computeTravel(trips: Trip[], itemsOf: (tripId: string) => Itiner
           km += legs;
           homeKm += legs;
         }
-        for (const c of trip.cities) {
-          const key = cityKey(c.name, trip.countryCode);
-          if (!cityMap.has(key)) cityMap.set(key, { key, name: c.name, countryCode: trip.countryCode, point: cityPoint(c.name, trip, locate) });
-        }
+        for (const c of placed) if (!cityMap.has(c.key)) cityMap.set(c.key, c);
       }
       // Пины: города поездки и места с собственными координатами
-      for (const c of trip.cities) {
-        const point = cityPoint(c.name, trip, locate);
-        if (point) pins.push({ id: `${trip.id}:c:${normalizeName(c.name)}`, kind: 'city', label: c.name, count: items.filter((i) => i.city && normalizeName(i.city) === normalizeName(c.name)).length, tripId: trip.id, planned, ...point });
+      for (const c of placed) {
+        if (!c.point) continue;
+        const count = items.filter((i) => i.city && normalizeName(i.city) === normalizeName(c.name)).length;
+        pins.push({ id: `${trip.id}:c:${normalizeName(c.name)}`, kind: 'city', label: c.name, count, tripId: trip.id, planned, ...c.point });
       }
       for (const i of items)
         if (i.kind === 'place' && i.lat !== undefined && i.lng !== undefined) pins.push({ id: `${trip.id}:p:${i.id}`, kind: 'place', label: i.title, count: 1, tripId: trip.id, planned, lat: i.lat, lng: i.lng });
     }
   }
 
+  const countries = [...countrySet];
+  const plannedCountries = [...plannedSet].filter((c) => !countrySet.has(c));
   return { countries, plannedCountries, cities: [...cityMap.values()], trips: visitedTrips.length, places, km, homeKm, pins };
 }
 
@@ -162,7 +188,7 @@ export function tripFacts(trip: Trip, items: ItineraryItem[], locate: CityLocato
     items: items.length,
     places,
     events: items.length - places,
-    cities: trip.cities.map((c) => c.name),
+    cities: tripCities(trip, items, locate).map((c) => c.name),
     km: routeLengthKm(route),
     farthest,
     busiestDay: dayList[0] && dayList[0][1] > 1 ? { date: dayList[0][0], count: dayList[0][1] } : undefined,

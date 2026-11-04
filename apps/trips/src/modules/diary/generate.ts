@@ -77,7 +77,7 @@ export function generateDiary(input: DiaryInput, seed: number): DiaryPage[] {
     if (first.time && picker.chance(0.6)) sentences[0] = fill(picker.pick('day.start', P.dayStart), { time: first.time, first: first.title }) + (n > 1 ? ` ${fill(picker.pick('day.more', ['Дальше — ещё {more}.', 'Затем — ещё {more}.', 'После него в плане ещё {more}.']), { more: plural(n - 1, ITEMS_LEFT) })}` : '');
     if (n > 1 && last.time && last.time !== first.time && picker.chance(0.5)) sentences.push(fill(picker.pick('day.end', P.dayEnd), { last: last.title, time: last.time }));
     const cities = [...new Set(list.map((i) => i.city).filter((c): c is string => !!c))];
-    if (cities.length === 1 && trip.cities.length > 1 && picker.chance(0.6)) sentences.push(fill(picker.pick('day.city', P.dayCity), { city: cities[0]! }));
+    if (cities.length === 1 && facts.cities.length > 1 && picker.chance(0.6)) sentences.push(fill(picker.pick('day.city', P.dayCity), { city: cities[0]! }));
     if (facts.busiestDay?.date === date && n >= 3) sentences.push(picker.pick('day.busiest', P.dayBusiest));
     const spent = input.spend?.byDay.get(date);
     if (input.spend && spent && spent > 0 && picker.chance(0.7)) sentences.push(fill(picker.pick('day.spend', P.daySpend), { amount: input.money(spent, input.spend.currency) }));
@@ -122,5 +122,5 @@ export function generateDiary(input: DiaryInput, seed: number): DiaryPage[] {
 export function fingerprint(input: DiaryInput): string {
   const f = input.facts;
   const spent = input.spend ? [...input.spend.byDay.values()].reduce((a, b) => a + b, 0) : 0;
-  return JSON.stringify([input.trip.name, input.trip.startDate, input.trip.endDate, input.trip.cities.map((c) => c.name), f.items, f.places, Math.round(f.km), f.photos, Math.round(spent), input.items.map((i) => `${i.date}${i.title}`).sort().join('|').length]);
+  return JSON.stringify([input.trip.name, input.trip.startDate, input.trip.endDate, f.cities, f.items, f.places, Math.round(f.km), f.photos, Math.round(spent), input.items.map((i) => `${i.date}${i.title}`).sort().join('|').length]);
 }

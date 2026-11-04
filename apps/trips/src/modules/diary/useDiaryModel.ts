@@ -7,7 +7,7 @@ import { useLocator } from '../../core/useCities';
 import { formatMoney } from '../../data/currencies';
 import { summarize } from '../expenses/calc';
 import { tripCurrency, useHomeCurrency, useRatesData } from '../expenses/useRates';
-import { cityPoint, tripFacts, tripRoute } from '../map/stats';
+import { tripCities, tripFacts, tripRoute } from '../map/stats';
 import { loadWorld, type World } from '../map/world';
 import { fingerprint, type DiaryInput } from './generate';
 import { loadDiaryFonts } from './render/fonts';
@@ -107,10 +107,7 @@ export function useDiaryModel(trip: Trip): DiaryModel {
     const money = (a: number, c: string) => formatMoney(a, c);
     const input: DiaryInput = { trip, items, photosByItem, facts, spend, money };
 
-    const cities = trip.cities.flatMap((c) => {
-      const point = cityPoint(c.name, trip, locate);
-      return point ? [{ name: c.name, point }] : [];
-    });
+    const cities = tripCities(trip, items, locate).flatMap((c) => (c.point ? [{ name: c.name, point: c.point }] : []));
     const sorted = [...items].sort((a, b) => (a.date === b.date ? a.order - b.order : a.date < b.date ? -1 : 1));
     const base: DiaryModel['base'] = {
       trip,
