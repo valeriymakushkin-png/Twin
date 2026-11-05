@@ -33,6 +33,13 @@ export function formatters(locale: Locale) {
       }
     },
     hours: (h: string) => (h === 'always' ? translate(locale, 'common.always') : h),
+    /** 135 → "2 h 15 min" in the reader's language */
+    duration: (minutes: number) => {
+      const h = Math.floor(minutes / 60);
+      const m = minutes % 60;
+      const unit = (n: number, u: 'hour' | 'minute') => new Intl.NumberFormat(l, { style: 'unit', unit: u, unitDisplay: 'short' }).format(n);
+      return [h ? unit(h, 'hour') : '', m ? unit(m, 'minute') : ''].filter(Boolean).join(' ');
+    },
     time: (d: Date) => d.toLocaleTimeString(l, { hour: '2-digit', minute: '2-digit' }),
     /** "Today, 18:00" / "Tomorrow, 10:30" / "Sat 12 Oct, 07:00" */
     when: (d: Date, now = new Date()) => {

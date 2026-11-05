@@ -75,6 +75,25 @@ export interface Place {
   people?: string[];
   /** Street address in the local Latin spelling */
   address?: string;
+  /** Distinction in the MICHELIN Guide, with the edition it was checked against */
+  michelin?: Michelin;
+  /** Signature dishes with typical prices in the city's currency (names are local; glosses live in the texts) */
+  menu?: MenuItem[];
+}
+
+export type MichelinAward = 'star3' | 'star2' | 'star1' | 'bib' | 'green';
+
+export interface Michelin {
+  award: MichelinAward;
+  /** Guide edition, e.g. 2026 */
+  year: number;
+}
+
+export interface MenuItem {
+  /** Dish name as it is written on the menu (local Latin spelling) */
+  dish: string;
+  /** Typical price in the city's currency; omitted for tasting menus priced per person */
+  price?: number;
 }
 
 export type MeetupKind = 'sunset' | 'coffee' | 'hike' | 'food' | 'party' | 'cowork' | 'tour';

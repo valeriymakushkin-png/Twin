@@ -28,7 +28,8 @@ import { MeetupRow, ReviewCard } from '@/components/cards';
 import { HeroPage, shareLink } from '@/components/hero';
 import { usePlus } from '@/components/paywall';
 import { Photo } from '@/components/photo';
-import { EatList, topFood } from '@/components/eat-section';
+import { CityRoutes } from '@/components/city-routes';
+import { EatBrowser, EatList, topFood } from '@/components/eat-section';
 import { cityRouteIds, useRouteActions } from '@/components/route-actions';
 import { SpotBadge } from '@/components/spot-badge';
 import { Button, Chip, Rating, SectionHeader, Tag, UnderlineTabs } from '@/components/ui';
@@ -46,7 +47,7 @@ import { useAllMeetups, useApp } from '@/store/app';
 import { useUI } from '@/store/ui';
 import { SpotStrip } from './country-screen';
 
-type Tab = 'overview' | 'places' | 'visa' | 'tips' | 'meetups';
+type Tab = 'overview' | 'places' | 'visa' | 'tips' | 'meetups' | 'eat';
 type PlaceFilter = 'all' | 'sights' | 'insta' | 'hidden' | 'food' | 'nature';
 
 export function ActionRow({ id, theme }: { id: string; theme?: Theme }) {
@@ -228,6 +229,7 @@ export function DestinationScreen({ id }: { id: string }) {
         options={[
           { value: 'overview', label: t('destination.tabOverview') },
           { value: 'places', label: `${t('destination.tabPlaces')} · ${placeList.length}` },
+          ...(placeList.some((p) => p.category === 'food') ? [{ value: 'eat' as const, label: `${t('eat.tab')} · ${placeList.filter((p) => p.category === 'food').length}` }] : []),
           { value: 'visa', label: t('destination.tabVisa') },
           { value: 'tips', label: t('destination.tabTips') },
           { value: 'meetups', label: `${t('destination.tabMeetups')} · ${meetups.length}` },
@@ -291,6 +293,8 @@ export function DestinationScreen({ id }: { id: string }) {
               </div>
             </section>
 
+            <CityRoutes cityId={id} accent={accent} />
+
             {cityRouteCount > 1 && (
               <button
                 onClick={() => routeCity(id)}
@@ -324,10 +328,7 @@ export function DestinationScreen({ id }: { id: string }) {
                 <SectionHeader
                   title={t('eat.title')}
                   action={t('eat.all')}
-                  onAction={() => {
-                    setPlaceFilter('food');
-                    setTab('places');
-                  }}
+                  onAction={() => setTab('eat')}
                 />
                 <EatList items={topFood(placeList, 4)} accent={accent} />
               </section>
@@ -476,6 +477,8 @@ export function DestinationScreen({ id }: { id: string }) {
               ))}
           </div>
         )}
+
+        {tab === 'eat' && <EatBrowser places={placeList} accent={accent} />}
 
         {tab === 'visa' && (
           <div className="px-5 pt-5">

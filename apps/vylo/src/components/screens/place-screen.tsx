@@ -12,6 +12,8 @@ import { ReportButton } from '@/components/report';
 import { ShareShot } from '@/components/share-shot';
 import { LOCALE_META } from '@/i18n/config';
 import { SpotBadge } from '@/components/spot-badge';
+import { MichelinBadge } from '@/components/food/michelin';
+import { MenuList } from '@/components/food/menu-list';
 import { SunCard } from '@/components/sun-card';
 import { Rating, Tag } from '@/components/ui';
 import { categoryColor, countryHref, destinationById, destinationHref, isHiddenReview, placeById, placesIn } from '@/data/catalog';
@@ -60,6 +62,7 @@ export function PlaceScreen({ id }: { id: string }) {
               {tk(`categories.${p.category}`)}
             </span>
             {p.spot && <SpotBadge spot={p.spot} className="py-1" />}
+            {p.michelin && <MichelinBadge m={p.michelin} full onDark className="h-[26px] px-2.5" />}
           </div>
           <h1 className="mt-2 text-[32px] font-bold leading-[1.05] tracking-[-0.035em]">{text.name}</h1>
           <p className="mt-1 text-[15px] text-white/90">
@@ -164,6 +167,8 @@ export function PlaceScreen({ id }: { id: string }) {
         )}
 
         {p.spot === 'insta' && <ShareShot placeId={p.id} accent={accent} />}
+
+        <MenuList place={p} accent={accent} />
 
         {text.tip && (
           <section>

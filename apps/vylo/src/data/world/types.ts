@@ -12,7 +12,7 @@
  *  - every text exists in ru, en, es, de, fr, it; only `ru` may contain Cyrillic.
  */
 import type { Locale } from '@/i18n/config';
-import type { PlaceCategory, Price, TagKey, Theme, VisaInfo } from '../types';
+import type { MenuItem, Michelin, PlaceCategory, Price, TagKey, Theme, VisaInfo } from '../types';
 
 export type L<T> = Record<Locale, T>;
 
@@ -56,6 +56,28 @@ export interface PlaceText {
   description: string;
   /** Best time or angle for photos, how to find a hidden spot; for food — what to order. Required for `food`. */
   tip?: string;
+  /** One short gloss per `menu` dish (what it is), same order */
+  dishes?: string[];
+}
+
+/** A curated day of a city route: places in visiting order, meals included. */
+export interface RouteDay {
+  /** Place ids of this city in visiting order */
+  stops: string[];
+  text: L<{ title: string }>;
+}
+
+/**
+ * Extra content for one city, kept in its own file under `src/data/world/cities/` so big cities stay readable:
+ * more places (merged into the country's pack) and curated 1–3 day routes.
+ */
+export interface CityPack {
+  /** ISO code of the country whose pack the places join */
+  country: string;
+  city: string;
+  places: CountryPack['places'];
+  /** Day 1 is the best single day; days 1–2 make the two-day route; all three make the three-day route */
+  routes?: RouteDay[];
 }
 
 export interface CountryPack {
@@ -111,6 +133,10 @@ export interface CountryPack {
     hours?: string;
     /** Street address in the local Latin spelling */
     address?: string;
+    /** MICHELIN Guide distinction (only as confirmed for the given edition) */
+    michelin?: Michelin;
+    /** Signature dishes with typical prices; glosses go to `text.<locale>.dishes` */
+    menu?: MenuItem[];
     /**
      * Photo spots (`spot: 'insta'`) only: 1–4 Unsplash ids of photos of people posing at this exact place —
      * the way travellers actually shoot it. Different from `image`.
@@ -129,4 +155,6 @@ export interface WorldText {
   countries: Record<string, CountryText>;
   cities: Record<string, CityText>;
   places: Record<string, PlaceText>;
+  /** Day titles of curated routes, by city */
+  routes: Record<string, { title: string }[]>;
 }

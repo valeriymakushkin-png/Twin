@@ -13,6 +13,8 @@ export interface PlaceText {
   name: string;
   description: string;
   tip?: string;
+  /** Short explanation of each `menu` dish, same order */
+  dishes?: string[];
 }
 
 export interface GuideText {

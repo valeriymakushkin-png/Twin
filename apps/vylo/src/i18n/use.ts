@@ -57,6 +57,12 @@ export function useI18n() {
         o.places[id]?.text,
         byLocale((l) => (packs[l].places as Record<string, PlaceText>)[id] ?? world[l]?.places[id]),
       );
+    /** Day titles of a city's curated routes */
+    const routeTitles = (cityId: string): string[] => {
+      const by = byLocale((l) => world[l]?.routes?.[cityId]);
+      const list = by[locale] ?? by.en ?? by.ru ?? [];
+      return list.map((d) => d.title);
+    };
     /** Country article; `undefined` when nobody has written one yet. */
     const countryText = (code: string): CountryText | undefined => {
       const base = byLocale((l) => world[l]?.countries[code]);
@@ -83,6 +89,6 @@ export function useI18n() {
         ? { title: m.title ?? '', placeName: m.placeName ?? '', description: m.description ?? '' }
         : (c.meetups as Record<string, { title: string; placeName: string; description: string }>)[m.id] ?? { title: m.id, placeName: '', description: '' };
 
-    return { locale, version, t, tk, c, f, country, countryText, item, meetupText, dest, place, user, guide };
+    return { locale, version, t, tk, c, f, country, countryText, item, meetupText, dest, place, user, guide, routeTitles };
   }, [locale, version, world]);
 }

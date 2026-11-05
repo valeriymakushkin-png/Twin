@@ -352,7 +352,7 @@ const pack: CountryPack = {
     },
     // Bangkok (shipped city)
     {
-      id: 'bangkok-jay-fai', city: 'bangkok', category: 'food', lat: 13.7534, lng: 100.5046, image: 'k8dwH-poJ2c',
+      id: 'bangkok-jay-fai', michelin: { award: 'star1', year: 2026 }, city: 'bangkok', category: 'food', lat: 13.7534, lng: 100.5046, image: 'k8dwH-poJ2c',
       rating: 4.5, reviews: 6900, tags: ['food', 'streetfood', 'oldtown'], price: { kind: 'from', amount: 800, currency: 'THB' }, hours: '14:00–20:00',
       address: '327 Maha Chai Road, Samran Rat, Phra Nakhon, Bangkok 10200',
       text: {

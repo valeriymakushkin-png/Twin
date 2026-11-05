@@ -11,10 +11,12 @@ import { baseDestinations as destinations } from '../src/data/destinations.ts';
 import { basePlaces } from '../src/data/places.ts';
 import { baseVisa as visaCountries } from '../src/data/visa.ts';
 import ru from '../src/i18n/messages/ru.ts';
-import type { CountryPack } from '../src/data/world/types.ts';
+import type { CityPack, CountryPack } from '../src/data/world/types.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dir = join(root, 'src/data/world/countries');
+const cityDir = join(root, 'src/data/world/cities');
+const AWARDS = ['star3', 'star2', 'star1', 'bib', 'green'];
 const LOCALES = ['ru', 'en', 'es', 'de', 'fr', 'it'] as const;
 const REGIONS = ['europe', 'sea', 'asia', 'mideast', 'caucasus', 'africa', 'americas', 'oceania', 'russia'];
 const MOTIFS = ['waves', 'palms', 'peaks', 'grid', 'torii', 'dunes', 'tiles', 'aurora', 'sun', 'domes', 'balloons', 'mosaic', 'snow', 'lanterns'];
@@ -102,6 +104,28 @@ for (const f of files) {
   }
 }
 
+// City packs (src/data/world/cities): extra places join their country's pack; routes are checked once all places are known.
+const cityPacks: CityPack[] = [];
+for (const f of readdirSync(cityDir).filter((x) => x.endsWith('.ts') && !x.startsWith('_')).sort()) {
+  try {
+    const mod = await import(pathToFileURL(join(cityDir, f)).href);
+    const cp = mod.default as CityPack;
+    if (!cp?.country || !cp.city || !Array.isArray(cp.places)) errors.push(`cities/${f}: must default-export a CityPack`);
+    else cityPacks.push(cp);
+  } catch (e) {
+    errors.push(`cities/${f}: ${(e as Error).message.split('\n')[0]}`);
+  }
+}
+for (const cp of cityPacks) {
+  const pack = packs.find((x) => x.country.code === cp.country);
+  if (!pack) {
+    if (!only.length) errors.push(`cities/${cp.city}: no country pack ${cp.country}`);
+    continue;
+  }
+  for (const pl of cp.places) if (pl.city !== cp.city) errors.push(`place ${pl.id}: city must be ${cp.city} in its city pack`);
+  pack.places.push(...cp.places);
+}
+
 const baseIds = new Set([...destinations.map((d) => d.id), ...basePlaces.map((p) => p.id)]);
 const seen = new Set<string>();
 const codes = new Set<string>();
@@ -171,6 +195,22 @@ for (const pack of packs) {
     if (!Number.isInteger(p.reviews)) errors.push(`${pw}: reviews must be an integer`);
     for (const t of p.tags ?? []) if (!TAGS.has(t)) errors.push(`${pw}: unknown tag "${t}"`);
     checkText(pw, p.text, { name: 'string', description: 'string', tip: p.category === 'food' ? 'string' : 'opt' });
+    if (p.michelin) {
+      if (p.category !== 'food') errors.push(`${pw}: michelin belongs to places to eat`);
+      if (!AWARDS.includes(p.michelin.award) || !(p.michelin.year >= 2018 && p.michelin.year <= 2030)) errors.push(`${pw}: michelin needs award (${AWARDS.join(', ')}) and a guide year`);
+    }
+    if (p.menu !== undefined) {
+      if (!Array.isArray(p.menu) || p.menu.length < 2 || p.menu.length > 8) errors.push(`${pw}: menu needs 2–8 dishes`);
+      for (const m of p.menu ?? []) {
+        if (!m?.dish?.trim() || CYRILLIC.test(m.dish)) errors.push(`${pw}: menu dish names are written in Latin script`);
+        if (m.price !== undefined && !(m.price > 0)) errors.push(`${pw}: menu price for "${m.dish}" must be positive`);
+      }
+      for (const l of LOCALES) {
+        const d = (p.text as Record<string, { dishes?: string[] }>)[l]?.dishes;
+        if (!Array.isArray(d) || d.length !== p.menu.length || d.some((x) => typeof x !== 'string' || !x.trim())) errors.push(`${pw}.${l}: dishes must explain each of the ${p.menu.length} menu items`);
+        else if (l !== 'ru' && d.some((x) => CYRILLIC.test(x))) errors.push(`${pw}.${l}: Cyrillic in dishes`);
+      }
+    }
     if (p.people !== undefined) {
       if (p.spot !== 'insta') errors.push(`${pw}: "people" photos belong to photo spots (spot: 'insta') only`);
       if (!Array.isArray(p.people) || p.people.length < 1 || p.people.length > 4 || p.people.some((x) => !PHOTO.test(x)) || new Set(p.people).size !== p.people.length) errors.push(`${pw}: people must be 1–4 distinct Unsplash ids`);
@@ -213,6 +253,29 @@ for (const pack of packs) {
   }
 }
 
+// Routes: every stop must be a place of that city; each day needs at least one meal on the way.
+const placeCity = new Map<string, { city: string; category: string }>();
+for (const b of basePlaces) placeCity.set(b.id, { city: b.destinationId, category: b.category });
+for (const pk of packs) for (const pl of pk.places) placeCity.set(pl.id, { city: pl.city, category: pl.category });
+for (const cp of cityPacks) {
+  if (!cp.routes) continue;
+  if (cp.routes.length !== 3) errors.push(`routes ${cp.city}: write exactly 3 days (1, 2 and 3-day routes are built from them)`);
+  cp.routes.forEach((day, i) => {
+    const w = `routes ${cp.city} day ${i + 1}`;
+    if (!Array.isArray(day.stops) || day.stops.length < 4 || day.stops.length > 9) errors.push(`${w}: 4–9 stops`);
+    for (const id of day.stops ?? []) {
+      const pc = placeCity.get(id);
+      if (!pc) errors.push(`${w}: unknown place "${id}"`);
+      else if (pc.city !== cp.city) errors.push(`${w}: "${id}" is in ${pc.city}`);
+    }
+    if (!(day.stops ?? []).some((id) => placeCity.get(id)?.category === 'food')) errors.push(`${w}: add at least one place to eat`);
+    if (new Set(day.stops).size !== day.stops.length) errors.push(`${w}: a stop repeats`);
+    checkText(w, day.text, { title: 'string' });
+  });
+  const all = cp.routes.flatMap((d) => d.stops);
+  if (new Set(all).size !== all.length) errors.push(`routes ${cp.city}: a place appears on two days`);
+}
+
 if (errors.length) {
   console.error(`✗ ${errors.length} problem(s):\n  ${errors.join('\n  ')}`);
   process.exit(1);
@@ -235,6 +298,7 @@ const facts = {
   places: packs.flatMap((p) => p.places.map(({ text: _t, city, ...f }) => ({ ...f, destinationId: city }))),
   visa: packs.filter((p) => p.country.visa).map((p) => ({ code: p.country.code, ...p.country.visa })),
   people: Object.assign({}, ...packs.map((p) => p.peopleFor ?? {})) as Record<string, string[]>,
+  routes: Object.fromEntries(cityPacks.filter((c) => c.routes).map((c) => [c.city, c.routes!.map((d) => d.stops)])) as Record<string, string[][]>,
 };
 writeFileSync(
   join(root, 'src/data/world.generated.ts'),
@@ -245,7 +309,8 @@ writeFileSync(
     `export const worldCities = JSON.parse(${JSON.stringify(JSON.stringify(facts.cities))}) as Destination[];\n` +
     `export const worldPlaces = JSON.parse(${JSON.stringify(JSON.stringify(facts.places))}) as Place[];\n` +
     `export const worldVisa = JSON.parse(${JSON.stringify(JSON.stringify(facts.visa))}) as VisaInfo[];\n` +
-    `export const worldPeople = JSON.parse(${JSON.stringify(JSON.stringify(facts.people))}) as Record<string, string[]>;\n`,
+    `export const worldPeople = JSON.parse(${JSON.stringify(JSON.stringify(facts.people))}) as Record<string, string[]>;\n` +
+    `/** Curated city routes: day → place ids in visiting order */\nexport const worldRoutes = JSON.parse(${JSON.stringify(JSON.stringify(facts.routes))}) as Record<string, string[][]>;\n`,
 );
 mkdirSync(join(root, 'src/content/world'), { recursive: true });
 for (const l of LOCALES) {
@@ -253,6 +318,7 @@ for (const l of LOCALES) {
     countries: Object.fromEntries(packs.map((p) => [p.country.code, p.country.text[l]])),
     cities: Object.fromEntries(packs.flatMap((p) => p.cities.map((c) => [c.id, c.text[l]]))),
     places: Object.fromEntries(packs.flatMap((p) => p.places.map((x) => [x.id, x.text[l]]))),
+    routes: Object.fromEntries(cityPacks.filter((c) => c.routes).map((c) => [c.city, c.routes!.map((d) => d.text[l])])),
   };
   writeFileSync(join(root, `src/content/world/${l}.generated.ts`), `${header}import type { WorldText } from '@/data/world/types';\n\nconst text: WorldText = ${json(text)};\n\nexport default text;\n`);
 }

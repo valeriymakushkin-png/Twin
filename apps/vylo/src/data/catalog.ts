@@ -4,7 +4,7 @@ import { baseDestinations } from './destinations';
 import { basePlaces } from './places';
 import type { Destination, Place, VisaInfo } from './types';
 import { baseVisa } from './visa';
-import { worldCities, worldCountries, worldPeople, worldPlaces, worldVisa } from './world.generated';
+import { worldCities, worldCountries, worldPeople, worldPlaces, worldVisa, worldRoutes } from './world.generated';
 import type { MatrixCell } from './visa/types';
 import type { CityText, CountryFacts, CountryText, PlaceText, Region } from './world/types';
 
@@ -167,6 +167,8 @@ export function subscribeCatalog(l: () => void) {
 export const destinationById = (id: string) => byDestination.get(id);
 export const placeById = (id: string) => byPlace.get(id);
 export const placesIn = (destinationId: string) => placesByCity.get(destinationId) ?? [];
+/** Curated 1–3 day routes of a city: one list of place ids per day (places removed in the admin console drop out). */
+export const cityRoutes = (destinationId: string): string[][] => (worldRoutes[destinationId] ?? []).map((day) => day.filter((id) => byPlace.has(id))).filter((day) => day.length > 1);
 export const visaByCode = (code: string) => byVisa.get(code);
 export const countryByCode = (code: string) => byCountry.get(code);
 export const citiesIn = (code: string) => citiesByCountry.get(code) ?? [];
