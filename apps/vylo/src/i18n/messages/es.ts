@@ -928,6 +928,8 @@ const es: Messages = {
     nature: 'Naturaleza',
     hotels: 'Hoteles',
     meetups: 'Encuentros',
+    kind: { city: 'Ciudad', sight: 'Visita', insta: 'Fotogénico', hidden: 'Joya oculta', food: 'Comida', nature: 'Naturaleza', hotel: 'Hotel', meetup: 'Encuentro' },
+    legend: 'Leyenda del mapa',
     north: 'Orientar al norte',
     tilt: 'Vista 3D',
     zoomIn: 'Acercar',

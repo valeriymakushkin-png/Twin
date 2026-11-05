@@ -7,18 +7,18 @@ import { feature } from 'topojson-client';
 import type { GeometryCollection, Topology } from 'topojson-specification';
 import { numericToAlpha2 } from '@/lib/countries';
 import { photoUrl } from '@/lib/photos';
+import { KIND, type PinKind } from './kinds';
 
 export interface MapMarker {
   id: string;
   lat: number;
   lng: number;
   image: string;
+  /** Size / behaviour class: cities are big and disappear when you zoom in to street level */
   kind: 'destination' | 'place' | 'meetup';
+  /** Colour and glyph (see kinds.ts) */
+  category: PinKind;
   label: string;
-  /** Small colored dot in the corner (category) */
-  badgeColor?: string;
-  badgeText?: string;
-  spot?: 'insta' | 'hidden';
 }
 
 /** Everything else in the catalogue, drawn cheaply as coloured dots on the GPU. */
@@ -27,7 +27,12 @@ export interface MapDot {
   lat: number;
   lng: number;
   color: string;
+  /** Cities fade out at street level, like their photo pins */
+  city?: boolean;
 }
+
+/** From this zoom on the city photo pins are gone (hidden by CSS via `data-zoom="street"`), and city dots have faded out. */
+export const CITY_HIDE_ZOOM = 9.5;
 
 export interface MapRoute {
   /** [lng, lat] */
@@ -76,7 +81,7 @@ const emptyFC: FeatureCollection = { type: 'FeatureCollection', features: [] };
 
 const dotsToFC = (dots: MapDot[]): FeatureCollection<Point> => ({
   type: 'FeatureCollection',
-  features: dots.map((d): Feature<Point> => ({ type: 'Feature', id: d.id, properties: { id: d.id, color: d.color }, geometry: { type: 'Point', coordinates: [d.lng, d.lat] } })),
+  features: dots.map((d): Feature<Point> => ({ type: 'Feature', id: d.id, properties: { id: d.id, color: d.color, city: !!d.city }, geometry: { type: 'Point', coordinates: [d.lng, d.lat] } })),
 });
 
 const routeToFC = (route: MapRoute | null | undefined): FeatureCollection =>
@@ -148,16 +153,46 @@ function buildStyle(style: Style, countries: FeatureCollection | null, visited: 
           'line-dasharray': ['case', ['get', 'approximate'], ['literal', [1.5, 1.2]], ['literal', [1, 0]]],
         },
       },
+      // Places: a soft coloured halo under a white-rimmed dot — readable on satellite imagery and on the light scheme alike.
+      {
+        id: 'dots-halo',
+        type: 'circle',
+        source: 'dots',
+        filter: ['!', ['get', 'city']],
+        paint: {
+          'circle-color': ['get', 'color'],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 4.5, 8, 9, 14, 13],
+          'circle-opacity': 0.26,
+          'circle-blur': 0.5,
+        },
+      },
       {
         id: 'dots',
         type: 'circle',
         source: 'dots',
+        filter: ['!', ['get', 'city']],
         paint: {
           'circle-color': ['get', 'color'],
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 2.2, 8, 4.5, 14, 7],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 2.6, 8, 5.2, 14, 7.5],
           'circle-stroke-color': '#ffffff',
-          'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 2, 0.6, 10, 2],
-          'circle-opacity': 0.92,
+          'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 2, 0.8, 10, 2.2],
+          'circle-opacity': 0.96,
+        },
+      },
+      // Cities: dark dots that fade away as the map zooms into the city itself.
+      {
+        id: 'city-dots',
+        type: 'circle',
+        source: 'dots',
+        filter: ['get', 'city'],
+        maxzoom: CITY_HIDE_ZOOM,
+        paint: {
+          'circle-color': ['get', 'color'],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 2, 3, 8, 5.5],
+          'circle-stroke-color': '#ffffff',
+          'circle-stroke-width': 1.6,
+          'circle-opacity': ['interpolate', ['linear'], ['zoom'], 7.5, 0.95, CITY_HIDE_ZOOM, 0],
+          'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'], 7.5, 1, CITY_HIDE_ZOOM, 0],
         },
       },
     ],
@@ -290,7 +325,10 @@ export const WorldMap = forwardRef<WorldMapHandle, Props>(function WorldMap(
       map.current = m;
       if (process.env.NODE_ENV !== 'production') (window as unknown as { __vyMap?: MLMap }).__vyMap = m;
 
-      const syncZoomAttr = () => container.current?.setAttribute('data-zoom', m.getZoom() >= 5.2 ? 'near' : 'far');
+      const syncZoomAttr = () => {
+        const z = m.getZoom();
+        container.current?.setAttribute('data-zoom', z >= CITY_HIDE_ZOOM ? 'street' : z >= 5.2 ? 'near' : 'far');
+      };
       syncZoomAttr();
       m.on('zoom', syncZoomAttr);
 
@@ -314,19 +352,20 @@ export const WorldMap = forwardRef<WorldMapHandle, Props>(function WorldMap(
         });
       });
 
-      m.on('click', 'dots', (e) => {
+      const tappable = ['dots', 'city-dots'];
+      m.on('click', tappable, (e) => {
         const id = e.features?.[0]?.properties?.id as string | undefined;
         if (id) {
           e.preventDefault();
           latest.current.onMarkerClick?.(id);
         }
       });
-      m.on('mouseenter', 'dots', () => (m.getCanvas().style.cursor = 'pointer'));
-      m.on('mouseleave', 'dots', () => (m.getCanvas().style.cursor = ''));
+      m.on('mouseenter', tappable, () => (m.getCanvas().style.cursor = 'pointer'));
+      m.on('mouseleave', tappable, () => (m.getCanvas().style.cursor = ''));
 
       m.on('click', (e) => {
         if (e.defaultPrevented) return;
-        if (m.queryRenderedFeatures(e.point, { layers: ['dots'] }).length) return;
+        if (m.queryRenderedFeatures(e.point, { layers: tappable }).length) return;
         // Countries are tappable from afar; up close a tap is about streets, not borders.
         if (m.getZoom() > 7) return;
         const features = m.queryRenderedFeatures(e.point, { layers: ['land'] });
@@ -422,20 +461,22 @@ export const WorldMap = forwardRef<WorldMapHandle, Props>(function WorldMap(
         const existing = markerRefs.current.get(mk.id);
         if (existing) {
           // Labels follow the UI language.
-          const label = existing.el.querySelector('.vy-pin__label');
+          const label = existing.el.querySelector('.vy-pin__name');
           if (label && label.textContent !== mk.label) label.textContent = mk.label;
           continue;
         }
         const root = document.createElement('div');
         const pin = document.createElement('div');
-        pin.className = `vy-pin vy-pin--${mk.kind}${mk.spot ? ` vy-pin--${mk.spot}` : ''}`;
+        const k = KIND[mk.category];
+        pin.className = `vy-pin vy-pin--${mk.kind} vy-pin--${mk.category}`;
+        pin.style.cssText = `--k:${k.color};--k-dark:${k.dark};--k-grad:${k.gradient}`;
         pin.innerHTML = `
           ${mk.kind === 'meetup' ? '<span class="vy-pin__pulse"></span>' : ''}
-          <div class="vy-pin__photo" style="background-image:url('${photoUrl(mk.image, 140)}'), linear-gradient(135deg,#a5b4fc,#6366f1)"></div>
+          <div class="vy-pin__ring"><div class="vy-pin__photo" style="background-image:url('${photoUrl(mk.image, 140)}'), linear-gradient(135deg,#a5b4fc,#6366f1)"></div></div>
           <span class="vy-pin__tail"></span>
-          ${mk.badgeColor ? `<span class="vy-pin__badge" style="background:${mk.badgeColor}">${mk.badgeText ?? ''}</span>` : ''}
-          <span class="vy-pin__label"></span>`;
-        (pin.querySelector('.vy-pin__label') as HTMLElement).textContent = mk.label;
+          <span class="vy-pin__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${k.svg}</svg></span>
+          <span class="vy-pin__label"><i class="vy-pin__dot"></i><span class="vy-pin__name"></span></span>`;
+        (pin.querySelector('.vy-pin__name') as HTMLElement).textContent = mk.label;
         root.appendChild(pin);
         root.addEventListener('click', (e) => {
           e.stopPropagation();

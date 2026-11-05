@@ -3,10 +3,11 @@
 import { Camera, Gem } from 'lucide-react';
 import { useI18n } from '@/i18n/use';
 import { cn } from '@/lib/utils';
+import { KIND } from './map/kinds';
 
 export const SPOT_STYLE = {
-  insta: { icon: Camera, bg: 'linear-gradient(135deg,#f97316,#db2777 55%,#7c3aed)', color: '#db2777' },
-  hidden: { icon: Gem, bg: 'linear-gradient(135deg,#0f766e,#14b8a6)', color: '#0f766e' },
+  insta: { icon: Camera, bg: KIND.insta.gradient, color: KIND.insta.color },
+  hidden: { icon: Gem, bg: KIND.hidden.gradient, color: KIND.hidden.color },
 } as const;
 
 /** "Photo spot" / "Hidden gem" pill used on cards, pins and place pages. */

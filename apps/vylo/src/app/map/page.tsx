@@ -1,20 +1,21 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Box, Camera, Gem, Globe2, Hotel, Landmark, Layers, LocateFixed, MapPinned, Minus, Mountain, Navigation2, Plus, Route, Search, SlidersHorizontal, Sparkles, Users, UtensilsCrossed } from 'lucide-react';
+import { Box, Globe2, Layers, LocateFixed, Minus, Navigation2, Plus, Route, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { CompassMark } from '@/components/journey';
+import { KIND_ICON, KindDot, useKindLabel } from '@/components/map/kind-ui';
+import { KIND, KIND_FILTER, KIND_ORDER, placeKind, type PinKind } from '@/components/map/kinds';
 import { MapCard } from '@/components/map/map-card';
 import { RoutePanel, useRouteResult } from '@/components/map/route-panel';
 import { SearchOverlay } from '@/components/map/search-overlay';
-import { WorldMap, type MapDot, type MapMarker, type MapView, type WorldMapHandle } from '@/components/map/world-map';
+import { CITY_HIDE_ZOOM, WorldMap, type MapDot, type MapMarker, type MapView, type WorldMapHandle } from '@/components/map/world-map';
 import { Sheet } from '@/components/sheet';
-import { SPOT_STYLE } from '@/components/spot-badge';
 import { Chip } from '@/components/ui';
 import { resolveItem } from '@/data';
-import { categoryColor, citiesIn, destinationById, destinations, places } from '@/data/catalog';
+import { citiesIn, destinationById, destinations, places } from '@/data/catalog';
 import type { Destination, Place } from '@/data/types';
 import { useI18n } from '@/i18n/use';
 import { WORLD_COUNTRIES } from '@/lib/countries';
@@ -25,16 +26,8 @@ import { useUI } from '@/store/ui';
 
 type Filter = 'all' | 'cities' | 'sights' | 'insta' | 'hidden' | 'food' | 'nature' | 'hotels' | 'meetups';
 
-const FILTERS: { value: Exclude<Filter, 'all'>; icon: typeof Landmark; color: string }[] = [
-  { value: 'cities', icon: MapPinned, color: '#4f46e5' },
-  { value: 'sights', icon: Landmark, color: categoryColor.attraction },
-  { value: 'insta', icon: Camera, color: SPOT_STYLE.insta.color },
-  { value: 'hidden', icon: Gem, color: SPOT_STYLE.hidden.color },
-  { value: 'food', icon: UtensilsCrossed, color: categoryColor.food },
-  { value: 'nature', icon: Mountain, color: categoryColor.nature },
-  { value: 'hotels', icon: Hotel, color: categoryColor.hotel },
-  { value: 'meetups', icon: Users, color: '#ec4899' },
-];
+/** Filter chips follow the kinds' order and colours — they double as the colour legend of the map. */
+const FILTERS: { value: Exclude<Filter, 'all'>; kind: PinKind }[] = KIND_ORDER.map((kind) => ({ value: KIND_FILTER[kind] as Exclude<Filter, 'all'>, kind }));
 
 const CARD_INSET = 300;
 /** Photo pins are DOM nodes: keep them to what fits on screen, the rest are GPU dots. */
@@ -55,7 +48,6 @@ const matches = (p: Place, f: Filter) =>
               ? p.category === 'hotel'
               : false;
 
-const placeColor = (p: Place) => (p.spot ? SPOT_STYLE[p.spot].color : categoryColor[p.category]);
 const score = (x: { rating: number; reviews: number }) => x.rating * Math.log10(x.reviews + 10);
 
 function inBounds(p: { lat: number; lng: number }, [w, s, e, n]: MapView['bounds']) {
@@ -65,6 +57,25 @@ function inBounds(p: { lat: number; lng: number }, [w, s, e, n]: MapView['bounds
 
 /** The route panel covers over half the screen; keep the route in the part of the map that stays visible. */
 const routeSheetInset = () => Math.round(Math.min(window.innerHeight * 0.64, 600));
+
+/** What every colour on the map means. */
+function Legend() {
+  const { t } = useI18n();
+  const label = useKindLabel();
+  return (
+    <div className="mx-5 mb-4">
+      <p className="mb-2 text-[12px] font-bold uppercase tracking-wide text-muted">{t('mapx.legend')}</p>
+      <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+        {KIND_ORDER.map((kind) => (
+          <div key={kind} className="flex items-center gap-2.5 text-[13px] font-semibold text-ink-2">
+            <KindDot kind={kind} size={26} />
+            <span className="truncate">{label(kind)}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function MapPage() {
   const mapRef = useRef<WorldMapHandle>(null);
@@ -98,27 +109,30 @@ export default function MapPage() {
   // What gets a photo pin: the best-rated things inside the viewport, cities first when zoomed out.
   const { markers, dots } = useMemo(() => {
     if (filter === 'meetups') {
-      return { markers: allMeetups.map((m): MapMarker => ({ id: m.id, lat: m.lat, lng: m.lng, image: m.image, kind: 'meetup', label: meetupText(m).title })), dots: [] as MapDot[] };
+      return { markers: allMeetups.map((m): MapMarker => ({ id: m.id, lat: m.lat, lng: m.lng, image: m.image, kind: 'meetup', category: 'meetup', label: meetupText(m).title })), dots: [] as MapDot[] };
     }
     const zoom = view?.zoom ?? 2;
     const visible = <T extends { lat: number; lng: number }>(list: T[]) => (view ? list.filter((x) => inBounds(x, view.bounds)) : list);
-    const cityPins: Destination[] = showCities ? [...visible(destinations)].sort((a, b) => score(b) - score(a)).slice(0, zoom < 5 ? MAX_PINS : 12) : [];
+    // Up close you are inside the city: its photo pin and dot make way for the places around you.
+    const citiesVisible = showCities && zoom < CITY_HIDE_ZOOM;
+    const cityPins: Destination[] = citiesVisible ? [...visible(destinations)].sort((a, b) => score(b) - score(a)).slice(0, zoom < 5 ? MAX_PINS : 12) : [];
     const placePins: Place[] = zoom >= 5 || filter !== 'all' ? [...visible(filteredPlaces)].sort((a, b) => score(b) - score(a)).slice(0, MAX_PINS - cityPins.length / 2) : [];
     const pinned = new Set([...cityPins.map((d) => d.id), ...placePins.map((p) => p.id)]);
     if (activeId && !pinned.has(activeId)) {
       const d = destinationById(activeId);
       const p = places.find((x) => x.id === activeId);
-      if (d) cityPins.push(d);
-      else if (p) placePins.push(p);
+      if (d) {
+        if (citiesVisible) cityPins.push(d);
+      } else if (p) placePins.push(p);
       pinned.add(activeId);
     }
     const markers: MapMarker[] = [
-      ...cityPins.map((d): MapMarker => ({ id: d.id, lat: d.lat, lng: d.lng, image: d.image, kind: 'destination', label: dest(d.id).name, badgeColor: d.theme.accent })),
-      ...placePins.map((p): MapMarker => ({ id: p.id, lat: p.lat, lng: p.lng, image: p.image, kind: 'place', label: place(p.id).name, badgeColor: placeColor(p), spot: p.spot })),
+      ...cityPins.map((d): MapMarker => ({ id: d.id, lat: d.lat, lng: d.lng, image: d.image, kind: 'destination', category: 'city', label: dest(d.id).name })),
+      ...placePins.map((p): MapMarker => ({ id: p.id, lat: p.lat, lng: p.lng, image: p.image, kind: 'place', category: placeKind(p), label: place(p.id).name })),
     ];
     const dots: MapDot[] = [
-      ...(showCities ? destinations.filter((d) => !pinned.has(d.id)).map((d) => ({ id: d.id, lat: d.lat, lng: d.lng, color: d.theme.accent })) : []),
-      ...filteredPlaces.filter((p) => !pinned.has(p.id)).map((p) => ({ id: p.id, lat: p.lat, lng: p.lng, color: placeColor(p) })),
+      ...(citiesVisible ? destinations.filter((d) => !pinned.has(d.id)).map((d) => ({ id: d.id, lat: d.lat, lng: d.lng, color: KIND.city.color, city: true })) : []),
+      ...filteredPlaces.filter((p) => !pinned.has(p.id)).map((p) => ({ id: p.id, lat: p.lat, lng: p.lng, color: KIND[placeKind(p)].color })),
     ];
     return { markers, dots };
   }, [filter, view, filteredPlaces, showCities, allMeetups, activeId, dest, place, meetupText]);
@@ -274,20 +288,26 @@ export default function MapPage() {
           <Chip active={filter === 'all'} onClick={() => (setFilter('all'), setActiveId(null))} icon={<Sparkles className="size-4" />}>
             {t('map.all')}
           </Chip>
-          {FILTERS.map((fl) => (
-            <Chip
-              key={fl.value}
-              active={filter === fl.value}
-              onClick={() => {
-                setFilter(fl.value);
-                setActiveId(null);
-                carousel.current?.scrollTo({ left: 0 });
-              }}
-              icon={<fl.icon className="size-4" style={{ color: filter === fl.value ? undefined : fl.color }} />}
-            >
-              {t(`mapx.${fl.value}`)}
-            </Chip>
-          ))}
+          {FILTERS.map((fl) => {
+            const Icon = KIND_ICON[fl.kind];
+            const on = filter === fl.value;
+            return (
+              <Chip
+                key={fl.value}
+                active={on}
+                tone={KIND[fl.kind].gradient}
+                glow={KIND[fl.kind].color}
+                onClick={() => {
+                  setFilter(fl.value);
+                  setActiveId(null);
+                  carousel.current?.scrollTo({ left: 0 });
+                }}
+                icon={<Icon className="size-4" strokeWidth={2.4} style={{ color: on ? undefined : KIND[fl.kind].color }} />}
+              >
+                {t(`mapx.${fl.value}`)}
+              </Chip>
+            );
+          })}
         </div>
       </div>
 
@@ -404,6 +424,7 @@ export default function MapPage() {
             </button>
           ))}
         </div>
+        <Legend />
         <div className="mx-5 mb-6 flex items-center gap-3 rounded-2xl bg-brand-50 p-3.5 text-[13px] text-brand-700">
           <span className="size-3 shrink-0 rounded-sm bg-brand/60" />
           {t('map.layersHint')}

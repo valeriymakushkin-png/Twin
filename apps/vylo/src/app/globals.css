@@ -209,64 +209,93 @@
   outline: none;
 }
 
-/* Map pins (DOM markers are created imperatively, so they are styled here rather than with utilities) */
+/*
+ * Map pins (DOM markers are created imperatively, so they are styled here rather than with utilities).
+ * Each pin carries its category colours as custom properties: --k (main), --k-dark, --k-grad (ring/badge gradient).
+ * Anatomy: gradient ring around a white-rimmed photo, a tail in the same colour, a glyph badge and a label pill.
+ */
 .vy-pin {
-  --ring: #ffffff;
+  --k: #6366f1;
+  --k-dark: #4338ca;
+  --k-grad: linear-gradient(135deg, #818cf8, #4f46e5);
+  --size: 40px;
   position: relative;
   cursor: pointer;
-  transition: transform 260ms var(--ease-spring), opacity 200ms;
+  transition: transform 260ms var(--ease-spring), opacity 220ms;
   transform-origin: 50% 100%;
 }
-.vy-pin__photo {
-  width: var(--size, 46px);
-  height: var(--size, 46px);
+.vy-pin__ring {
+  padding: 3px;
   border-radius: 999px;
-  border: 3px solid var(--ring);
+  background: var(--k-grad);
+  /* white outer rim + coloured glow: the pin pops on dark satellite imagery and on the pale street map */
+  box-shadow: 0 0 0 2px #fff, 0 8px 18px -4px color-mix(in srgb, var(--k) 70%, transparent), 0 2px 6px rgb(0 0 0 / 0.28);
+}
+.vy-pin__photo {
+  width: var(--size);
+  height: var(--size);
+  border-radius: 999px;
+  border: 2px solid #fff;
   background: linear-gradient(135deg, #a5b4fc, #6366f1) center / cover;
-  box-shadow: var(--shadow-pin);
 }
 .vy-pin__tail {
   position: absolute;
   left: 50%;
-  bottom: -5px;
-  width: 10px;
-  height: 10px;
-  background: var(--ring);
+  bottom: -6px;
+  width: 11px;
+  height: 11px;
+  background: var(--k);
+  border: 2px solid #fff;
+  border-top: 0;
+  border-left: 0;
   transform: translateX(-50%) rotate(45deg);
   border-radius: 2px;
   z-index: -1;
 }
 .vy-pin__badge {
   position: absolute;
-  right: -4px;
-  top: -4px;
-  width: 18px;
-  height: 18px;
+  right: -7px;
+  top: -7px;
+  width: 21px;
+  height: 21px;
   border-radius: 999px;
   border: 2px solid #fff;
   display: grid;
   place-items: center;
   color: #fff;
-  font-size: 9px;
-  font-weight: 800;
+  background: var(--k-grad);
+  box-shadow: 0 3px 8px -2px color-mix(in srgb, var(--k) 80%, transparent);
+}
+.vy-pin__badge svg {
+  width: 11px;
+  height: 11px;
 }
 .vy-pin__label {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 9px);
   left: 50%;
   transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 5px;
   white-space: nowrap;
-  padding: 3px 8px;
+  padding: 3px 9px 3px 7px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: #0f172a;
-  background: rgb(255 255 255 / 0.92);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.18);
+  color: var(--k-dark);
+  background: rgb(255 255 255 / 0.96);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.2), inset 0 0 0 1.5px color-mix(in srgb, var(--k) 38%, transparent);
   opacity: 0;
   transition: opacity 200ms;
   pointer-events: none;
+}
+.vy-pin__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--k-grad);
 }
 .vy-pin:hover .vy-pin__label,
 .vy-pin.is-active .vy-pin__label,
@@ -277,39 +306,42 @@
   transform: scale(1.08);
 }
 .vy-pin.is-active {
-  --ring: #6366f1;
   transform: scale(1.22);
   z-index: 5;
 }
-.vy-pin--place {
-  --size: 36px;
+.vy-pin.is-active .vy-pin__ring {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 7px color-mix(in srgb, var(--k) 32%, transparent), 0 10px 22px -4px color-mix(in srgb, var(--k) 80%, transparent);
 }
-.vy-pin--meetup .vy-pin__photo {
-  --ring: #ec4899;
-  border-color: #ec4899;
+.vy-pin--place {
+  --size: 34px;
+}
+.vy-pin--destination {
+  --size: 44px;
+}
+.vy-pin--meetup {
+  --size: 38px;
 }
 .vy-pin--meetup .vy-pin__pulse {
   position: absolute;
-  inset: 0;
+  inset: -3px;
   border-radius: 999px;
-  border: 2px solid #ec4899;
+  border: 2px solid var(--k);
   animation: var(--animate-pulse-ring);
 }
+/* Zoomed out: only the big city pins; their smaller size keeps the globe readable */
 [data-zoom='far'] .vy-pin--destination {
-  --size: 38px;
+  --size: 36px;
 }
 [data-zoom='far'] .vy-pin--place {
   opacity: 0;
   pointer-events: none;
   transform: scale(0.4);
 }
-.vy-pin--insta .vy-pin__photo {
-  border-color: #db2777;
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #f97316, var(--shadow-pin);
-}
-.vy-pin--hidden .vy-pin__photo {
-  border-color: #0f766e;
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #14b8a6, var(--shadow-pin);
+/* Street level: you are already in the city, so its photo pin steps aside for the places in it */
+[data-zoom='street'] .vy-pin--destination {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.5);
 }
 /* Numbered route stops */
 .vy-stop {

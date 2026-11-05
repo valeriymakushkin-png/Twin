@@ -930,6 +930,8 @@ const ru = {
     nature: 'Природа',
     hotels: 'Отели',
     meetups: 'Встречи',
+    kind: { city: 'Город', sight: 'Место', insta: 'Инстаместо', hidden: 'Скрытое', food: 'Еда', nature: 'Природа', hotel: 'Отель', meetup: 'Встреча' },
+    legend: 'Условные обозначения',
     north: 'На север',
     tilt: '3D-вид',
     zoomIn: 'Приблизить',

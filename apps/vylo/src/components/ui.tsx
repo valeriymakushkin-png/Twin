@@ -75,13 +75,14 @@ export function BackButton({ tone = 'light', className }: { tone?: 'light' | 'gl
   );
 }
 
-export function Chip({ active, children, icon, className, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean; icon?: ReactNode }) {
+export function Chip({ active, children, icon, className, tone, glow, style, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean; icon?: ReactNode; /** CSS background for the active state (e.g. a category gradient) */ tone?: string; /** Colour of the active state's glow */ glow?: string }) {
   return (
     <button
       {...props}
+      style={active && tone ? { background: tone, boxShadow: glow ? `0 6px 16px -4px color-mix(in srgb, ${glow} 70%, transparent)` : undefined, ...style } : style}
       className={cn(
         'press inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-semibold transition-colors',
-        active ? 'bg-brand text-white shadow-brand' : 'bg-white text-ink-2 shadow-soft ring-1 ring-line-soft',
+        active ? (tone ? 'text-white' : 'bg-brand text-white shadow-brand') : 'bg-white text-ink-2 shadow-soft ring-1 ring-line-soft',
         className,
       )}
     >

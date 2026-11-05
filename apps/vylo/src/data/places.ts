@@ -188,5 +188,5 @@ export const categoryColor = {
   attraction: '#6366f1',
   food: '#f59e0b',
   hotel: '#0ea5e9',
-  nature: '#10b981',
+  nature: '#16a34a',
 } as const;
