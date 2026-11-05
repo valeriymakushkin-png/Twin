@@ -39,13 +39,15 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
   // (not before 18:30). Waiting for it shows up as free time.
   let at = 9 * 60;
   let meals = 0;
+  // Only the day's last place to eat waits for dinner; a café or ice cream before it stays a snack on the way.
+  const lastFood = stops.findLastIndex((p) => p.category === 'food');
   const rows = stops.map((p, i) => {
     const travel = i ? leg(stops[i - 1]!, p) : null;
     if (travel) at += travel.min;
     let wait = 0;
     if (p.category === 'food' && i === 0) at = 8 * 60; // a day that opens with food starts with breakfast at 8:00
     else if (p.category === 'food') {
-      const target = meals === 0 ? 12 * 60 : at >= 16 * 60 || i === stops.length - 1 ? 18 * 60 + 30 : at;
+      const target = meals === 0 ? 12 * 60 : i === lastFood && (at >= 16 * 60 || i === stops.length - 1) ? 18 * 60 + 30 : at;
       if (at < target) (wait = target - at), (at = target);
       meals++;
     }
