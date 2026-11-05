@@ -53,7 +53,9 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
     }
     const start = at;
     at += stay(p);
-    return { p, travel, start, wait };
+    // A café or bar before the day's last place to eat is a snack, even in the early evening.
+    const label = meal(start) === 'dinner' && i !== lastFood ? 'snack' : meal(start);
+    return { p, travel, start, wait, label };
   });
   const showOnMap = () => {
     setStops(stops.map((p) => ({ id: p.id, lat: p.lat, lng: p.lng, label: place(p.id).name })));
@@ -74,7 +76,7 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
         </span>
       </div>
       <ol className="px-4 pb-2">
-        {rows.map(({ p, travel, start, wait }, i) => {
+        {rows.map(({ p, travel, start, wait, label }, i) => {
           const kind = placeKind(p);
           const isFood = p.category === 'food';
           return (
@@ -101,7 +103,7 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
                     <span className="tabular-nums">{clock(start)}</span>
                     {isFood && (
                       <span className="inline-flex items-center gap-1 font-semibold" style={{ color: accent }}>
-                        <Utensils className="size-3" /> {tk(`routes.${meal(start)}`)}
+                        <Utensils className="size-3" /> {tk(`routes.${label}`)}
                       </span>
                     )}
                   </p>
