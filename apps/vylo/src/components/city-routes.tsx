@@ -20,7 +20,9 @@ const stay = (p: Place) => (p.category === 'food' ? 60 : p.reviews > 50000 && p.
 /** Getting from one stop to the next: walk up to ~1.2 km, otherwise a taxi or Grab at city speed. */
 function leg(a: Place, b: Place) {
   const km = distanceKm(a, b) * 1.25; // streets are never straight
-  return km <= 1.2 ? { mode: 'walk' as const, min: Math.max(3, Math.round((km / 4.5) * 60)), km } : { mode: 'ride' as const, min: Math.round(8 + (km / 22) * 60), km };
+  if (km <= 1.2) return { mode: 'walk' as const, min: Math.max(3, Math.round((km / 4.5) * 60)), km };
+  // In town ~22 km/h with traffic; out-of-town trips (to tunnels, waterfalls, parks) run faster on highways.
+  return { mode: 'ride' as const, min: Math.round(km > 15 ? 20 + (km / 45) * 60 : 8 + (km / 22) * 60), km };
 }
 
 /** What a food stop is at that hour. */
@@ -41,7 +43,8 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
     const travel = i ? leg(stops[i - 1]!, p) : null;
     if (travel) at += travel.min;
     let wait = 0;
-    if (p.category === 'food') {
+    if (p.category === 'food' && i === 0) at = 8 * 60; // a day that opens with food starts with breakfast at 8:00
+    else if (p.category === 'food') {
       const target = meals === 0 ? 12 * 60 : at >= 16 * 60 || i === stops.length - 1 ? 18 * 60 + 30 : at;
       if (at < target) (wait = target - at), (at = target);
       meals++;

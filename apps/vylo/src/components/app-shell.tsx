@@ -104,6 +104,8 @@ const ONBOARDING_FREE = ['/', '/licenses'];
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
+  // The saved language lives in localStorage, so anything that shows it waits for the first client render.
+  const [hydrated, setHydrated] = useState(false);
   const onboarded = useApp((s) => s.onboarded);
   const checkIn = useApp((s) => s.checkIn);
   const locale = useApp((s) => s.locale);
@@ -117,6 +119,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const isAdmin = pathname.startsWith('/admin');
 
   useEffect(() => {
+    setHydrated(true);
     const timer = setTimeout(() => setReady(true), 450);
     registerServiceWorker();
     void useCatalog.getState().sync();
@@ -151,7 +154,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-dvh items-center justify-center gap-20 bg-canvas min-[900px]:bg-[radial-gradient(1200px_700px_at_80%_10%,#e0e7ff_0%,transparent_60%),radial-gradient(900px_600px_at_0%_100%,#ccfbf1_0%,transparent_55%),#f6f7fb]">
-      <DevicePanel />
+      {hydrated && <DevicePanel />}
       <div className="app-shell">
         <StatusBar />
         {mounted && children}
