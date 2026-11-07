@@ -496,19 +496,6 @@ const pack: CountryPack = {
       },
     },
     {
-      id: 'beijing-donghuamen-night-market', city: 'beijing', category: 'food', lat: 39.916, lng: 116.411, image: 'hvQSBIbsTdA',
-      rating: 4, reviews: 15200, tags: ['market', 'streetfood', 'nightlife'], price: { kind: 'level', level: 1 }, hours: '16:00–22:30',
-      address: 'Donghuamen Night Market, Wangfujing, Dongcheng District, Beijing',
-      text: {
-        ru: { name: 'Ночной рынок Дунхуамэнь', description: 'Туристический рынок рядом с Ванфуцзином с рядами палаток: шашлык из баранины, танхулу, жареный тофу, шпажки из морских гребешков. Развлекательный, но дорогой и шумный.', tip: 'Берите танхулу — фрукты в сахарной глазури — и шашлык из баранины. Торгуйтесь и уточняйте цену до заказа. Приходите к 17–18 часам. Оплата WeChat, Alipay или наличными.' },
-        en: { name: 'Donghuamen Night Market', description: 'A tourist market by Wangfujing with rows of stalls: lamb kebabs, tanghulu, fried tofu and scallop skewers. Fun, but pricey and noisy.', tip: 'Get tanghulu, candied fruit on a stick, and lamb kebabs. Ask the price before ordering and haggle a little. Come at 5–6 pm. Pay with WeChat, Alipay or cash.' },
-        es: { name: 'Mercado nocturno de Donghuamen', description: 'Un mercado turístico junto a Wangfujing con hileras de puestos: brochetas de cordero, tanghulu, tofu frito y brochetas de vieira. Divertido, pero caro y ruidoso.', tip: 'Prueba el tanghulu, fruta caramelizada en palito, y las brochetas de cordero. Pregunta el precio antes de pedir y regatea un poco. Ve a las 17:00–18:00. Paga con WeChat, Alipay o en efectivo.' },
-        de: { name: 'Donghuamen-Nachtmarkt', description: 'Ein Touristenmarkt bei Wangfujing mit Reihen von Ständen: Lammspieße, Tanghulu, frittierter Tofu und Jakobsmuschelspieße. Unterhaltsam, aber teuer und laut.', tip: 'Hol dir Tanghulu, kandierte Früchte am Stiel, und Lammspieße. Frag vor dem Bestellen nach dem Preis und feilsche ein wenig. Komm um 17–18 Uhr. Bezahlt wird mit WeChat, Alipay oder bar.' },
-        fr: { name: 'Marché de nuit de Donghuamen', description: 'Un marché touristique près de Wangfujing avec des rangées d\'étals : brochettes d\'agneau, tanghulu, tofu frit et brochettes de Saint-Jacques. Amusant, mais cher et bruyant.', tip: 'Prenez du tanghulu, des fruits caramélisés sur bâtonnet, et des brochettes d\'agneau. Demandez le prix avant de commander et marchandez un peu. Venez vers 17 h–18 h. Payez par WeChat, Alipay ou en espèces.' },
-        it: { name: 'Mercato notturno di Donghuamen', description: 'Un mercato turistico vicino a Wangfujing con file di bancarelle: spiedini di agnello, tanghulu, tofu fritto e spiedini di capesante. Divertente, ma caro e rumoroso.', tip: 'Prendi il tanghulu, frutta caramellata su stecco, e gli spiedini di agnello. Chiedi il prezzo prima di ordinare e contratta un po\'. Vai alle 17–18. Paga con WeChat, Alipay o contanti.' },
-      },
-    },
-    {
       id: 'beijing-lama-temple-yonghegong', city: 'beijing', category: 'attraction', spot: 'insta', lat: 39.9472, lng: 116.4172, image: 'MbEr7b5qzwM',
       rating: 4.6, reviews: 27600, tags: ['temples', 'photo', 'architecture', 'history'], price: { kind: 'fixed', amount: 25, currency: 'CNY' }, hours: '09:00–16:30',
       address: '12 Yonghegong Street, Dongcheng District, Beijing',
