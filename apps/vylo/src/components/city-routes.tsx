@@ -48,7 +48,9 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
     let wait = 0;
     if (p.category === 'food' && i === 0) at = 8 * 60; // a day that opens with food starts with breakfast at 8:00
     else if (p.category === 'food') {
-      const target = meals === 0 ? 12 * 60 : i === lastFood && (at >= 16 * 60 || i === stops.length - 1) ? 18 * 60 + 30 : at;
+      // Lunch is the first meal reached before 15:00; past that, the day's last place to eat waits for dinner.
+      const lunch = meals === 0 && at < 15 * 60;
+      const target = lunch ? 12 * 60 : i === lastFood && (at >= 16 * 60 || i === stops.length - 1) ? 18 * 60 + 30 : at;
       if (at < target) (wait = target - at), (at = target);
       meals++;
     }
