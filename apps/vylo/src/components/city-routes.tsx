@@ -41,6 +41,7 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
   let meals = 0;
   // Only the day's last place to eat waits for dinner; a café or ice cream before it stays a snack on the way.
   const lastFood = stops.findLastIndex((p) => p.category === 'food');
+  const eaten = new Set<string>(); // each of breakfast, lunch and dinner happens once a day
   const rows = stops.map((p, i) => {
     const travel = i ? leg(stops[i - 1]!, p) : null;
     if (travel) at += travel.min;
@@ -53,8 +54,11 @@ function DayPlan({ index, ids, title, accent }: { index: number; ids: string[]; 
     }
     const start = at;
     at += stay(p);
-    // A café or bar before the day's last place to eat is a snack, even in the early evening.
-    const label = meal(start) === 'dinner' && i !== lastFood ? 'snack' : meal(start);
+    // A café or bar before the day's last place to eat is a snack, even in the early evening,
+    // and so is a second stop at the same mealtime (sweets after lunch).
+    const m = meal(start);
+    const label = (m === 'dinner' && i !== lastFood) || eaten.has(m) ? 'snack' : m;
+    if (p.category === 'food' && label !== 'snack') eaten.add(label);
     return { p, travel, start, wait, label };
   });
   const showOnMap = () => {
